@@ -81,15 +81,15 @@ export function TimezoneWidget() {
   const panelStyle =
     theme === "dark"
       ? {
-          background: "rgba(14,12,20,0.60)",
-          backdropFilter: "blur(40px) saturate(180%)",
-          WebkitBackdropFilter: "blur(40px) saturate(180%)",
+          background: "rgba(14,12,20,0.42)",
+          backdropFilter: "blur(64px) saturate(180%)",
+          WebkitBackdropFilter: "blur(64px) saturate(180%)",
           border: "1px solid rgba(255,255,255,0.08)",
         }
       : {
-          background: "rgba(255,253,251,0.72)",
-          backdropFilter: "blur(40px) saturate(160%)",
-          WebkitBackdropFilter: "blur(40px) saturate(160%)",
+          background: "rgba(255,253,251,0.5)",
+          backdropFilter: "blur(64px) saturate(160%)",
+          WebkitBackdropFilter: "blur(64px) saturate(160%)",
           border: "1px solid rgba(0,0,0,0.08)",
           boxShadow: "0 8px 32px rgba(0,0,0,0.12)",
         };

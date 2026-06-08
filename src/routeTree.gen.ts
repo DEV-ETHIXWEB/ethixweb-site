@@ -22,6 +22,10 @@ import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AiAutomationRouteImport } from './routes/ai-automation'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PoliciesTermsRouteImport } from './routes/policies.terms'
+import { Route as PoliciesShippingRouteImport } from './routes/policies.shipping'
+import { Route as PoliciesRefundsRouteImport } from './routes/policies.refunds'
+import { Route as PoliciesPrivacyRouteImport } from './routes/policies.privacy'
 import { Route as LocationsKentWaRouteImport } from './routes/locations.kent-wa'
 
 const WebDevelopmentRoute = WebDevelopmentRouteImport.update({
@@ -89,6 +93,26 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PoliciesTermsRoute = PoliciesTermsRouteImport.update({
+  id: '/policies/terms',
+  path: '/policies/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PoliciesShippingRoute = PoliciesShippingRouteImport.update({
+  id: '/policies/shipping',
+  path: '/policies/shipping',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PoliciesRefundsRoute = PoliciesRefundsRouteImport.update({
+  id: '/policies/refunds',
+  path: '/policies/refunds',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PoliciesPrivacyRoute = PoliciesPrivacyRouteImport.update({
+  id: '/policies/privacy',
+  path: '/policies/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LocationsKentWaRoute = LocationsKentWaRouteImport.update({
   id: '/locations/kent-wa',
   path: '/locations/kent-wa',
@@ -110,6 +134,10 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/web-development': typeof WebDevelopmentRoute
   '/locations/kent-wa': typeof LocationsKentWaRoute
+  '/policies/privacy': typeof PoliciesPrivacyRoute
+  '/policies/refunds': typeof PoliciesRefundsRoute
+  '/policies/shipping': typeof PoliciesShippingRoute
+  '/policies/terms': typeof PoliciesTermsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -126,6 +154,10 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/web-development': typeof WebDevelopmentRoute
   '/locations/kent-wa': typeof LocationsKentWaRoute
+  '/policies/privacy': typeof PoliciesPrivacyRoute
+  '/policies/refunds': typeof PoliciesRefundsRoute
+  '/policies/shipping': typeof PoliciesShippingRoute
+  '/policies/terms': typeof PoliciesTermsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -143,6 +175,10 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/web-development': typeof WebDevelopmentRoute
   '/locations/kent-wa': typeof LocationsKentWaRoute
+  '/policies/privacy': typeof PoliciesPrivacyRoute
+  '/policies/refunds': typeof PoliciesRefundsRoute
+  '/policies/shipping': typeof PoliciesShippingRoute
+  '/policies/terms': typeof PoliciesTermsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -161,6 +197,10 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/web-development'
     | '/locations/kent-wa'
+    | '/policies/privacy'
+    | '/policies/refunds'
+    | '/policies/shipping'
+    | '/policies/terms'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -177,6 +217,10 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/web-development'
     | '/locations/kent-wa'
+    | '/policies/privacy'
+    | '/policies/refunds'
+    | '/policies/shipping'
+    | '/policies/terms'
   id:
     | '__root__'
     | '/'
@@ -193,6 +237,10 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/web-development'
     | '/locations/kent-wa'
+    | '/policies/privacy'
+    | '/policies/refunds'
+    | '/policies/shipping'
+    | '/policies/terms'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -210,6 +258,10 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   WebDevelopmentRoute: typeof WebDevelopmentRoute
   LocationsKentWaRoute: typeof LocationsKentWaRoute
+  PoliciesPrivacyRoute: typeof PoliciesPrivacyRoute
+  PoliciesRefundsRoute: typeof PoliciesRefundsRoute
+  PoliciesShippingRoute: typeof PoliciesShippingRoute
+  PoliciesTermsRoute: typeof PoliciesTermsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -305,6 +357,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/policies/terms': {
+      id: '/policies/terms'
+      path: '/policies/terms'
+      fullPath: '/policies/terms'
+      preLoaderRoute: typeof PoliciesTermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/policies/shipping': {
+      id: '/policies/shipping'
+      path: '/policies/shipping'
+      fullPath: '/policies/shipping'
+      preLoaderRoute: typeof PoliciesShippingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/policies/refunds': {
+      id: '/policies/refunds'
+      path: '/policies/refunds'
+      fullPath: '/policies/refunds'
+      preLoaderRoute: typeof PoliciesRefundsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/policies/privacy': {
+      id: '/policies/privacy'
+      path: '/policies/privacy'
+      fullPath: '/policies/privacy'
+      preLoaderRoute: typeof PoliciesPrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/locations/kent-wa': {
       id: '/locations/kent-wa'
       path: '/locations/kent-wa'
@@ -330,6 +410,10 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   WebDevelopmentRoute: WebDevelopmentRoute,
   LocationsKentWaRoute: LocationsKentWaRoute,
+  PoliciesPrivacyRoute: PoliciesPrivacyRoute,
+  PoliciesRefundsRoute: PoliciesRefundsRoute,
+  PoliciesShippingRoute: PoliciesShippingRoute,
+  PoliciesTermsRoute: PoliciesTermsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

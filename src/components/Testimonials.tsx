@@ -139,7 +139,16 @@ export function Testimonials() {
               </p>
             </div>
 
-            <div className="premium-card shrink-0 rounded-2xl p-6 text-center lg:min-w-55">
+            <div className="premium-card relative shrink-0 rounded-2xl p-6 text-center lg:min-w-55">
+              <img
+                src="/Ethan%20view%20%204.png"
+                alt=""
+                aria-hidden="true"
+                className="pointer-events-none absolute hidden h-[202px] w-auto object-contain object-bottom drop-shadow-[0_12px_20px_rgba(0,0,0,0.25)] lg:block"
+                loading="lazy"
+                decoding="async"
+                style={{ top: "calc(-6rem - 41px)", right: "calc(0.5rem + 70px)" }}
+              />
               <TrustpilotLogo brand={brand} filled={4} />
               <div className="mt-4 flex items-end justify-center gap-1">
                 <span className="text-5xl font-extrabold text-foreground">4.0</span>

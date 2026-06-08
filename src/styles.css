@@ -114,13 +114,17 @@
 }
 
 html {
-  background: #f8f5f2;
+  background: var(--background);
   color-scheme: light;
   scroll-behavior: smooth;
 }
 html.light {
-  background: #f8f5f2;
+  background: var(--background);
   color-scheme: light;
+}
+html.dark {
+  background: var(--background);
+  color-scheme: dark;
 }
 
 @layer base {
@@ -326,17 +330,17 @@ html.light {
   @keyframes zzz-rise {
     0% {
       opacity: 0;
-      transform: translateY(0) scale(0.6) rotate(-8deg);
+      transform: translateY(0) scale(0.55) rotate(-6deg);
     }
-    20% {
-      opacity: 0.55;
+    18% {
+      opacity: 0.6;
     }
-    80% {
-      opacity: 0.3;
+    55% {
+      opacity: 0.4;
     }
     100% {
       opacity: 0;
-      transform: translateY(-52px) scale(1.1) rotate(6deg);
+      transform: translateY(-72px) scale(1.12) rotate(5deg);
     }
   }
   .mascot-breathe {
@@ -351,7 +355,7 @@ html.light {
     font-weight: 700;
     color: var(--primary);
     pointer-events: none;
-    animation: zzz-rise 4s ease-in-out infinite;
+    animation: zzz-rise 6.5s ease-in-out infinite;
     will-change: transform, opacity;
   }
   @media (prefers-reduced-motion: reduce) {
@@ -456,30 +460,9 @@ html.light {
   background: rgba(0, 0, 0, 0.05) !important;
 }
 
-/* Hero floating badges — always dark premium regardless of theme */
-.hero-badge {
-  background: rgba(12, 9, 18, 0.78);
-  border-color: rgba(138, 24, 28, 0.22);
-  box-shadow:
-    0 4px 24px rgba(0, 0, 0, 0.32),
-    0 0 0 1px rgba(138, 24, 28, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(22px) saturate(160%);
-  -webkit-backdrop-filter: blur(22px) saturate(160%);
-}
-.hero-badge span {
-  color: rgba(240, 235, 230, 0.95) !important;
-}
-.light .hero-badge {
-  background: rgba(10, 8, 16, 0.82) !important;
-  border-color: rgba(138, 24, 28, 0.28) !important;
-  box-shadow:
-    0 4px 28px rgba(0, 0, 0, 0.28),
-    0 0 0 1px rgba(138, 24, 28, 0.14),
-    inset 0 1px 0 rgba(255, 255, 255, 0.07) !important;
-}
-.light .hero-badge span {
-  color: rgba(240, 235, 230, 0.95) !important;
+/* Hero floating thought-clouds — premium glass, organic shape via inline radius */
+.thought-cloud {
+  transition: box-shadow 0.3s ease;
 }
 
 /* Signal / marquee strip */
@@ -504,13 +487,40 @@ html.light {
   background: transparent;
 }
 .light .globe-dark-section {
-  background: linear-gradient(180deg, #f8f5f2 0%, #0c0d10 4%, #0c0d10 100%);
+  background: linear-gradient(
+    180deg,
+    #fff8f8 0%,
+    #ece7e3 1%,
+    #d9d2cc 2.2%,
+    #b6b0ac 3.4%,
+    #8f8884 4.6%,
+    #67636a 5.8%,
+    #46434a 7%,
+    #2c2a30 8.2%,
+    #181820 9.4%,
+    #0c0d10 10.5%,
+    #0c0d10 100%
+  );
   padding-bottom: 5rem;
 }
 .light .globe-transition {
-  height: 80px;
+  height: 160px;
   margin-top: -1px;
-  background: linear-gradient(to bottom, #0c0d10 0%, #f8f5f2 100%);
+  background: linear-gradient(
+    to bottom,
+    #0c0d10 0%,
+    #0c0d10 8%,
+    #181820 16.5%,
+    #2c2a30 25%,
+    #46434a 33.5%,
+    #67636a 42%,
+    #8f8884 50.5%,
+    #b6b0ac 59%,
+    #d9d2cc 67.5%,
+    #ece7e3 76%,
+    #fff8f8 84.5%,
+    #fff8f8 100%
+  );
 }
 /* Force all base text white inside the always-dark globe section */
 .light .globe-dark-section {

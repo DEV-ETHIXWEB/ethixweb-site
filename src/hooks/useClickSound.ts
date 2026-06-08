@@ -1,53 +1,30 @@
 import { useEffect } from "react";
 
-// Reuse a single AudioContext — creating one per click is expensive
-let _ctx: AudioContext | null = null;
-function getCtx(): AudioContext | null {
+const CLICK_SRC = "/click-sound-effects-copyright-free_NBeVl5YB.mp3";
+
+// Reuse a single Audio element as a template — clone it per click so
+// rapid successive clicks can overlap instead of cutting each other off
+let _template: HTMLAudioElement | null = null;
+function getTemplate(): HTMLAudioElement | null {
   try {
-    if (!_ctx || _ctx.state === "closed") {
-      _ctx = new (
-        window.AudioContext ||
-        (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
-      )();
+    if (!_template) {
+      _template = new Audio(CLICK_SRC);
+      _template.volume = 0.35;
+      _template.preload = "auto";
     }
-    if (_ctx.state === "suspended") _ctx.resume();
-    return _ctx;
+    return _template;
   } catch {
     return null;
   }
 }
 
 function playClick() {
-  const ctx = getCtx();
-  if (!ctx) return;
+  const template = getTemplate();
+  if (!template) return;
   try {
-    const now = ctx.currentTime;
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = "sine";
-    osc.frequency.setValueAtTime(1100, now);
-    osc.frequency.exponentialRampToValueAtTime(520, now + 0.045);
-    gain.gain.setValueAtTime(0.14, now);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.08);
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.start(now);
-    osc.stop(now + 0.08);
-
-    const bufLen = Math.floor(ctx.sampleRate * 0.04);
-    const buf = ctx.createBuffer(1, bufLen, ctx.sampleRate);
-    const data = buf.getChannelData(0);
-    for (let i = 0; i < bufLen; i++) {
-      data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufLen, 4);
-    }
-    const noise = ctx.createBufferSource();
-    const noiseGain = ctx.createGain();
-    noise.buffer = buf;
-    noiseGain.gain.setValueAtTime(0.055, now);
-    noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.04);
-    noise.connect(noiseGain);
-    noiseGain.connect(ctx.destination);
-    noise.start(now);
+    const sound = template.cloneNode(true) as HTMLAudioElement;
+    sound.volume = template.volume;
+    void sound.play().catch(() => {});
   } catch {
     /* silent */
   }

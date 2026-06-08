@@ -23,7 +23,7 @@ export default defineConfig({
   },
   plugins: [
     tailwindcss(),
-    tsconfigPaths(),
+    tsconfigPaths({ projects: ["./tsconfig.json"] }),
     tanstackStart(),
     nitro({ preset: "vercel" }),
     viteReact(),

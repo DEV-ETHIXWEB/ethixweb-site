@@ -94,7 +94,7 @@ const STATUS_CARDS = [
 const METRICS = [
   { v: "50+", l: "Projects Delivered" },
   { v: "<1h", l: "Avg. Response Time" },
-  { v: "US-First", l: "Operations Focus" },
+  { v: "US‑First", l: "Operations Focus" },
   { v: "24/7", l: "Global Availability" },
 ];
 
@@ -416,6 +416,9 @@ function GlobeStage() {
 
   // Pre-generate Fibonacci sphere points with land tag
   const spherePointsRef = useRef<{ lat: number; lon: number; land: boolean }[]>([]);
+  // Pre-sampled ocean indices — computed once, avoids Math.random() every frame
+  const oceanSetRef = useRef<Set<number>>(new Set());
+  const visibleRef = useRef(false);
 
   useEffect(() => {
     landMapRef.current = getLandMap();
@@ -423,15 +426,20 @@ function GlobeStage() {
     const count = 7200;
     const golden = Math.PI * (Math.sqrt(5) - 1);
     const pts: { lat: number; lon: number; land: boolean }[] = [];
+    const oceanSet = new Set<number>();
     for (let i = 0; i < count; i++) {
       const yv = 1 - (i / (count - 1)) * 2;
       const r = Math.sqrt(1 - yv * yv);
       const th = golden * i;
       const lat = Math.asin(yv) * (180 / Math.PI);
       const lon = Math.atan2(Math.sin(th) * r, Math.cos(th) * r) * (180 / Math.PI);
-      pts.push({ lat, lon, land: isLand(lat, lon, map) });
+      const land = isLand(lat, lon, map);
+      pts.push({ lat, lon, land });
+      // Pre-sample 12% of ocean dots — no Math.random() per frame
+      if (!land && Math.random() < 0.12) oceanSet.add(i);
     }
     spherePointsRef.current = pts;
+    oceanSetRef.current = oceanSet;
   }, []);
 
   useEffect(() => {
@@ -445,8 +453,15 @@ function GlobeStage() {
     const ro = new ResizeObserver(update);
     if (wrapRef.current) ro.observe(wrapRef.current);
     window.addEventListener("resize", update);
+    // Pause rAF when globe is off-screen — biggest perf win on scroll
+    const io = new IntersectionObserver(
+      ([entry]) => { visibleRef.current = entry.isIntersecting; },
+      { threshold: 0.05 },
+    );
+    if (wrapRef.current) io.observe(wrapRef.current);
     return () => {
       ro.disconnect();
+      io.disconnect();
       window.removeEventListener("resize", update);
     };
   }, []);
@@ -488,6 +503,11 @@ function GlobeStage() {
     let overlayElapsed = 0;
 
     const loop = (now: number) => {
+      if (!visibleRef.current) {
+        last = now;
+        raf = requestAnimationFrame(loop);
+        return;
+      }
       const dt = Math.min(64, now - last);
       last = now;
 
@@ -547,7 +567,12 @@ function GlobeStage() {
       ctx.restore();
 
       // ── World-map dots
-      for (const pt of spherePointsRef.current) {
+      const oceanSet = oceanSetRef.current;
+      const pts = spherePointsRef.current;
+      for (let pi = 0; pi < pts.length; pi++) {
+        const pt = pts[pi];
+        // Skip ocean dots not in pre-sampled set (no Math.random per frame)
+        if (!pt.land && !oceanSet.has(pi)) continue;
         const v = project(pt.lat, pt.lon, rotYRef.current, rotXRef.current);
         if (v.z < -0.02) continue;
         const depth = (v.z + 1) / 2;
@@ -564,8 +589,7 @@ function GlobeStage() {
           ctx.arc(cx + v.x * radius, cy - v.y * radius, 0.55 + depth * 0.9, 0, Math.PI * 2);
           ctx.fill();
         } else {
-          // Ocean: sparse very faint dots for depth cue
-          if (Math.random() > 0.88) continue; // only 12% of ocean dots
+          // Ocean: pre-sampled 12% subset — no per-frame Math.random()
           const alpha = 0.03 + depth * 0.09;
           ctx.fillStyle = `rgba(80,90,130,${alpha})`;
           ctx.beginPath();
@@ -1101,9 +1125,9 @@ export function GlobalNetwork() {
           <div className="mt-20 grid grid-cols-2 gap-4 lg:grid-cols-4">
             {METRICS.map((m, i) => (
               <Reveal key={m.l} delay={i * 0.08}>
-                <div className="premium-card rounded-2xl p-6 text-center transition hover:bg-white/6">
-                  <div className="text-4xl font-extrabold text-gradient-brand">{m.v}</div>
-                  <div className="mt-2 text-xs uppercase tracking-widest text-muted-foreground">
+                <div className="premium-card rounded-2xl p-4 sm:p-6 text-center transition hover:bg-white/6">
+                  <div className="text-2xl sm:text-4xl font-extrabold text-gradient-brand whitespace-nowrap">{m.v}</div>
+                  <div className="mt-2 text-[10px] sm:text-xs uppercase tracking-widest text-muted-foreground">
                     {m.l}
                   </div>
                 </div>

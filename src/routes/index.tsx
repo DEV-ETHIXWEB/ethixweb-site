@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import {
   ArrowUpRight,
   Bot,
@@ -26,11 +26,17 @@ import { Testimonials } from "@/components/Testimonials";
 import { useTheme } from "@/components/ThemeProvider";
 import operatorCharacter from "@/assets/operator-character.png";
 
-const SLEEP_DARK = "/Untitled design (38).png"; // red blanket — dark mode
-const SLEEP_LIGHT = "/Untitled design (38).png"; // red blanket — light mode too
+const SLEEP_SRC = "/Untitled%20design%20(38).png";
+const CLOUD_LIGHT = "/LIGHT%20MODE.svg";
 
 function useIsSleeping() {
   const check = () => {
+    // Dev/preview override: ?sleep=1 forces after-hours, ?sleep=0 forces awake
+    if (typeof window !== "undefined") {
+      const p = new URLSearchParams(window.location.search).get("sleep");
+      if (p === "1") return true;
+      if (p === "0") return false;
+    }
     const h = new Date().getHours();
     return h >= 17 || h < 8;
   };
@@ -203,16 +209,24 @@ function Hero() {
 }
 
 const heroBadges = [
-  { label: "More booked jobs", style: { top: "6%", left: "2%" }, icon: PhoneCall },
-  { label: "More conversions", style: { top: "14%", right: "0%" }, icon: TrendingUp },
-  { label: "UI/UX Systems", style: { top: "45%", left: "0%" }, icon: Layers3 },
-  { label: "Revenue tracked", style: { bottom: "18%", right: "2%" }, icon: DollarSign },
-  { label: "Design that converts", style: { bottom: "3%", left: "12%" }, icon: Palette },
+  { label: "More booked jobs", style: { top: "5%", left: "1%" }, icon: PhoneCall, radius: "42% 58% 53% 47% / 48% 42% 58% 52%" },
+  { label: "More conversions", style: { top: "10%", right: "-1%" }, icon: TrendingUp, radius: "55% 45% 48% 52% / 44% 56% 44% 56%" },
+  { label: "UI/UX Systems", style: { top: "44%", left: "-3%" }, icon: Layers3, radius: "48% 52% 56% 44% / 52% 48% 52% 48%" },
+  { label: "Revenue tracked", style: { bottom: "20%", right: "-2%" }, icon: DollarSign, radius: "52% 48% 44% 56% / 48% 56% 44% 52%" },
+  { label: "Design that converts", style: { bottom: "1%", left: "10%" }, icon: Palette, radius: "46% 54% 58% 42% / 56% 44% 56% 44%" },
 ];
 
 function OperationsVisual() {
   const sleeping = useIsSleeping();
   const { theme } = useTheme();
+
+  // While sleeping, cycle through the services inside the single dream cloud
+  const [dreamIndex, setDreamIndex] = useState(0);
+  useEffect(() => {
+    if (!sleeping) return;
+    const id = setInterval(() => setDreamIndex((n) => (n + 1) % heroBadges.length), 2600);
+    return () => clearInterval(id);
+  }, [sleeping]);
 
   // Motion values driven by window-level cursor (not container-bound)
   const mx = useMotionValue(0);
@@ -248,7 +262,7 @@ function OperationsVisual() {
     };
   }, [sleeping, mx, my]);
 
-  const sleepSrc = theme === "dark" ? SLEEP_DARK : SLEEP_LIGHT;
+  const sleepSrc = SLEEP_SRC;
 
   return (
     <motion.div className="relative mx-auto w-full max-w-130" style={{ perspective: "900px" }}>
@@ -290,7 +304,7 @@ function OperationsVisual() {
           />
         ))}
         <motion.div
-          className="absolute bottom-0 left-1/2 z-10 -translate-x-1/2"
+          className={`absolute bottom-0 left-1/2 z-10 -translate-x-1/2 ${sleeping ? "w-90 sm:w-auto" : ""}`}
           style={sleeping ? {} : { x: charX, y: charY }}
         >
           {sleeping && (
@@ -320,32 +334,6 @@ function OperationsVisual() {
                   borderRadius: "40%",
                 }}
               />
-
-              {/* Zzz particles — premium, italic, staggered */}
-              <div className="pointer-events-none absolute right-6 top-14 z-20">
-                {[
-                  { delay: "0s", size: "1.1rem", weight: 700, opacity: 0.48, left: "2px" },
-                  { delay: "1.6s", size: "0.82rem", weight: 600, opacity: 0.32, left: "16px" },
-                  { delay: "3.2s", size: "0.62rem", weight: 500, opacity: 0.22, left: "8px" },
-                ].map((z, i) => (
-                  <span
-                    key={i}
-                    className="zzz-particle absolute select-none"
-                    style={{
-                      left: z.left,
-                      bottom: `${i * 26}px`,
-                      fontSize: z.size,
-                      fontWeight: z.weight,
-                      fontStyle: "italic",
-                      letterSpacing: "0.04em",
-                      opacity: z.opacity,
-                      animationDelay: z.delay,
-                    }}
-                  >
-                    z
-                  </span>
-                ))}
-              </div>
             </>
           )}
 
@@ -353,7 +341,10 @@ function OperationsVisual() {
             key={sleeping ? "sleep" : "active"}
             src={sleeping ? sleepSrc : operatorCharacter}
             alt="Ethixweb mascot"
-            className={`h-145 max-w-none object-contain sm:h-160 ${sleeping ? "mascot-breathe" : "drop-shadow-[0_34px_90px_rgba(0,0,0,0.72)]"}`}
+            className={sleeping
+              ? "w-full max-w-full h-auto sm:w-auto sm:max-w-none sm:h-145 object-contain mascot-breathe"
+              : "h-145 sm:h-160 max-w-none object-contain drop-shadow-[0_34px_90px_rgba(0,0,0,0.72)]"
+            }
             initial={{ opacity: 0 }}
             animate={sleeping ? { opacity: 1 } : { opacity: 1, y: [0, -12, 0] }}
             transition={
@@ -369,23 +360,139 @@ function OperationsVisual() {
             fetchPriority="high"
           />
         </motion.div>
-        {heroBadges.map((badge, i) => (
-          <motion.div
-            key={badge.label}
-            className="hero-badge absolute z-20 flex cursor-default items-center gap-2 rounded-full border px-4 py-2.5 shadow-lg backdrop-blur-md"
-            style={badge.style}
-            initial={{ opacity: 0, scale: 0.85 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            whileHover={{ scale: 1.1, backgroundColor: "rgba(30,20,40,0.95)" }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.1, type: "spring", stiffness: 300, damping: 20 }}
+        {/* Awake (9 AM–5 PM): five floating pill badges */}
+        {!sleeping &&
+          heroBadges.map((badge, i) => (
+            <motion.div
+              key={badge.label}
+              className="absolute z-20 flex cursor-default items-center gap-2.5 rounded-full px-5 py-3 backdrop-blur-xl"
+              style={{
+                ...badge.style,
+                border: "1px solid rgba(220,80,90,0.16)",
+                background: "linear-gradient(150deg, rgba(40,24,30,0.88), rgba(18,16,24,0.86))",
+                boxShadow: "0 12px 36px rgba(0,0,0,0.36), 0 2px 10px rgba(180,40,50,0.1)",
+              }}
+              initial={{ opacity: 0, scale: 0.88, y: 8 }}
+              whileInView={{ opacity: 1, scale: 1, y: 0 }}
+              whileHover={{ scale: 1.06, y: -4 }}
+              viewport={{ once: true }}
+              animate={{ y: [0, -7, 0] }}
+              transition={{
+                opacity: { delay: i * 0.1, duration: 0.6, ease: "easeOut" },
+                scale: { delay: i * 0.1, type: "spring", stiffness: 280, damping: 22 },
+                y: { duration: 5 + i * 0.6, repeat: Infinity, ease: "easeInOut", delay: i * 0.4 },
+              }}
+            >
+              <badge.icon className="h-4 w-4 shrink-0" style={{ color: "rgba(225,110,118,0.85)" }} />
+              <span className="whitespace-nowrap text-sm font-medium" style={{ color: "rgba(255,255,255,0.85)" }}>
+                {badge.label}
+              </span>
+            </motion.div>
+          ))}
+
+        {/* After hours: one big dream cloud — mascot dreams the services, popping in sequence */}
+        {sleeping &&
+          (() => {
+            const cloudSrc = CLOUD_LIGHT; // solid silhouette — fills interior fully (DARK MODE.svg is hollow/outline)
+            // Subtle dark glass, same family as the awake floating badges
+            const fill = "linear-gradient(150deg, rgba(40,24,30,0.7), rgba(18,16,24,0.66))";
+            const dream = heroBadges[dreamIndex];
+            const DreamIcon = dream.icon;
+            return (
+              <motion.div
+                className="pointer-events-none absolute z-20 flex items-center justify-center"
+                style={{ top: "calc(14% - 75px)", right: "calc(-12% + 75px)", width: "282px", height: "203px" }}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1, y: [0, -9, 0] }}
+                transition={{
+                  opacity: { duration: 0.8, ease: "easeOut" },
+                  scale: { type: "spring", stiffness: 240, damping: 22 },
+                  y: { duration: 6, repeat: Infinity, ease: "easeInOut" },
+                }}
+              >
+                {/* Cloud silhouette recolored via mask — subtle glass fill, matches awake badge style */}
+                <div
+                  className="absolute inset-0 backdrop-blur-xl"
+                  style={{
+                    background: fill,
+                    WebkitMaskImage: `url(${cloudSrc})`,
+                    maskImage: `url(${cloudSrc})`,
+                    WebkitMaskSize: "100% 100%",
+                    maskSize: "100% 100%",
+                    WebkitMaskRepeat: "no-repeat",
+                    maskRepeat: "no-repeat",
+                    WebkitMaskPosition: "center",
+                    maskPosition: "center",
+                    transform: "scaleX(-1)", // flip bubble + tail (text/animation stay upright)
+                    boxShadow: "0 12px 30px rgba(0,0,0,0.28), 0 2px 8px rgba(180,40,50,0.08)",
+                  }}
+                />
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={dream.label}
+                    className="relative flex flex-col items-center gap-1.5 px-10 text-center"
+                    style={{ marginBottom: "16px" }} // shifts content up in the centered bubble; bubble unchanged
+                    initial={{ opacity: 0, scale: 0.45, y: 8 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.45, y: -8 }}
+                    transition={{ type: "spring", stiffness: 340, damping: 20 }}
+                  >
+                    <DreamIcon
+                      className="shrink-0"
+                      strokeWidth={2}
+                      style={{ width: "26px", height: "26px", color: "rgba(225,110,118,0.85)" }}
+                    />
+                    <span
+                      className="whitespace-nowrap text-sm font-medium leading-tight"
+                      style={{ color: "rgba(255,255,255,0.85)" }}
+                    >
+                      {dream.label}
+                    </span>
+                  </motion.div>
+                </AnimatePresence>
+              </motion.div>
+            );
+          })()}
+
+        {/* Zzz particles — top layer (above the dream bubble too), drifting up above & around the head.
+            Parent is preserve-3d, so z-index is ignored — translateZ pushes these toward the camera. */}
+        {sleeping && (
+          <div
+            className="pointer-events-none absolute z-40"
+            style={{ top: "248px", right: "68px", transform: "translateZ(60px)" }}
           >
-            <badge.icon className="h-4 w-4 shrink-0 text-primary" />
-            <span className="whitespace-nowrap text-sm font-semibold text-white">
-              {badge.label}
-            </span>
-          </motion.div>
-        ))}
+            {[
+              { delay: "0s", dur: "6.2s", size: "1.05rem", weight: 600, opacity: 0.42, left: "0px", bottom: "0px", glow: "red" },
+              { delay: "1.3s", dur: "6.8s", size: "0.82rem", weight: 500, opacity: 0.32, left: "17px", bottom: "26px", glow: "blue" },
+              { delay: "2.6s", dur: "7.1s", size: "0.7rem", weight: 500, opacity: 0.26, left: "-11px", bottom: "32px", glow: "red" },
+              { delay: "3.9s", dur: "7.6s", size: "0.58rem", weight: 500, opacity: 0.2, left: "25px", bottom: "56px", glow: "blue" },
+              { delay: "5.2s", dur: "8s", size: "0.5rem", weight: 500, opacity: 0.16, left: "5px", bottom: "62px", glow: "red" },
+            ].map((z, i) => (
+              <span
+                key={i}
+                className="zzz-particle absolute select-none"
+                style={{
+                  left: z.left,
+                  bottom: z.bottom,
+                  fontSize: z.size,
+                  fontWeight: z.weight,
+                  fontStyle: "italic",
+                  letterSpacing: "0.04em",
+                  opacity: z.opacity,
+                  color: theme === "dark" ? "rgba(255,255,255,0.9)" : "rgba(30,20,24,0.72)",
+                  textShadow:
+                    z.glow === "red"
+                      ? "0 0 8px rgba(225,70,80,0.55), 0 0 18px rgba(225,70,80,0.3)"
+                      : "0 0 8px rgba(90,140,235,0.5), 0 0 18px rgba(90,140,235,0.28)",
+                  animationDelay: z.delay,
+                  animationDuration: z.dur,
+                }}
+              >
+                z
+              </span>
+            ))}
+          </div>
+        )}
       </motion.div>
     </motion.div>
   );

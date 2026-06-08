@@ -46,6 +46,8 @@ function About() {
                 <img
                   src={operatorCharacter}
                   alt="Ethixweb team"
+                  loading="lazy"
+                  decoding="async"
                   className="absolute bottom-0 left-1/2 z-10 h-125 max-w-none -translate-x-1/2 object-contain drop-shadow-[0_24px_60px_rgba(0,0,0,0.65)]"
                 />
                 {[
