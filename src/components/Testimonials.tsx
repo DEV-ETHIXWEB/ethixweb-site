@@ -116,7 +116,7 @@ export function Testimonials() {
   const brand = theme === "light" ? BRAND_LIGHT : BRAND_DARK;
 
   return (
-    <section className="relative overflow-hidden px-6 py-24">
+    <section className="relative overflow-hidden px-6 py-24 lg:pt-52">
       <div
         className="pointer-events-none absolute left-1/4 top-1/2 h-144 w-xl -translate-y-1/2 rounded-full blur-[140px]"
         style={{ background: `${brand}0d` }}
@@ -144,10 +144,10 @@ export function Testimonials() {
                 src="/Ethan%20view%20%204.png"
                 alt=""
                 aria-hidden="true"
-                className="pointer-events-none absolute hidden h-[202px] w-auto object-contain object-bottom drop-shadow-[0_12px_20px_rgba(0,0,0,0.25)] lg:block"
+                className="pointer-events-none absolute hidden h-[273px] w-auto object-contain object-bottom drop-shadow-[0_12px_20px_rgba(0,0,0,0.25)] lg:block z-50"
                 loading="lazy"
                 decoding="async"
-                style={{ top: "calc(-6rem - 41px)", right: "calc(0.5rem + 70px)" }}
+                style={{ top: "calc(-6rem - 87px)", right: "calc(0.5rem + 60px)" }}
               />
               <TrustpilotLogo brand={brand} filled={4} />
               <div className="mt-4 flex items-end justify-center gap-1">

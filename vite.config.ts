@@ -8,6 +8,7 @@ import tsconfigPaths from "vite-tsconfig-paths";
 export default defineConfig({
   logLevel: "info",
   build: {
+    target: ["es2019", "safari14"],
     rollupOptions: {
       onwarn(warning, warn) {
         const id = warning.id ?? "";
