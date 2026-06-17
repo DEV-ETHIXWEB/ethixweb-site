@@ -56,7 +56,7 @@ export function Navbar() {
   return (
     <header className="fixed top-0 inset-x-0 z-50 px-4 pt-4">
       <div
-        className={`mx-auto max-w-7xl rounded-2xl transition-all duration-500 ${
+        className={`mx-auto max-w-7xl rounded-2xl overflow-hidden transition-all duration-500 ${
           scrolled || open ? "glass-strong" : "bg-transparent"
         }`}
       >

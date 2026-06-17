@@ -506,7 +506,7 @@ function Contact() {
                     initial={{ opacity: 0, scale: 0.94 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.45, ease: "easeOut" }}
-                    className="relative flex-1 min-h-96 sm:min-h-110 overflow-hidden"
+                    className="relative flex-1 min-h-120 overflow-visible sm:min-h-136"
                   >
                     {/* Mascot - behind text */}
                     <motion.img
