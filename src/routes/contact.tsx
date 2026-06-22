@@ -191,8 +191,7 @@ function Contact() {
                       src="/Ethan%20view%202.webp"
                       alt=""
                       aria-hidden="true"
-                      className="pointer-events-none absolute -bottom-25 -right-25 z-10 max-h-[55vh] w-auto object-contain object-bottom"
-                      style={{ height: "600px" }}
+                      className="pointer-events-none absolute bottom-0 -right-25 z-10 h-150 max-h-[55vh] w-auto object-contain object-bottom lg:-bottom-12 lg:h-198 lg:max-h-[85vh]"
                       loading="lazy"
                       decoding="async"
                       initial={{ opacity: 0, y: 20 }}
@@ -514,6 +513,8 @@ function Contact() {
                     transition={{ duration: 0.45, ease: "easeOut" }}
                     className="relative flex min-h-100 flex-1 flex-col items-center justify-center gap-4 px-6 py-10 text-center sm:px-10"
                   >
+                    {/* ambient glow centered behind mascot */}
+                    <div className="pointer-events-none absolute bottom-0 left-1/2 -z-10 h-56 w-56 -translate-x-1/2 rounded-full bg-primary/15 blur-[90px] sm:h-64 sm:w-64 lg:h-72 lg:w-72" />
                     <motion.div
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
@@ -537,7 +538,7 @@ function Contact() {
                       src="/Ethan%20view%203.webp"
                       alt=""
                       aria-hidden="true"
-                      className="pointer-events-none mt-2 h-36 w-auto object-contain sm:h-44"
+                      className="pointer-events-none relative z-10 mt-1 h-72 w-auto object-contain sm:h-80 lg:-mt-3 lg:h-88"
                       loading="lazy"
                       decoding="async"
                       initial={{ opacity: 0, y: 20 }}
