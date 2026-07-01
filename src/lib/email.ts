@@ -28,6 +28,14 @@ export const TIMELINE_LABELS: Record<string, string> = {
   planning: "Just planning (3+ months out)",
 };
 
+export const NOTICE_PERIOD_LABELS: Record<string, string> = {
+  immediate: "Immediate / Currently available",
+  "15-days": "15 days",
+  "30-days": "30 days",
+  "60-days": "60 days",
+  "90-days": "90+ days",
+};
+
 export function escapeHtml(value: string) {
   return value
     .replace(/&/g, "&amp;")

@@ -102,8 +102,8 @@ function TermsPolicy() {
                 our portfolio unless otherwise agreed in writing.
               </p>
               <p>
-                Third-party assets (stock images, fonts, plugins) are subject to their respective
-                licenses. Ethixweb is not responsible for licensing violations arising from client-
+                Third party assets (stock images, fonts, plugins) are subject to their respective
+                licenses. Ethixweb is not responsible for licensing violations arising from client
                 supplied materials.
               </p>
             </Section>
@@ -129,7 +129,7 @@ function TermsPolicy() {
             <Section title="8. Governing Law">
               <p>
                 These terms are governed by the laws of India. Any disputes shall be resolved
-                through good-faith negotiation, and if necessary, binding arbitration in accordance
+                through good faith negotiation, and if necessary, binding arbitration in accordance
                 with applicable law.
               </p>
             </Section>

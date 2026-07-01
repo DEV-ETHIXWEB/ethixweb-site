@@ -21,19 +21,19 @@ export const Route = createFileRoute("/industries")({
       {
         name: "description",
         content:
-          "Specialized tech and marketing systems for HVAC, plumbing and fishing-charter operators.",
+          "Specialized tech and marketing systems for HVAC, plumbing and fishing charter operators.",
       },
       { property: "og:title", content: "Industries - HVAC, Plumbing & Fishing" },
       {
         property: "og:description",
-        content: "Industry-specific websites, AI booking and CRM management.",
+        content: "Industry specific websites, AI booking and CRM management.",
       },
       { property: "og:type", content: "website" },
       { property: "og:image", content: "https://ethixweb.com/ethixweb.png" },
       { property: "og:url", content: "https://ethixweb.com/industries" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Industries - HVAC, Plumbing & Fishing" },
-      { name: "twitter:description", content: "Specialized tech and marketing systems for HVAC, plumbing and fishing-charter operators." },
+      { name: "twitter:description", content: "Specialized tech and marketing systems for HVAC, plumbing and fishing charter operators." },
       { name: "twitter:image", content: "https://ethixweb.com/ethixweb.png" },
       { name: "robots", content: "index, follow" },
     ],
@@ -61,7 +61,7 @@ const hvac = [
   {
     i: Mail,
     t: "IT & Security",
-    d: "Secure business email (Google Workspace) and field-team communication setup.",
+    d: "Secure business email (Google Workspace) and field team communication setup.",
   },
 ];
 
@@ -73,18 +73,18 @@ const fishing = [
   },
   {
     i: ShoppingBag,
-    t: "E-Commerce Merch Store",
+    t: "E Commerce Merch Store",
     d: "Fully managed Shopify integration to sell your brand's gear 24/7.",
   },
   {
     i: MapPin,
-    t: "Catch-of-the-Day SEO",
+    t: "Catch of the Day SEO",
     d: "We handle catch reports and fishing logs to boost local SEO.",
   },
   {
     i: Mail,
     t: "Reliable Email & IT",
-    d: "Pro-grade business email and tech support for booking hardware on the boat.",
+    d: "Pro grade business email and tech support for booking hardware on the boat.",
   },
 ];
 

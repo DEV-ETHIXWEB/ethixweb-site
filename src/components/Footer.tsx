@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Logo } from "./Logo";
 import { ArrowUpRight, Mail, Clock } from "lucide-react";
 
-const LIVE_PATHS = new Set(["/", "/contact"]);
+const LIVE_PATHS = new Set(["/", "/contact", "/careers"]);
 
 const FOOTER_MASCOT = "/Ethan%20view%20%201.webp";
 
@@ -11,6 +11,7 @@ const COMPANY_LINKS: [string, string][] = [
   ["Industries", "/industries"],
   ["Our Work", "/portfolio"],
   ["Blog", "/blog"],
+  ["Careers", "/careers"],
   ["Contact", "/contact"],
 ];
 

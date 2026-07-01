@@ -100,7 +100,7 @@ export const Route = createFileRoute("/api/contact")({
           footerText: "This confirms your submission to Ethixweb &middot; ethixweb.com",
           bodyHtml: `
             <p style="margin:0 0 8px;font-size:15px;line-height:1.5;color:#1a1a1a;">
-              Hi ${escapeHtml(firstName)}, thanks for reaching out to Ethixweb! We've received your details below and our team will follow up within one business day with a clear, no-jargon plan.
+              Hi ${escapeHtml(firstName)}, thanks for reaching out to Ethixweb! We've received your details below and our team will follow up within one business day with a clear, no jargon plan.
             </p>
             ${summaryTable}
             <p style="margin:20px 0 0;font-size:13px;line-height:1.6;color:#9aa0a6;">

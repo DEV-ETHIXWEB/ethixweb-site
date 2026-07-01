@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Globe2, ChevronDown, Zap } from "lucide-react";
+import { ChevronDown, Zap } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
 
 type Zone = { code: string; country: string; label: string; tz: string };
@@ -126,7 +126,6 @@ export function TimezoneWidget() {
   const india = formatTime(now, INDIA_TZ);
   const local = formatTime(now, localTz);
   const working = isIndiaWorking(now);
-  const sameAsIndia = localTz === INDIA_TZ;
 
   const panelStyle =
     theme === "dark"
@@ -148,28 +147,22 @@ export function TimezoneWidget() {
       <button
         ref={buttonRef}
         onClick={toggleOpen}
-        className="hidden md:inline-flex items-center gap-2 rounded-full glass px-3 py-1.5 text-xs hover:bg-foreground/5 transition"
+        className="hidden md:inline-flex h-9 items-center gap-1.5 rounded-full px-2.5 text-xs text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground"
         aria-label="Global timezone"
       >
-        <span className="relative flex h-2 w-2">
+        <span className="relative flex h-1.5 w-1.5 shrink-0">
           <span
             className={`absolute inline-flex h-full w-full rounded-full opacity-70 ${
               working ? "bg-emerald-400 animate-ping" : "bg-amber-400"
             }`}
           />
           <span
-            className={`relative inline-flex h-2 w-2 rounded-full ${working ? "bg-emerald-400" : "bg-amber-400"}`}
+            className={`relative inline-flex h-1.5 w-1.5 rounded-full ${working ? "bg-emerald-400" : "bg-amber-400"}`}
           />
         </span>
-        <Globe2 className="h-3.5 w-3.5 text-primary" />
-        <span className="font-medium tabular-nums flex items-center gap-1.5">
-          <CodeBadge code="IN" />
-          {india}
-        </span>
-        {!sameAsIndia && (
-          <span className="text-muted-foreground tabular-nums hidden lg:inline">· You {local}</span>
-        )}
-        <ChevronDown className={`h-3 w-3 transition-transform ${open ? "rotate-180" : ""}`} />
+        <CodeBadge code="IN" />
+        <span className="font-medium tabular-nums text-foreground/90">{india}</span>
+        <ChevronDown className={`h-3 w-3 text-muted-foreground/50 transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
 
       {mounted &&
@@ -253,7 +246,7 @@ export function TimezoneWidget() {
                 </div>
 
                 <p className="mt-3 text-[10px] text-muted-foreground text-center">
-                  Quick fixes · global availability · always-on partner
+                  Quick fixes · global availability · always on partner
                 </p>
               </motion.div>
             )}

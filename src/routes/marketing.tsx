@@ -26,7 +26,7 @@ export const Route = createFileRoute("/marketing")({
       { property: "og:title", content: "Social Media Marketing - Ethixweb" },
       {
         property: "og:description",
-        content: "Engage, grow and convert effectively with data-driven social media strategy.",
+        content: "Engage, grow and convert effectively with data driven social media strategy.",
       },
       { property: "og:type", content: "website" },
       { property: "og:image", content: "https://ethixweb.com/ethixweb.png" },
@@ -46,22 +46,22 @@ const helpItems = [
   {
     i: Layers,
     t: "Content Creation",
-    d: "We craft eye-catching, engaging content tailored to your brand, ensuring it resonates with your audience and encourages sharing.",
+    d: "We craft eye catching, engaging content tailored to your brand, ensuring it resonates with your audience and encourages sharing.",
   },
   {
     i: BarChart3,
     t: "Engagement Tracking",
-    d: "We monitor real-time interactions across platforms, providing insights to help you understand and optimize audience engagement.",
+    d: "We monitor real time interactions across platforms, providing insights to help you understand and optimize audience engagement.",
   },
   {
     i: Target,
     t: "Paid Campaigns",
-    d: "Our data-driven ads are designed to boost leads and attract top-tier technicians, helping you grow your business efficiently.",
+    d: "Our data driven ads are designed to boost leads and attract top tier technicians, helping you grow your business efficiently.",
   },
   {
     i: Sparkles,
     t: "Flexible Plans",
-    d: "Enjoy the freedom of no long-term contracts, with services designed to scale with your business and needs.",
+    d: "Enjoy the freedom of no long term contracts, with services designed to scale with your business and needs.",
   },
 ];
 
@@ -76,7 +76,7 @@ const plans = [
     name: "Standard",
     score: "100%",
     ads: "4-6 ads / month",
-    perks: ["Everything in Basic", "Paid ad management", "Bi-weekly creative refresh"],
+    perks: ["Everything in Basic", "Paid ad management", "Bi weekly creative refresh"],
     featured: true,
   },
   {
@@ -178,8 +178,8 @@ function Page() {
                 Strategy. Content. Conversion.
               </h2>
               <p className="mt-5 text-muted-foreground leading-relaxed max-w-xl">
-                We help you navigate the ever-evolving world of social media with tailored
-                strategies that fit your unique goals - no long-term contracts, just real results.
+                We help you navigate the ever evolving world of social media with tailored
+                strategies that fit your unique goals - no long term contracts, just real results.
               </p>
             </div>
           </Reveal>
@@ -280,7 +280,7 @@ function Page() {
             Ready to grow on social?
           </h2>
           <p className="relative mt-4 text-muted-foreground max-w-xl mx-auto">
-            We'll audit your current social presence and come back with a clear, no-jargon plan.
+            We'll audit your current social presence and come back with a clear, no jargon plan.
           </p>
           <Link
             to="/contact"

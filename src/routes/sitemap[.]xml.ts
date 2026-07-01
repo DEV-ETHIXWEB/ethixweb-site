@@ -9,6 +9,8 @@ const paths = [
   "/portfolio",
   "/blog",
   "/careers",
+  "/careers/full-stack-developer",
+  "/careers/seo-specialist",
   "/contact",
   "/web-development",
   "/ai-automation",

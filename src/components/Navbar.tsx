@@ -6,7 +6,7 @@ import { Logo } from "./Logo";
 import { TimezoneWidget } from "./TimezoneWidget";
 import { useTheme } from "./ThemeProvider";
 
-const LIVE_PATHS = new Set(["/", "/contact"]);
+const LIVE_PATHS = new Set(["/", "/contact", "/careers"]);
 
 const links = [
   { to: "/", label: "Home" },
@@ -15,6 +15,7 @@ const links = [
   { to: "/services", label: "Services" },
   { to: "/portfolio", label: "Our Work" },
   { to: "/blog", label: "Blog" },
+  { to: "/careers", label: "Careers" },
 ];
 
 function ThemeToggle() {
@@ -22,7 +23,7 @@ function ThemeToggle() {
   return (
     <motion.button
       onClick={toggle}
-      className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-muted-foreground transition-colors hover:border-primary/30 hover:text-foreground"
+      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground"
       whileTap={{ scale: 0.9 }}
       aria-label="Toggle theme"
     >
@@ -75,17 +76,17 @@ export function Navbar() {
           scrolled || open ? "glass-strong" : "bg-transparent"
         }`}
       >
-        <div className="flex items-center justify-between px-5 py-3">
+        <div className="flex items-center justify-between gap-4 px-5 py-2.5 lg:px-6">
           <Logo />
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav className="hidden lg:flex items-center gap-0.5">
             {links.map((l) =>
               LIVE_PATHS.has(l.to) ? (
                 <Link
                   key={l.to}
                   to={l.to}
-                  className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-white/5"
+                  className="flex h-9 items-center px-3.5 text-sm text-muted-foreground/80 transition-colors hover:text-foreground"
                   activeProps={{
-                    className: "px-4 py-2 text-sm text-foreground rounded-lg bg-white/5",
+                    className: "flex h-9 items-center px-3.5 text-sm font-medium text-foreground",
                   }}
                   activeOptions={{ exact: l.to === "/" }}
                 >
@@ -96,9 +97,11 @@ export function Navbar() {
                   key={l.to}
                   type="button"
                   onClick={() => announceComingSoon(l.label)}
-                  className="relative flex items-center px-4 py-2 rounded-lg select-none transition-colors hover:bg-white/5"
+                  className="group relative flex h-9 items-center px-3.5 select-none"
                 >
-                  <span className="text-sm text-muted-foreground/35">{l.label}</span>
+                  <span className="text-sm text-muted-foreground/40 transition-colors group-hover:text-muted-foreground/60">
+                    {l.label}
+                  </span>
                 </button>
               ),
             )}
@@ -108,7 +111,7 @@ export function Navbar() {
             <ThemeToggle />
             <Link
               to="/contact"
-              className="magnetic group inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-glow"
+              className="magnetic group inline-flex h-9 items-center gap-2 rounded-full bg-primary px-4.5 text-sm font-semibold text-primary-foreground shadow-glow"
             >
               Start a project
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover:rotate-45" />
@@ -117,7 +120,7 @@ export function Navbar() {
           <div className="lg:hidden flex items-center gap-2">
             <ThemeToggle />
             <button
-              className="inline-flex items-center justify-center p-2 rounded-lg glass"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground"
               onClick={() => setOpen((v) => !v)}
               aria-label="Menu"
             >

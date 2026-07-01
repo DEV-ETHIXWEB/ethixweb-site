@@ -64,7 +64,7 @@ const items = [
   {
     icon: Code2,
     t: "Website Design & Dev",
-    d: "WordPress, Astro and headless builds - fast, mobile-first, built to convert.",
+    d: "WordPress, Astro and headless builds - fast, mobile first, built to convert.",
     to: "/web-development",
   },
   {
@@ -76,7 +76,7 @@ const items = [
   {
     icon: PhoneCall,
     t: "Local Services Ads",
-    d: "Google LSA setup, verification and optimization for top-of-page placement.",
+    d: "Google LSA setup, verification and optimization for top of page placement.",
     to: "/marketing",
   },
   {
@@ -106,7 +106,7 @@ const items = [
   {
     icon: ShoppingCart,
     t: "CRM & Lead Systems",
-    d: "CRM integrations, lifecycle flows and lead-routing that turn calls into customers.",
+    d: "CRM integrations, lifecycle flows and lead routing that turn calls into customers.",
     to: "/ai-automation",
   },
 ];

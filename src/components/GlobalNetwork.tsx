@@ -102,7 +102,7 @@ const STATUS_CARDS = [
 const METRICS = [
   { v: "50+", l: "Projects Delivered" },
   { v: "<1h", l: "Avg. Response Time" },
-  { v: "US‑First", l: "Operations Focus" },
+  { v: "US First", l: "Operations Focus" },
   { v: "24/7", l: "Global Availability" },
 ];
 
@@ -1321,7 +1321,7 @@ export function GlobalNetwork() {
                 Global Operations Network
               </p>
               <h2 className="pb-1 text-4xl font-extrabold leading-[1.05] text-gradient lg:text-6xl">
-                Built for fast-moving teams across time zones.
+                Built for fast moving teams across time zones.
               </h2>
               <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
                 Seattle, Utah, New York, Canada, the United Kingdom, and India stay connected

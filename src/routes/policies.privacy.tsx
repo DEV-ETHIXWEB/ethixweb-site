@@ -61,7 +61,7 @@ function PrivacyPolicy() {
               </ul>
               <p>
                 We also collect standard web analytics data (pages visited, time on site, browser
-                type) via privacy-respecting tools. We do not sell personal data.
+                type) via privacy respecting tools. We do not sell personal data.
               </p>
             </Section>
           </Reveal>
@@ -84,7 +84,7 @@ function PrivacyPolicy() {
           <Reveal delay={0.08}>
             <Section title="3. Data Storage & Security">
               <p>
-                Your data is stored on secure servers. We use industry-standard encryption
+                Your data is stored on secure servers. We use industry standard encryption
                 (TLS/SSL) for data in transit and access controls for data at rest. No method of
                 transmission over the internet is 100% secure; we take all reasonable precautions
                 to protect your information.
@@ -95,7 +95,7 @@ function PrivacyPolicy() {
             <Section title="4. Cookies">
               <p>
                 This website uses minimal cookies to ensure functionality (theme preferences,
-                session state). We do not use third-party tracking cookies. You may disable cookies
+                session state). We do not use third party tracking cookies. You may disable cookies
                 in your browser settings; some features may not work as expected.
               </p>
             </Section>
@@ -119,9 +119,9 @@ function PrivacyPolicy() {
             </Section>
           </Reveal>
           <Reveal delay={0.14}>
-            <Section title="6. Third-Party Services">
+            <Section title="6. Third Party Services">
               <p>
-                Our site may link to third-party websites. We are not responsible for their privacy
+                Our site may link to third party websites. We are not responsible for their privacy
                 practices. We recommend reviewing their policies before submitting personal
                 information.
               </p>

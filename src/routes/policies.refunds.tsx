@@ -62,7 +62,7 @@ function RefundsPolicy() {
               </p>
               <p>
                 Work completed up to the cancellation date is billable. Any unused portion of a
-                prepaid project fee will be refunded on a pro-rated basis, minus work already
+                prepaid project fee will be refunded on a pro rated basis, minus work already
                 delivered and a 10% administrative processing fee.
               </p>
             </Section>
@@ -76,15 +76,15 @@ function RefundsPolicy() {
                 <li>The project has not been started (full refund, minus payment processing fees).</li>
                 <li>
                   Ethixweb fails to deliver agreed deliverables within the contracted timeline
-                  without client-caused delays (partial or full refund at our discretion).
+                  without client caused delays (partial or full refund at our discretion).
                 </li>
                 <li>A material defect in delivered work that cannot be rectified within 2
                   revision cycles.</li>
               </ul>
               <p>
                 Refunds are not available for completed and approved deliverables, rush fees,
-                third-party costs (domain registration, hosting, ad spend), or delays caused by
-                incomplete client-supplied assets or approvals.
+                third party costs (domain registration, hosting, ad spend), or delays caused by
+                incomplete client supplied assets or approvals.
               </p>
             </Section>
           </Reveal>

@@ -19,7 +19,7 @@ export const Route = createFileRoute("/ai-automation")({
       { title: "AI & Automation - Ethixweb" },
       {
         name: "description",
-        content: "Custom AI agents, internal copilots and end-to-end workflow automation.",
+        content: "Custom AI agents, internal copilots and end to end workflow automation.",
       },
       { property: "og:title", content: "AI & Automation Solutions" },
       { property: "og:description", content: "Production-ready AI systems for modern businesses." },
@@ -28,7 +28,7 @@ export const Route = createFileRoute("/ai-automation")({
       { property: "og:url", content: "https://ethixweb.com/ai-automation" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "AI & Automation - Ethixweb" },
-      { name: "twitter:description", content: "Custom AI agents, internal copilots and end-to-end workflow automation." },
+      { name: "twitter:description", content: "Custom AI agents, internal copilots and end to end workflow automation." },
       { name: "twitter:image", content: "https://ethixweb.com/ethixweb.png" },
       { name: "robots", content: "index, follow" },
     ],
@@ -38,17 +38,17 @@ export const Route = createFileRoute("/ai-automation")({
 });
 
 const f = [
-  { i: Bot, t: "Custom AI Agents", d: "Domain-trained agents for support, sales and ops." },
+  { i: Bot, t: "Custom AI Agents", d: "Domain trained agents for support, sales and ops." },
   {
     i: Workflow,
     t: "Workflow Automation",
-    d: "Zapier-on-steroids: connect any tool, automate any flow.",
+    d: "Zapier on steroids: connect any tool, automate any flow.",
   },
   { i: Brain, t: "Internal Copilots", d: "RAG over your docs. Faster decisions everywhere." },
   {
     i: MessageSquare,
     t: "Conversational UX",
-    d: "Chat, voice and multi-modal interfaces users love.",
+    d: "Chat, voice and multi modal interfaces users love.",
   },
 ];
 
@@ -57,7 +57,7 @@ const SERVICE_SCHEMA = JSON.stringify({
   "@type": "Service",
   name: "AI & Workflow Automation",
   provider: { "@type": "Organization", name: "Ethixweb", url: "https://ethixweb.com" },
-  description: "Custom AI agents, internal copilots and end-to-end workflow automation for modern businesses.",
+  description: "Custom AI agents, internal copilots and end to end workflow automation for modern businesses.",
   url: "https://ethixweb.com/ai-automation",
   areaServed: { "@type": "Country", name: "United States" },
   serviceType: "AI Automation and Integration",

@@ -22,7 +22,7 @@ const REVIEWS = [
   },
   {
     stars: 5,
-    text: "Professional, affordable, and highly reliable. The team delivered exactly what I needed and made the entire process smooth and stress-free.",
+    text: "Professional, affordable, and highly reliable. The team delivered exactly what I needed and made the entire process smooth and stress free.",
     author: "Ryan Taylor",
     date: "April 2025",
   },

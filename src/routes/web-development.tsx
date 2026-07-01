@@ -21,7 +21,7 @@ export const Route = createFileRoute("/web-development")({
       {
         name: "description",
         content:
-          "Transform your online presence with expert website design. Custom, conversion-focused websites for home service businesses - modern, fast, SEO-ready.",
+          "Transform your online presence with expert website design. Custom, conversion focused websites for home service businesses - modern, fast, SEO ready.",
       },
       { property: "og:title", content: "Website Design - Ethixweb" },
       {
@@ -33,7 +33,7 @@ export const Route = createFileRoute("/web-development")({
       { property: "og:url", content: "https://ethixweb.com/web-development" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Website Design - Ethixweb" },
-      { name: "twitter:description", content: "Transform your online presence with expert website design. Custom, conversion-focused websites for home service businesses." },
+      { name: "twitter:description", content: "Transform your online presence with expert website design. Custom, conversion focused websites for home service businesses." },
       { name: "twitter:image", content: "https://ethixweb.com/ethixweb.png" },
       { name: "robots", content: "index, follow" },
     ],
@@ -74,7 +74,7 @@ const services = [
   {
     i: MousePointerClick,
     t: "Lead Generation Features",
-    d: "Integrated forms, call-to-action buttons and booking systems designed to convert visitors into valuable leads.",
+    d: "Integrated forms, call to action buttons and booking systems designed to convert visitors into valuable leads.",
   },
   {
     i: Wrench,
@@ -89,7 +89,7 @@ const services = [
   {
     i: Layers,
     t: "CMS",
-    d: "Easy-to-use platforms like WordPress, allowing you to update content without technical knowledge.",
+    d: "Easy to use platforms like WordPress, allowing you to update content without technical knowledge.",
   },
   {
     i: Search,
@@ -103,7 +103,7 @@ const promises = [
   "User friendly and easy to navigate",
   "Designed for optimal conversions",
   "Responsive across all devices",
-  "Interactive with chat and click-to-call",
+  "Interactive with chat and click to call",
   "Fast loading",
 ];
 
@@ -112,7 +112,7 @@ const SERVICE_SCHEMA = JSON.stringify({
   "@type": "Service",
   name: "Website Design & Development",
   provider: { "@type": "Organization", name: "Ethixweb", url: "https://ethixweb.com" },
-  description: "Custom, conversion-focused websites for home service businesses - modern, fast, and SEO-ready.",
+  description: "Custom, conversion focused websites for home service businesses - modern, fast, and SEO ready.",
   url: "https://ethixweb.com/web-development",
   areaServed: { "@type": "Country", name: "United States" },
   serviceType: "Web Design and Development",
@@ -139,9 +139,9 @@ function Page() {
               Expert Website Design for Home Service Businesses
             </h2>
             <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
-              A well-designed website is crucial for any home service business looking to stand out
+              A well designed website is crucial for any home service business looking to stand out
               in today's competitive market. Our expert website design services focus on creating
-              visually appealing, user-friendly websites that not only represent your brand but also
+              visually appealing, user friendly websites that not only represent your brand but also
               drive results.
             </p>
             <Link
@@ -164,7 +164,7 @@ function Page() {
                 Designing digital experiences that inspire.
               </h2>
               <p className="mt-5 text-muted-foreground leading-relaxed max-w-xl">
-                Our structured SEO approach ensures long-term success and measurable results.
+                Our structured SEO approach ensures long term success and measurable results.
               </p>
             </div>
           </Reveal>

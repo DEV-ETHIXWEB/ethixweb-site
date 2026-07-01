@@ -22,11 +22,16 @@ import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AiAutomationRouteImport } from './routes/ai-automation'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CareersIndexRouteImport } from './routes/careers.index'
 import { Route as PoliciesTermsRouteImport } from './routes/policies.terms'
 import { Route as PoliciesRefundsRouteImport } from './routes/policies.refunds'
 import { Route as PoliciesPrivacyRouteImport } from './routes/policies.privacy'
 import { Route as LocationsKentWaRouteImport } from './routes/locations.kent-wa'
+import { Route as CareersApplyRouteImport } from './routes/careers.apply'
+import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
 import { Route as ApiContactRouteImport } from './routes/api.contact'
+import { Route as ApiCareersUploadRouteImport } from './routes/api.careers.upload'
+import { Route as ApiCareersApplyRouteImport } from './routes/api.careers.apply'
 
 const WebDevelopmentRoute = WebDevelopmentRouteImport.update({
   id: '/web-development',
@@ -93,6 +98,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CareersIndexRoute = CareersIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => CareersRoute,
+} as any)
 const PoliciesTermsRoute = PoliciesTermsRouteImport.update({
   id: '/policies/terms',
   path: '/policies/terms',
@@ -113,9 +123,29 @@ const LocationsKentWaRoute = LocationsKentWaRouteImport.update({
   path: '/locations/kent-wa',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CareersApplyRoute = CareersApplyRouteImport.update({
+  id: '/apply',
+  path: '/apply',
+  getParentRoute: () => CareersRoute,
+} as any)
+const CareersSlugRoute = CareersSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => CareersRoute,
+} as any)
 const ApiContactRoute = ApiContactRouteImport.update({
   id: '/api/contact',
   path: '/api/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCareersUploadRoute = ApiCareersUploadRouteImport.update({
+  id: '/api/careers/upload',
+  path: '/api/careers/upload',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCareersApplyRoute = ApiCareersApplyRouteImport.update({
+  id: '/api/careers/apply',
+  path: '/api/careers/apply',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -124,7 +154,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/ai-automation': typeof AiAutomationRoute
   '/blog': typeof BlogRoute
-  '/careers': typeof CareersRoute
+  '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
   '/graphic-design': typeof GraphicDesignRoute
   '/industries': typeof IndustriesRoute
@@ -134,17 +164,21 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/web-development': typeof WebDevelopmentRoute
   '/api/contact': typeof ApiContactRoute
+  '/careers/$slug': typeof CareersSlugRoute
+  '/careers/apply': typeof CareersApplyRoute
   '/locations/kent-wa': typeof LocationsKentWaRoute
   '/policies/privacy': typeof PoliciesPrivacyRoute
   '/policies/refunds': typeof PoliciesRefundsRoute
   '/policies/terms': typeof PoliciesTermsRoute
+  '/careers/': typeof CareersIndexRoute
+  '/api/careers/apply': typeof ApiCareersApplyRoute
+  '/api/careers/upload': typeof ApiCareersUploadRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/ai-automation': typeof AiAutomationRoute
   '/blog': typeof BlogRoute
-  '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
   '/graphic-design': typeof GraphicDesignRoute
   '/industries': typeof IndustriesRoute
@@ -154,10 +188,15 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/web-development': typeof WebDevelopmentRoute
   '/api/contact': typeof ApiContactRoute
+  '/careers/$slug': typeof CareersSlugRoute
+  '/careers/apply': typeof CareersApplyRoute
   '/locations/kent-wa': typeof LocationsKentWaRoute
   '/policies/privacy': typeof PoliciesPrivacyRoute
   '/policies/refunds': typeof PoliciesRefundsRoute
   '/policies/terms': typeof PoliciesTermsRoute
+  '/careers': typeof CareersIndexRoute
+  '/api/careers/apply': typeof ApiCareersApplyRoute
+  '/api/careers/upload': typeof ApiCareersUploadRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -165,7 +204,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/ai-automation': typeof AiAutomationRoute
   '/blog': typeof BlogRoute
-  '/careers': typeof CareersRoute
+  '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
   '/graphic-design': typeof GraphicDesignRoute
   '/industries': typeof IndustriesRoute
@@ -175,10 +214,15 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/web-development': typeof WebDevelopmentRoute
   '/api/contact': typeof ApiContactRoute
+  '/careers/$slug': typeof CareersSlugRoute
+  '/careers/apply': typeof CareersApplyRoute
   '/locations/kent-wa': typeof LocationsKentWaRoute
   '/policies/privacy': typeof PoliciesPrivacyRoute
   '/policies/refunds': typeof PoliciesRefundsRoute
   '/policies/terms': typeof PoliciesTermsRoute
+  '/careers/': typeof CareersIndexRoute
+  '/api/careers/apply': typeof ApiCareersApplyRoute
+  '/api/careers/upload': typeof ApiCareersUploadRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -197,17 +241,21 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/web-development'
     | '/api/contact'
+    | '/careers/$slug'
+    | '/careers/apply'
     | '/locations/kent-wa'
     | '/policies/privacy'
     | '/policies/refunds'
     | '/policies/terms'
+    | '/careers/'
+    | '/api/careers/apply'
+    | '/api/careers/upload'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
     | '/ai-automation'
     | '/blog'
-    | '/careers'
     | '/contact'
     | '/graphic-design'
     | '/industries'
@@ -217,10 +265,15 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/web-development'
     | '/api/contact'
+    | '/careers/$slug'
+    | '/careers/apply'
     | '/locations/kent-wa'
     | '/policies/privacy'
     | '/policies/refunds'
     | '/policies/terms'
+    | '/careers'
+    | '/api/careers/apply'
+    | '/api/careers/upload'
   id:
     | '__root__'
     | '/'
@@ -237,10 +290,15 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/web-development'
     | '/api/contact'
+    | '/careers/$slug'
+    | '/careers/apply'
     | '/locations/kent-wa'
     | '/policies/privacy'
     | '/policies/refunds'
     | '/policies/terms'
+    | '/careers/'
+    | '/api/careers/apply'
+    | '/api/careers/upload'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -248,7 +306,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AiAutomationRoute: typeof AiAutomationRoute
   BlogRoute: typeof BlogRoute
-  CareersRoute: typeof CareersRoute
+  CareersRoute: typeof CareersRouteWithChildren
   ContactRoute: typeof ContactRoute
   GraphicDesignRoute: typeof GraphicDesignRoute
   IndustriesRoute: typeof IndustriesRoute
@@ -262,6 +320,8 @@ export interface RootRouteChildren {
   PoliciesPrivacyRoute: typeof PoliciesPrivacyRoute
   PoliciesRefundsRoute: typeof PoliciesRefundsRoute
   PoliciesTermsRoute: typeof PoliciesTermsRoute
+  ApiCareersApplyRoute: typeof ApiCareersApplyRoute
+  ApiCareersUploadRoute: typeof ApiCareersUploadRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -357,6 +417,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/careers/': {
+      id: '/careers/'
+      path: '/'
+      fullPath: '/careers/'
+      preLoaderRoute: typeof CareersIndexRouteImport
+      parentRoute: typeof CareersRoute
+    }
     '/policies/terms': {
       id: '/policies/terms'
       path: '/policies/terms'
@@ -385,6 +452,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LocationsKentWaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/careers/apply': {
+      id: '/careers/apply'
+      path: '/apply'
+      fullPath: '/careers/apply'
+      preLoaderRoute: typeof CareersApplyRouteImport
+      parentRoute: typeof CareersRoute
+    }
+    '/careers/$slug': {
+      id: '/careers/$slug'
+      path: '/$slug'
+      fullPath: '/careers/$slug'
+      preLoaderRoute: typeof CareersSlugRouteImport
+      parentRoute: typeof CareersRoute
+    }
     '/api/contact': {
       id: '/api/contact'
       path: '/api/contact'
@@ -392,15 +473,44 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/careers/upload': {
+      id: '/api/careers/upload'
+      path: '/api/careers/upload'
+      fullPath: '/api/careers/upload'
+      preLoaderRoute: typeof ApiCareersUploadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/careers/apply': {
+      id: '/api/careers/apply'
+      path: '/api/careers/apply'
+      fullPath: '/api/careers/apply'
+      preLoaderRoute: typeof ApiCareersApplyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
+
+interface CareersRouteChildren {
+  CareersSlugRoute: typeof CareersSlugRoute
+  CareersApplyRoute: typeof CareersApplyRoute
+  CareersIndexRoute: typeof CareersIndexRoute
+}
+
+const CareersRouteChildren: CareersRouteChildren = {
+  CareersSlugRoute: CareersSlugRoute,
+  CareersApplyRoute: CareersApplyRoute,
+  CareersIndexRoute: CareersIndexRoute,
+}
+
+const CareersRouteWithChildren =
+  CareersRoute._addFileChildren(CareersRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AiAutomationRoute: AiAutomationRoute,
   BlogRoute: BlogRoute,
-  CareersRoute: CareersRoute,
+  CareersRoute: CareersRouteWithChildren,
   ContactRoute: ContactRoute,
   GraphicDesignRoute: GraphicDesignRoute,
   IndustriesRoute: IndustriesRoute,
@@ -414,6 +524,8 @@ const rootRouteChildren: RootRouteChildren = {
   PoliciesPrivacyRoute: PoliciesPrivacyRoute,
   PoliciesRefundsRoute: PoliciesRefundsRoute,
   PoliciesTermsRoute: PoliciesTermsRoute,
+  ApiCareersApplyRoute: ApiCareersApplyRoute,
+  ApiCareersUploadRoute: ApiCareersUploadRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -84,7 +84,7 @@ const PROCESS_STEPS = [
   {
     n: "02",
     t: "Design & build",
-    d: "Senior designers and developers create a fast, conversion-focused site or system, built right the first time.",
+    d: "Senior designers and developers create a fast, conversion focused site or system, built right the first time.",
   },
   {
     n: "03",
@@ -100,7 +100,7 @@ const PROCESS_STEPS = [
 
 const STATS = [
   { value: "2-4 wks", label: "Typical time to launch" },
-  { value: "100%", label: "Senior-led delivery" },
+  { value: "100%", label: "Senior led delivery" },
   { value: "24/7", label: "Global availability" },
   { value: "5.0", label: "Avg. client rating" },
 ];
@@ -111,7 +111,7 @@ const REASONS = [
   "Decisions backed by data, not guesswork",
   "Fast turnarounds without cutting corners",
   "Ongoing support after launch",
-  "US-focused communication & operations",
+  "US focused communication & operations",
 ];
 
 function About() {
@@ -161,7 +161,7 @@ function About() {
                   className="absolute bottom-0 left-1/2 z-10 h-[96%] sm:h-112.5 max-w-none -translate-x-1/2 object-contain drop-shadow-[0_16px_36px_rgba(0,0,0,0.4)]"
                 />
                 {[
-                  { label: "US-Focused Ops", icon: Globe2, style: { top: "8%", left: "4%" } },
+                  { label: "US Focused Ops", icon: Globe2, style: { top: "8%", left: "4%" } },
                   { label: "Senior Team", icon: ShieldCheck, style: { top: "42%", left: "2%" } },
                   {
                     label: "Strategy to Launch",
@@ -194,7 +194,7 @@ function About() {
             <div className="max-w-xl">
               <p className="text-sm uppercase tracking-widest text-primary">Our story</p>
               <h2 className="mt-5 font-display text-4xl font-bold leading-[1.15] tracking-tight text-gradient pb-1">
-                Built for contractors tired of big-agency theater.
+                Built for contractors tired of big agency theater.
               </h2>
               <p className="mt-7 text-muted-foreground leading-relaxed">
                 We started Ethixweb because we were tired of watching good businesses get
@@ -248,7 +248,7 @@ function About() {
                   The senior team contractors call first.
                 </h3>
                 <p className="mt-4 text-muted-foreground leading-relaxed">
-                  We're building Ethixweb into the go-to growth partner for home service
+                  We're building Ethixweb into the go to growth partner for home service
                   businesses - known for senior craftsmanship, straight talk, and results you
                   can point to.
                 </p>
@@ -317,7 +317,7 @@ function About() {
             {[
               {
                 icon: Target,
-                t: "Revenue-obsessed",
+                t: "Revenue obsessed",
                 d: "We measure success in booked jobs and revenue - not impressions, clicks or awards.",
               },
               {

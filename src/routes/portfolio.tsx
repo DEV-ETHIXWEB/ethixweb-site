@@ -49,7 +49,7 @@ const projects = [
   {
     t: "Bals Mobile Dental Hygiene",
     c: "Healthcare · 2023",
-    d: "Targeted digital marketing + website revamp. 45% traffic lift and 1,500+ patient inquiries in year one, with cost-per-lead as low as $5.",
+    d: "Targeted digital marketing + website revamp. 45% traffic lift and 1,500+ patient inquiries in year one, with cost per lead as low as $5.",
     tag: "Web · SEO · Paid",
   },
   {
@@ -67,13 +67,13 @@ const projects = [
   {
     t: "Catch Zone",
     c: "Fishing · 2023",
-    d: "Performance-driven cross-channel campaigns. 2,000+ qualified leads with CPL dipping to $3.50 during peak.",
+    d: "Performance driven cross channel campaigns. 2,000+ qualified leads with CPL dipping to $3.50 during peak.",
     tag: "Paid · SEO",
   },
   {
     t: "Sharpe Wysman",
     c: "Legal & Financial · 2022",
-    d: "Advanced SEO, content and precision-targeted ads. 50% traffic increase and 1,800+ qualified leads in year one at $7 CPL.",
+    d: "Advanced SEO, content and precision targeted ads. 50% traffic increase and 1,800+ qualified leads in year one at $7 CPL.",
     tag: "SEO · Content · Paid",
   },
   {

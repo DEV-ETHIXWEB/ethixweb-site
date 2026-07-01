@@ -158,6 +158,7 @@ function Contact() {
 
   const advance = () => {
     if (step === 1 && isDirect) {
+      go(totalSteps);
       submitLead({ name: sel.dcName, phone: sel.dcPhone, email: sel.dcEmail });
       return;
     }
@@ -174,7 +175,7 @@ function Contact() {
   return (
     <SiteLayout>
       <PageHero eyebrow="Contact" title="Let's get you more booked jobs.">
-        Tell us about your business. We'll reply within one business day with a clear, no-jargon plan.
+        Tell us about your business. We'll reply within one business day with a clear, no jargon plan.
       </PageHero>
 
       <section className="px-6 py-20">
@@ -195,7 +196,7 @@ function Contact() {
                       loading="lazy"
                       decoding="async"
                       initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
+                      animate={{ opacity: 1, x: step >= 2 ? 25 : 0, y: step >= 2 ? 30 : 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.4, ease: "easeOut" }}
                     />
@@ -424,7 +425,7 @@ function Contact() {
                               rows={7}
                               value={sel.other}
                               onChange={e => setSel(s => ({ ...s, other: e.target.value }))}
-                              placeholder="e.g. We need an internal tool that tracks client jobs and sends automated follow-ups..."
+                              placeholder="e.g. We need an internal tool that tracks client jobs and sends automated follow ups..."
                               className="w-full rounded-xl bg-black/85 border border-white/10 px-4 py-3 text-base sm:text-sm text-white placeholder:text-white/25 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/25 transition resize-none"
                             />
                           </motion.div>

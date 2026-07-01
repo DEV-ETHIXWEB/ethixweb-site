@@ -74,7 +74,7 @@ const services = [
   {
     i: Share2,
     t: "Social Media Graphics",
-    d: "Scroll-stopping templates and assets for every platform.",
+    d: "Scroll stopping templates and assets for every platform.",
   },
   {
     i: Layout,
@@ -84,17 +84,17 @@ const services = [
   {
     i: Package,
     t: "Packaging & Product Design",
-    d: "Shelf-ready packaging that tells your story at a glance.",
+    d: "Shelf ready packaging that tells your story at a glance.",
   },
   {
     i: BookOpen,
     t: "Brand Guidelines & Strategy",
-    d: "Documented systems so your team stays on-brand everywhere.",
+    d: "Documented systems so your team stays on brand everywhere.",
   },
 ];
 
 const whyUs = [
-  { i: Sparkles, t: "Creative Experts", d: "Our team specializes in unique, high-impact designs." },
+  { i: Sparkles, t: "Creative Experts", d: "Our team specializes in unique, high impact designs." },
   {
     i: Target,
     t: "Custom Branding Strategies",
@@ -220,7 +220,7 @@ function Page() {
             <div className="relative mt-6 space-y-5 text-muted-foreground leading-relaxed max-w-3xl">
               <p>
                 Your brand is more than just a logo - it's the story, personality and visual
-                identity that sets your business apart. Strong branding and eye-catching graphic
+                identity that sets your business apart. Strong branding and eye catching graphic
                 design create a lasting impression, build trust and connect with your audience.
               </p>
               <p>

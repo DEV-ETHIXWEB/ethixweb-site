@@ -83,7 +83,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Ethixweb manages digital operations, AI automation, websites, software, CRM integrations, SEO, ads, and fast support for US-focused teams.",
+          "Ethixweb manages digital operations, AI automation, websites, software, CRM integrations, SEO, ads, and fast support for US focused teams.",
       },
       { property: "og:title", content: "Ethixweb - Premium Technology Partner" },
       {
@@ -132,7 +132,7 @@ const SCHEMA_ORG_ORGANIZATION = JSON.stringify({
   url: "https://ethixweb.com",
   logo: "https://ethixweb.com/ethixweb.png",
   description:
-    "Digital operations, AI automation, websites, software, CRM integrations, SEO, ads, and fast support for US-focused teams.",
+    "Digital operations, AI automation, websites, software, CRM integrations, SEO, ads, and fast support for US focused teams.",
   email: "akash@ethixweb.com",
   address: {
     "@type": "PostalAddress",

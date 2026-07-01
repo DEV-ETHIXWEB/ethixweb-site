@@ -38,7 +38,7 @@ const rows: Row[] = [
   },
   {
     label: "IT Support",
-    values: ["Email (24hr response)", "Priority Slack / Phone", "1-on-1 CTO Support"],
+    values: ["Email (24hr response)", "Priority Slack / Phone", "1 on 1 CTO Support"],
   },
   {
     label: "GMB Operations",

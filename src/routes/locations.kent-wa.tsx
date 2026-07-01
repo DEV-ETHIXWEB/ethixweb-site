@@ -27,7 +27,7 @@ export const Route = createFileRoute("/locations/kent-wa")({
       {
         property: "og:description",
         content:
-          "Modern, mobile-friendly websites that help Kent WA businesses attract more customers.",
+          "Modern, mobile friendly websites that help Kent WA businesses attract more customers.",
       },
       { property: "og:type", content: "website" },
       { property: "og:image", content: "https://ethixweb.com/ethixweb.png" },
@@ -66,7 +66,7 @@ const services = [
   {
     i: Search,
     t: "Search Engine Optimization",
-    d: "Boost your online visibility and attract more customers with result-driven SEO.",
+    d: "Boost your online visibility and attract more customers with result driven SEO.",
   },
   {
     i: Megaphone,
@@ -85,15 +85,15 @@ const services = [
   },
   {
     i: MousePointerClick,
-    t: "Pay-Per-Click (PPC)",
-    d: "Drive targeted traffic and boost sales with cost-effective PPC ads.",
+    t: "Pay Per Click (PPC)",
+    d: "Drive targeted traffic and boost sales with cost effective PPC ads.",
   },
 ];
 
 const benefits = [
   "Build trust instantly with a clean, modern design.",
   "Show up on Google when local customers search for your services.",
-  "Generate leads 24/7 with easy-to-use forms and click-to-call features.",
+  "Generate leads 24/7 with easy to use forms and click to call features.",
   "Look great on mobile - since most customers search on their phones.",
 ];
 
@@ -101,7 +101,7 @@ const industries = [
   "Plumbing, HVAC & Home Services",
   "Restaurants & Food Businesses",
   "Real Estate & Contractors",
-  "Retail & E-commerce Stores",
+  "Retail & E commerce Stores",
   "Professional Services (lawyers, consultants, healthcare)",
 ];
 
@@ -149,7 +149,7 @@ function Page() {
         }
         title="Website Design Services in Kent, WA"
       >
-        Modern, mobile-friendly websites that help Kent WA businesses attract more customers and
+        Modern, mobile friendly websites that help Kent WA businesses attract more customers and
         grow faster.
       </PageHero>
 
@@ -164,7 +164,7 @@ function Page() {
               If you run a business in Kent WA, you already know how important it is to stand out.
               Whether you're a plumber, HVAC contractor, restaurant owner or retail shop, your
               website is often the first impression customers have of your business. At Ethixweb, we
-              create modern, mobile-friendly websites that help local businesses in Kent attract
+              create modern, mobile friendly websites that help local businesses in Kent attract
               more customers and grow faster.
             </p>
           </Reveal>

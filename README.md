@@ -1,6 +1,10 @@
 # Ethixweb Site
 
-Official website for [Ethixweb](https://ethixweb.com) — a digital operations agency specializing in websites, AI automation, CRM integrations, SEO, and digital marketing for US-based businesses.
+**Client:** Ethixweb (internal)
+
+## What this project is
+
+The official marketing website for [Ethixweb](https://ethixweb.com), a digital operations agency specializing in websites, AI automation, CRM integrations, SEO, and digital marketing for US-based businesses. The site covers services, industries, portfolio, pricing, careers (with an online application flow), and the main contact/lead-gen forms.
 
 ## Tech Stack
 
@@ -9,75 +13,54 @@ Official website for [Ethixweb](https://ethixweb.com) — a digital operations a
 - **Animations** — [Framer Motion](https://www.framer.com/motion)
 - **UI Components** — [Radix UI](https://www.radix-ui.com)
 - **Icons** — [Lucide React](https://lucide.dev)
+- **Email** — [Resend](https://resend.com)
+- **File storage** — [Vercel Blob](https://vercel.com/docs/storage/vercel-blob)
 - **Deployment** — [Vercel](https://vercel.com)
 
-## Prerequisites
+## Local Setup
 
-- Node.js **v20.19+** or **v22.12+**
-- npm **v10+**
-
-## Local Development
-
-```bash
-# Install dependencies
-npm install
-
-# Start dev server
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000).
-
-## Build
-
-```bash
-npm run build
-```
-
-## Deploy to Vercel
-
-### Option 1 — Vercel CLI
-
-```bash
-npm i -g vercel
-vercel
-```
-
-### Option 2 — Vercel Dashboard
-
-1. Push this repository to GitHub / GitLab / Bitbucket.
-2. Go to [vercel.com/new](https://vercel.com/new) and import the repo.
-3. Vercel auto-detects Vite — no extra config needed.
-4. Click **Deploy**.
-
-### Vercel Settings (if needed)
-
-| Setting          | Value           |
-| ---------------- | --------------- |
-| Framework Preset | Vite            |
-| Build Command    | `npm run build` |
-| Output Directory | `dist`          |
-| Install Command  | `npm install`   |
-| Node.js Version  | 22.x            |
-
-## Scripts
-
-| Command             | Description                      |
-| ------------------- | -------------------------------- |
-| `npm run dev`       | Start dev server                 |
-| `npm run build`     | Production build                 |
-| `npm run preview`   | Preview production build locally |
-| `npm run typecheck` | TypeScript type check            |
-| `npm run lint`      | Lint code                        |
-| `npm run format`    | Format code with Prettier        |
+1. **Prerequisites** — Node.js v20.19+ or v22.12+, npm v10+
+2. **Clone the repo**
+   ```bash
+   git clone https://github.com/DEV-ETHIXWEB/ethixweb-site.git
+   cd ethixweb-site
+   ```
+3. **Install dependencies**
+   ```bash
+   npm install
+   ```
+4. **Set up environment variables** — copy the example file and fill in real values (see below)
+   ```bash
+   cp .env.example .env
+   ```
+5. **Start the dev server**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000).
 
 ## Environment Variables
 
-No required environment variables for the base site. If integrating with external services, create a `.env` file:
+Defined in `.env` (never committed — see `.env.example` for the template):
 
-```env
-# Example — add as needed
-VITE_API_URL=https://api.example.com
-```
+- `RESEND_API_KEY` — email delivery for the contact form
+- `VITE_SITE_URL` — production domain, used for sitemap/canonical URLs/email templates
+- `BLOB_READ_WRITE_TOKEN` — Vercel Blob storage, used for careers/resume uploads
 
-Add the same variables in **Vercel Dashboard → Project → Settings → Environment Variables**.
+## Deployment Notes
+
+- Hosted on **Vercel**, auto-deploys from the `main` branch.
+- Framework preset: Vite · Build command: `npm run build` · Output directory: `dist` · Node.js version: 22.x
+- Environment variables must be added separately in **Vercel Dashboard → Project → Settings → Environment Variables** — they are not read from `.env` in production.
+- After adding/rotating a Vercel Blob store, pull the token locally with `npx vercel env pull`.
+
+## Branching & Workflow
+
+- `main` is protected — no direct commits/pushes.
+- All work happens on `feat/<clickup-task-slug>` branches (e.g. `feat/contact-form-fix`), one branch per task, merged via PR.
+
+## Key Contacts
+
+- **Client:** Ethixweb (internal project)
+- **Account/PM:** Amar
+- **Lead Developer:** Akash (akash@ethixweb.com)
