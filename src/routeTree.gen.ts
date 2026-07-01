@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WebDevelopmentRouteImport } from './routes/web-development'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as PortfolioRouteImport } from './routes/portfolio'
 import { Route as MarketingRouteImport } from './routes/marketing'
@@ -36,11 +35,6 @@ import { Route as ApiCareersApplyRouteImport } from './routes/api.careers.apply'
 const WebDevelopmentRoute = WebDevelopmentRouteImport.update({
   id: '/web-development',
   path: '/web-development',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesRoute = ServicesRouteImport.update({
@@ -161,7 +155,6 @@ export interface FileRoutesByFullPath {
   '/marketing': typeof MarketingRoute
   '/portfolio': typeof PortfolioRoute
   '/services': typeof ServicesRoute
-  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/web-development': typeof WebDevelopmentRoute
   '/api/contact': typeof ApiContactRoute
   '/careers/$slug': typeof CareersSlugRoute
@@ -185,7 +178,6 @@ export interface FileRoutesByTo {
   '/marketing': typeof MarketingRoute
   '/portfolio': typeof PortfolioRoute
   '/services': typeof ServicesRoute
-  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/web-development': typeof WebDevelopmentRoute
   '/api/contact': typeof ApiContactRoute
   '/careers/$slug': typeof CareersSlugRoute
@@ -211,7 +203,6 @@ export interface FileRoutesById {
   '/marketing': typeof MarketingRoute
   '/portfolio': typeof PortfolioRoute
   '/services': typeof ServicesRoute
-  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/web-development': typeof WebDevelopmentRoute
   '/api/contact': typeof ApiContactRoute
   '/careers/$slug': typeof CareersSlugRoute
@@ -238,7 +229,6 @@ export interface FileRouteTypes {
     | '/marketing'
     | '/portfolio'
     | '/services'
-    | '/sitemap.xml'
     | '/web-development'
     | '/api/contact'
     | '/careers/$slug'
@@ -262,7 +252,6 @@ export interface FileRouteTypes {
     | '/marketing'
     | '/portfolio'
     | '/services'
-    | '/sitemap.xml'
     | '/web-development'
     | '/api/contact'
     | '/careers/$slug'
@@ -287,7 +276,6 @@ export interface FileRouteTypes {
     | '/marketing'
     | '/portfolio'
     | '/services'
-    | '/sitemap.xml'
     | '/web-development'
     | '/api/contact'
     | '/careers/$slug'
@@ -313,7 +301,6 @@ export interface RootRouteChildren {
   MarketingRoute: typeof MarketingRoute
   PortfolioRoute: typeof PortfolioRoute
   ServicesRoute: typeof ServicesRoute
-  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   WebDevelopmentRoute: typeof WebDevelopmentRoute
   ApiContactRoute: typeof ApiContactRoute
   LocationsKentWaRoute: typeof LocationsKentWaRoute
@@ -331,13 +318,6 @@ declare module '@tanstack/react-router' {
       path: '/web-development'
       fullPath: '/web-development'
       preLoaderRoute: typeof WebDevelopmentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services': {
@@ -517,7 +497,6 @@ const rootRouteChildren: RootRouteChildren = {
   MarketingRoute: MarketingRoute,
   PortfolioRoute: PortfolioRoute,
   ServicesRoute: ServicesRoute,
-  SitemapDotxmlRoute: SitemapDotxmlRoute,
   WebDevelopmentRoute: WebDevelopmentRoute,
   ApiContactRoute: ApiContactRoute,
   LocationsKentWaRoute: LocationsKentWaRoute,

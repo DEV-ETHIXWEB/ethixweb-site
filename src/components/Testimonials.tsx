@@ -201,6 +201,8 @@ export function Testimonials() {
                   src="/ethan%20sitting.webp"
                   alt=""
                   aria-hidden="true"
+                  width={760}
+                  height={950}
                   className="relative z-10 block h-full w-auto object-contain drop-shadow-[0_14px_28px_rgba(0,0,0,0.28)]"
                   loading="lazy"
                   decoding="async"

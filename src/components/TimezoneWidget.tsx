@@ -66,7 +66,11 @@ function isIndiaWorking(date: Date) {
 }
 
 export function TimezoneWidget() {
-  const [now, setNow] = useState(new Date());
+  // Starts at null (renders a static placeholder) so the server and the client's
+  // first render match exactly; a live Date is only ever read post-mount, since
+  // computing "now" during SSR vs. hydration can straddle a minute boundary and
+  // produce two different formatted time strings for the same clock.
+  const [now, setNow] = useState<Date | null>(null);
   const [open, setOpen] = useState(false);
   const [localTz, setLocalTz] = useState<string>("UTC");
   const [mounted, setMounted] = useState(false);
@@ -84,6 +88,7 @@ export function TimezoneWidget() {
   useEffect(() => {
     setMounted(true);
     setLocalTz(Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC");
+    setNow(new Date());
     const id = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(id);
   }, []);
@@ -123,9 +128,9 @@ export function TimezoneWidget() {
   };
 
   const { theme } = useTheme();
-  const india = formatTime(now, INDIA_TZ);
-  const local = formatTime(now, localTz);
-  const working = isIndiaWorking(now);
+  const india = now ? formatTime(now, INDIA_TZ) : "--:--";
+  const local = now ? formatTime(now, localTz) : "--:--";
+  const working = now ? isIndiaWorking(now) : false;
 
   const panelStyle =
     theme === "dark"
@@ -214,7 +219,7 @@ export function TimezoneWidget() {
                       Ethixweb · India
                     </p>
                     <p className="mt-1 text-lg font-display font-semibold tabular-nums">{india}</p>
-                    <p className="text-[10px] text-muted-foreground">{formatLong(now, INDIA_TZ)}</p>
+                    <p className="text-[10px] text-muted-foreground">{now && formatLong(now, INDIA_TZ)}</p>
                   </div>
                   <div className="rounded-xl bg-primary/10 border border-primary/20 p-3">
                     <p className="text-[10px] uppercase tracking-widest text-primary/80">
@@ -239,7 +244,7 @@ export function TimezoneWidget() {
                         <span className="text-foreground/85">{z.label}</span>
                       </span>
                       <span className="text-xs tabular-nums text-muted-foreground">
-                        {formatTime(now, z.tz)}
+                        {now && formatTime(now, z.tz)}
                       </span>
                     </div>
                   ))}

@@ -11,6 +11,8 @@ export function Logo({ className = "" }: { className?: string }) {
       <img
         src={logo}
         alt="Ethixweb"
+        width={214}
+        height={32}
         className="logo-img h-8 w-auto object-contain transition-transform group-hover:scale-105"
       />
     </Link>

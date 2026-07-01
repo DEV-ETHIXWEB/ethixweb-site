@@ -443,11 +443,15 @@ function makeFmt(tz: string) {
 }
 
 function useClock(tz: string) {
-  const fmt = makeFmt(tz);
-  const [time, setTime] = useState(() => fmt(new Date()));
+  // Starts as "--:--:--" (same on server and client) rather than formatting the
+  // current time at render: a live clock rendered during SSR will almost never
+  // match the client's hydration-time value down to the second, which is a
+  // guaranteed hydration mismatch. The real time is applied post-mount instead.
+  const [time, setTime] = useState("--:--:--");
   useEffect(() => {
     const f = makeFmt(tz);
     const tick = () => setTime(f(new Date()));
+    tick();
     _clockSubs.add(tick);
     _startClock();
     return () => {

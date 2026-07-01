@@ -34,6 +34,8 @@ import { RotatingText } from "@/components/RotatingText";
 import { Testimonials } from "@/components/Testimonials";
 import { useTheme } from "@/components/ThemeProvider";
 import operatorCharacter from "@/assets/operator-character.webp";
+import operatorCharacterSm from "@/assets/operator-character-sm.webp";
+import operatorCharacterXs from "@/assets/operator-character-xs.webp";
 
 const GlobalNetwork = lazy(() => import("@/components/GlobalNetwork").then((m) => ({ default: m.GlobalNetwork })));
 
@@ -51,8 +53,11 @@ function useIsSleeping() {
     const h = new Date().getHours();
     return h >= 17 || h < 8;
   };
-  const [sleeping, setSleeping] = useState(check);
+  // Initialize to a fixed value so the first client render matches the server-rendered
+  // markup exactly (avoids a hydration mismatch); the real value is applied post-mount.
+  const [sleeping, setSleeping] = useState(false);
   useEffect(() => {
+    setSleeping(check());
     const id = setInterval(() => setSleeping(check()), 60_000);
     return () => clearInterval(id);
   }, []);
@@ -60,10 +65,11 @@ function useIsSleeping() {
 }
 
 function useIsMobile() {
-  const [mobile, setMobile] = useState(() =>
-    typeof window !== "undefined" ? window.innerWidth < 1024 : false
-  );
+  // Same reasoning as useIsSleeping: start with the SSR-safe default and correct
+  // it in an effect, rather than reading window.innerWidth during the initial render.
+  const [mobile, setMobile] = useState(false);
   useEffect(() => {
+    setMobile(window.innerWidth < 1024);
     let t: ReturnType<typeof setTimeout>;
     const handler = () => {
       clearTimeout(t);
@@ -433,6 +439,8 @@ function OperationsVisual() {
           <motion.img
             key={sleeping ? "sleep" : "active"}
             src={sleeping ? SLEEP_SRC : operatorCharacter}
+            srcSet={sleeping ? undefined : `${operatorCharacterXs} 560w, ${operatorCharacterSm} 820w, ${operatorCharacter} 1024w`}
+            sizes={sleeping ? undefined : "(max-width: 639px) 271px, (max-width: 1023px) 387px, 427px"}
             alt="Ethixweb mascot"
             width={sleeping ? 1920 : 1024}
             height={sleeping ? 1080 : 1536}
@@ -440,7 +448,7 @@ function OperationsVisual() {
               ? "w-full h-auto scale-[1.68] origin-bottom sm:scale-100 sm:w-auto sm:max-w-none sm:h-145 object-contain mascot-breathe"
               : "h-101.5 sm:h-145 lg:h-160 max-w-none object-contain drop-shadow-[0_18px_40px_rgba(0,0,0,0.45)]"
             }
-            initial={{ opacity: 0 }}
+            initial={sleeping ? { opacity: 0 } : false}
             animate={sleeping ? { opacity: 1 } : { opacity: 1, y: reduceMotion ? 0 : [0, -12, 0] }}
             transition={
               sleeping

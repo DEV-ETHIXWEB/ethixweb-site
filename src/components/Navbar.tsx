@@ -6,7 +6,7 @@ import { Logo } from "./Logo";
 import { TimezoneWidget } from "./TimezoneWidget";
 import { useTheme } from "./ThemeProvider";
 
-const LIVE_PATHS = new Set(["/", "/contact", "/careers"]);
+const LIVE_PATHS = new Set(["/", "/contact"]);
 
 const links = [
   { to: "/", label: "Home" },
@@ -171,7 +171,11 @@ export function Navbar() {
         </AnimatePresence>
       </div>
 
-      <div className="pointer-events-none fixed inset-x-0 top-20 z-60 flex justify-center px-4">
+      <div
+        className="pointer-events-none fixed inset-x-0 top-20 z-60 flex justify-center px-4"
+        role="status"
+        aria-live="polite"
+      >
         <AnimatePresence>
           {comingSoon && (
             <motion.div

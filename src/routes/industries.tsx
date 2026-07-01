@@ -88,9 +88,21 @@ const fishing = [
   },
 ];
 
+const INDUSTRIES_SCHEMA = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "Industry-Specific Technology Systems",
+  provider: { "@type": "Organization", name: "Ethixweb", url: "https://ethixweb.com" },
+  description: "Specialized tech and marketing systems for HVAC, plumbing and fishing charter operators.",
+  url: "https://ethixweb.com/industries",
+  areaServed: { "@type": "Country", name: "United States" },
+  serviceType: "Industry-Specific Digital Operations",
+});
+
 function Industries() {
   return (
     <SiteLayout>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: INDUSTRIES_SCHEMA }} />
       <PageHero eyebrow="Industries" title="Built for the businesses that build America.">
         We specialize in two worlds: home services and fishing charters. Different operations, same
         problem - calls and bookings can't wait.

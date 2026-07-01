@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Logo } from "./Logo";
 import { ArrowUpRight, Mail, Clock } from "lucide-react";
 
-const LIVE_PATHS = new Set(["/", "/contact", "/careers"]);
+const LIVE_PATHS = new Set(["/", "/contact"]);
 
 const FOOTER_MASCOT = "/Ethan%20view%20%201.webp";
 
@@ -88,9 +88,9 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-xs uppercase tracking-widest text-muted-foreground mb-4">
+            <h2 className="text-xs uppercase tracking-widest text-muted-foreground mb-4">
               Contact
-            </h4>
+            </h2>
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-2.5">
                 <Mail className="h-4 w-4 text-primary mt-0.5" />
@@ -142,7 +142,7 @@ export function Footer() {
 function FooterCol({ title, links }: { title: string; links: [string, string][] }) {
   return (
     <div>
-      <h4 className="text-xs uppercase tracking-widest text-muted-foreground mb-4">{title}</h4>
+      <h2 className="text-xs uppercase tracking-widest text-muted-foreground mb-4">{title}</h2>
       <ul className="space-y-2.5">
         {links.map(([label, to]) => (
           <li key={to}>
