@@ -36,3 +36,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Claude Code local config
+.claude/
+
+# Ad-hoc QA/task screenshots (not app assets)
+/task */
+Screenshot *.png
+image (*.png
