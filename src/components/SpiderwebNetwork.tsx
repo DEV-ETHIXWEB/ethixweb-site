@@ -9,7 +9,7 @@ import emblem from "@/assets/emblem-transparent.webp";
  * without a cache-busting query param, browsers can keep serving a stale
  * cached copy across edits (this bit us: a real clear-color bugfix in that
  * file didn't show up in the browser until this was added). */
-const EMBLEM_3D_VERSION = 4;
+const EMBLEM_3D_VERSION = 5;
 
 /** Root-cause fix for the clip-vs-halo conflict (rather than trading one off
  * against the other): a rotation-angle sweep proved the letter's own worst-case
