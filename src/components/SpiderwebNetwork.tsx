@@ -9,7 +9,7 @@ import emblem from "@/assets/emblem-transparent.webp";
  * without a cache-busting query param, browsers can keep serving a stale
  * cached copy across edits (this bit us: a real clear-color bugfix in that
  * file didn't show up in the browser until this was added). */
-const EMBLEM_3D_VERSION = 5;
+const EMBLEM_3D_VERSION = 8;
 
 /** Root-cause fix for the clip-vs-halo conflict (rather than trading one off
  * against the other): a rotation-angle sweep proved the letter's own worst-case
@@ -340,6 +340,17 @@ function GlassEmblem({ mx, reduceMotion }: { mx: MotionValue<number>; reduceMoti
               style={{
                 border: 0,
                 background: "transparent",
+                // Chrome paints an opaque WHITE backdrop behind any iframe
+                // whose used color-scheme differs from its embedder element's
+                // (the dark-theme "white sheet behind the E" bug). The site
+                // root sets color-scheme: dark in dark theme, which this
+                // iframe would inherit while the embedded document resolves
+                // from the OS prefers-color-scheme - so the two can disagree.
+                // Pin BOTH sides to light (emblem-3d.html declares
+                // `color-scheme: only light`) so no site-theme/OS combination
+                // can ever mismatch. Purely a compositing contract - nothing
+                // inside the iframe is UA-color-scheme-styled.
+                colorScheme: "light",
                 width: iframePx,
                 height: iframeHeightPx,
                 left: (EMBLEM_3D_STAGE_PX - iframePx) / 2,
