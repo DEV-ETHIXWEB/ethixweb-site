@@ -225,37 +225,14 @@ function GlassEmblem({ mx, reduceMotion }: { mx: MotionValue<number>; reduceMoti
   // the hero.
   const wrapRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(true);
-  // The iframe itself only unmounts after being out of view for a bit (not
-  // instantly on `inView`) - a fresh iframe reload briefly shows its nested
-  // document's default white background before its own transparent CSS takes
-  // effect (a 566KB mostly-inline-script document, so that gap is real, not
-  // instant). Unmounting on every brief scroll-past-and-back bounce turned
-  // that into a visible white flash each time - glaring in dark mode against
-  // the maroon hero. Debouncing the unmount keeps the actual battery/GPU win
-  // (stops the WebGL loop once truly scrolled away) without reloading on
-  // every small scroll wobble.
-  const [mounted, setMounted] = useState(true);
   useEffect(() => {
     const el = wrapRef.current;
     if (!el) return;
-    let unmountTimer: ReturnType<typeof setTimeout> | null = null;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        setInView(entry.isIntersecting);
-        if (entry.isIntersecting) {
-          if (unmountTimer) clearTimeout(unmountTimer);
-          setMounted(true);
-        } else {
-          unmountTimer = setTimeout(() => setMounted(false), 4000);
-        }
-      },
-      { threshold: 0.01 },
-    );
+    const io = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), {
+      threshold: 0.01,
+    });
     io.observe(el);
-    return () => {
-      io.disconnect();
-      if (unmountTimer) clearTimeout(unmountTimer);
-    };
+    return () => io.disconnect();
   }, []);
   const animate = !reduceMotion && inView;
   // Live 3D stays desktop/tablet-only for now: on narrow layouts the embedded
@@ -332,38 +309,43 @@ function GlassEmblem({ mx, reduceMotion }: { mx: MotionValue<number>; reduceMoti
           {/* Fixed-resolution stage (see EMBLEM_3D_STAGE_PX): the 3D tool always
            * renders at this same size, then gets scaled down via the measured
            * stageScale to fit whatever this box's real on-page size turns out
-           * to be. Unmounted (not just hidden) while scrolled out of view - an
-           * iframe's WebGL render loop can't be paused from outside without
-           * its own cooperation, so removing it from the DOM is what actually
-           * stops the GPU/battery cost once it's off-screen. */}
-          {mounted && (
-            <div
-              className="pointer-events-none absolute left-0 top-0 select-none overflow-hidden"
+           * to be. Mounted once and never removed from the DOM again - it used
+           * to unmount whenever scrolled out of view, but a fresh iframe load
+           * briefly shows its nested document's default white background
+           * before its own transparent CSS applies (this is a 566KB
+           * mostly-inline-script document, so that gap is real), and *any*
+           * scroll-away-then-back reloaded it, flashing white every time -
+           * glaring in dark mode. `display: none` (not removal) still gets the
+           * GPU/battery win while off-screen, without ever reloading the
+           * document, so the flash can't recur no matter how long or how many
+           * times it's scrolled past. */}
+          <div
+            className="pointer-events-none absolute left-0 top-0 select-none overflow-hidden"
+            style={{
+              display: inView ? undefined : "none",
+              width: EMBLEM_3D_STAGE_PX,
+              height: stageHeightPx,
+              transform: `scale(${stageScale})`,
+              transformOrigin: "top left",
+            }}
+          >
+            {/* Oversized + centered within the stage (see EMBLEM_3D_SCALE) to
+             * crop the transmission-pass halo out via the stage's overflow:hidden. */}
+            <iframe
+              src={`/emblem-3d.html?v=${EMBLEM_3D_VERSION}`}
+              title="Ethixweb"
+              loading="lazy"
+              className="pointer-events-none absolute select-none"
               style={{
-                width: EMBLEM_3D_STAGE_PX,
-                height: stageHeightPx,
-                transform: `scale(${stageScale})`,
-                transformOrigin: "top left",
+                border: 0,
+                background: "transparent",
+                width: iframePx,
+                height: iframeHeightPx,
+                left: (EMBLEM_3D_STAGE_PX - iframePx) / 2,
+                top: (stageHeightPx - iframeHeightPx) / 2,
               }}
-            >
-              {/* Oversized + centered within the stage (see EMBLEM_3D_SCALE) to
-               * crop the transmission-pass halo out via the stage's overflow:hidden. */}
-              <iframe
-                src={`/emblem-3d.html?v=${EMBLEM_3D_VERSION}`}
-                title="Ethixweb"
-                loading="lazy"
-                className="pointer-events-none absolute select-none"
-                style={{
-                  border: 0,
-                  background: "transparent",
-                  width: iframePx,
-                  height: iframeHeightPx,
-                  left: (EMBLEM_3D_STAGE_PX - iframePx) / 2,
-                  top: (stageHeightPx - iframeHeightPx) / 2,
-                }}
-              />
-            </div>
-          )}
+            />
+          </div>
         </div>
       ) : (
         <motion.div
