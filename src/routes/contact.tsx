@@ -44,6 +44,17 @@ const TIMELINES = [
   { id: "planning", label: "Just planning", sub: "3+ months out" },
 ] as const;
 
+// Keep ids in sync with HEAR_ABOUT_LABELS in src/lib/email.ts - the id is
+// what gets submitted; the server maps it back to a display label.
+const HEAR_ABOUT_OPTIONS = [
+  { id: "google", label: "Google search" },
+  { id: "referral", label: "Referral / word of mouth" },
+  { id: "social", label: "Social media" },
+  { id: "linkedin", label: "LinkedIn" },
+  { id: "repeat", label: "Worked with us before" },
+  { id: "other", label: "Other" },
+] as const;
+
 // Faint floating accent dots echoing the Hero's starfield - cheap (no canvas/JS),
 // purely decorative, and reinforces the same premium atmosphere on this page.
 const FLOAT_DOTS = [
@@ -217,6 +228,8 @@ function ContactBody() {
     name: string;
     phone?: string;
     email: string;
+    company?: string;
+    hearAbout?: string;
   }) => {
     setSubmitting(true);
     setSubmitError(null);
@@ -688,10 +701,14 @@ function ContactBody() {
                                 submitLead({
                                   service: sel.service,
                                   timeline: sel.timeline,
-                                  other: sel.other,
+                                  // "Something else" collects details in step 2;
+                                  // every other path via the optional textarea here.
+                                  other: sel.other || String(data.get("details") ?? ""),
                                   name: String(data.get("name") ?? ""),
                                   phone: String(data.get("phone") ?? ""),
                                   email: String(data.get("email") ?? ""),
+                                  company: String(data.get("company") ?? ""),
+                                  hearAbout: String(data.get("hearAbout") ?? ""),
                                 });
                               }}
                               className="space-y-4"
@@ -700,12 +717,47 @@ function ContactBody() {
                                 <Field label="Name" name="name" />
                                 <Field label="Email" name="email" type="email" />
                               </div>
-                              <Field
-                                label="Phone (optional)"
-                                name="phone"
-                                type="tel"
-                                required={false}
-                              />
+                              <div className="grid sm:grid-cols-2 gap-4">
+                                <Field
+                                  label="Phone (optional)"
+                                  name="phone"
+                                  type="tel"
+                                  required={false}
+                                />
+                                <Field label="Company (optional)" name="company" required={false} />
+                              </div>
+                              {!isOther && (
+                                <div>
+                                  <label className={formLabelClass} htmlFor="details">
+                                    Project details (optional)
+                                  </label>
+                                  <textarea
+                                    id="details"
+                                    name="details"
+                                    rows={3}
+                                    placeholder="Anything else we should know?"
+                                    className={`${formInputClass} resize-none`}
+                                  />
+                                </div>
+                              )}
+                              <div>
+                                <label className={formLabelClass} htmlFor="hearAbout">
+                                  How did you hear about us? (optional)
+                                </label>
+                                <select
+                                  id="hearAbout"
+                                  name="hearAbout"
+                                  defaultValue=""
+                                  className={formInputClass}
+                                >
+                                  <option value="">Select an option</option>
+                                  {HEAR_ABOUT_OPTIONS.map(({ id, label }) => (
+                                    <option key={id} value={id}>
+                                      {label}
+                                    </option>
+                                  ))}
+                                </select>
+                              </div>
                               {submitError && (
                                 <p role="alert" className="text-sm text-error-text">
                                   {submitError}

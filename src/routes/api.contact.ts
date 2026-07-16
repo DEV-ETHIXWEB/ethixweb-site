@@ -4,6 +4,7 @@ import { Resend } from "resend";
 import {
   SERVICE_LABELS,
   TIMELINE_LABELS,
+  HEAR_ABOUT_LABELS,
   FROM_EMAIL,
   escapeHtml,
   emailRow,
@@ -11,7 +12,8 @@ import {
   emailButton,
 } from "@/lib/email";
 import { checkRateLimit, clientIp } from "@/lib/rate-limit";
-import { recordContactSubmission, markNotificationSent } from "@/lib/leads";
+import { recordContactSubmission, markNotificationSent, markClickUpTaskLinked } from "@/lib/leads";
+import { createClickUpLeadTask } from "@/lib/clickup";
 import { isSameOriginRequest } from "@/lib/origin-check";
 
 const TO_EMAIL = "info@ethixweb.com";
@@ -36,12 +38,15 @@ export const Route = createFileRoute("/api/contact")({
           return Response.json({ ok: false, error: "Invalid request body" }, { status: 400 });
         }
 
-        const { service, timeline, other, name, phone, email } = body as Record<string, unknown>;
+        const { service, timeline, other, name, phone, email, company, hearAbout } =
+          body as Record<string, unknown>;
 
         const cleanName = typeof name === "string" ? name.trim() : "";
         const cleanEmail = typeof email === "string" ? email.trim() : "";
         const cleanPhone = typeof phone === "string" ? phone.trim() : "";
         const cleanOther = typeof other === "string" ? other.trim() : "";
+        const cleanCompany = typeof company === "string" ? company.trim() : "";
+        const cleanHearAbout = typeof hearAbout === "string" ? hearAbout.trim() : "";
 
         if (!cleanName || !cleanEmail) {
           return Response.json(
@@ -65,10 +70,27 @@ export const Route = createFileRoute("/api/contact")({
           name: cleanName,
           email: cleanEmail,
           phone: cleanPhone,
+          company: cleanCompany,
           service: typeof service === "string" ? service : null,
           timeline: typeof timeline === "string" ? timeline : null,
+          hearAbout: cleanHearAbout || null,
           projectDetails: cleanOther,
         });
+
+        // Mirror the lead into ClickUp (Team Space > Ethixweb > Leads) so it
+        // lands in the team's follow-up queue as an assigned task. Best-effort
+        // like the Supabase record - never blocks or fails the submission.
+        const clickUpTaskId = await createClickUpLeadTask({
+          name: cleanName,
+          email: cleanEmail,
+          phone: cleanPhone,
+          company: cleanCompany,
+          service: typeof service === "string" ? service : null,
+          timeline: typeof timeline === "string" ? timeline : null,
+          hearAbout: cleanHearAbout || null,
+          message: cleanOther,
+        });
+        await markClickUpTaskLinked(leadId, clickUpTaskId);
 
         const apiKey = process.env.RESEND_API_KEY;
         if (!apiKey) {
@@ -83,6 +105,9 @@ export const Route = createFileRoute("/api/contact")({
           typeof service === "string" ? (SERVICE_LABELS[service] ?? service) : null;
         const timelineLabel =
           typeof timeline === "string" ? (TIMELINE_LABELS[timeline] ?? timeline) : null;
+        const hearAboutLabel = cleanHearAbout
+          ? (HEAR_ABOUT_LABELS[cleanHearAbout] ?? cleanHearAbout)
+          : null;
         const firstName = cleanName.split(" ")[0] || cleanName;
 
         const summaryRows = [
@@ -90,6 +115,8 @@ export const Route = createFileRoute("/api/contact")({
           cleanOther && emailRow("Project details", escapeHtml(cleanOther)),
           timelineLabel && emailRow("Timeline", escapeHtml(timelineLabel)),
           emailRow("Name", escapeHtml(cleanName)),
+          cleanCompany && emailRow("Company", escapeHtml(cleanCompany)),
+          hearAboutLabel && emailRow("How they heard about us", escapeHtml(hearAboutLabel)),
           cleanPhone &&
             emailRow(
               "Phone",

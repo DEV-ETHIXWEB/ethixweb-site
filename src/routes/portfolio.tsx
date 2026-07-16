@@ -8,6 +8,7 @@ import { Reveal } from "@/components/Reveal";
 import { Container } from "@/components/Container";
 import { GlowBlob } from "@/components/GlowBlob";
 import { HeroWebVisual } from "@/components/HeroWebVisual";
+import { MarqueeBand } from "@/components/MarqueeBand";
 import { CaseStudyCard } from "@/components/CaseStudyCard";
 import { AnimatedStat } from "@/components/AnimatedStat";
 import { CASE_STUDIES, SERVICE_FILTERS } from "@/lib/portfolio-data";
@@ -100,7 +101,7 @@ function Portfolio() {
               </div>
             </Reveal>
             <Reveal delay={0.08}>
-              <h1 className="mt-7 max-w-3xl pb-1 text-[clamp(2.25rem,4.4vw,3.75rem)] font-extrabold leading-[1.1] text-gradient">
+              <h1 className="mt-7 max-w-3xl pb-1 text-[clamp(2.5rem,5.2vw,4.5rem)] font-extrabold leading-[1.06] text-gradient">
                 We don&apos;t just build websites.
                 <br />
                 We <span className="text-primary">solve business problems.</span>
@@ -135,16 +136,23 @@ function Portfolio() {
         </Container>
       </section>
 
+      {/* Real client names from the case-study data, kept in sync automatically */}
+      <MarqueeBand items={["Real clients · Real results", ...CASE_STUDIES.map((s) => s.client)]} />
+
       {/* ── Trust strip ──────────────────────────────────────────────────── */}
-      <section className="border-b border-border py-12">
-        <Container className="grid grid-cols-2 gap-6 sm:grid-cols-4">
+      <section className="border-b border-border pb-12 pt-16">
+        <Container className="grid grid-cols-2 gap-y-8 sm:grid-cols-4">
           {TRUST_STATS.map((s, i) => (
-            <Reveal key={s.label} delay={i * 0.06} className="text-center">
+            <Reveal
+              key={s.label}
+              delay={i * 0.06}
+              className={`text-center ${i > 0 ? "sm:border-l sm:border-border" : ""}`}
+            >
               <AnimatedStat
                 value={s.value}
-                className="block font-display text-3xl font-extrabold text-gradient sm:text-4xl"
+                className="block font-display text-4xl font-extrabold text-gradient sm:text-5xl"
               />
-              <p className="mt-1.5 text-xs uppercase tracking-widest text-muted-foreground">
+              <p className="mt-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                 {s.label}
               </p>
             </Reveal>
@@ -156,7 +164,18 @@ function Portfolio() {
       <section id="case-studies" className="scroll-mt-24 py-24">
         <Container>
           <Reveal>
-            <div className="max-w-2xl">
+            <div className="flex items-baseline gap-5">
+              <span
+                aria-hidden="true"
+                className="select-none font-display text-6xl font-extrabold leading-none text-transparent [-webkit-text-stroke:1.5px_rgba(165,28,34,0.5)] sm:text-7xl"
+              >
+                {String(CASE_STUDIES.length).padStart(2, "0")}
+              </span>
+              <div className="h-px flex-1 bg-gradient-to-r from-primary/40 to-transparent" />
+            </div>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <div className="mt-6 max-w-2xl">
               <p className="mb-4 text-sm uppercase tracking-widest text-primary-text">
                 Case studies
               </p>
@@ -212,31 +231,49 @@ function Portfolio() {
         </Container>
       </section>
 
-      {/* ── Final CTA ─────────────────────────────────────────────────────── */}
-      <section className="py-24">
+      {/* ── Final CTA ────────────────────────────────────────────────────────
+          Full-crimson finale panel, matching the careers page closer. Same in
+          both themes, so colors are hardcoded against the brand gradient. */}
+      <section className="py-20">
         <Reveal>
-          <Container className="relative overflow-hidden rounded-[2rem] glass-strong p-12 text-center">
-            <div className="pointer-events-none absolute inset-0 grid-bg opacity-15" />
-            <GlowBlob
-              size="md"
-              color="primary"
-              blur={130}
-              className="left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 opacity-60"
+          <Container className="relative overflow-hidden rounded-4xl bg-[linear-gradient(135deg,#9d1b20_0%,#6b1114_45%,#30090b_100%)] px-6 py-12 text-center shadow-glow ring-1 ring-white/10 sm:px-12 sm:py-14 lg:py-16">
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 bg-[radial-gradient(55%_60%_at_50%_0%,rgba(255,255,255,0.14),transparent_70%)]"
             />
-            <div className="relative">
-              <h2 className="pb-1 font-display text-4xl font-bold text-gradient sm:text-5xl">
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 bg-[radial-gradient(40%_50%_at_90%_100%,rgba(0,0,0,0.35),transparent_70%)]"
+            />
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none whitespace-nowrap font-display text-[16vw] font-extrabold leading-none text-transparent [-webkit-text-stroke:1.5px_rgba(255,255,255,0.09)] lg:text-[9rem]"
+            >
+              RESULTS
+            </span>
+            <div className="relative mx-auto max-w-2xl">
+              <h2 className="pb-1 font-display text-4xl font-extrabold leading-tight text-white sm:text-5xl">
                 Let&apos;s create your next success story.
               </h2>
-              <p className="mx-auto mt-5 max-w-xl text-muted-foreground">
+              <p className="mx-auto mt-4 max-w-xl text-white/75 sm:text-lg">
                 Tell us where the friction is. We&apos;ll tell you how we&apos;d fix it - no pitch
                 deck required.
               </p>
-              <Link
-                to="/contact"
-                className="btn-primary mt-8 inline-flex items-center gap-2 rounded-full px-7 py-3.5 font-bold"
-              >
-                Start a project <ArrowUpRight className="h-4 w-4" />
-              </Link>
+              <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+                <Link
+                  to="/contact"
+                  className="magnetic group inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 font-bold text-[#7a1418] shadow-[0_14px_40px_-12px_rgba(0,0,0,0.55)]"
+                >
+                  Start a project
+                  <ArrowUpRight className="h-4 w-4 transition-transform group-hover:rotate-45" />
+                </Link>
+                <Link
+                  to="/services"
+                  className="magnetic inline-flex items-center gap-2 rounded-full border border-white/30 px-7 py-3.5 font-bold text-white transition-colors hover:bg-white/10"
+                >
+                  See what we do
+                </Link>
+              </div>
             </div>
           </Container>
         </Reveal>

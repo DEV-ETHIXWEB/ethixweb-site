@@ -4,8 +4,10 @@ export interface ContactSubmissionInput {
   name: string;
   email: string;
   phone?: string;
+  company?: string;
   service?: string | null;
   timeline?: string | null;
+  hearAbout?: string | null;
   projectDetails?: string;
 }
 
@@ -72,10 +74,29 @@ export function recordContactSubmission(input: ContactSubmissionInput): Promise<
     name: input.name,
     email: input.email,
     phone: input.phone || null,
+    company: input.company || null,
     service: input.service || null,
     timeline: input.timeline || null,
+    hear_about: input.hearAbout || null,
     project_details: input.projectDetails || null,
   });
+}
+
+/** Best-effort link between the Supabase lead row and its ClickUp task. */
+export async function markClickUpTaskLinked(
+  id: string | null,
+  taskId: string | null,
+): Promise<void> {
+  if (!id || !taskId) return;
+  try {
+    const { error } = await getSupabase()
+      .from("contact_submissions")
+      .update({ clickup_task_id: taskId })
+      .eq("id", id);
+    if (error) console.error("[leads] clickup_task_id update failed:", error);
+  } catch (err) {
+    console.error("[leads] clickup_task_id update threw:", err);
+  }
 }
 
 export function recordCareerApplication(input: CareerApplicationInput): Promise<string | null> {

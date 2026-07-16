@@ -72,7 +72,7 @@ export const JOBS: Job[] = [
     ],
     benefits: [
       "Remote first: work from anywhere in India",
-      "5 day work week",
+      "Flexible working hours",
       "Direct ownership over real client projects",
       "Modern engineering stack, no legacy spaghetti",
       "Fast career growth in a small, high impact team",
@@ -150,7 +150,7 @@ export const JOBS: Job[] = [
     ],
     benefits: [
       "Remote first: work from anywhere in India",
-      "5 day work week",
+      "Flexible working hours",
       "Ownership over real client accounts, not just task lists",
       "Direct exposure to US clients and their businesses",
       "Fast career growth in a small, high impact team",

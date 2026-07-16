@@ -26,6 +26,15 @@ export const TIMELINE_LABELS: Record<string, string> = {
   planning: "Just planning (3+ months out)",
 };
 
+export const HEAR_ABOUT_LABELS: Record<string, string> = {
+  google: "Google search",
+  referral: "Referral / word of mouth",
+  social: "Social media",
+  linkedin: "LinkedIn",
+  repeat: "Worked with us before",
+  other: "Other",
+};
+
 export const NOTICE_PERIOD_LABELS: Record<string, string> = {
   immediate: "Immediate / Currently available",
   "15-days": "15 days",
