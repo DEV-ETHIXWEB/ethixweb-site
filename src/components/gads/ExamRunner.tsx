@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { upload } from "@vercel/blob/client";
-import { AlertTriangle, Clock, Loader2, Maximize, ShieldAlert, Video } from "lucide-react";
+import { AlertTriangle, Clock, LogOut, Loader2, Maximize, ShieldAlert, Video } from "lucide-react";
 import { useGadsExamGuard } from "@/hooks/useGadsExamGuard";
 import { useGadsMediaCapture } from "@/hooks/useGadsMediaCapture";
 import { useQuestionTimer } from "@/hooks/useQuestionTimer";
 import type { useMediaRecording } from "@/hooks/useMediaRecording";
+import { playGadsClick } from "@/lib/gads-sound";
 import { GadsQuestionCard } from "./GadsQuestionCard";
 import {
   GADS_MAX_MAJOR_VIOLATIONS,
@@ -115,6 +116,7 @@ export function ExamRunner({
   const [warning, setWarning] = useState<{ count: number; label: string } | null>(null);
   const [overallWarning, setOverallWarning] = useState<number | null>(null);
   const [reconnecting, setReconnecting] = useState(false);
+  const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
 
   const firstQuestionSecondsRef = useRef(
     initialRemainingQuestionSeconds ??
@@ -320,6 +322,28 @@ export function ExamRunner({
     [token, phase, doSubmit],
   );
 
+  // --- Voluntary early submit ---------------------------------------------
+  // The candidate can end the exam whenever they want, not just after the
+  // last question - flushes whatever's currently picked (so a last-second
+  // choice isn't lost to the periodic autosave's up-to-5s lag) before
+  // finalizing. Any question never reached gets backfilled as skipped
+  // server-side, same as a timer-driven forced submit.
+  const handleSubmitNow = useCallback(async () => {
+    playGadsClick();
+    setShowSubmitConfirm(false);
+    const draft = draftValueRef.current;
+    if (draft !== null) {
+      setReconnecting(true);
+      await postJsonResilient("/api/gads/save", {
+        token,
+        forQuestionIndex: currentIndexRef.current,
+        draftAnswer: draft,
+      });
+      setReconnecting(false);
+    }
+    void doSubmit("manual");
+  }, [token, doSubmit]);
+
   const question = questions[currentIndex];
   const isLast = currentIndex === questions.length - 1;
   const minutes = Math.floor(remaining / 60);
@@ -350,13 +374,26 @@ export function ExamRunner({
           {minutes}:{seconds.toString().padStart(2, "0")}
         </div>
 
-        <span className="hidden items-center gap-2 rounded-full border border-red-500/40 bg-red-500/10 px-3 py-1.5 text-xs font-bold text-error-text sm:flex">
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
+        <div className="flex items-center gap-2">
+          <span className="hidden items-center gap-2 rounded-full border border-red-500/40 bg-red-500/10 px-3 py-1.5 text-xs font-bold text-error-text sm:flex">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
+            </span>
+            REC
           </span>
-          REC
-        </span>
+          <button
+            type="button"
+            onClick={() => {
+              playGadsClick();
+              setShowSubmitConfirm(true);
+            }}
+            className="inline-flex items-center gap-1.5 rounded-full border border-border px-3.5 py-1.5 text-xs font-bold text-muted-foreground transition hover:border-primary/50 hover:text-foreground"
+          >
+            <LogOut className="h-3.5 w-3.5" />
+            Submit
+          </button>
+        </div>
       </header>
 
       <div className="flex min-h-0 flex-1 items-start justify-center overflow-y-auto">
@@ -448,6 +485,42 @@ export function ExamRunner({
         </div>
       )}
 
+      {showSubmitConfirm && phase === "exam" && (
+        <div className="fixed inset-0 z-[90] flex items-center justify-center bg-black/80 p-6 backdrop-blur-sm">
+          <div className="premium-card w-full max-w-md rounded-3xl p-8 text-center">
+            <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary-text">
+              <LogOut className="h-7 w-7" />
+            </span>
+            <h2 className="mt-4 font-display text-2xl font-bold">Submit assessment now?</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              You're on question <strong className="text-foreground">{currentIndex + 1}</strong> of{" "}
+              <strong className="text-foreground">{questions.length}</strong>. Any remaining
+              questions will be marked as skipped, and you won't be able to answer them afterward.
+              This can't be undone.
+            </p>
+            <div className="mt-6 flex gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  playGadsClick();
+                  setShowSubmitConfirm(false);
+                }}
+                className="flex-1 rounded-full border border-border px-5 py-3 text-sm font-bold text-foreground transition hover:border-primary/50"
+              >
+                Keep going
+              </button>
+              <button
+                type="button"
+                onClick={() => void handleSubmitNow()}
+                className="flex-1 rounded-full bg-primary px-5 py-3 text-sm font-bold text-primary-foreground shadow-glow"
+              >
+                Submit now
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {phase === "submitting" && (
         <div className="fixed inset-0 z-[95] flex flex-col items-center justify-center gap-3 bg-background/95 backdrop-blur">
           <Loader2 className="h-7 w-7 animate-spin text-primary" />
@@ -531,6 +604,7 @@ function GadsQuestionRunner({
   function handleAdvanceClick() {
     if (firedRef.current) return;
     firedRef.current = true;
+    playGadsClick();
     onAdvance(valueRef.current);
   }
 
