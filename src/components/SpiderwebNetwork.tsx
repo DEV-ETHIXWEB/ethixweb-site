@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useSpring, useTransform, type MotionValue } from "framer-motion";
 import { DollarSign, Layers3, Palette, PhoneCall, TrendingUp } from "lucide-react";
 import spiderweb from "@/assets/spiderweb.svg";
+import spiderwebLight from "@/assets/spiderweb-light.svg";
 import emblem from "@/assets/emblem-transparent.webp";
 
 /** Bump this whenever public/emblem-3d.html's content changes - it has no
@@ -66,6 +67,17 @@ const EMBLEM_3D_STAGE_PX = 320;
 const VB_W = 1234;
 const VB_H = 772;
 const HUB = { x: 682, y: 353 };
+/** The light-mode artwork (spiderweb-light.svg) is a redraw of the same web on a
+ * taller 1234x884 canvas, with its web drawn 57 units lower than the dark
+ * artwork draws it in the 1234x772 canvas (both numbers measured by
+ * cross-correlating rasterizations of the two files: horizontal offset is 0 at
+ * identical width, vertical hub-hole alignment peaks at +57). Rendering the
+ * light file at the same width inside the same 772-tall box, shifted up by
+ * these 57 units with the overflow clipped, lands its hub exactly on HUB - so
+ * the emblem, overlay strands, nodes and badges all stay registered without
+ * touching any of that geometry. */
+const LIGHT_VB_H = 884;
+const LIGHT_SHIFT_Y = 57;
 /** Vertical squash of the web's ellipse (the artwork is wider than tall). */
 const EY = 0.64;
 
@@ -619,20 +631,50 @@ export function SpiderwebNetwork({
       onPointerLeave={() => setNearBadge(-1)}
     >
       <div style={{ opacity: webOpacity }}>
-        <img
-          src={spiderweb}
-          alt=""
-          aria-hidden="true"
-          width={1234}
-          height={772}
-          className="h-auto w-full select-none"
-          draggable={false}
-          style={{
-            opacity: 0.95,
-            filter:
-              "brightness(0.82) saturate(0.9) drop-shadow(0 0 5px rgba(229,29,37,0.55)) drop-shadow(0 0 26px rgba(229,29,37,0.32))",
-          }}
-        />
+        {theme === "light" ? (
+          /* Same-size box as the dark artwork's natural render (w-full at the
+           * 1234:772 aspect), so the wrapper's height - and every %-positioned
+           * element registered to it - is identical in both themes. The
+           * taller light file is aligned inside it per LIGHT_SHIFT_Y. */
+          <div
+            className="relative w-full overflow-hidden"
+            style={{ aspectRatio: `${VB_W} / ${VB_H}` }}
+          >
+            <img
+              src={spiderwebLight}
+              alt=""
+              aria-hidden="true"
+              width={VB_W}
+              height={LIGHT_VB_H}
+              className="absolute left-0 h-auto w-full select-none"
+              draggable={false}
+              style={{
+                top: `${(-LIGHT_SHIFT_Y / VB_H) * 100}%`,
+                opacity: 0.95,
+                // Same red bloom as the dark artwork, but no brightness/saturate
+                // grade: those were tuned to seat the dark file's deeper reds,
+                // and would muddy this file's own light-mode palette.
+                filter:
+                  "drop-shadow(0 0 5px rgba(229,29,37,0.55)) drop-shadow(0 0 26px rgba(229,29,37,0.32))",
+              }}
+            />
+          </div>
+        ) : (
+          <img
+            src={spiderweb}
+            alt=""
+            aria-hidden="true"
+            width={VB_W}
+            height={VB_H}
+            className="h-auto w-full select-none"
+            draggable={false}
+            style={{
+              opacity: 0.95,
+              filter:
+                "brightness(0.82) saturate(0.9) drop-shadow(0 0 5px rgba(229,29,37,0.55)) drop-shadow(0 0 26px rgba(229,29,37,0.32))",
+            }}
+          />
+        )}
 
         {/* Interactive overlay network - same coordinate space as the artwork */}
         <svg
