@@ -85,13 +85,7 @@ function CaseStudyPage() {
         />
       )}
 
-      {study.showcaseImage && (
-        <ShowcasePanel
-          image={study.showcaseImage}
-          websiteUrl={study.websiteUrl}
-          clientName={study.client.name}
-        />
-      )}
+      {study.showcaseImage && <ShowcasePanel image={study.showcaseImage} />}
 
       {study.websiteUrl && (
         <section className="pb-10 sm:pb-14">

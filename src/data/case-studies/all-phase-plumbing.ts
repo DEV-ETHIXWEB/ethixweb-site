@@ -15,7 +15,7 @@ export const ALL_PHASE_PLUMBING: CaseStudyDetail = {
   status: "Shipped",
   client: {
     name: "All Phase Plumbing",
-    logo: { src: `${IMG}/app-logo.png`, alt: "All Phase Plumbing logo", width: 900, height: 408 },
+    logo: { src: `${IMG}/app-logo.webp`, alt: "All Phase Plumbing logo", width: 900, height: 408 },
   },
   title: "All Phase Plumbing",
   summary:
@@ -23,7 +23,7 @@ export const ALL_PHASE_PLUMBING: CaseStudyDetail = {
   tags: ["Website Migration Project", "Web Design & Development", "SEO & Lead Gen"],
   websiteUrl: "https://allphaseplumbing.com",
   heroImage: {
-    src: `${IMG}/hero.jpg`,
+    src: `${IMG}/hero.webp`,
     alt: "All Phase Plumbing's new site shown on a phone, held up against a purple gradient background",
     width: 2000,
     height: 1500,
@@ -38,7 +38,7 @@ export const ALL_PHASE_PLUMBING: CaseStudyDetail = {
     cards: [
       {
         logo: {
-          src: `${IMG}/app-logo.png`,
+          src: `${IMG}/app-logo.webp`,
           alt: "All Phase Plumbing logo",
           width: 900,
           height: 408,
@@ -67,13 +67,13 @@ export const ALL_PHASE_PLUMBING: CaseStudyDetail = {
 
   beforeAfter: {
     beforeImage: {
-      src: `${IMG}/before-screenshot.jpg`,
+      src: `${IMG}/before-screenshot.webp`,
       alt: "The old All Phase Plumbing website",
       width: 1800,
       height: 1012,
     },
     afterImage: {
-      src: `${IMG}/after-screenshot.jpg`,
+      src: `${IMG}/after-screenshot.webp`,
       alt: "The rebuilt All Phase Plumbing website",
       width: 1800,
       height: 1012,
@@ -81,10 +81,10 @@ export const ALL_PHASE_PLUMBING: CaseStudyDetail = {
   },
 
   showcaseImage: {
-    src: `${IMG}/laptop-mockup.png`,
-    alt: "The rebuilt All Phase Plumbing homepage shown on a laptop",
-    width: 1800,
-    height: 1350,
+    src: `${IMG}/devices-mockup.webp`,
+    alt: "The rebuilt All Phase Plumbing site shown on a laptop, tablet and phone",
+    width: 5306,
+    height: 2857,
   },
 
   snapshot: {
@@ -129,7 +129,7 @@ export const ALL_PHASE_PLUMBING: CaseStudyDetail = {
         image: {
           // Pre-cropped from spotlight-homeowner.jpg to the reference
           // design's 2:1 framing (phone large, anchored left).
-          src: `${IMG}/spotlight-homeowner-framed.jpg`,
+          src: `${IMG}/spotlight-homeowner-framed.webp`,
           alt: "A phone showing the new site's homepage, resting on a stone surface",
           width: 1472,
           height: 736,
@@ -151,7 +151,7 @@ export const ALL_PHASE_PLUMBING: CaseStudyDetail = {
         image: {
           // Pre-cropped from spotlight-intentional.jpg to the reference
           // design's 2:1 framing (phone large, anchored left).
-          src: `${IMG}/spotlight-intentional-framed.jpg`,
+          src: `${IMG}/spotlight-intentional-framed.webp`,
           alt: "A hand holding a phone showing the new site's homepage",
           width: 1470,
           height: 735,

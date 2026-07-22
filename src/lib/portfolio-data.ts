@@ -51,7 +51,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       { value: "35 yrs", label: "Of reputation, finally online" },
     ],
     image: {
-      src: "/images/case-studies/all-phase-plumbing/after-screenshot.jpg",
+      src: "/images/case-studies/all-phase-plumbing/after-screenshot.webp",
       alt: "The rebuilt All Phase Plumbing website",
       width: 1800,
       height: 1012,
