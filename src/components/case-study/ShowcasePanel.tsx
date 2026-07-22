@@ -15,12 +15,12 @@ const DEVICES_IMAGE_ASPECT = "5306 / 2857";
 // with no gap or stretch.
 const HOLES = {
   laptop: {
-    left: 21.3,
-    top: 14.18,
+    left: 20.92,
+    top: 13.44,
     width: 45.99,
-    height: 64.79,
+    height: 63.7,
     frameWidth: 1440,
-    frameHeight: 1093,
+    frameHeight: 1074,
   },
   tablet: {
     left: 68.6,
