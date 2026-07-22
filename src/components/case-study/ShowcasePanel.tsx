@@ -84,19 +84,19 @@ export function ShowcasePanel({
                 </MacBookFrame>
               </div>
 
-              <div className="absolute -right-2 top-[6%] z-10 w-[26%] sm:right-[2%] sm:w-[24%]">
-                <IPadFrame className="rotate-[6deg]">
+              <div className="absolute -right-4 bottom-[-6%] z-10 w-[24%] sm:right-[2%] sm:bottom-[-8%] sm:w-[27%]">
+                <IPadFrame className="rotate-[2deg]">
                   <LiveScreen
                     websiteUrl={websiteUrl}
                     clientName={clientName}
                     device="Tablet"
-                    frameWidth={834}
-                    frameHeight={1112}
+                    frameWidth={768}
+                    frameHeight={1024}
                   />
                 </IPadFrame>
               </div>
 
-              <div className="absolute -left-4 bottom-0 z-20 w-[24%] sm:bottom-[-4%] sm:left-[4%] sm:w-[19%]">
+              <div className="absolute -left-4 bottom-0 z-20 w-[16%] sm:bottom-[-4%] sm:left-[2%] sm:w-[18%]">
                 <IPhoneFrame className="-rotate-[15deg]">
                   <LiveScreen
                     websiteUrl={websiteUrl}
