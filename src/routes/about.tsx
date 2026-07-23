@@ -617,7 +617,8 @@ function About() {
                   Ethixweb operates in the United States through{" "}
                   <span className="font-semibold text-foreground">Ethixweb USA LLC</span>, a
                   Wyoming-registered company. When you work with us, you're contracting with a US
-                  business entity, providing additional confidence, transparency, and accountability.
+                  business entity, providing additional confidence, transparency, and
+                  accountability.
                 </p>
               </div>
             </div>

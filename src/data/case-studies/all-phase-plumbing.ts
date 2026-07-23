@@ -15,7 +15,12 @@ export const ALL_PHASE_PLUMBING: CaseStudyDetail = {
   status: "Shipped",
   client: {
     name: "All Phase Plumbing",
-    logo: { src: `${IMG}/app-logo-outlined.webp`, alt: "All Phase Plumbing logo", width: 900, height: 408 },
+    logo: {
+      src: `${IMG}/app-logo-outlined.webp`,
+      alt: "All Phase Plumbing logo",
+      width: 900,
+      height: 408,
+    },
   },
   title: "All Phase Plumbing",
   summary:
