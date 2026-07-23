@@ -15,7 +15,7 @@ export const ALL_PHASE_PLUMBING: CaseStudyDetail = {
   status: "Shipped",
   client: {
     name: "All Phase Plumbing",
-    logo: { src: `${IMG}/app-logo.webp`, alt: "All Phase Plumbing logo", width: 900, height: 408 },
+    logo: { src: `${IMG}/app-logo-outlined.webp`, alt: "All Phase Plumbing logo", width: 900, height: 408 },
   },
   title: "All Phase Plumbing",
   summary:
@@ -38,7 +38,7 @@ export const ALL_PHASE_PLUMBING: CaseStudyDetail = {
     cards: [
       {
         logo: {
-          src: `${IMG}/app-logo.webp`,
+          src: `${IMG}/app-logo-outlined.webp`,
           alt: "All Phase Plumbing logo",
           width: 900,
           height: 408,
@@ -66,6 +66,15 @@ export const ALL_PHASE_PLUMBING: CaseStudyDetail = {
   },
 
   beforeAfter: {
+    intro: {
+      eyebrow: "Before & After",
+      title: "Same business, finally recognisable online.",
+      highlight: "finally recognisable online.",
+    },
+    body: [
+      "The old site buried a 35-year reputation under a dated template - slow, hard to read on a phone, and easy to scroll past. Nothing about it said “trust us with your emergency.”",
+      "The rebuild leads with the phone number, the license, and the reviews. Drag the slider to see the difference a purpose-built site makes.",
+    ],
     beforeImage: {
       src: `${IMG}/before-screenshot.webp`,
       alt: "The old All Phase Plumbing website",
@@ -81,10 +90,12 @@ export const ALL_PHASE_PLUMBING: CaseStudyDetail = {
   },
 
   showcaseImage: {
-    src: `${IMG}/devices-mockup.webp`,
+    // Background-removed cutout (cream backdrop stripped to transparency and
+    // cropped to the devices) so it sits cleanly on the dark page.
+    src: `${IMG}/devices-mockup-cutout.webp`,
     alt: "The rebuilt All Phase Plumbing site shown on a laptop, tablet and phone",
-    width: 5306,
-    height: 2857,
+    width: 4922,
+    height: 2631,
   },
 
   snapshot: {

@@ -4,6 +4,7 @@ import { Reveal } from "@/components/shared/Reveal";
 import { CaseStudyContainer } from "@/components/case-study/CaseStudyContainer";
 import type { CaseStudyDetail } from "@/data/case-studies/types";
 import { getNextCaseStudy } from "@/data/case-studies";
+import spiderweb from "@/assets/spiderweb.svg";
 
 /** Forced-dark closing panel (colors hardcoded, like the site's other
  * closing CTAs) plus the "back to Our Work" / "next case study" nav row
@@ -15,8 +16,29 @@ export function CaseStudyClosingCta({ study }: { study: CaseStudyDetail }) {
   const { intro, description, primaryCta, secondaryCta } = study.closingCta;
 
   return (
-    <section className="bg-[#141414] py-20 sm:py-28">
-      <CaseStudyContainer>
+    <section className="relative overflow-hidden bg-[#141414] py-20 sm:py-28">
+      {/* Same spiderweb web asset the site footer uses - here radiating out of
+          the top-right corner (hub aligned to the corner via the overflow
+          offsets + radial mask). */}
+      <img
+        src={spiderweb}
+        alt=""
+        aria-hidden="true"
+        draggable={false}
+        loading="lazy"
+        decoding="async"
+        className="pointer-events-none absolute max-w-none select-none"
+        style={{
+          width: 560,
+          right: -250,
+          top: -190,
+          opacity: 0.75,
+          filter: "drop-shadow(0 0 5px rgba(229,29,37,0.5))",
+          WebkitMaskImage: "radial-gradient(circle at 55.3% 45.7%, black 28%, transparent 72%)",
+          maskImage: "radial-gradient(circle at 55.3% 45.7%, black 28%, transparent 72%)",
+        }}
+      />
+      <CaseStudyContainer className="relative z-10">
         <Reveal>
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#e8334a]">
             {intro.eyebrow}

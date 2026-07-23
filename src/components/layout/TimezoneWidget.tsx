@@ -243,7 +243,7 @@ export function TimezoneWidget() {
                   </div>
                 </div>
 
-                <div className="space-y-1.5 max-h-56 overflow-y-auto pr-1">
+                <div className="themed-scroll space-y-1.5 max-h-56 overflow-y-auto pr-1">
                   <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-1">
                     Team check · worldwide
                   </p>

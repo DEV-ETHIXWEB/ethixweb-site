@@ -82,6 +82,8 @@ function CaseStudyPage() {
         <BeforeAfterSlider
           beforeImage={study.beforeAfter.beforeImage}
           afterImage={study.beforeAfter.afterImage}
+          intro={study.beforeAfter.intro}
+          body={study.beforeAfter.body}
         />
       )}
 

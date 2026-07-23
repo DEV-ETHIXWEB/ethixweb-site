@@ -148,7 +148,7 @@ const SCHEMA_ORG_WEBSITE = jsonLdStringify({
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="light" suppressHydrationWarning>
+    <html lang="en" className="dark" suppressHydrationWarning>
       <head>
         <HeadContent />
         <script

@@ -314,6 +314,49 @@ html.dark {
       inset 0 1px 0 rgba(255, 255, 255, 0.08);
   }
 
+  /* Thin, brand-tinted scrollbar for in-app scroll areas (e.g. the timezone
+     widget list) so it matches the theme instead of the OS default. */
+  .themed-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(229, 29, 37, 0.45) transparent;
+  }
+  .themed-scroll::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .themed-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .themed-scroll::-webkit-scrollbar-thumb {
+    background: rgba(229, 29, 37, 0.45);
+    border-radius: 9999px;
+  }
+  .themed-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(229, 29, 37, 0.7);
+  }
+
+  /* Slow breathing glow (keeps the translateX(-50%) centering while it pulses). */
+  @keyframes glow-pulse {
+    0%,
+    100% {
+      opacity: 0.4;
+      transform: translateX(-50%) scale(0.9);
+    }
+    50% {
+      opacity: 0.85;
+      transform: translateX(-50%) scale(1.1);
+    }
+  }
+  .animate-glow-pulse {
+    animation: glow-pulse 5s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-glow-pulse {
+      animation: none;
+      opacity: 0.6;
+    }
+  }
+
   /* ── Primary/secondary CTA language: calm, reassuring hover instead of
      dramatic transforms - a flat elevation + shadow + slight scale, tuned
      for an older, less mouse-adventurous audience. Red is kept only for the

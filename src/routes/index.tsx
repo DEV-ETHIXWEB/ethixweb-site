@@ -148,16 +148,22 @@ const stack = ["AI agents", "CRM", "Websites", "SEO", "Ads", "Analytics", "Autom
 function Home() {
   return (
     <SiteLayout>
-      <Hero />
-      <SignalStrip />
-      <Services />
-      <Suspense fallback={null}>
-        <GlobalNetwork />
-      </Suspense>
-      <Testimonials />
-      <OperatingSystem />
-      <Proof />
-      <CTA />
+      {/* One continuous hero background behind the whole page so the sections
+          below share the hero's tint instead of the flat page background.
+          The -mt-24 that used to sit on <Hero> lives here now so the gradient
+          starts under the navbar. */}
+      <div className="relative -mt-24 bg-gradient-hero">
+        <Hero />
+        <SignalStrip />
+        <Services />
+        <Suspense fallback={null}>
+          <GlobalNetwork />
+        </Suspense>
+        <Testimonials />
+        <OperatingSystem />
+        <Proof />
+        <CTA />
+      </div>
     </SiteLayout>
   );
 }
@@ -185,7 +191,7 @@ function useShowHeroBadges() {
 function Hero() {
   const showBadges = useShowHeroBadges();
   return (
-    <section className="relative -mt-24 overflow-hidden bg-gradient-hero pb-4 pt-20 sm:pb-28 sm:pt-36 lg:pt-40">
+    <section className="relative overflow-hidden pb-4 pt-20 sm:pb-28 sm:pt-36 lg:pt-40">
       <div className="absolute inset-0 grid-bg opacity-30" />
       <GlowBlob
         size="md"

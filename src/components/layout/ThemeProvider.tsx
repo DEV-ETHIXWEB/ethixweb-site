@@ -11,10 +11,11 @@ export function useTheme() {
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  // Starts at the same "light" default the server renders (see html className in
-  // __root.tsx) so the first client render matches the SSR output exactly; the
-  // real stored preference is applied in the effect below, once mounted.
-  const [theme, setTheme] = useState<Theme>("light");
+  // Starts at the same "dark" default the server renders (see html className in
+  // __root.tsx) so the first client render matches the SSR output exactly; a
+  // stored preference (only ever set once the user toggles) is applied in the
+  // effect below, once mounted.
+  const [theme, setTheme] = useState<Theme>("dark");
 
   useEffect(() => {
     try {
