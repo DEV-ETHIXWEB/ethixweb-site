@@ -102,6 +102,11 @@ export interface CaseStudyDetail {
   beforeAfter?: {
     beforeImage: Image;
     afterImage: Image;
+    /** Optional copy shown beside the slider (slider left, this text right on
+     * desktop). Omit both to render the slider on its own. */
+    intro?: SectionIntro;
+    /** One or more paragraphs rendered under `intro`, beside the slider. */
+    body?: string[];
   };
 
   /** Plain framed photo with no overlay copy (the "laptop in hand" showcase moment). */

@@ -10,13 +10,10 @@ export function ShowcasePanel({ image }: { image: Image }) {
   return (
     <section className="pb-6 sm:pb-10">
       <Reveal>
-        <div
-          className="flex items-center justify-center px-6 py-16 sm:py-20"
-          style={{
-            background:
-              "radial-gradient(ellipse 65% 85% at 50% 45%, #f2f1df 0%, var(--color-background) 100%)",
-          }}
-        >
+        {/* No backdrop glow - the device composite has a transparent
+            background, so it sits straight on the page (the cream glow read
+            as an odd light block in dark mode). */}
+        <div className="flex items-center justify-center px-6 py-16 sm:py-20">
           <img
             src={image.src}
             alt={image.alt}

@@ -205,6 +205,7 @@ function About() {
       </section>
 
       <MarqueeBand
+        rotate={false}
         items={[
           "Senior-led",
           "No account managers",
@@ -601,16 +602,24 @@ function About() {
       <section className="py-16">
         <Container size="narrow">
           <Reveal>
-            <div className="glass rounded-3xl p-8 text-center sm:p-10">
-              <p className="mb-3 text-sm font-bold uppercase tracking-widest text-primary-text">
-                US Business Entity
-              </p>
-              <p className="text-muted-foreground leading-relaxed">
-                Ethixweb operates in the United States through{" "}
-                <span className="font-semibold text-foreground">Ethixweb USA LLC</span>, a
-                Wyoming-registered company. When you work with us, you're contracting with a US
-                business entity, providing additional confidence, transparency, and accountability.
-              </p>
+            <div className="glass relative overflow-hidden rounded-3xl p-8 text-center shadow-glow ring-1 ring-primary/15 sm:p-10">
+              <GlowBlob
+                size="sm"
+                color="primary"
+                blur={90}
+                className="left-1/2 top-0 -translate-x-1/2 opacity-70"
+              />
+              <div className="relative z-10">
+                <p className="mb-3 text-sm font-bold uppercase tracking-widest text-primary-text">
+                  US Business Entity
+                </p>
+                <p className="text-muted-foreground leading-relaxed">
+                  Ethixweb operates in the United States through{" "}
+                  <span className="font-semibold text-foreground">Ethixweb USA LLC</span>, a
+                  Wyoming-registered company. When you work with us, you're contracting with a US
+                  business entity, providing additional confidence, transparency, and accountability.
+                </p>
+              </div>
             </div>
           </Reveal>
         </Container>

@@ -9,6 +9,7 @@ import { GlowBlob } from "@/components/shared/GlowBlob";
 import { HeroWebVisual } from "@/components/shared/HeroWebVisual";
 import { MarqueeBand } from "@/components/shared/MarqueeBand";
 import { EditorialHeader } from "@/components/shared/EditorialHeader";
+import { EngagementRhythm } from "@/components/shared/EngagementRhythm";
 import {
   ArrowUpRight,
   ChevronDown,
@@ -367,32 +368,7 @@ function Services() {
             title="Audit first. Build second. Optimize forever."
             sub="Every service above plugs into the same four-beat operating rhythm, so you always know what happens next."
           />
-          <div className="relative">
-            {/* Connector rail behind the steps (desktop) */}
-            <div
-              aria-hidden="true"
-              className="absolute left-[12.5%] right-[12.5%] top-6 hidden h-px bg-gradient-to-r from-primary/40 via-primary/20 to-primary/40 lg:block"
-            />
-            <ol className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-              {ENGAGEMENT_STEPS.map((step, i) => (
-                <Reveal as="li" key={step.t} delay={i * 0.08} className="relative">
-                  <div className="flex flex-col items-start lg:items-center lg:text-center">
-                    <span className="relative z-10 flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl bg-primary text-primary-foreground shadow-glow ring-4 ring-background">
-                      <span className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/25 via-transparent to-transparent" />
-                      <step.icon className="relative h-5 w-5" strokeWidth={2} />
-                    </span>
-                    <p className="mt-4 text-xs font-bold uppercase tracking-widest text-primary-text">
-                      Step {i + 1}
-                    </p>
-                    <h3 className="mt-1 font-display text-xl font-semibold">{step.t}</h3>
-                    <p className="mt-2 max-w-xs text-sm leading-relaxed text-muted-foreground">
-                      {step.d}
-                    </p>
-                  </div>
-                </Reveal>
-              ))}
-            </ol>
-          </div>
+          <EngagementRhythm steps={ENGAGEMENT_STEPS} />
         </Container>
       </section>
 
