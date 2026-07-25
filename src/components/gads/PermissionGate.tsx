@@ -49,7 +49,7 @@ export function PermissionGate({ media, onReady }: PermissionGateProps) {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4 py-16">
+    <div className="flex min-h-dvh items-center justify-center bg-background px-4 py-16">
       <Reveal>
         <div className="premium-card w-full max-w-lg rounded-3xl p-6 sm:p-8">
           <span className="flex h-11 w-11 items-center justify-center rounded-full bg-amber-500/15 text-amber-500">

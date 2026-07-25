@@ -48,6 +48,8 @@ export function BeforeAfterSlider({
           <div className="group/ba relative aspect-video select-none overflow-hidden rounded-2xl border border-border bg-muted shadow-lg ring-1 ring-black/5">
             <img
               src={afterImage.src}
+              srcSet={afterImage.srcSet}
+              sizes="(min-width: 1024px) 1200px, 100vw"
               alt={afterImage.alt}
               width={afterImage.width}
               height={afterImage.height}
@@ -61,6 +63,8 @@ export function BeforeAfterSlider({
             >
               <img
                 src={beforeImage.src}
+                srcSet={beforeImage.srcSet}
+                sizes="(min-width: 1024px) 1200px, 100vw"
                 alt={beforeImage.alt}
                 width={beforeImage.width}
                 height={beforeImage.height}

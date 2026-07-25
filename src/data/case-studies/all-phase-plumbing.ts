@@ -29,6 +29,7 @@ export const ALL_PHASE_PLUMBING: CaseStudyDetail = {
   websiteUrl: "https://allphaseplumbing.com",
   heroImage: {
     src: `${IMG}/hero.webp`,
+    srcSet: `${IMG}/hero-640w.webp 640w, ${IMG}/hero-1024w.webp 1024w, ${IMG}/hero-1600w.webp 1600w, ${IMG}/hero.webp 2000w`,
     alt: "All Phase Plumbing's new site shown on a phone, held up against a purple gradient background",
     width: 2000,
     height: 1500,
@@ -82,12 +83,14 @@ export const ALL_PHASE_PLUMBING: CaseStudyDetail = {
     ],
     beforeImage: {
       src: `${IMG}/before-screenshot.webp`,
+      srcSet: `${IMG}/before-screenshot-640w.webp 640w, ${IMG}/before-screenshot-1024w.webp 1024w, ${IMG}/before-screenshot-1600w.webp 1600w, ${IMG}/before-screenshot.webp 1800w`,
       alt: "The old All Phase Plumbing website",
       width: 1800,
       height: 1012,
     },
     afterImage: {
       src: `${IMG}/after-screenshot.webp`,
+      srcSet: `${IMG}/after-screenshot-640w.webp 640w, ${IMG}/after-screenshot-1024w.webp 1024w, ${IMG}/after-screenshot-1600w.webp 1600w, ${IMG}/after-screenshot.webp 1800w`,
       alt: "The rebuilt All Phase Plumbing website",
       width: 1800,
       height: 1012,
@@ -98,6 +101,7 @@ export const ALL_PHASE_PLUMBING: CaseStudyDetail = {
     // Background-removed cutout (cream backdrop stripped to transparency and
     // cropped to the devices) so it sits cleanly on the dark page.
     src: `${IMG}/devices-mockup-cutout.webp`,
+    srcSet: `${IMG}/devices-mockup-cutout-640w.webp 640w, ${IMG}/devices-mockup-cutout-1024w.webp 1024w, ${IMG}/devices-mockup-cutout-1600w.webp 1600w, ${IMG}/devices-mockup-cutout.webp 4922w`,
     alt: "The rebuilt All Phase Plumbing site shown on a laptop, tablet and phone",
     width: 4922,
     height: 2631,
@@ -146,6 +150,7 @@ export const ALL_PHASE_PLUMBING: CaseStudyDetail = {
           // Pre-cropped from spotlight-homeowner.jpg to the reference
           // design's 2:1 framing (phone large, anchored left).
           src: `${IMG}/spotlight-homeowner-framed.webp`,
+          srcSet: `${IMG}/spotlight-homeowner-framed-640w.webp 640w, ${IMG}/spotlight-homeowner-framed-1024w.webp 1024w, ${IMG}/spotlight-homeowner-framed.webp 1472w`,
           alt: "A phone showing the new site's homepage, resting on a stone surface",
           width: 1472,
           height: 736,
@@ -168,6 +173,7 @@ export const ALL_PHASE_PLUMBING: CaseStudyDetail = {
           // Pre-cropped from spotlight-intentional.jpg to the reference
           // design's 2:1 framing (phone large, anchored left).
           src: `${IMG}/spotlight-intentional-framed.webp`,
+          srcSet: `${IMG}/spotlight-intentional-framed-640w.webp 640w, ${IMG}/spotlight-intentional-framed-1024w.webp 1024w, ${IMG}/spotlight-intentional-framed.webp 1470w`,
           alt: "A hand holding a phone showing the new site's homepage",
           width: 1470,
           height: 735,

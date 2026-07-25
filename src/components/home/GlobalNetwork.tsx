@@ -322,6 +322,16 @@ function isLand(lat: number, lon: number, map: Uint8Array): boolean {
 }
 
 // ─── Math helpers ─────────────────────────────────────────────────────────────
+// Sin/cos/hypot aren't guaranteed bit-identical between Node's and the
+// browser's V8 build, so the very first client render (before hydration
+// effects run) can compute a coordinate that differs from SSR by a few ULPs -
+// enough to trip a hydration-mismatch warning on the rendered SVG attribute
+// even though the rotation state feeding it is otherwise identical on both
+// sides. Rounding every trig result to 6 decimal places absorbs that noise
+// (a float64 ULP here is ~1e-13 to 1e-16) while staying many orders of
+// magnitude finer than a pixel, so it's invisible at render scale.
+const roundEps = (n: number) => Math.round(n * 1e6) / 1e6;
+
 function project(lat: number, lon: number, rotY: number, rotX: number) {
   const phi = (90 - lat) * (Math.PI / 180);
   const theta = (lon + rotY) * (Math.PI / 180);
@@ -330,7 +340,7 @@ function project(lat: number, lon: number, rotY: number, rotX: number) {
   const z = Math.sin(phi) * Math.sin(theta);
   const cx = Math.cos((rotX * Math.PI) / 180);
   const sx = Math.sin((rotX * Math.PI) / 180);
-  return { x, y: y * cx - z * sx, z: y * sx + z * cx };
+  return { x: roundEps(x), y: roundEps(y * cx - z * sx), z: roundEps(y * sx + z * cx) };
 }
 
 // Shared tick - one setInterval drives all clocks
@@ -797,9 +807,12 @@ const GlobeStage = forwardRef<GlobeStageHandle>(function GlobeStage(_props, ref)
     const lift = Math.min(dist * liftFactor, radius * 0.72);
     const cd = Math.hypot(cx - mx, cy - my) || 1;
     const dir = reverse ? -1 : 1;
+    // Math.hypot is the other transcendental-ish call in this file (see
+    // roundEps above) - round its output too so the arc control point can't
+    // reintroduce a fresh cross-runtime epsilon into the path `d` attribute.
     return {
-      x: mx + ((cx - mx) / cd) * lift * dir - dy * 0.12 * dir,
-      y: my + ((cy - my) / cd) * lift * dir + dx * 0.12 * dir,
+      x: roundEps(mx + ((cx - mx) / cd) * lift * dir - dy * 0.12 * dir),
+      y: roundEps(my + ((cy - my) / cd) * lift * dir + dx * 0.12 * dir),
     };
   };
 

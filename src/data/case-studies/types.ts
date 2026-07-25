@@ -16,6 +16,11 @@ export type Image = {
   /** Natural width/height, used to reserve layout space and avoid CLS. */
   width: number;
   height: number;
+  /** Optional `srcSet` string (e.g. "a-640w.webp 640w, a-1024w.webp 1024w")
+   * for large photos with generated smaller variants - see
+   * scripts/generate-responsive-images.mjs. `src` stays the largest/fallback
+   * size, so this is safe to omit for images with no variants. */
+  srcSet?: string;
 };
 
 /** A short bullet list with a check icon, reused by spotlight and tech-stack cards. */

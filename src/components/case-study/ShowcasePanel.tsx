@@ -16,6 +16,8 @@ export function ShowcasePanel({ image }: { image: Image }) {
         <div className="flex items-center justify-center px-6 py-16 sm:py-20">
           <img
             src={image.src}
+            srcSet={image.srcSet}
+            sizes="(min-width: 1280px) 1200px, 100vw"
             alt={image.alt}
             width={image.width}
             height={image.height}

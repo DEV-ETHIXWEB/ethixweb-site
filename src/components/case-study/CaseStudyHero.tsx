@@ -67,6 +67,8 @@ export function CaseStudyHero({ study }: { study: CaseStudyDetail }) {
           <div className="aspect-[4/2.55] overflow-hidden rounded-[2rem] shadow-lg lg:translate-x-[50px]">
             <img
               src={study.heroImage.src}
+              srcSet={study.heroImage.srcSet}
+              sizes="(min-width: 1024px) 55vw, 100vw"
               alt={study.heroImage.alt}
               width={study.heroImage.width}
               height={study.heroImage.height}

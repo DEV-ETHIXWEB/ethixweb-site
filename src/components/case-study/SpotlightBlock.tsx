@@ -33,6 +33,8 @@ export function SpotlightBlock({ item }: { item: SpotlightItem }) {
         <div className={cn("relative mx-auto", !isBleed && "max-w-[1440px]")}>
           <img
             src={item.image.src}
+            srcSet={item.image.srcSet}
+            sizes="(min-width: 1024px) 1200px, 100vw"
             alt={item.image.alt}
             width={item.image.width}
             height={item.image.height}
