@@ -23,6 +23,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PortfolioIndexRouteImport } from './routes/portfolio.index'
 import { Route as CareersIndexRouteImport } from './routes/careers.index'
+import { Route as QrSlugRouteImport } from './routes/qr.$slug'
 import { Route as PortfolioSlugRouteImport } from './routes/portfolio.$slug'
 import { Route as PoliciesTermsRouteImport } from './routes/policies.terms'
 import { Route as PoliciesRefundsRouteImport } from './routes/policies.refunds'
@@ -120,6 +121,11 @@ const CareersIndexRoute = CareersIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => CareersRoute,
+} as any)
+const QrSlugRoute = QrSlugRouteImport.update({
+  id: '/qr/$slug',
+  path: '/qr/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const PortfolioSlugRoute = PortfolioSlugRouteImport.update({
   id: '/$slug',
@@ -282,6 +288,7 @@ export interface FileRoutesByFullPath {
   '/policies/refunds': typeof PoliciesRefundsRoute
   '/policies/terms': typeof PoliciesTermsRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
+  '/qr/$slug': typeof QrSlugRoute
   '/careers/': typeof CareersIndexRoute
   '/portfolio/': typeof PortfolioIndexRoute
   '/api/assessment/recording-upload': typeof ApiAssessmentRecordingUploadRoute
@@ -323,6 +330,7 @@ export interface FileRoutesByTo {
   '/policies/refunds': typeof PoliciesRefundsRoute
   '/policies/terms': typeof PoliciesTermsRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
+  '/qr/$slug': typeof QrSlugRoute
   '/careers': typeof CareersIndexRoute
   '/portfolio': typeof PortfolioIndexRoute
   '/api/assessment/recording-upload': typeof ApiAssessmentRecordingUploadRoute
@@ -367,6 +375,7 @@ export interface FileRoutesById {
   '/policies/refunds': typeof PoliciesRefundsRoute
   '/policies/terms': typeof PoliciesTermsRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
+  '/qr/$slug': typeof QrSlugRoute
   '/careers/': typeof CareersIndexRoute
   '/portfolio/': typeof PortfolioIndexRoute
   '/api/assessment/recording-upload': typeof ApiAssessmentRecordingUploadRoute
@@ -412,6 +421,7 @@ export interface FileRouteTypes {
     | '/policies/refunds'
     | '/policies/terms'
     | '/portfolio/$slug'
+    | '/qr/$slug'
     | '/careers/'
     | '/portfolio/'
     | '/api/assessment/recording-upload'
@@ -453,6 +463,7 @@ export interface FileRouteTypes {
     | '/policies/refunds'
     | '/policies/terms'
     | '/portfolio/$slug'
+    | '/qr/$slug'
     | '/careers'
     | '/portfolio'
     | '/api/assessment/recording-upload'
@@ -496,6 +507,7 @@ export interface FileRouteTypes {
     | '/policies/refunds'
     | '/policies/terms'
     | '/portfolio/$slug'
+    | '/qr/$slug'
     | '/careers/'
     | '/portfolio/'
     | '/api/assessment/recording-upload'
@@ -535,6 +547,7 @@ export interface RootRouteChildren {
   PoliciesPrivacyRoute: typeof PoliciesPrivacyRoute
   PoliciesRefundsRoute: typeof PoliciesRefundsRoute
   PoliciesTermsRoute: typeof PoliciesTermsRoute
+  QrSlugRoute: typeof QrSlugRoute
   ApiAssessmentRecordingUploadRoute: typeof ApiAssessmentRecordingUploadRoute
   ApiAssessmentSaveRoute: typeof ApiAssessmentSaveRoute
   ApiAssessmentStartRoute: typeof ApiAssessmentStartRoute
@@ -653,6 +666,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/careers/'
       preLoaderRoute: typeof CareersIndexRouteImport
       parentRoute: typeof CareersRoute
+    }
+    '/qr/$slug': {
+      id: '/qr/$slug'
+      path: '/qr/$slug'
+      fullPath: '/qr/$slug'
+      preLoaderRoute: typeof QrSlugRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/portfolio/$slug': {
       id: '/portfolio/$slug'
@@ -897,6 +917,7 @@ const rootRouteChildren: RootRouteChildren = {
   PoliciesPrivacyRoute: PoliciesPrivacyRoute,
   PoliciesRefundsRoute: PoliciesRefundsRoute,
   PoliciesTermsRoute: PoliciesTermsRoute,
+  QrSlugRoute: QrSlugRoute,
   ApiAssessmentRecordingUploadRoute: ApiAssessmentRecordingUploadRoute,
   ApiAssessmentSaveRoute: ApiAssessmentSaveRoute,
   ApiAssessmentStartRoute: ApiAssessmentStartRoute,
