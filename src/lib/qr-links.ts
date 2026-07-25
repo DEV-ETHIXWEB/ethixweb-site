@@ -4,5 +4,5 @@
 // where someone's card points to is just editing the value below and
 // redeploying, never reprinting a new QR code.
 export const QR_LINKS: Record<string, string> = {
-  amar: "/vcard/amar.vcf",
+  amar: "https://ethixweb.com",
 };
