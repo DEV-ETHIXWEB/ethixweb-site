@@ -8,15 +8,17 @@ import type { InfoCard, SectionIntro } from "@/data/case-studies/types";
 export function IntroCardsSection({
   intro,
   cards,
+  glowLines = false,
 }: {
   intro: SectionIntro;
   cards: readonly InfoCard[];
+  glowLines?: boolean;
 }) {
   return (
     <section className="py-10 sm:py-14">
       <CaseStudyContainer>
         <SectionHeading intro={intro} />
-        <InfoCardGrid cards={cards} />
+        <InfoCardGrid cards={cards} glowLines={glowLines} />
       </CaseStudyContainer>
     </section>
   );

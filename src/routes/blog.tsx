@@ -308,7 +308,7 @@ function Blog() {
         </Container>
       </section>
 
-      <MarqueeBand items={TOPICS} />
+      <MarqueeBand items={TOPICS} rotate={false} />
 
       {/* ── Featured essay ───────────────────────────────────────────────── */}
       {filter === "All" && (

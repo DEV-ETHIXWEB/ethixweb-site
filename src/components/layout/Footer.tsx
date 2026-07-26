@@ -72,8 +72,7 @@ const SOCIAL_LINKS = [
 
 export function Footer() {
   return (
-    <footer className="relative mt-8 overflow-hidden border-t border-border sm:mt-24">
-      <div className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
+    <footer className="relative overflow-hidden">
       {/* Spiderweb accent radiating out of the bottom-right corner (hub sits at the corner:
        * the artwork's hub is at 55.3% / 45.7%, so the overflow offsets place it there). */}
       <img

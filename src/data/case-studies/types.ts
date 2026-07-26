@@ -76,6 +76,9 @@ export type TechStackItem = {
   checklist?: Checklist;
   /** Optional supporting screenshot/photo. Renders a branded placeholder panel when omitted. */
   image?: Image;
+  /** Fit the image with `object-contain` (whole image visible, "zoomed out")
+   * on a black cell instead of the default `object-cover` crop. */
+  imageContain?: boolean;
 };
 
 export type CtaLink = { label: string; href: string; external?: boolean };

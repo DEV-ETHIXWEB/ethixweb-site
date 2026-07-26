@@ -99,7 +99,7 @@ function CaseStudyPage() {
 
       <SectionDivider />
 
-      <IntroCardsSection intro={study.snapshot.intro} cards={study.snapshot.cards} />
+      <IntroCardsSection intro={study.snapshot.intro} cards={study.snapshot.cards} glowLines />
 
       {study.designApproach && (
         <>

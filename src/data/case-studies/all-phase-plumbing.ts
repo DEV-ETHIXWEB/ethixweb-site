@@ -210,6 +210,13 @@ export const ALL_PHASE_PLUMBING: CaseStudyDetail = {
           "Built to handle traffic spikes without slowing down",
           "Faster page loads than the legacy WordPress site",
         ],
+        image: {
+          src: `${IMG}/tech-stack-platform.webp`,
+          srcSet: `${IMG}/tech-stack-platform-640w.webp 640w, ${IMG}/tech-stack-platform-1024w.webp 1024w, ${IMG}/tech-stack-platform.webp 1254w`,
+          alt: "The custom-built site's source in a code editor, with a 98 Lighthouse performance score",
+          width: 1254,
+          height: 1254,
+        },
       },
       {
         title: "Hosting: Google Cloud",
@@ -220,6 +227,14 @@ export const ALL_PHASE_PLUMBING: CaseStudyDetail = {
           "Automatic backups, so nothing gets lost",
           "Built-in security that updates itself",
         ],
+        image: {
+          src: `${IMG}/tech-stack-hosting.webp`,
+          srcSet: `${IMG}/tech-stack-hosting-640w.webp 640w, ${IMG}/tech-stack-hosting-1024w.webp 1024w, ${IMG}/tech-stack-hosting.webp 1254w`,
+          alt: "A cloud infrastructure dashboard showing a live region map and 99.99% uptime",
+          width: 1254,
+          height: 1254,
+        },
+        imageContain: true,
       },
     ],
   },

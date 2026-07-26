@@ -16,14 +16,14 @@ export function EngagementRhythm({ steps }: { steps: Step[] }) {
   const doneRef = useRef(false);
   const n = steps.length;
 
-  // Dwell: 2s continuously in view -> start once. Leaving early clears the
+  // Dwell: 1s continuously in view -> start once. Leaving early clears the
   // timer (cleanup); doneRef guarantees it never re-fires.
   useEffect(() => {
     if (!inView || doneRef.current) return;
     const t = setTimeout(() => {
       doneRef.current = true;
       setStarted(true);
-    }, 2000);
+    }, 1000);
     return () => clearTimeout(t);
   }, [inView]);
 

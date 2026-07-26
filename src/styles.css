@@ -1552,3 +1552,53 @@ html {
 .text-rotate-space {
   white-space: pre;
 }
+
+/* ── Animated glowing border beam: a bright arc of light that travels
+   continuously around a card's rounded edge. The conic gradient's start angle
+   is animated via the registered custom property; a masked ring shows only the
+   1-2px border, and a blurred copy adds the glow halo. ── */
+@property --beam-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@keyframes beam-spin {
+  to {
+    --beam-angle: 360deg;
+  }
+}
+.glow-border::before,
+.glow-border::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--beam-angle),
+    transparent 0deg,
+    transparent 210deg,
+    rgba(229, 29, 37, 0.85) 300deg,
+    #ff6167 335deg,
+    rgba(229, 29, 37, 0) 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: beam-spin 4s linear infinite;
+  pointer-events: none;
+}
+/* Blurred halo behind the sharp beam */
+.glow-border::after {
+  padding: 2.5px;
+  filter: blur(6px);
+  opacity: 0.75;
+}
+@media (prefers-reduced-motion: reduce) {
+  .glow-border::before,
+  .glow-border::after {
+    animation: none;
+  }
+}

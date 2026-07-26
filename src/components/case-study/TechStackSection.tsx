@@ -33,17 +33,23 @@ export function TechStackSection({
                     className={cn(
                       "min-h-[16rem] sm:min-h-[37rem]",
                       imageFirst ? "sm:order-1" : "sm:order-2",
+                      item.imageContain && "bg-black",
                     )}
                   >
                     {item.image ? (
                       <img
                         src={item.image.src}
+                        srcSet={item.image.srcSet}
+                        sizes="(min-width: 640px) 50vw, 100vw"
                         alt={item.image.alt}
                         width={item.image.width}
                         height={item.image.height}
                         loading="lazy"
                         decoding="async"
-                        className="h-full w-full object-cover"
+                        className={cn(
+                          "h-full w-full",
+                          item.imageContain ? "object-contain" : "object-cover",
+                        )}
                       />
                     ) : (
                       <div className="card-mockup-bg flex h-full w-full items-center justify-center">

@@ -499,7 +499,7 @@ function About() {
           </div>
 
           <Reveal delay={0.1}>
-            <div className="glass-strong rounded-[2rem] relative overflow-hidden p-8 sm:p-10 lg:p-12">
+            <div className="glow-border glass-strong rounded-[2rem] relative overflow-hidden p-8 sm:p-10 lg:p-12">
               <GlowBlob size="sm" color="primary" blur={100} className="-right-20 -top-20" />
               <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr] lg:items-center">
                 <div className="grid gap-4 sm:grid-cols-2">

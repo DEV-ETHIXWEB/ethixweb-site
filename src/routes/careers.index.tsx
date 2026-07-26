@@ -578,7 +578,7 @@ function Careers() {
           would flip illegible in light mode. */}
       <section
         id="who-thrives"
-        className="relative scroll-mt-24 overflow-hidden border-y border-white/5 bg-[#120506] py-28 sm:py-32"
+        className="relative scroll-mt-24 overflow-hidden border-t border-white/5 bg-[#120506] pt-28 pb-16 sm:pt-32 sm:pb-16"
       >
         <div
           aria-hidden="true"
@@ -586,7 +586,7 @@ function Careers() {
         />
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-[radial-gradient(45%_40%_at_88%_95%,rgba(138,24,28,0.22),transparent_70%)]"
+          className="absolute inset-0 bg-[radial-gradient(45%_40%_at_88%_55%,rgba(138,24,28,0.22),transparent_70%)]"
         />
         <div className="absolute inset-0 grid-bg opacity-15" />
 
@@ -698,17 +698,43 @@ function Careers() {
             <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {CULTURE_VALUES.map((item, i) => (
                 <Reveal key={item.t} delay={i * 0.07}>
+                  {/* Cards light up one-by-one on scroll-in: a red outer glow,
+                      a glowish radial background and a warm border, staggered
+                      left-to-right. */}
                   <motion.div
-                    whileHover={{ y: -5 }}
-                    transition={{ duration: 0.25, ease: "easeOut" }}
-                    className="flex h-full flex-col rounded-3xl border border-white/10 bg-white/[0.05] p-6 backdrop-blur-sm transition-colors duration-300 hover:border-[#f2545b]/40 hover:bg-white/[0.08]"
+                    whileHover={{ y: -5, transition: { duration: 0.25, ease: "easeOut" } }}
+                    initial={{
+                      boxShadow: "0 0 0 0 rgba(229,29,37,0)",
+                      borderColor: "rgba(255,255,255,0.1)",
+                    }}
+                    whileInView={{
+                      boxShadow: "0 0 26px 1px rgba(229,29,37,0.3)",
+                      borderColor: "rgba(242,84,91,0.35)",
+                    }}
+                    viewport={{ once: true, margin: "-80px" }}
+                    transition={{ duration: 0.7, delay: i * 0.25, ease: "easeOut" }}
+                    className="relative flex h-full flex-col overflow-hidden rounded-3xl border bg-white/[0.05] p-6 backdrop-blur-sm hover:bg-white/[0.08]"
                   >
+                    <motion.span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-0 rounded-3xl"
+                      style={{
+                        background:
+                          "radial-gradient(120% 75% at 50% 0%, rgba(229,29,37,0.18), transparent 70%)",
+                      }}
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      viewport={{ once: true, margin: "-80px" }}
+                      transition={{ duration: 0.7, delay: i * 0.25, ease: "easeOut" }}
+                    />
                     <span className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-primary text-primary-foreground shadow-glow ring-1 ring-white/15">
                       <span className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/25 via-transparent to-transparent" />
                       <item.icon className="relative h-5 w-5" strokeWidth={2} />
                     </span>
-                    <h4 className="mt-5 font-display text-lg font-semibold text-white">{item.t}</h4>
-                    <p className="mt-2 text-sm leading-relaxed text-white/65">{item.d}</p>
+                    <h4 className="relative mt-5 font-display text-lg font-semibold text-white">
+                      {item.t}
+                    </h4>
+                    <p className="relative mt-2 text-sm leading-relaxed text-white/65">{item.d}</p>
                   </motion.div>
                 </Reveal>
               ))}
@@ -740,7 +766,7 @@ function Careers() {
           Full-crimson finale panel. Like the founder note, it's the same in
           both themes, so every color in here is hardcoded against the brand
           gradient rather than using theme tokens. */}
-      <section className="py-20">
+      <section className="bg-[#120506] pb-20 pt-8">
         <Container className="relative overflow-hidden rounded-4xl bg-[linear-gradient(135deg,#9d1b20_0%,#6b1114_45%,#30090b_100%)] px-6 py-12 text-center shadow-glow ring-1 ring-white/10 sm:px-12 sm:py-14 lg:py-16">
           <div
             aria-hidden="true"

@@ -288,7 +288,7 @@ function Services() {
         </Container>
       </section>
 
-      <MarqueeBand items={SERVICES.map((s) => s.title)} />
+      <MarqueeBand items={SERVICES.map((s) => s.title)} rotate={false} />
 
       {/* ── What we offer ─────────────────────────────────────────────────── */}
       <section id="what-we-offer" className="scroll-mt-24 py-24">

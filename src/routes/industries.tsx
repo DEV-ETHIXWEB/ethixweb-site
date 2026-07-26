@@ -180,7 +180,7 @@ function Industries() {
         </Container>
       </section>
 
-      <MarqueeBand items={MARQUEE_ITEMS} />
+      <MarqueeBand items={MARQUEE_ITEMS} rotate={false} />
 
       <IndustryBlock
         id="hvac"
