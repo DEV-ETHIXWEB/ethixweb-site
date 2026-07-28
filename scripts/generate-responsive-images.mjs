@@ -19,6 +19,8 @@ const WIDTHS = [640, 1024, 1600];
 const CASE_STUDY_DIRS = [
   "public/images/case-studies/all-phase-plumbing",
   "public/images/case-studies/garys-pipeline",
+  "public/images/case-studies/catching-chrome",
+  "public/images/case-studies/preventive-home-solutions",
 ];
 
 // Only these source files get variants - small logos/icons in the same
@@ -34,6 +36,7 @@ const TARGET_FILES = new Set([
   "showcase-devices.webp",
   "spotlight-enquiry-flow.webp",
   "spotlight-chat-assistant.webp",
+  "spotlight-1.webp",
 ]);
 
 for (const dir of CASE_STUDY_DIRS) {

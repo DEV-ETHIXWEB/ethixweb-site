@@ -64,7 +64,10 @@ export function CaseStudyHero({ study }: { study: CaseStudyDetail }) {
           {/* The 50px right-shift is the desktop bleed-to-the-edge effect;
            * below lg (single column) it would just push the panel off the
            * right side of the screen, so it only applies at lg+. */}
-          <div className="aspect-[4/2.55] overflow-hidden rounded-[2rem] shadow-lg lg:translate-x-[50px]">
+          {/* Dark mode drops the shared shadow-lg white hairline ring: on this
+           * full-bleed photo panel the ring's left edge sits against the near-
+           * black page background and reads as a stray white line. */}
+          <div className="aspect-[4/2.55] overflow-hidden rounded-[2rem] shadow-lg dark:shadow-[0_20px_48px_-20px_rgba(0,0,0,0.6)] lg:translate-x-[50px]">
             <img
               src={study.heroImage.src}
               srcSet={study.heroImage.srcSet}

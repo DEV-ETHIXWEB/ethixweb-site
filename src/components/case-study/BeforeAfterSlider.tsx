@@ -45,6 +45,11 @@ export function BeforeAfterSlider({
 
         {/* Full-width within the gutters - lines up with the cards above. */}
         <Reveal>
+          {/* 16:9 frame: matches the native ratio of the landscape site
+           * screenshots (All Phase's before/after are exactly 16:9) and keeps
+           * the window a sensible height. `object-top` on the before anchors
+           * its crop at the browser chrome/header so a taller portrait capture
+           * (e.g. Gary's) still reads header -> hero instead of a mid-page band. */}
           <div className="group/ba relative aspect-video select-none overflow-hidden rounded-2xl border border-border bg-muted shadow-lg ring-1 ring-black/5">
             <img
               src={afterImage.src}
@@ -70,7 +75,7 @@ export function BeforeAfterSlider({
                 height={beforeImage.height}
                 loading="lazy"
                 decoding="async"
-                className="h-full w-full object-cover"
+                className="h-full w-full object-cover object-top"
               />
             </div>
 

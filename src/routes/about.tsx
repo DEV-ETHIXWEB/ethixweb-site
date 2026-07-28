@@ -7,7 +7,6 @@ import { EditorialHeader } from "@/components/shared/EditorialHeader";
 import { Reveal } from "@/components/shared/Reveal";
 import { Container } from "@/components/shared/Container";
 import { GlowBlob } from "@/components/shared/GlowBlob";
-import { CardGrid } from "@/components/shared/CardGrid";
 import { WebSpotlight } from "@/components/shared/WebSpotlight";
 import { trackWebSpotlight } from "@/lib/web-spotlight";
 import {
@@ -15,10 +14,12 @@ import {
   Heart,
   Zap,
   ArrowUpRight,
+  ArrowRight,
   Compass,
   Eye,
   CheckCircle2,
   XCircle,
+  Landmark,
 } from "lucide-react";
 
 export const Route = createFileRoute("/about")({
@@ -168,7 +169,7 @@ function About() {
             <Reveal>
               <div className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">
                 <span className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_18px_rgba(138,24,28,0.9)]" />
-                About us
+                About
               </div>
             </Reveal>
             <Reveal delay={0.08}>
@@ -189,14 +190,14 @@ function About() {
                   className="btn-primary group inline-flex items-center gap-2 rounded-full px-7 py-3.5 font-bold"
                 >
                   Start a project
-                  <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:-rotate-45" />
                 </Link>
                 <a
                   href="#how-we-work"
                   className="btn-secondary group inline-flex items-center gap-2 rounded-full px-7 py-3.5 font-bold"
                 >
                   How we work
-                  <ArrowUpRight className="h-4 w-4 rotate-90 transition-transform duration-200 group-hover:rotate-[100deg]" />
+                  <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:-rotate-45" />
                 </a>
               </div>
             </Reveal>
@@ -383,7 +384,7 @@ function About() {
                 </p>
                 {/* Dark branded panel (matches the process cards beside it) -
                     a washed-out photo looked out of place against them. */}
-                <div className="relative mx-auto mt-10 hidden w-full max-w-xs lg:block">
+                <div className="relative mt-10 hidden w-full lg:block">
                   <div className="absolute -inset-4 rounded-3xl bg-primary/10 blur-[60px]" />
                   <div className="relative overflow-hidden rounded-3xl bg-[linear-gradient(135deg,#3a0b0d_0%,#1c0607_55%,#120405_100%)] p-6 ring-1 ring-white/10">
                     <span
@@ -447,8 +448,8 @@ function About() {
             eyebrow="What we stand for"
             title="Core values that shape everything we build."
           />
-          <CardGrid
-            items={[
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {[
               {
                 icon: Target,
                 title: "Revenue obsessed",
@@ -467,8 +468,25 @@ function About() {
                 description:
                   "Lean process, weekly iteration. We launch in weeks and optimize forever.",
               },
-            ]}
-          />
+            ].map(({ icon: Icon, title, description }, i) => (
+              <Reveal key={title} delay={i * 0.05}>
+                <div
+                  onMouseMove={trackWebSpotlight}
+                  className="glass group relative h-full overflow-hidden rounded-3xl p-7"
+                >
+                  <WebSpotlight />
+                  {/* Filled-badge icon treatment, matching the Mission & vision
+                      cards above so the About page presents icons one way. */}
+                  <span className="relative mb-5 flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl bg-primary text-primary-foreground shadow-glow ring-1 ring-white/15">
+                    <span className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/25 via-transparent to-transparent" />
+                    <Icon className="relative h-5 w-5" strokeWidth={2} />
+                  </span>
+                  <h3 className="font-display text-lg font-semibold">{title}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">{description}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </Container>
       </section>
 
@@ -501,7 +519,7 @@ function About() {
           <Reveal delay={0.1}>
             <div className="glow-border glass-strong rounded-[2rem] relative overflow-hidden p-8 sm:p-10 lg:p-12">
               <GlowBlob size="sm" color="primary" blur={100} className="-right-20 -top-20" />
-              <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr] lg:items-center">
+              <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr] lg:items-center">
                 <div className="grid gap-4 sm:grid-cols-2">
                   {REASONS.map((r) => (
                     <div
@@ -515,26 +533,27 @@ function About() {
                 </div>
                 {/* Real client words instead of a stock photo - quote from the
                     Trustpilot set used in the Testimonials component. */}
-                <div className="relative mx-auto hidden w-full max-w-xs lg:block">
-                  <div className="absolute -inset-6 rounded-full bg-primary/15 blur-[80px]" />
-                  <div className="relative rotate-[1.5deg] overflow-hidden rounded-3xl bg-[linear-gradient(135deg,#3a0b0d_0%,#1c0607_55%,#120405_100%)] p-6 ring-1 ring-white/10">
+                <div className="relative hidden w-full lg:block">
+                  <div className="absolute -inset-6 rounded-full bg-primary/20 blur-[80px]" />
+                  <div className="relative overflow-hidden rounded-3xl bg-[linear-gradient(135deg,#3a0b0d_0%,#1c0607_55%,#120405_100%)] p-8 ring-1 ring-white/10 shadow-[0_24px_70px_-24px_rgba(0,0,0,0.65)]">
                     <span
                       aria-hidden="true"
                       className="pointer-events-none absolute -right-2 -top-10 select-none font-display text-[8rem] font-extrabold leading-none text-transparent [-webkit-text-stroke:1.5px_rgba(255,255,255,0.08)]"
                     >
                       &rdquo;
                     </span>
-                    <p className="relative font-display text-3xl font-extrabold text-white">
-                      5.0 ★
-                      <span className="mt-1 block text-[11px] font-semibold uppercase tracking-widest text-white/55">
-                        Avg. client rating
-                      </span>
+                    <p className="relative flex items-baseline gap-2 font-display text-white">
+                      <span className="text-6xl font-extrabold leading-none">5.0</span>
+                      <span className="text-3xl leading-none text-[#f2545b]">★</span>
                     </p>
-                    <p className="relative mt-5 border-t border-white/10 pt-5 text-sm leading-relaxed text-white/80">
+                    <p className="relative mt-3 text-xs font-semibold uppercase tracking-widest text-white/55">
+                      Avg. client rating
+                    </p>
+                    <p className="relative mt-6 border-t border-white/10 pt-6 text-base leading-relaxed text-white/85">
                       &ldquo;The team communicated clearly, worked efficiently, and delivered beyond
                       expectations.&rdquo;
                     </p>
-                    <p className="relative mt-3 text-xs font-semibold uppercase tracking-widest text-[#f2545b]">
+                    <p className="relative mt-4 text-xs font-semibold uppercase tracking-widest text-[#f2545b]">
                       Kayla Kjl - verified client
                     </p>
                   </div>
@@ -575,7 +594,11 @@ function About() {
                     {row.k}
                   </div>
                   <div className="flex items-start gap-2.5 p-4 sm:border-l sm:border-primary/25 sm:bg-primary/[0.05]">
-                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                    {/* Green (success) instead of brand red: a red check reads
+                        as warning/stop and fights its own positive meaning when
+                        users scan the column. Brand red stays on the column
+                        accent/label, not the pass/fail signal. */}
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
                     <span>
                       <span className="mr-2 rounded bg-primary/10 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-primary-text sm:hidden">
                         Us
@@ -609,11 +632,18 @@ function About() {
                 blur={90}
                 className="left-1/2 top-0 -translate-x-1/2 opacity-70"
               />
-              <div className="relative z-10">
+              <div className="relative z-10 flex flex-col items-center">
+                {/* Icon badge (filled style shared with the About page's other
+                    icons) so this real credibility point carries visual weight
+                    instead of reading as a plain gray sentence. */}
+                <span className="relative mb-5 flex h-14 w-14 items-center justify-center overflow-hidden rounded-2xl bg-primary text-primary-foreground shadow-glow ring-1 ring-white/15">
+                  <span className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/25 via-transparent to-transparent" />
+                  <Landmark className="relative h-6 w-6" strokeWidth={2} />
+                </span>
                 <p className="mb-3 text-sm font-bold uppercase tracking-widest text-primary-text">
                   US Business Entity
                 </p>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="max-w-xl text-muted-foreground leading-relaxed">
                   Ethixweb operates in the United States through{" "}
                   <span className="font-semibold text-foreground">Ethixweb USA LLC</span>, a
                   Wyoming-registered company. When you work with us, you're contracting with a US
@@ -636,12 +666,6 @@ function About() {
               aria-hidden="true"
               className="absolute inset-0 bg-[radial-gradient(55%_60%_at_50%_0%,rgba(255,255,255,0.14),transparent_70%)]"
             />
-            <span
-              aria-hidden="true"
-              className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none whitespace-nowrap font-display text-[16vw] font-extrabold leading-none text-transparent [-webkit-text-stroke:1.5px_rgba(255,255,255,0.09)] lg:text-[9rem]"
-            >
-              SENIOR
-            </span>
             <div className="relative mx-auto max-w-2xl">
               <h2 className="pb-1 font-display text-4xl font-extrabold leading-tight text-white sm:text-5xl">
                 Ready for a sharper digital operation?

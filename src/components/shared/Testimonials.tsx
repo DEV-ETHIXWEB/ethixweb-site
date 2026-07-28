@@ -198,15 +198,15 @@ export function Testimonials() {
             </div>
 
             <div className="premium-card relative w-full max-w-sm shrink-0 overflow-visible rounded-3xl px-8 pb-4.5 pt-18.5 text-center sm:px-10 sm:pt-22.5 lg:max-w-sm lg:min-w-90 lg:pt-22.5">
-              <div className="relative -top-10 -mt-2.5 flex justify-end">
+              <div className="relative -top-10 -mt-2.5 flex justify-center">
                 <TrustpilotLogo size="lg" />
               </div>
               <div className="mt-1 flex items-end justify-center gap-3">
-                <span className="text-8xl font-extrabold leading-none text-foreground">4.0</span>
+                <span className="text-8xl font-extrabold leading-none text-foreground">5.0</span>
                 <span className="mb-3 text-2xl font-bold text-muted-foreground">/5</span>
               </div>
               <div className="mt-2 flex justify-center">
-                <StarRow count={4} total={5} brand={brand} className="h-7 w-7 sm:h-8 sm:w-8" />
+                <StarRow count={5} total={5} brand={brand} className="h-7 w-7 sm:h-8 sm:w-8" />
               </div>
               <p className="mt-1 text-xs font-bold uppercase tracking-[0.22em] text-muted-foreground/70">
                 Trustpilot Rating

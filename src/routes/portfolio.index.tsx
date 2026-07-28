@@ -101,7 +101,7 @@ function Portfolio() {
               <Reveal>
                 <div className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">
                   <span className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_18px_rgba(138,24,28,0.9)]" />
-                  Portfolio
+                  Our Work
                 </div>
               </Reveal>
               <Reveal delay={0.08}>
