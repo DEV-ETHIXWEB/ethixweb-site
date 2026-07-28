@@ -16,7 +16,10 @@ import path from "node:path";
 
 const WIDTHS = [640, 1024, 1600];
 
-const CASE_STUDY_DIRS = ["public/images/case-studies/all-phase-plumbing"];
+const CASE_STUDY_DIRS = [
+  "public/images/case-studies/all-phase-plumbing",
+  "public/images/case-studies/garys-pipeline",
+];
 
 // Only these source files get variants - small logos/icons in the same
 // folders are already tiny and not worth the extra requests.
@@ -27,6 +30,10 @@ const TARGET_FILES = new Set([
   "devices-mockup-cutout.webp",
   "spotlight-homeowner-framed.webp",
   "spotlight-intentional-framed.webp",
+  "after-photo.webp",
+  "showcase-devices.webp",
+  "spotlight-enquiry-flow.webp",
+  "spotlight-chat-assistant.webp",
 ]);
 
 for (const dir of CASE_STUDY_DIRS) {

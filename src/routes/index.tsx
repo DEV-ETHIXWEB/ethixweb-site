@@ -237,7 +237,7 @@ function Hero() {
             <div className="mt-10 flex flex-wrap gap-4">
               <Link
                 to="/contact"
-                className="btn-primary group inline-flex items-center gap-2 rounded-full px-7 py-3.5 font-bold"
+                className="btn-primary group inline-flex min-w-[200px] items-center justify-center gap-2 rounded-full border border-transparent px-7 py-3.5 font-bold"
               >
                 Start a project
                 <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -245,7 +245,7 @@ function Hero() {
               <div
                 aria-disabled="true"
                 title="Coming soon"
-                className="btn-secondary inline-flex items-center gap-2 rounded-full px-7 py-3.5 font-bold opacity-60 cursor-not-allowed select-none"
+                className="btn-secondary inline-flex min-w-[200px] items-center justify-center gap-2 rounded-full px-7 py-3.5 font-bold opacity-60 cursor-not-allowed select-none"
               >
                 See our work
                 <ArrowUpRight className="h-4 w-4" />
@@ -433,7 +433,15 @@ function CTA() {
               </Link>
             </div>
 
-            <div className="relative mx-auto h-[340px] w-full max-w-[340px] overflow-hidden sm:h-[400px] sm:max-w-[420px] lg:h-full lg:max-w-none">
+            <div
+              // Tall enough that the pentagon's top/bottom cards (positioned
+              // by percentage, symmetric around the 50% hub) clear the
+              // container's own edge at every chip-height tier - see
+              // SystemShift.tsx's width/min-height breakpoints. Growing
+              // height only (not width) keeps the hub exactly centered
+              // without touching the radius or card spacing.
+              className="relative mx-auto h-[500px] w-full max-w-[340px] overflow-hidden min-[360px]:h-[440px] sm:h-[480px] sm:max-w-[420px] lg:h-full lg:max-w-none"
+            >
               <SystemShift />
             </div>
           </div>

@@ -58,6 +58,31 @@ export const CASE_STUDIES: CaseStudy[] = [
     },
   },
   {
+    slug: "garys-pipeline",
+    client: "Gary's Pipelining & Drain Cleaning",
+    year: "2026",
+    industry: "Trenchless Sewer Repair",
+    services: ["Web Design", "SEO"],
+    headline: "Turning specialist searches into specialist calls",
+    challenge:
+      "Gary's Pipelining offers a premium specialty most general plumbers don't - trenchless sewer repair - but the old site didn't do the work of proving that expertise, or converting two very different audiences: homeowners and contractor partners.",
+    approach:
+      "A ground-up, 25+ page static rebuild with two separate enquiry paths, dedicated pages per service and city, an honest chat assistant, and a built-in accessibility toolkit tested against WCAG 2.1 AA.",
+    impact:
+      "The rebuild replaced an old, underperforming site with one built specifically to convert specialist search traffic into calls - for both homeowners and the contractors who need a subcontractor.",
+    metrics: [
+      { value: "25+", label: "Pages built" },
+      { value: "2", label: "Dedicated enquiry paths" },
+      { value: "24/7", label: "Emergency response line" },
+    ],
+    image: {
+      src: "/images/case-studies/garys-pipeline/before-screenshot.webp",
+      alt: "The rebuilt Gary's Pipelining & Drain Cleaning website",
+      width: 1567,
+      height: 1866,
+    },
+  },
+  {
     slug: "bals-mobile-dental-hygiene",
     client: "Bals Mobile Dental Hygiene",
     year: "2023",

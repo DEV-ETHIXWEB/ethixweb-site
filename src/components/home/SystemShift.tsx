@@ -29,14 +29,16 @@ const HUB = { x: 50, y: 50 };
 const EMBLEM_CRIMSON_FILTER = "none";
 const EMBLEM_WHITE_FILTER = "brightness(0) invert(1)";
 
-// 5 points on a regular pentagon around the hub - equal radius, 72° apart,
-// starting straight up - so every node sits the same distance from center.
+// 5 points on a regular pentagon around the hub - equal radius (37.5, a 25%
+// increase over the original 30), 72° apart, starting straight up - so every
+// node sits the exact same distance from center and every connecting line is
+// the same length.
 const SHIFT_ITEMS: ShiftItem[] = [
-  { icon: PhoneCall, before: "Missed calls", after: "Every call answered", x: 50, y: 20 },
-  { icon: Search, before: "Invisible on Google", after: "Ranking on Google", x: 78.53, y: 40.73 },
-  { icon: Cable, before: "Disconnected tools", after: "Connected stack", x: 67.63, y: 74.27 },
-  { icon: Code2, before: "Slow, dated site", after: "Fast, modern site", x: 32.37, y: 74.27 },
-  { icon: Megaphone, before: "Wasted ad spend", after: "ROI-positive ads", x: 21.47, y: 40.73 },
+  { icon: PhoneCall, before: "Missed calls", after: "Every call answered", x: 50, y: 12.5 },
+  { icon: Search, before: "Invisible on Google", after: "Ranking on Google", x: 85.67, y: 38.41 },
+  { icon: Cable, before: "Disconnected tools", after: "Connected stack", x: 72.04, y: 80.34 },
+  { icon: Code2, before: "Slow, dated site", after: "Fast, modern site", x: 27.96, y: 80.34 },
+  { icon: Megaphone, before: "Wasted ad spend", after: "ROI-positive ads", x: 14.33, y: 38.41 },
 ];
 
 /**
@@ -58,7 +60,12 @@ export function SystemShift() {
       tabIndex={0}
       aria-pressed={active}
       aria-label="Preview how Ethixweb resolves common operational problems"
-      className="relative h-full w-full cursor-pointer select-none rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+      // Scaled down as a whole (not resized piece by piece) so every
+      // proportion tuned above - radius, card spacing, uniform sizing -
+      // stays exactly intact. transform doesn't affect layout, so the
+      // parent's reserved space (sized with clipping headroom) is
+      // unchanged; the widget just renders smaller, centered within it.
+      className="relative h-full w-full origin-center scale-95 cursor-pointer select-none rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 lg:scale-[0.85]"
       onMouseEnter={() => setActive(true)}
       onMouseLeave={() => setActive(false)}
       onClick={() => setActive((a) => !a)}
@@ -166,11 +173,24 @@ export function SystemShift() {
       {SHIFT_ITEMS.map((item) => (
         <div
           key={item.before}
-          className="absolute w-[92px] -translate-x-1/2 -translate-y-1/2 sm:w-40"
+          // The 5 chips sit at fixed % positions on a tight pentagon around
+          // the hub, so their center-to-center spacing shrinks and grows
+          // with the widget's own container (only ~224px wide at a 320px
+          // viewport). A wide icon-beside-text chip has no room to grow
+          // before adjacent chips collide - so text stacks under the icon
+          // instead of beside it, letting each chip stay narrow (avoiding
+          // collisions with its neighbors) while still giving labels the
+          // full chip width per line (avoiding the overflow that same
+          // narrowness used to cause back when the icon ate into that width).
+          className="absolute w-[60px] -translate-x-1/2 -translate-y-1/2 min-[360px]:w-[72px] sm:w-28"
           style={{ left: `${item.x}%`, top: `${item.y}%` }}
         >
           <div
-            className="flex items-center gap-1.5 rounded-xl border px-2 py-1.5 backdrop-blur-md transition-[border-color,box-shadow,background] duration-500 ease-out sm:gap-2.5 sm:px-3.5 sm:py-2.5"
+            // Fixed per-tier so all 5 cards render at identical height
+            // regardless of how many lines their own label wraps to
+            // (measured empirically: tallest label needs 101px/87px/99px at
+            // the 60px/72px/112px chip-width tiers respectively).
+            className="flex min-h-[104px] w-full flex-col items-center gap-1 rounded-xl border px-2 py-2 text-center backdrop-blur-md transition-[border-color,box-shadow,background] duration-500 ease-out min-[360px]:min-h-[90px] sm:min-h-[100px] sm:gap-1.5 sm:px-3 sm:py-3"
             style={{
               borderColor: active
                 ? isDark
@@ -231,12 +251,12 @@ export function SystemShift() {
                 </motion.span>
               </AnimatePresence>
             </span>
-            <span className="relative min-w-0 flex-1">
+            <span className="relative w-full min-w-0">
               {/* Invisible spacer holding the taller of the two strings' box size,
                   so the cross-fading text below never causes a layout jump. */}
               <span
                 aria-hidden="true"
-                className="invisible block text-[11px] font-semibold leading-tight sm:text-sm"
+                className="invisible block break-words text-[11px] font-semibold leading-tight sm:text-sm"
               >
                 {item.before.length > item.after.length ? item.before : item.after}
               </span>
@@ -247,7 +267,7 @@ export function SystemShift() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={reduceMotion ? undefined : { opacity: 0, y: -4 }}
                   transition={{ duration: 0.3 }}
-                  className={`absolute inset-0 text-[11px] font-semibold leading-tight sm:text-sm ${
+                  className={`absolute inset-0 break-words text-[11px] font-semibold leading-tight sm:text-sm ${
                     isDark ? "text-white/90" : "text-[#16100f]"
                   }`}
                 >

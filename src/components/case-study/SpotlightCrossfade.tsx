@@ -40,6 +40,8 @@ export function SpotlightCrossfade({ items }: { items: SpotlightItem[] }) {
               <img
                 key={i}
                 src={item.image.src}
+                srcSet={item.image.srcSet}
+                sizes="(min-width: 1024px) 1200px, 100vw"
                 alt={item.image.alt}
                 width={item.image.width}
                 height={item.image.height}

@@ -20,6 +20,7 @@ import type { CaseStudy } from "@/lib/portfolio-data";
 
 const INDUSTRY_ICONS: Record<string, LucideIcon> = {
   "Local Home Services": Wrench,
+  "Trenchless Sewer Repair": Wrench,
   Healthcare: HeartPulse,
   "Home & Cabinetry": Hammer,
   "Marine & Boating": Sailboat,
