@@ -1,12 +1,26 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
+import { z } from "zod";
 import { checkRateLimitDurable, clientIp } from "@/lib/rate-limit";
 import { getSupabase } from "@/lib/supabase";
 import { generateScreeningTest } from "@/lib/screening/anthropic";
 import { getScreeningConfig } from "@/lib/screening/rubrics";
 import { isSameOriginRequest } from "@/lib/origin-check";
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const RESUME_HOST_RE = /^https:\/\/[a-z0-9-]+\.public\.blob\.vercel-storage\.com\//i;
+
+const bodySchema = z.object({
+  roleId: z.string().min(1).max(60),
+  candidateName: z.string().trim().min(2).max(120),
+  candidateEmail: z.string().trim().email().max(200),
+  candidatePhone: z.string().trim().max(30).optional().default(""),
+  resumeUrl: z
+    .string()
+    .url()
+    .regex(RESUME_HOST_RE, "Resume must come from our upload")
+    .nullable()
+    .optional(),
+});
 
 export const Route = createFileRoute("/api/screening/start")({
   server: {
@@ -25,26 +39,15 @@ export const Route = createFileRoute("/api/screening/start")({
           );
         }
 
-        const body = await request.json().catch(() => null);
-        if (!body || typeof body !== "object") {
-          return Response.json({ ok: false, error: "Invalid request body" }, { status: 400 });
-        }
-
-        const { roleId, candidateName, candidateEmail, candidatePhone, resumeUrl } = body as Record<
-          string,
-          unknown
-        >;
-
-        const name = typeof candidateName === "string" ? candidateName.trim() : "";
-        const email = typeof candidateEmail === "string" ? candidateEmail.trim() : "";
-        const role = typeof roleId === "string" ? roleId.trim() : "";
-
-        if (!name || !email || !EMAIL_RE.test(email)) {
+        const raw = await request.json().catch(() => null);
+        const parsed = bodySchema.safeParse(raw);
+        if (!parsed.success) {
           return Response.json(
-            { ok: false, error: "A valid name and email are required" },
+            { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid request" },
             { status: 400 },
           );
         }
+        const { roleId: role, candidateName: name, candidateEmail: email, resumeUrl } = parsed.data;
 
         const config = getScreeningConfig(role);
         if (!config) {
@@ -75,8 +78,8 @@ export const Route = createFileRoute("/api/screening/start")({
             role_id: role,
             candidate_name: name,
             candidate_email: email,
-            candidate_phone: typeof candidatePhone === "string" ? candidatePhone.trim() : null,
-            resume_url: typeof resumeUrl === "string" ? resumeUrl : null,
+            candidate_phone: parsed.data.candidatePhone || null,
+            resume_url: resumeUrl ?? null,
             questions,
             status: "in_progress",
             started_at: new Date().toISOString(),

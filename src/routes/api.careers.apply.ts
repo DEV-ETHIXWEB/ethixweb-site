@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { Resend } from "resend";
 import { JOBS } from "@/lib/careers-data";
-import { checkRateLimit, clientIp } from "@/lib/rate-limit";
+import { checkRateLimitDurable, clientIp } from "@/lib/rate-limit";
 import { recordCareerApplication, markNotificationSent } from "@/lib/leads";
 import { isSameOriginRequest } from "@/lib/origin-check";
 import {
@@ -58,7 +58,7 @@ export const Route = createFileRoute("/api/careers/apply")({
           return Response.json({ ok: false, error: "Invalid request origin" }, { status: 403 });
         }
 
-        if (!checkRateLimit(`apply:${clientIp(request)}`, 5, 10 * 60 * 1000)) {
+        if (!(await checkRateLimitDurable(`apply:${clientIp(request)}`, 5, 10 * 60 * 1000))) {
           return Response.json(
             { ok: false, error: "Too many applications submitted. Please try again later." },
             { status: 429 },

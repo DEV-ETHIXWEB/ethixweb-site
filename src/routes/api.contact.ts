@@ -11,7 +11,7 @@ import {
   emailShell,
   emailButton,
 } from "@/lib/email";
-import { checkRateLimit, clientIp } from "@/lib/rate-limit";
+import { checkRateLimitDurable, clientIp } from "@/lib/rate-limit";
 import { recordContactSubmission, markNotificationSent, markClickUpTaskLinked } from "@/lib/leads";
 import { createClickUpLeadTask } from "@/lib/clickup";
 import { isSameOriginRequest } from "@/lib/origin-check";
@@ -26,7 +26,7 @@ export const Route = createFileRoute("/api/contact")({
           return Response.json({ ok: false, error: "Invalid request origin" }, { status: 403 });
         }
 
-        if (!checkRateLimit(`contact:${clientIp(request)}`, 5, 10 * 60 * 1000)) {
+        if (!(await checkRateLimitDurable(`contact:${clientIp(request)}`, 5, 10 * 60 * 1000))) {
           return Response.json(
             { ok: false, error: "Too many requests. Please try again later." },
             { status: 429 },

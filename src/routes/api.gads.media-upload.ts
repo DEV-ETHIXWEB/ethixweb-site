@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
-import { checkRateLimit, clientIp } from "@/lib/rate-limit";
+import { checkRateLimitDurable, clientIp } from "@/lib/rate-limit";
 import { isSameOriginRequest } from "@/lib/origin-check";
 import { findGadsByToken } from "@/lib/gads/service";
 
@@ -26,7 +26,7 @@ export const Route = createFileRoute("/api/gads/media-upload")({
         if (!isSameOriginRequest(request)) {
           return Response.json({ ok: false, error: "Invalid request origin" }, { status: 403 });
         }
-        if (!checkRateLimit(`gads-media:${clientIp(request)}`, 60, 10 * 60 * 1000)) {
+        if (!(await checkRateLimitDurable(`gads-media:${clientIp(request)}`, 60, 10 * 60 * 1000))) {
           return Response.json(
             { ok: false, error: "Too many requests. Please try again later." },
             { status: 429 },

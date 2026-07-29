@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { Resend } from "resend";
+import { z } from "zod";
 import { checkRateLimitDurable, clientIp } from "@/lib/rate-limit";
 import { getSupabase, type ScreeningTestRow } from "@/lib/supabase";
 import { scoreScreeningTest } from "@/lib/screening/anthropic";
@@ -8,6 +9,18 @@ import { getScreeningConfig } from "@/lib/screening/rubrics";
 import { signDecisionToken } from "@/lib/screening/tokens";
 import { escapeHtml, emailRow, emailShell, emailButton, FROM_EMAIL, APP_URL } from "@/lib/email";
 import { isSameOriginRequest } from "@/lib/origin-check";
+
+const bodySchema = z.object({
+  testId: z.string().min(1),
+  answers: z.array(
+    z.object({
+      questionId: z.string().min(1),
+      answer: z.string().max(8000),
+    }),
+  ),
+  tabSwitchCount: z.number().nonnegative().optional().default(0),
+  blurCount: z.number().nonnegative().optional().default(0),
+});
 
 export const Route = createFileRoute("/api/screening/submit")({
   server: {
@@ -30,15 +43,15 @@ export const Route = createFileRoute("/api/screening/submit")({
           );
         }
 
-        const body = await request.json().catch(() => null);
-        if (!body || typeof body !== "object") {
-          return Response.json({ ok: false, error: "Invalid request body" }, { status: 400 });
+        const raw = await request.json().catch(() => null);
+        const parsed = bodySchema.safeParse(raw);
+        if (!parsed.success) {
+          return Response.json(
+            { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid submission" },
+            { status: 400 },
+          );
         }
-
-        const { testId, answers, tabSwitchCount, blurCount } = body as Record<string, unknown>;
-        if (typeof testId !== "string" || !Array.isArray(answers)) {
-          return Response.json({ ok: false, error: "Invalid submission" }, { status: 400 });
-        }
+        const { testId, answers, tabSwitchCount, blurCount } = parsed.data;
 
         const supabase = getSupabase();
         const { data: test, error: fetchError } = await supabase
@@ -114,8 +127,8 @@ export const Route = createFileRoute("/api/screening/submit")({
             max_score: scoring.maxScore,
             scoring: scoring.perQuestion,
             overall_reasoning: scoring.overallReasoning,
-            tab_switch_count: typeof tabSwitchCount === "number" ? tabSwitchCount : 0,
-            blur_count: typeof blurCount === "number" ? blurCount : 0,
+            tab_switch_count: tabSwitchCount,
+            blur_count: blurCount,
           })
           .eq("id", testId);
 

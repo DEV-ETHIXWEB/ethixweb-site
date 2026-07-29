@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
-import { checkRateLimit, clientIp } from "@/lib/rate-limit";
+import { checkRateLimitDurable, clientIp } from "@/lib/rate-limit";
 import { isSameOriginRequest } from "@/lib/origin-check";
 import { getSupabase } from "@/lib/supabase";
 import { verifySessionToken } from "@/lib/assessment/session";
@@ -25,7 +25,13 @@ export const Route = createFileRoute("/api/assessment/recording-upload")({
           return Response.json({ ok: false, error: "Invalid request origin" }, { status: 403 });
         }
         // Multipart uploads mint several tokens per recording - keep headroom.
-        if (!checkRateLimit(`assessment-recording:${clientIp(request)}`, 40, 10 * 60 * 1000)) {
+        if (
+          !(await checkRateLimitDurable(
+            `assessment-recording:${clientIp(request)}`,
+            40,
+            10 * 60 * 1000,
+          ))
+        ) {
           return Response.json(
             { ok: false, error: "Too many requests. Please try again later." },
             { status: 429 },
