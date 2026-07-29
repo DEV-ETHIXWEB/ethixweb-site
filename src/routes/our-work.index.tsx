@@ -233,7 +233,7 @@ function Portfolio() {
               </p>
             </Reveal>
           ))}
-          <p className="col-span-2 -mb-2 mt-2 text-center text-[11px] text-white/40 lg:col-span-4">
+          <p className="col-span-2 -mb-2 mt-2 text-center text-[11px] text-white/55 lg:col-span-4">
             Totals across the featured case studies on this page.
           </p>
         </Container>

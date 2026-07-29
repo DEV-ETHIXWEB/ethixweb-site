@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
 import { upload } from "@vercel/blob/client";
@@ -133,6 +133,20 @@ function ApplyPage() {
     setDir(next > step ? 1 : -1);
     setStep(next);
   };
+
+  // Move focus to the new step's heading so keyboard/screen-reader users get
+  // a signal the "page" changed - AnimatePresence swaps content in place with
+  // no navigation event to announce it otherwise. Skip on first mount so we
+  // don't steal focus from wherever the user landed.
+  const stepHeadingRef = useRef<HTMLHeadingElement>(null);
+  const isFirstStepRender = useRef(true);
+  useEffect(() => {
+    if (isFirstStepRender.current) {
+      isFirstStepRender.current = false;
+      return;
+    }
+    stepHeadingRef.current?.focus();
+  }, [step]);
 
   async function handleResumeChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -376,7 +390,11 @@ function ApplyPage() {
                         transition={{ duration: 0.24, ease: "easeOut" }}
                         className="mb-6"
                       >
-                        <h3 className="text-xl font-bold">
+                        <h3
+                          ref={stepHeadingRef}
+                          tabIndex={-1}
+                          className="text-xl font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded"
+                        >
                           {step === 1 && "Tell us about yourself"}
                           {step === 2 && "Your experience & expectations"}
                           {step === 3 && "Resume & final details"}
@@ -584,6 +602,8 @@ function ApplyPage() {
                                       onChange={handleResumeChange}
                                       className="sr-only"
                                       aria-label="Upload resume"
+                                      aria-invalid={resumeError ? true : undefined}
+                                      aria-describedby={resumeError ? "resume-error" : undefined}
                                     />
                                   </label>
                                 ) : (
@@ -613,7 +633,11 @@ function ApplyPage() {
                                   </div>
                                 )}
                                 {resumeError && (
-                                  <p role="alert" className="mt-2 text-sm text-error-text">
+                                  <p
+                                    id="resume-error"
+                                    role="alert"
+                                    className="mt-2 text-sm text-error-text"
+                                  >
                                     {resumeError}
                                   </p>
                                 )}
@@ -656,7 +680,7 @@ function ApplyPage() {
                             </div>
 
                             {submitError && (
-                              <p role="alert" className="text-sm text-error-text">
+                              <p id="submit-error" role="alert" className="text-sm text-error-text">
                                 {submitError}
                               </p>
                             )}
@@ -682,13 +706,17 @@ function ApplyPage() {
                           whileHover={canSubmit ? { scale: 1.02 } : {}}
                           whileTap={canSubmit ? { scale: 0.97 } : {}}
                           onClick={canSubmit ? submitApplication : undefined}
+                          aria-busy={submitting}
+                          aria-describedby={submitError ? "submit-error" : undefined}
                           className={`group inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold transition disabled:cursor-not-allowed ${
                             canSubmit
                               ? "bg-gradient-brand text-white shadow-glow cursor-pointer"
                               : "border border-border bg-foreground/5 text-muted-foreground/60"
                           }`}
                         >
-                          {submitting ? "Submitting…" : "Submit application"}
+                          <span aria-live="polite">
+                            {submitting ? "Submitting…" : "Submit application"}
+                          </span>
                           <ArrowUpRight className="h-4 w-4 transition-transform group-hover:rotate-45" />
                         </motion.button>
                       ) : (

@@ -116,6 +116,19 @@ function AssessmentPage() {
   const search = Route.useSearch();
 
   const [stage, setStage] = useState<Stage>("details");
+  // Move focus to the new stage's content on change so keyboard/screen-reader
+  // users get a signal the "page" changed - these stages swap in place with
+  // no navigation event to announce it otherwise. Skip on first mount so we
+  // don't steal focus from wherever the user landed.
+  const stageContentRef = useRef<HTMLDivElement>(null);
+  const isFirstStageRender = useRef(true);
+  useEffect(() => {
+    if (isFirstStageRender.current) {
+      isFirstStageRender.current = false;
+      return;
+    }
+    stageContentRef.current?.focus();
+  }, [stage]);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   // Candidate details (prefilled from the application flow's query params)
@@ -399,266 +412,272 @@ function AssessmentPage() {
 
       <section className="py-8 sm:py-16">
         <Container size="medium">
-          {stage === "details" && (
-            <Reveal>
-              <div className="premium-card rounded-3xl p-6 sm:p-8">
-                <h2 className="font-display text-xl font-bold">Your details</h2>
-                {errorMsg && (
-                  <p
-                    role="alert"
-                    className="mt-4 rounded-xl bg-red-500/10 px-4 py-3 text-sm text-error-text"
-                  >
-                    {errorMsg}
-                  </p>
-                )}
-                <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                  <label className="block">
-                    <span className={formLabelClass}>Full name *</span>
-                    <input
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      className={formInputClass}
-                    />
-                  </label>
-                  <label className="block">
-                    <span className={formLabelClass}>Email *</span>
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className={formInputClass}
-                    />
-                  </label>
-                  <label className="block">
-                    <span className={formLabelClass}>Phone</span>
-                    <input
-                      type="tel"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      className={formInputClass}
-                    />
-                  </label>
-                  <label className="block">
-                    <span className={formLabelClass}>Role you're applying for *</span>
-                    <select
-                      value={roleId}
-                      onChange={(e) => setRoleId(e.target.value)}
-                      className={formInputClass}
+          <div ref={stageContentRef} tabIndex={-1} className="focus:outline-none">
+            {stage === "details" && (
+              <Reveal>
+                <div className="premium-card rounded-3xl p-6 sm:p-8">
+                  <h2 className="font-display text-xl font-bold">Your details</h2>
+                  {errorMsg && (
+                    <p
+                      role="alert"
+                      className="mt-4 rounded-xl bg-red-500/10 px-4 py-3 text-sm text-error-text"
                     >
-                      <option value="">Select a role...</option>
-                      {JOBS.map((job) => (
-                        <option key={job.id} value={job.id}>
-                          {job.title}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <label className="block">
-                    <span className={formLabelClass}>Years of experience *</span>
-                    <select
-                      value={experience}
-                      onChange={(e) => setExperience(e.target.value)}
-                      className={formInputClass}
-                    >
-                      <option value="">Select...</option>
-                      {EXPERIENCE_OPTIONS.map((opt) => (
-                        <option key={opt} value={opt}>
-                          {opt}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <div className="block">
-                    <span className={formLabelClass}>Resume *</span>
-                    {resumeStatus === "done" ? (
-                      <p className="mt-2 flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-500">
-                        <FileText className="h-4 w-4 shrink-0" />
-                        <span className="truncate">{resumeName}</span>
-                        <Check className="ml-auto h-4 w-4 shrink-0" />
-                      </p>
-                    ) : (
-                      <label
-                        htmlFor="assessment-resume"
-                        className="mt-2 flex cursor-pointer items-center gap-2 rounded-xl border border-dashed border-border bg-input/40 px-4 py-3 text-sm text-muted-foreground transition hover:border-primary/50"
+                      {errorMsg}
+                    </p>
+                  )}
+                  <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                    <label className="block">
+                      <span className={formLabelClass}>Full name *</span>
+                      <input
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        className={formInputClass}
+                      />
+                    </label>
+                    <label className="block">
+                      <span className={formLabelClass}>Email *</span>
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className={formInputClass}
+                      />
+                    </label>
+                    <label className="block">
+                      <span className={formLabelClass}>Phone</span>
+                      <input
+                        type="tel"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        className={formInputClass}
+                      />
+                    </label>
+                    <label className="block">
+                      <span className={formLabelClass}>Role you're applying for *</span>
+                      <select
+                        value={roleId}
+                        onChange={(e) => setRoleId(e.target.value)}
+                        className={formInputClass}
                       >
-                        {resumeStatus === "uploading" ? (
-                          <Loader2 className="h-4 w-4 animate-spin text-primary" />
-                        ) : (
-                          <UploadCloud className="h-4 w-4" />
-                        )}
-                        {resumeStatus === "uploading" ? "Uploading..." : "Upload PDF, DOC or DOCX"}
-                        <input
-                          id="assessment-resume"
-                          type="file"
-                          accept=".pdf,.doc,.docx"
-                          className="sr-only"
-                          onChange={(e) => void handleResumeFile(e.target.files?.[0])}
-                        />
-                      </label>
-                    )}
+                        <option value="">Select a role...</option>
+                        {JOBS.map((job) => (
+                          <option key={job.id} value={job.id}>
+                            {job.title}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label className="block">
+                      <span className={formLabelClass}>Years of experience *</span>
+                      <select
+                        value={experience}
+                        onChange={(e) => setExperience(e.target.value)}
+                        className={formInputClass}
+                      >
+                        <option value="">Select...</option>
+                        {EXPERIENCE_OPTIONS.map((opt) => (
+                          <option key={opt} value={opt}>
+                            {opt}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <div className="block">
+                      <span className={formLabelClass}>Resume *</span>
+                      {resumeStatus === "done" ? (
+                        <p className="mt-2 flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-500">
+                          <FileText className="h-4 w-4 shrink-0" />
+                          <span className="truncate">{resumeName}</span>
+                          <Check className="ml-auto h-4 w-4 shrink-0" />
+                        </p>
+                      ) : (
+                        <label
+                          htmlFor="assessment-resume"
+                          className="mt-2 flex cursor-pointer items-center gap-2 rounded-xl border border-dashed border-border bg-input/40 px-4 py-3 text-sm text-muted-foreground transition hover:border-primary/50"
+                        >
+                          {resumeStatus === "uploading" ? (
+                            <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                          ) : (
+                            <UploadCloud className="h-4 w-4" />
+                          )}
+                          {resumeStatus === "uploading"
+                            ? "Uploading..."
+                            : "Upload PDF, DOC or DOCX"}
+                          <input
+                            id="assessment-resume"
+                            type="file"
+                            accept=".pdf,.doc,.docx"
+                            className="sr-only"
+                            onChange={(e) => void handleResumeFile(e.target.files?.[0])}
+                          />
+                        </label>
+                      )}
+                    </div>
                   </div>
-                </div>
-                <button
-                  type="button"
-                  disabled={!detailsComplete}
-                  onClick={continueToBriefing}
-                  className="magnetic mt-7 inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 font-bold text-primary-foreground shadow-glow disabled:cursor-not-allowed disabled:opacity-40"
-                >
-                  Continue
-                  <ArrowUpRight className="h-4 w-4" />
-                </button>
-              </div>
-            </Reveal>
-          )}
-
-          {stage === "briefing" && (
-            <Reveal>
-              <div className="premium-card rounded-3xl p-6 sm:p-8">
-                <h2 className="font-display text-xl font-bold">
-                  Before you begin - read carefully.
-                </h2>
-                <ul className="mt-5 space-y-3.5 text-sm text-foreground/85">
-                  <BriefingItem icon={Timer}>
-                    <strong>
-                      {TOTAL_QUESTIONS} questions in {EXAM_DURATION_MINUTES} minutes.
-                    </strong>{" "}
-                    The timer never pauses. When it expires, your answers are submitted
-                    automatically.
-                  </BriefingItem>
-                  <BriefingItem icon={Maximize}>
-                    <strong>Fullscreen is mandatory.</strong> The exam runs in fullscreen from start
-                    to finish. Exiting fullscreen, switching tabs, minimizing, or clicking outside
-                    this window is detected and recorded. You get two warnings and one final warning
-                    - after that, your assessment is submitted automatically.
-                  </BriefingItem>
-                  <BriefingItem icon={Video}>
-                    <strong>Your camera and microphone are recorded</strong> for the duration of the
-                    assessment. We ask for this to keep the process fair for every candidate; the
-                    recording is reviewed only by the Ethixweb hiring team. The exam cannot start
-                    without these permissions.
-                  </BriefingItem>
-                  <BriefingItem icon={ShieldCheck}>
-                    <strong>Copy, paste, right-click, and text selection are disabled.</strong>{" "}
-                    Every attempt is logged alongside your submission.
-                  </BriefingItem>
-                  <BriefingItem icon={Clock}>
-                    <strong>Answers auto-save after every interaction.</strong> If your browser
-                    crashes, reopen this page in the same browser to resume with the clock still
-                    running.
-                  </BriefingItem>
-                  <BriefingItem icon={AlertTriangle}>
-                    <strong>Results are not shown at the end.</strong> Your responses are evaluated
-                    after submission and our team will contact you about next steps.
-                  </BriefingItem>
-                </ul>
-                <label className="mt-6 flex cursor-pointer items-start gap-3 rounded-xl border border-border bg-input/40 px-4 py-3.5">
-                  <input
-                    type="checkbox"
-                    checked={consent}
-                    onChange={(e) => setConsent(e.target.checked)}
-                    className="mt-0.5 h-4 w-4 accent-[var(--primary-text)]"
-                  />
-                  <span className="text-sm text-foreground/85">
-                    I understand the rules above and consent to my camera and microphone being
-                    recorded during this assessment.
-                  </span>
-                </label>
-                <div className="mt-7 flex flex-wrap gap-3">
                   <button
                     type="button"
-                    onClick={() => setStage("details")}
-                    className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3.5 text-sm font-bold text-foreground transition hover:border-primary/50"
+                    disabled={!detailsComplete}
+                    onClick={continueToBriefing}
+                    className="magnetic mt-7 inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 font-bold text-primary-foreground shadow-glow disabled:cursor-not-allowed disabled:opacity-40"
                   >
-                    Back
-                  </button>
-                  <button
-                    type="button"
-                    disabled={!consent}
-                    onClick={() => setStage("permissions")}
-                    className="magnetic inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 font-bold text-primary-foreground shadow-glow disabled:cursor-not-allowed disabled:opacity-40"
-                  >
-                    Continue to system check
+                    Continue
                     <ArrowUpRight className="h-4 w-4" />
                   </button>
                 </div>
-              </div>
-            </Reveal>
-          )}
+              </Reveal>
+            )}
 
-          {(stage === "permissions" || stage === "resume-gate") && (
-            <PermissionGate
-              isResume={stage === "resume-gate"}
-              recording={recording}
-              errorMsg={errorMsg}
-              onLaunch={launch}
-            />
-          )}
+            {stage === "briefing" && (
+              <Reveal>
+                <div className="premium-card rounded-3xl p-6 sm:p-8">
+                  <h2 className="font-display text-xl font-bold">
+                    Before you begin - read carefully.
+                  </h2>
+                  <ul className="mt-5 space-y-3.5 text-sm text-foreground/85">
+                    <BriefingItem icon={Timer}>
+                      <strong>
+                        {TOTAL_QUESTIONS} questions in {EXAM_DURATION_MINUTES} minutes.
+                      </strong>{" "}
+                      The timer never pauses. When it expires, your answers are submitted
+                      automatically.
+                    </BriefingItem>
+                    <BriefingItem icon={Maximize}>
+                      <strong>Fullscreen is mandatory.</strong> The exam runs in fullscreen from
+                      start to finish. Exiting fullscreen, switching tabs, minimizing, or clicking
+                      outside this window is detected and recorded. You get two warnings and one
+                      final warning - after that, your assessment is submitted automatically.
+                    </BriefingItem>
+                    <BriefingItem icon={Video}>
+                      <strong>Your camera and microphone are recorded</strong> for the duration of
+                      the assessment. We ask for this to keep the process fair for every candidate;
+                      the recording is reviewed only by the Ethixweb hiring team. The exam cannot
+                      start without these permissions.
+                    </BriefingItem>
+                    <BriefingItem icon={ShieldCheck}>
+                      <strong>Copy, paste, right-click, and text selection are disabled.</strong>{" "}
+                      Every attempt is logged alongside your submission.
+                    </BriefingItem>
+                    <BriefingItem icon={Clock}>
+                      <strong>Answers auto-save after every interaction.</strong> If your browser
+                      crashes, reopen this page in the same browser to resume with the clock still
+                      running.
+                    </BriefingItem>
+                    <BriefingItem icon={AlertTriangle}>
+                      <strong>Results are not shown at the end.</strong> Your responses are
+                      evaluated after submission and our team will contact you about next steps.
+                    </BriefingItem>
+                  </ul>
+                  <label className="mt-6 flex cursor-pointer items-start gap-3 rounded-xl border border-border bg-input/40 px-4 py-3.5">
+                    <input
+                      type="checkbox"
+                      checked={consent}
+                      onChange={(e) => setConsent(e.target.checked)}
+                      className="mt-0.5 h-4 w-4 accent-[var(--primary-text)]"
+                    />
+                    <span className="text-sm text-foreground/85">
+                      I understand the rules above and consent to my camera and microphone being
+                      recorded during this assessment.
+                    </span>
+                  </label>
+                  <div className="mt-7 flex flex-wrap gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setStage("details")}
+                      className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3.5 text-sm font-bold text-foreground transition hover:border-primary/50"
+                    >
+                      Back
+                    </button>
+                    <button
+                      type="button"
+                      disabled={!consent}
+                      onClick={() => setStage("permissions")}
+                      className="magnetic inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 font-bold text-primary-foreground shadow-glow disabled:cursor-not-allowed disabled:opacity-40"
+                    >
+                      Continue to system check
+                      <ArrowUpRight className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+              </Reveal>
+            )}
 
-          {stage === "done" && (
-            <Reveal>
-              <div className="flex flex-col items-center gap-3 py-16 text-center">
-                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/15 text-primary">
-                  <Check className="h-7 w-7" />
-                </span>
-                <h2 className="font-display text-2xl font-bold">Assessment submitted.</h2>
-                <p className="max-w-md text-muted-foreground">
-                  Thanks{name ? `, ${name.split(" ")[0]}` : ""}. Your responses have been recorded
-                  and our hiring team will review them and contact you about next steps by email.
-                </p>
-                {uploadNote && (
-                  <p className="max-w-md rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-500">
-                    {uploadNote}
+            {(stage === "permissions" || stage === "resume-gate") && (
+              <PermissionGate
+                isResume={stage === "resume-gate"}
+                recording={recording}
+                errorMsg={errorMsg}
+                onLaunch={launch}
+              />
+            )}
+
+            {stage === "done" && (
+              <Reveal>
+                <div className="flex flex-col items-center gap-3 py-16 text-center">
+                  <span className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/15 text-primary">
+                    <Check className="h-7 w-7" />
+                  </span>
+                  <h2 className="font-display text-2xl font-bold">Assessment submitted.</h2>
+                  <p className="max-w-md text-muted-foreground">
+                    Thanks{name ? `, ${name.split(" ")[0]}` : ""}. Your responses have been recorded
+                    and our hiring team will review them and contact you about next steps by email.
                   </p>
-                )}
-                <Link
-                  to="/careers"
-                  className="mt-2 text-sm font-semibold text-primary hover:underline"
-                >
-                  ← Back to careers
-                </Link>
-              </div>
-            </Reveal>
-          )}
+                  {uploadNote && (
+                    <p className="max-w-md rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-500">
+                      {uploadNote}
+                    </p>
+                  )}
+                  <Link
+                    to="/careers"
+                    className="mt-2 text-sm font-semibold text-primary hover:underline"
+                  >
+                    ← Back to careers
+                  </Link>
+                </div>
+              </Reveal>
+            )}
 
-          {stage === "unsupported" && (
-            <Reveal>
-              <div className="premium-card flex flex-col items-center gap-3 rounded-3xl p-8 text-center">
-                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-amber-500/15 text-amber-500">
-                  <MonitorX className="h-7 w-7" />
-                </span>
-                <h2 className="font-display text-2xl font-bold">A desktop browser is required.</h2>
-                <p className="max-w-md text-sm text-muted-foreground">
-                  This proctored assessment needs fullscreen support and a screen at least 768px
-                  wide. Please reopen this page on a laptop or desktop using Chrome, Edge, or
-                  Firefox.
-                </p>
-              </div>
-            </Reveal>
-          )}
+            {stage === "unsupported" && (
+              <Reveal>
+                <div className="premium-card flex flex-col items-center gap-3 rounded-3xl p-8 text-center">
+                  <span className="flex h-14 w-14 items-center justify-center rounded-full bg-amber-500/15 text-amber-500">
+                    <MonitorX className="h-7 w-7" />
+                  </span>
+                  <h2 className="font-display text-2xl font-bold">
+                    A desktop browser is required.
+                  </h2>
+                  <p className="max-w-md text-sm text-muted-foreground">
+                    This proctored assessment needs fullscreen support and a screen at least 768px
+                    wide. Please reopen this page on a laptop or desktop using Chrome, Edge, or
+                    Firefox.
+                  </p>
+                </div>
+              </Reveal>
+            )}
 
-          {stage === "error" && (
-            <Reveal>
-              <div className="premium-card flex flex-col items-center gap-3 rounded-3xl p-8 text-center">
-                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-red-500/15 text-error-text">
-                  <AlertTriangle className="h-7 w-7" />
-                </span>
-                <h2 className="font-display text-2xl font-bold">Something went wrong.</h2>
-                <p role="alert" className="max-w-md text-sm text-muted-foreground">
-                  {errorMsg ?? "An unexpected error occurred."}
-                </p>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setErrorMsg(null);
-                    setStage("details");
-                  }}
-                  className="mt-2 inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3 font-bold text-primary-foreground shadow-glow"
-                >
-                  Start over
-                </button>
-              </div>
-            </Reveal>
-          )}
+            {stage === "error" && (
+              <Reveal>
+                <div className="premium-card flex flex-col items-center gap-3 rounded-3xl p-8 text-center">
+                  <span className="flex h-14 w-14 items-center justify-center rounded-full bg-red-500/15 text-error-text">
+                    <AlertTriangle className="h-7 w-7" />
+                  </span>
+                  <h2 className="font-display text-2xl font-bold">Something went wrong.</h2>
+                  <p role="alert" className="max-w-md text-sm text-muted-foreground">
+                    {errorMsg ?? "An unexpected error occurred."}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setErrorMsg(null);
+                      setStage("details");
+                    }}
+                    className="mt-2 inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3 font-bold text-primary-foreground shadow-glow"
+                  >
+                    Start over
+                  </button>
+                </div>
+              </Reveal>
+            )}
+          </div>
         </Container>
       </section>
     </SiteLayout>

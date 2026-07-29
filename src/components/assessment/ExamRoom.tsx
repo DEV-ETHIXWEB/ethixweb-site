@@ -289,7 +289,8 @@ export function ExamRoom({
                   key={q.id}
                   type="button"
                   onClick={() => setCurrent(i)}
-                  aria-label={`Go to question ${i + 1}`}
+                  aria-label={`Go to question ${i + 1}, ${answered ? "answered" : "not answered"}${flagged.has(q.id) ? ", flagged for review" : ""}`}
+                  aria-current={isCurrent ? "true" : undefined}
                   className={`relative flex h-9 items-center justify-center rounded-lg border text-xs font-bold tabular-nums transition ${
                     isCurrent
                       ? "border-primary bg-primary text-primary-foreground shadow-glow"
@@ -300,7 +301,10 @@ export function ExamRoom({
                 >
                   {i + 1}
                   {flagged.has(q.id) && (
-                    <span className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-amber-500" />
+                    <span
+                      aria-hidden="true"
+                      className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-amber-500"
+                    />
                   )}
                 </button>
               );
@@ -375,26 +379,33 @@ export function ExamRoom({
 
             {/* Mobile palette */}
             <div className="mt-8 grid grid-cols-8 gap-2 lg:hidden">
-              {questions.map((q, i) => (
-                <button
-                  key={q.id}
-                  type="button"
-                  onClick={() => setCurrent(i)}
-                  aria-label={`Go to question ${i + 1}`}
-                  className={`relative flex h-9 items-center justify-center rounded-lg border text-xs font-bold tabular-nums ${
-                    i === current
-                      ? "border-primary bg-primary text-primary-foreground"
-                      : isAnswered(answers[String(q.id)])
-                        ? "border-primary/40 bg-primary/15 text-primary-text"
-                        : "border-border bg-input/40 text-muted-foreground"
-                  }`}
-                >
-                  {i + 1}
-                  {flagged.has(q.id) && (
-                    <span className="absolute -right-1 -top-1 h-2 w-2 rounded-full bg-amber-500" />
-                  )}
-                </button>
-              ))}
+              {questions.map((q, i) => {
+                const mobileAnswered = isAnswered(answers[String(q.id)]);
+                return (
+                  <button
+                    key={q.id}
+                    type="button"
+                    onClick={() => setCurrent(i)}
+                    aria-label={`Go to question ${i + 1}, ${mobileAnswered ? "answered" : "not answered"}${flagged.has(q.id) ? ", flagged for review" : ""}`}
+                    aria-current={i === current ? "true" : undefined}
+                    className={`relative flex h-9 items-center justify-center rounded-lg border text-xs font-bold tabular-nums ${
+                      i === current
+                        ? "border-primary bg-primary text-primary-foreground"
+                        : mobileAnswered
+                          ? "border-primary/40 bg-primary/15 text-primary-text"
+                          : "border-border bg-input/40 text-muted-foreground"
+                    }`}
+                  >
+                    {i + 1}
+                    {flagged.has(q.id) && (
+                      <span
+                        aria-hidden="true"
+                        className="absolute -right-1 -top-1 h-2 w-2 rounded-full bg-amber-500"
+                      />
+                    )}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </main>

@@ -189,6 +189,21 @@ function ContactBody() {
       setSent(true);
     }
   }, []);
+
+  // Move focus to the new step's heading so keyboard/screen-reader users get
+  // a signal the "page" changed - AnimatePresence swaps content in place with
+  // no navigation event to announce it otherwise. Skip on first mount so we
+  // don't steal focus from wherever the user landed.
+  const stepHeadingRef = useRef<HTMLHeadingElement>(null);
+  const isFirstStepRender = useRef(true);
+  useEffect(() => {
+    if (isFirstStepRender.current) {
+      isFirstStepRender.current = false;
+      return;
+    }
+    stepHeadingRef.current?.focus();
+  }, [step]);
+
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [sel, setSel] = useState<{
@@ -460,7 +475,11 @@ function ContactBody() {
                         transition={{ duration: 0.24, ease: "easeOut" }}
                         className="relative z-10 mb-6"
                       >
-                        <h3 className="text-xl font-bold">
+                        <h3
+                          ref={stepHeadingRef}
+                          tabIndex={-1}
+                          className="text-xl font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded"
+                        >
                           {step === 1 && "What do you need help with?"}
                           {step === 2 && !isOther && "When do you want to start?"}
                           {step === 2 && isOther && "Tell us more about your idea"}
@@ -591,7 +610,11 @@ function ContactBody() {
                                 ))}
                               </div>
                               {isDirect && submitError && (
-                                <p role="alert" className="mt-3 text-sm text-error-text">
+                                <p
+                                  id="direct-submit-error"
+                                  role="alert"
+                                  className="mt-3 text-sm text-error-text"
+                                >
                                   {submitError}
                                 </p>
                               )}
@@ -758,7 +781,11 @@ function ContactBody() {
                                 </select>
                               </div>
                               {submitError && (
-                                <p role="alert" className="text-sm text-error-text">
+                                <p
+                                  id="submit-error"
+                                  role="alert"
+                                  className="text-sm text-error-text"
+                                >
                                   {submitError}
                                 </p>
                               )}
@@ -786,9 +813,13 @@ function ContactBody() {
                           type="submit"
                           form="contact-form"
                           disabled={submitting}
+                          aria-busy={submitting}
+                          aria-describedby={submitError ? "submit-error" : undefined}
                           className="shine-cta magnetic group inline-flex items-center gap-2 rounded-full bg-gradient-brand px-7 py-3 text-sm font-semibold text-white shadow-glow transition disabled:opacity-60 disabled:cursor-not-allowed"
                         >
-                          {submitting ? "Sending…" : "Send my roadmap"}
+                          <span aria-live="polite">
+                            {submitting ? "Sending…" : "Send my roadmap"}
+                          </span>
                           <ArrowUpRight className="h-4 w-4 transition-transform group-hover:rotate-45" />
                         </button>
                       ) : (
@@ -796,13 +827,19 @@ function ContactBody() {
                           whileHover={canContinue && !submitting ? { scale: 1.02 } : {}}
                           whileTap={canContinue && !submitting ? { scale: 0.97 } : {}}
                           onClick={canContinue && !submitting ? advance : undefined}
+                          aria-busy={isDirect ? submitting : undefined}
+                          aria-describedby={
+                            isDirect && submitError ? "direct-submit-error" : undefined
+                          }
                           className={`shine-cta inline-flex items-center gap-2 rounded-full border px-7 py-3 text-sm font-bold transition-all duration-300 ${
                             canContinue && !submitting
                               ? "border-primary bg-primary text-primary-foreground shadow-glow hover:bg-primary/90 cursor-pointer"
                               : "border-border bg-foreground/5 text-muted-foreground/60 cursor-not-allowed"
                           }`}
                         >
-                          {isDirect ? (submitting ? "Sending…" : "Get a callback") : "Continue"}
+                          <span aria-live={isDirect ? "polite" : undefined}>
+                            {isDirect ? (submitting ? "Sending…" : "Get a callback") : "Continue"}
+                          </span>
                           <ArrowUpRight
                             className={`h-4 w-4 transition-all ${canContinue ? "text-primary-foreground" : "text-muted-foreground/40"}`}
                           />
