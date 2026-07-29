@@ -70,6 +70,12 @@ function PrivacyPolicy() {
       <section className="py-20">
         <Container size="narrow" className="space-y-5">
           <Reveal>
+            <div className="flex items-center gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-5 py-4 text-sm text-amber-700 dark:text-amber-400">
+              <span aria-hidden="true">🚧</span>
+              <p>Privacy Policy is being updated. A revised version will be published soon.</p>
+            </div>
+          </Reveal>
+          <Reveal delay={0.03}>
             <Section title="1. Information We Collect">
               <p>We collect information you provide directly, including:</p>
               <ul className="list-disc pl-5 space-y-1">
