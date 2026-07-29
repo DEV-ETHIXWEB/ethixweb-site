@@ -111,7 +111,7 @@ const STATS = [
   { value: "2-4 wks", label: "Typical time to launch" },
   { value: "100%", label: "Senior led delivery" },
   { value: "24/7", label: "Global availability" },
-  { value: "5.0", label: "Avg. client rating" },
+  { value: "4.0", label: "Avg. client rating" },
 ];
 
 const COMPARISON = [
@@ -543,7 +543,7 @@ function About() {
                       &rdquo;
                     </span>
                     <p className="relative flex items-baseline gap-2 font-display text-white">
-                      <span className="text-6xl font-extrabold leading-none">5.0</span>
+                      <span className="text-6xl font-extrabold leading-none">4.0</span>
                       <span className="text-3xl leading-none text-[#f2545b]">★</span>
                     </p>
                     <p className="relative mt-3 text-xs font-semibold uppercase tracking-widest text-white/55">
@@ -683,7 +683,7 @@ function About() {
                   <ArrowUpRight className="h-4 w-4 transition-transform group-hover:rotate-45" />
                 </Link>
                 <Link
-                  to="/portfolio"
+                  to="/our-work"
                   className="magnetic inline-flex items-center gap-2 rounded-full border border-white/30 px-7 py-3.5 font-bold text-white transition-colors hover:bg-white/10"
                 >
                   See our work

@@ -1,5 +1,5 @@
 // Shared shape for every case study detail page. Every visual section on
-// /portfolio/$slug reads from one of these fields - the route and its
+// /our-work/$slug reads from one of these fields - the route and its
 // components never hardcode copy, images, or section content. A section
 // simply doesn't render when its data is omitted (see each field's docs),
 // so a future case study can skip e.g. `mobileFirst` or add extra

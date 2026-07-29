@@ -251,7 +251,7 @@ function Industries() {
                   <ArrowUpRight className="h-4 w-4 transition-transform group-hover:rotate-45" />
                 </Link>
                 <Link
-                  to="/portfolio"
+                  to="/our-work"
                   className="magnetic inline-flex items-center gap-2 rounded-full border border-white/30 px-7 py-3.5 font-bold text-white transition-colors hover:bg-white/10"
                 >
                   See the case studies
@@ -343,7 +343,7 @@ function IndustryBlock({
                   ))}
                 </div>
                 <Link
-                  to="/portfolio"
+                  to="/our-work"
                   className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary-text underline-offset-4 hover:underline"
                 >
                   Read the full case studies

@@ -11,7 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WebDevelopmentRouteImport } from './routes/web-development'
 import { Route as ServicesRouteImport } from './routes/services'
-import { Route as PortfolioRouteImport } from './routes/portfolio'
+import { Route as OurWorkRouteImport } from './routes/our-work'
 import { Route as MarketingRouteImport } from './routes/marketing'
 import { Route as IndustriesRouteImport } from './routes/industries'
 import { Route as GraphicDesignRouteImport } from './routes/graphic-design'
@@ -21,13 +21,13 @@ import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AiAutomationRouteImport } from './routes/ai-automation'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as PortfolioIndexRouteImport } from './routes/portfolio.index'
+import { Route as OurWorkIndexRouteImport } from './routes/our-work.index'
 import { Route as CareersIndexRouteImport } from './routes/careers.index'
 import { Route as QrSlugRouteImport } from './routes/qr.$slug'
-import { Route as PortfolioSlugRouteImport } from './routes/portfolio.$slug'
 import { Route as PoliciesTermsRouteImport } from './routes/policies.terms'
 import { Route as PoliciesRefundsRouteImport } from './routes/policies.refunds'
 import { Route as PoliciesPrivacyRouteImport } from './routes/policies.privacy'
+import { Route as OurWorkSlugRouteImport } from './routes/our-work.$slug'
 import { Route as LocationsKentWaRouteImport } from './routes/locations.kent-wa'
 import { Route as CareersScreeningRouteImport } from './routes/careers.screening'
 import { Route as CareersAssessmentRouteImport } from './routes/careers.assessment'
@@ -62,9 +62,9 @@ const ServicesRoute = ServicesRouteImport.update({
   path: '/services',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PortfolioRoute = PortfolioRouteImport.update({
-  id: '/portfolio',
-  path: '/portfolio',
+const OurWorkRoute = OurWorkRouteImport.update({
+  id: '/our-work',
+  path: '/our-work',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MarketingRoute = MarketingRouteImport.update({
@@ -112,10 +112,10 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PortfolioIndexRoute = PortfolioIndexRouteImport.update({
+const OurWorkIndexRoute = OurWorkIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => PortfolioRoute,
+  getParentRoute: () => OurWorkRoute,
 } as any)
 const CareersIndexRoute = CareersIndexRouteImport.update({
   id: '/',
@@ -126,11 +126,6 @@ const QrSlugRoute = QrSlugRouteImport.update({
   id: '/qr/$slug',
   path: '/qr/$slug',
   getParentRoute: () => rootRouteImport,
-} as any)
-const PortfolioSlugRoute = PortfolioSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => PortfolioRoute,
 } as any)
 const PoliciesTermsRoute = PoliciesTermsRouteImport.update({
   id: '/policies/terms',
@@ -146,6 +141,11 @@ const PoliciesPrivacyRoute = PoliciesPrivacyRouteImport.update({
   id: '/policies/privacy',
   path: '/policies/privacy',
   getParentRoute: () => rootRouteImport,
+} as any)
+const OurWorkSlugRoute = OurWorkSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => OurWorkRoute,
 } as any)
 const LocationsKentWaRoute = LocationsKentWaRouteImport.update({
   id: '/locations/kent-wa',
@@ -275,7 +275,7 @@ export interface FileRoutesByFullPath {
   '/graphic-design': typeof GraphicDesignRoute
   '/industries': typeof IndustriesRoute
   '/marketing': typeof MarketingRoute
-  '/portfolio': typeof PortfolioRouteWithChildren
+  '/our-work': typeof OurWorkRouteWithChildren
   '/services': typeof ServicesRoute
   '/web-development': typeof WebDevelopmentRoute
   '/api/contact': typeof ApiContactRoute
@@ -284,13 +284,13 @@ export interface FileRoutesByFullPath {
   '/careers/assessment': typeof CareersAssessmentRoute
   '/careers/screening': typeof CareersScreeningRoute
   '/locations/kent-wa': typeof LocationsKentWaRoute
+  '/our-work/$slug': typeof OurWorkSlugRoute
   '/policies/privacy': typeof PoliciesPrivacyRoute
   '/policies/refunds': typeof PoliciesRefundsRoute
   '/policies/terms': typeof PoliciesTermsRoute
-  '/portfolio/$slug': typeof PortfolioSlugRoute
   '/qr/$slug': typeof QrSlugRoute
   '/careers/': typeof CareersIndexRoute
-  '/portfolio/': typeof PortfolioIndexRoute
+  '/our-work/': typeof OurWorkIndexRoute
   '/api/assessment/recording-upload': typeof ApiAssessmentRecordingUploadRoute
   '/api/assessment/save': typeof ApiAssessmentSaveRoute
   '/api/assessment/start': typeof ApiAssessmentStartRoute
@@ -326,13 +326,13 @@ export interface FileRoutesByTo {
   '/careers/assessment': typeof CareersAssessmentRoute
   '/careers/screening': typeof CareersScreeningRoute
   '/locations/kent-wa': typeof LocationsKentWaRoute
+  '/our-work/$slug': typeof OurWorkSlugRoute
   '/policies/privacy': typeof PoliciesPrivacyRoute
   '/policies/refunds': typeof PoliciesRefundsRoute
   '/policies/terms': typeof PoliciesTermsRoute
-  '/portfolio/$slug': typeof PortfolioSlugRoute
   '/qr/$slug': typeof QrSlugRoute
   '/careers': typeof CareersIndexRoute
-  '/portfolio': typeof PortfolioIndexRoute
+  '/our-work': typeof OurWorkIndexRoute
   '/api/assessment/recording-upload': typeof ApiAssessmentRecordingUploadRoute
   '/api/assessment/save': typeof ApiAssessmentSaveRoute
   '/api/assessment/start': typeof ApiAssessmentStartRoute
@@ -362,7 +362,7 @@ export interface FileRoutesById {
   '/graphic-design': typeof GraphicDesignRoute
   '/industries': typeof IndustriesRoute
   '/marketing': typeof MarketingRoute
-  '/portfolio': typeof PortfolioRouteWithChildren
+  '/our-work': typeof OurWorkRouteWithChildren
   '/services': typeof ServicesRoute
   '/web-development': typeof WebDevelopmentRoute
   '/api/contact': typeof ApiContactRoute
@@ -371,13 +371,13 @@ export interface FileRoutesById {
   '/careers/assessment': typeof CareersAssessmentRoute
   '/careers/screening': typeof CareersScreeningRoute
   '/locations/kent-wa': typeof LocationsKentWaRoute
+  '/our-work/$slug': typeof OurWorkSlugRoute
   '/policies/privacy': typeof PoliciesPrivacyRoute
   '/policies/refunds': typeof PoliciesRefundsRoute
   '/policies/terms': typeof PoliciesTermsRoute
-  '/portfolio/$slug': typeof PortfolioSlugRoute
   '/qr/$slug': typeof QrSlugRoute
   '/careers/': typeof CareersIndexRoute
-  '/portfolio/': typeof PortfolioIndexRoute
+  '/our-work/': typeof OurWorkIndexRoute
   '/api/assessment/recording-upload': typeof ApiAssessmentRecordingUploadRoute
   '/api/assessment/save': typeof ApiAssessmentSaveRoute
   '/api/assessment/start': typeof ApiAssessmentStartRoute
@@ -408,7 +408,7 @@ export interface FileRouteTypes {
     | '/graphic-design'
     | '/industries'
     | '/marketing'
-    | '/portfolio'
+    | '/our-work'
     | '/services'
     | '/web-development'
     | '/api/contact'
@@ -417,13 +417,13 @@ export interface FileRouteTypes {
     | '/careers/assessment'
     | '/careers/screening'
     | '/locations/kent-wa'
+    | '/our-work/$slug'
     | '/policies/privacy'
     | '/policies/refunds'
     | '/policies/terms'
-    | '/portfolio/$slug'
     | '/qr/$slug'
     | '/careers/'
-    | '/portfolio/'
+    | '/our-work/'
     | '/api/assessment/recording-upload'
     | '/api/assessment/save'
     | '/api/assessment/start'
@@ -459,13 +459,13 @@ export interface FileRouteTypes {
     | '/careers/assessment'
     | '/careers/screening'
     | '/locations/kent-wa'
+    | '/our-work/$slug'
     | '/policies/privacy'
     | '/policies/refunds'
     | '/policies/terms'
-    | '/portfolio/$slug'
     | '/qr/$slug'
     | '/careers'
-    | '/portfolio'
+    | '/our-work'
     | '/api/assessment/recording-upload'
     | '/api/assessment/save'
     | '/api/assessment/start'
@@ -494,7 +494,7 @@ export interface FileRouteTypes {
     | '/graphic-design'
     | '/industries'
     | '/marketing'
-    | '/portfolio'
+    | '/our-work'
     | '/services'
     | '/web-development'
     | '/api/contact'
@@ -503,13 +503,13 @@ export interface FileRouteTypes {
     | '/careers/assessment'
     | '/careers/screening'
     | '/locations/kent-wa'
+    | '/our-work/$slug'
     | '/policies/privacy'
     | '/policies/refunds'
     | '/policies/terms'
-    | '/portfolio/$slug'
     | '/qr/$slug'
     | '/careers/'
-    | '/portfolio/'
+    | '/our-work/'
     | '/api/assessment/recording-upload'
     | '/api/assessment/save'
     | '/api/assessment/start'
@@ -539,7 +539,7 @@ export interface RootRouteChildren {
   GraphicDesignRoute: typeof GraphicDesignRoute
   IndustriesRoute: typeof IndustriesRoute
   MarketingRoute: typeof MarketingRoute
-  PortfolioRoute: typeof PortfolioRouteWithChildren
+  OurWorkRoute: typeof OurWorkRouteWithChildren
   ServicesRoute: typeof ServicesRoute
   WebDevelopmentRoute: typeof WebDevelopmentRoute
   ApiContactRoute: typeof ApiContactRoute
@@ -583,11 +583,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/portfolio': {
-      id: '/portfolio'
-      path: '/portfolio'
-      fullPath: '/portfolio'
-      preLoaderRoute: typeof PortfolioRouteImport
+    '/our-work': {
+      id: '/our-work'
+      path: '/our-work'
+      fullPath: '/our-work'
+      preLoaderRoute: typeof OurWorkRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/marketing': {
@@ -653,12 +653,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/portfolio/': {
-      id: '/portfolio/'
+    '/our-work/': {
+      id: '/our-work/'
       path: '/'
-      fullPath: '/portfolio/'
-      preLoaderRoute: typeof PortfolioIndexRouteImport
-      parentRoute: typeof PortfolioRoute
+      fullPath: '/our-work/'
+      preLoaderRoute: typeof OurWorkIndexRouteImport
+      parentRoute: typeof OurWorkRoute
     }
     '/careers/': {
       id: '/careers/'
@@ -673,13 +673,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/qr/$slug'
       preLoaderRoute: typeof QrSlugRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/portfolio/$slug': {
-      id: '/portfolio/$slug'
-      path: '/$slug'
-      fullPath: '/portfolio/$slug'
-      preLoaderRoute: typeof PortfolioSlugRouteImport
-      parentRoute: typeof PortfolioRoute
     }
     '/policies/terms': {
       id: '/policies/terms'
@@ -701,6 +694,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/policies/privacy'
       preLoaderRoute: typeof PoliciesPrivacyRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/our-work/$slug': {
+      id: '/our-work/$slug'
+      path: '/$slug'
+      fullPath: '/our-work/$slug'
+      preLoaderRoute: typeof OurWorkSlugRouteImport
+      parentRoute: typeof OurWorkRoute
     }
     '/locations/kent-wa': {
       id: '/locations/kent-wa'
@@ -885,19 +885,18 @@ const CareersRouteChildren: CareersRouteChildren = {
 const CareersRouteWithChildren =
   CareersRoute._addFileChildren(CareersRouteChildren)
 
-interface PortfolioRouteChildren {
-  PortfolioSlugRoute: typeof PortfolioSlugRoute
-  PortfolioIndexRoute: typeof PortfolioIndexRoute
+interface OurWorkRouteChildren {
+  OurWorkSlugRoute: typeof OurWorkSlugRoute
+  OurWorkIndexRoute: typeof OurWorkIndexRoute
 }
 
-const PortfolioRouteChildren: PortfolioRouteChildren = {
-  PortfolioSlugRoute: PortfolioSlugRoute,
-  PortfolioIndexRoute: PortfolioIndexRoute,
+const OurWorkRouteChildren: OurWorkRouteChildren = {
+  OurWorkSlugRoute: OurWorkSlugRoute,
+  OurWorkIndexRoute: OurWorkIndexRoute,
 }
 
-const PortfolioRouteWithChildren = PortfolioRoute._addFileChildren(
-  PortfolioRouteChildren,
-)
+const OurWorkRouteWithChildren =
+  OurWorkRoute._addFileChildren(OurWorkRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -909,7 +908,7 @@ const rootRouteChildren: RootRouteChildren = {
   GraphicDesignRoute: GraphicDesignRoute,
   IndustriesRoute: IndustriesRoute,
   MarketingRoute: MarketingRoute,
-  PortfolioRoute: PortfolioRouteWithChildren,
+  OurWorkRoute: OurWorkRouteWithChildren,
   ServicesRoute: ServicesRoute,
   WebDevelopmentRoute: WebDevelopmentRoute,
   ApiContactRoute: ApiContactRoute,

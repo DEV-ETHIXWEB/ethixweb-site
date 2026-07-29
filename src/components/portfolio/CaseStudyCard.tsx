@@ -187,7 +187,7 @@ export function CaseStudyCard({ study, index }: { study: CaseStudy; index: numbe
                 duplicate). Transparent, on top of the decorative content. */}
             {hasDetail && (
               <Link
-                to="/portfolio/$slug"
+                to="/our-work/$slug"
                 params={{ slug: study.slug }}
                 aria-hidden="true"
                 tabIndex={-1}
@@ -293,7 +293,7 @@ export function CaseStudyCard({ study, index }: { study: CaseStudy; index: numbe
 
       {hasDetail && (
         <Link
-          to="/portfolio/$slug"
+          to="/our-work/$slug"
           params={{ slug: study.slug }}
           aria-label={`View case study: ${study.client}`}
           className="absolute inset-0 z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"

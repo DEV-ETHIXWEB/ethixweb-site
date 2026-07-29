@@ -61,7 +61,7 @@ export function CaseStudyClosingCta({ study }: { study: CaseStudyDetail }) {
 
         <div className="mt-16 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-8 sm:mt-20">
           <Link
-            to="/portfolio"
+            to="/our-work"
             className="inline-flex items-center gap-2 text-sm text-white/55 transition-colors hover:text-white"
           >
             <ArrowLeft className="h-4 w-4" />
@@ -69,7 +69,7 @@ export function CaseStudyClosingCta({ study }: { study: CaseStudyDetail }) {
           </Link>
           {next && (
             <Link
-              to="/portfolio/$slug"
+              to="/our-work/$slug"
               params={{ slug: next.slug }}
               className="inline-flex items-center gap-2 text-sm text-white/55 transition-colors hover:text-white"
             >

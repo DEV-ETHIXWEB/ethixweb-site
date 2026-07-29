@@ -14,7 +14,7 @@ import { CaseStudyClosingCta } from "@/components/case-study/CaseStudyClosingCta
 import { CaseStudyContainer } from "@/components/case-study/CaseStudyContainer";
 import { getCaseStudyDetail, type CaseStudyDetail } from "@/data/case-studies";
 
-export const Route = createFileRoute("/portfolio/$slug")({
+export const Route = createFileRoute("/our-work/$slug")({
   loader: ({ params }) => {
     const study = getCaseStudyDetail(params.slug);
     if (!study) throw notFound();
@@ -39,14 +39,14 @@ export const Route = createFileRoute("/portfolio/$slug")({
         { property: "og:description", content: study.summary },
         { property: "og:type", content: "article" },
         { property: "og:image", content: `https://ethixweb.com${study.heroImage.src}` },
-        { property: "og:url", content: `https://ethixweb.com/portfolio/${study.slug}` },
+        { property: "og:url", content: `https://ethixweb.com/our-work/${study.slug}` },
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:title", content: title },
         { name: "twitter:description", content: study.summary },
         { name: "twitter:image", content: `https://ethixweb.com${study.heroImage.src}` },
         { name: "robots", content: "index, follow" },
       ],
-      links: [{ rel: "canonical", href: `https://ethixweb.com/portfolio/${study.slug}` }],
+      links: [{ rel: "canonical", href: `https://ethixweb.com/our-work/${study.slug}` }],
       scripts: [
         {
           type: "application/ld+json",
@@ -57,7 +57,7 @@ export const Route = createFileRoute("/portfolio/$slug")({
             description: study.summary,
             about: study.client.name,
             image: `https://ethixweb.com${study.heroImage.src}`,
-            url: `https://ethixweb.com/portfolio/${study.slug}`,
+            url: `https://ethixweb.com/our-work/${study.slug}`,
             author: { "@type": "Organization", name: "Ethixweb", sameAs: "https://ethixweb.com" },
           }),
         },

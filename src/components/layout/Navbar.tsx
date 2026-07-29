@@ -13,7 +13,7 @@ export const links = [
   { to: "/about", label: "About" },
   { to: "/industries", label: "Industries" },
   { to: "/services", label: "Services" },
-  { to: "/portfolio", label: "Our Work" },
+  { to: "/our-work", label: "Our Work" },
   { to: "/blog", label: "Blog" },
   { to: "/careers", label: "Careers" },
 ];

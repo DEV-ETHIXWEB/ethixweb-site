@@ -82,20 +82,29 @@ export const CASE_STUDIES: CaseStudy[] = [
       height: 1080,
     },
   },
-  // TODO(ethixweb): placeholder cards - fill in real year, industry, services,
-  // narrative and metrics (and a screenshot if we can show one). Nothing below
-  // asserts a real result yet, on purpose.
   {
     slug: "preventive-home-solutions",
     client: "Preventive Home Solutions",
     year: "2026",
     industry: "Local Home Services",
     services: ["Web Design"],
-    headline: "Preventive Home Solutions",
-    challenge: "Case study details are being finalised.",
-    approach: "Full write-up coming soon.",
-    impact: "Preventive Home Solutions - full case study coming soon.",
-    metrics: [],
+    headline: "From cluttered template to booked inspections",
+    challenge:
+      "A licensed Northern Utah plumbing and HVAC company was stuck on an old site that opened with a spammy deals banner and two crowded rows of navigation, hiding the trust signals homeowners actually look for.",
+    approach:
+      "A full redesign around a knight and shield brand, with a Book Your Inspection form built into the hero, license and review proof up front, a chat assistant, and clear service and area pages.",
+    impact:
+      "A branded, trust-first site that turns a stressed homeowner into a booked inspection in one step, across phone, tablet and desktop.",
+    metrics: [
+      { value: "5.0", label: "Google rating" },
+      { value: "Licensed", label: "& insured" },
+    ],
+    image: {
+      src: "/images/case-studies/preventive-home-solutions/after-screenshot.webp",
+      alt: "The rebuilt Preventive Home Solutions website",
+      width: 1897,
+      height: 980,
+    },
   },
   {
     slug: "catching-chrome",
@@ -103,11 +112,23 @@ export const CASE_STUDIES: CaseStudy[] = [
     year: "2026",
     industry: "Outdoor & Recreation",
     services: ["Web Design"],
-    headline: "Catching Chrome",
-    challenge: "Case study details are being finalised.",
-    approach: "Full write-up coming soon.",
-    impact: "Catching Chrome - full case study coming soon.",
-    metrics: [],
+    headline: "Turning phone-first anglers into booked trips",
+    challenge:
+      "An Oregon salmon and steelhead guide service with decades on the water was stuck on an aging blue template that split visitors between two competing buttons and buried the credentials that win bookings.",
+    approach:
+      "A full mobile-first redesign led by cinematic Pacific Northwest photography, with USCG and experience credentials in the hero and one clear Book Now path on every screen.",
+    impact:
+      "A cleaner, more credible site that makes the next step obvious and books more guided trips from anglers researching on their phones.",
+    metrics: [
+      { value: "40+ yrs", label: "On the water" },
+      { value: "USCG", label: "Certified guide" },
+    ],
+    image: {
+      src: "/images/case-studies/catching-chrome/after-screenshot.webp",
+      alt: "The rebuilt Catching Chrome Guide Service website",
+      width: 1892,
+      height: 1078,
+    },
   },
   {
     slug: "bals-mobile-dental-hygiene",

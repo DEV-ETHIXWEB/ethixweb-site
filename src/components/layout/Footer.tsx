@@ -10,7 +10,7 @@ const LIVE_PATHS = new Set(["/", "/contact"]);
 const COMPANY_LINKS: [string, string][] = [
   ["About", "/about"],
   ["Industries", "/industries"],
-  ["Our Work", "/portfolio"],
+  ["Our Work", "/our-work"],
   ["Blog", "/blog"],
   ["Careers", "/careers"],
   ["Contact", "/contact"],

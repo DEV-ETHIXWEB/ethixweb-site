@@ -6,7 +6,7 @@ import { PREVENTIVE_HOME_SOLUTIONS } from "@/data/case-studies/preventive-home-s
 
 export type { CaseStudyDetail } from "@/data/case-studies/types";
 
-// Registry of every case study that has a full /portfolio/$slug detail page.
+// Registry of every case study that has a full /our-work/$slug detail page.
 // To add the next one: write a new `src/data/case-studies/<slug>.ts` file
 // shaped like `all-phase-plumbing.ts` and add it to this array - the route,
 // the prev/next nav, and the "View case study" link on /portfolio all pick

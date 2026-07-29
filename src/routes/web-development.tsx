@@ -255,7 +255,7 @@ function Page() {
           </div>
           <div className="mt-12 flex flex-wrap gap-4">
             <Link
-              to="/portfolio"
+              to="/our-work"
               className="inline-flex items-center gap-2 rounded-full glass px-7 py-3.5 font-medium hover:bg-white/10 transition"
             >
               See our work <ArrowUpRight className="h-4 w-4" />

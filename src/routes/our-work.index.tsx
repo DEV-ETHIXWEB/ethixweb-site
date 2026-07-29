@@ -15,14 +15,14 @@ import { CASE_STUDIES, SERVICE_FILTERS } from "@/lib/portfolio-data";
 import { CASE_STUDY_DETAILS } from "@/data/case-studies";
 
 // Hero spotlight = the first study in the detail registry (the newest one with
-// a full /portfolio/$slug page). Name/summary/screenshot come from the detail
+// a full /our-work/$slug page). Name/summary/screenshot come from the detail
 // data and the stat tiles from the matching listing entry, so the panel stays
 // in sync with both sources of truth as new case studies are added.
 const FEATURED = CASE_STUDY_DETAILS[0];
 const FEATURED_META = CASE_STUDIES.find((s) => s.slug === FEATURED.slug);
 const FEATURED_SHOT = FEATURED.beforeAfter?.afterImage ?? FEATURED.heroImage;
 
-export const Route = createFileRoute("/portfolio/")({
+export const Route = createFileRoute("/our-work/")({
   head: () => ({
     meta: [
       { title: "Our Work - Ethixweb" },
@@ -35,7 +35,7 @@ export const Route = createFileRoute("/portfolio/")({
       { property: "og:description", content: "Selected client work and measurable results." },
       { property: "og:type", content: "website" },
       { property: "og:image", content: "https://ethixweb.com/ethixweb.png" },
-      { property: "og:url", content: "https://ethixweb.com/portfolio" },
+      { property: "og:url", content: "https://ethixweb.com/our-work" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Our Work - Ethixweb Case Studies" },
       {
@@ -46,15 +46,15 @@ export const Route = createFileRoute("/portfolio/")({
       { name: "twitter:image", content: "https://ethixweb.com/ethixweb.png" },
       { name: "robots", content: "index, follow" },
     ],
-    links: [{ rel: "canonical", href: "https://ethixweb.com/portfolio" }],
+    links: [{ rel: "canonical", href: "https://ethixweb.com/our-work" }],
     scripts: [
       {
         type: "application/ld+json",
         children: jsonLdStringify({
           "@context": "https://schema.org",
           "@type": "ItemList",
-          name: "Ethixweb Portfolio",
-          url: "https://ethixweb.com/portfolio",
+          name: "Ethixweb Our Work",
+          url: "https://ethixweb.com/our-work",
           description:
             "Real case studies from Ethixweb: websites, SEO and paid media that generated thousands of qualified leads.",
           itemListElement: CASE_STUDIES.map((s, i) => ({
@@ -143,7 +143,7 @@ function Portfolio() {
                 Forced-dark in both themes, so colors are hardcoded. */}
             <Reveal delay={0.2}>
               <Link
-                to="/portfolio/$slug"
+                to="/our-work/$slug"
                 params={{ slug: FEATURED.slug }}
                 aria-label={`Read the full ${FEATURED.client.name} case study`}
                 className="group relative block overflow-hidden rounded-3xl bg-[linear-gradient(135deg,#3a0b0d_0%,#1c0607_55%,#120405_100%)] shadow-glow ring-1 ring-white/10 transition-transform duration-300 hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"

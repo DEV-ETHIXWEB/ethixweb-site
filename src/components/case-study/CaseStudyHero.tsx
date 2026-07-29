@@ -24,7 +24,7 @@ export function CaseStudyHero({ study }: { study: CaseStudyDetail }) {
               alt={study.client.logo.alt}
               width={study.client.logo.width}
               height={study.client.logo.height}
-              className="mt-8 h-[100px] w-auto max-w-[240px] object-contain object-left"
+              className="mt-8 h-[130px] w-auto max-w-[300px] object-contain object-left sm:h-[160px] sm:max-w-[360px]"
             />
           </Reveal>
 
