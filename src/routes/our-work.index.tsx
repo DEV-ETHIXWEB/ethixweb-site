@@ -9,18 +9,27 @@ import { Container } from "@/components/shared/Container";
 import { GlowBlob } from "@/components/shared/GlowBlob";
 import { HeroWebVisual } from "@/components/shared/HeroWebVisual";
 import { CaseStudyCard } from "@/components/portfolio/CaseStudyCard";
+import { HeroCarousel, type HeroCarouselSlide } from "@/components/portfolio/HeroCarousel";
 import { Testimonials } from "@/components/shared/Testimonials";
-import { AnimatedStat } from "@/components/portfolio/AnimatedStat";
 import { CASE_STUDIES, SERVICE_FILTERS } from "@/lib/portfolio-data";
-import { CASE_STUDY_DETAILS } from "@/data/case-studies";
 
-// Hero spotlight = the first study in the detail registry (the newest one with
-// a full /our-work/$slug page). Name/summary/screenshot come from the detail
-// data and the stat tiles from the matching listing entry, so the panel stays
-// in sync with both sources of truth as new case studies are added.
-const FEATURED = CASE_STUDY_DETAILS[0];
-const FEATURED_META = CASE_STUDIES.find((s) => s.slug === FEATURED.slug);
-const FEATURED_SHOT = FEATURED.beforeAfter?.afterImage ?? FEATURED.heroImage;
+// Hero carousel: a fixed set of four shipped-site screenshots, in this order.
+// Pulled from the listing data (already has the after-screenshot + headline
+// for each), not the full detail registry - this is a curated subset, not
+// "every case study with a detail page".
+const CAROUSEL_SLUGS = [
+  "all-phase-plumbing",
+  "preventive-home-solutions",
+  "garys-pipeline",
+  "catching-chrome",
+] as const;
+const CAROUSEL_SLIDES: HeroCarouselSlide[] = CAROUSEL_SLUGS.map((slug) => {
+  const study = CASE_STUDIES.find((s) => s.slug === slug);
+  if (!study || !study.image) {
+    throw new Error(`Hero carousel: missing case study or image for "${slug}"`);
+  }
+  return { slug: study.slug, client: study.client, headline: study.headline, image: study.image };
+});
 
 export const Route = createFileRoute("/our-work/")({
   head: () => ({
@@ -138,67 +147,11 @@ function Portfolio() {
               </Reveal>
             </div>
 
-            {/* Featured project panel - the newest case study with a full
-                detail page, over a faint real screenshot of the shipped site.
-                Forced-dark in both themes, so colors are hardcoded. */}
+            {/* Hero carousel - four shipped-site screenshots auto-crossfading
+                every 3s, with a small name+headline plate pinned to the
+                lower-right corner. */}
             <Reveal delay={0.2}>
-              <Link
-                to="/our-work/$slug"
-                params={{ slug: FEATURED.slug }}
-                aria-label={`Read the full ${FEATURED.client.name} case study`}
-                className="group relative block overflow-hidden rounded-3xl bg-[linear-gradient(135deg,#3a0b0d_0%,#1c0607_55%,#120405_100%)] shadow-glow ring-1 ring-white/10 transition-transform duration-300 hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
-              >
-                <img
-                  src={FEATURED_SHOT.src}
-                  alt=""
-                  width={FEATURED_SHOT.width}
-                  height={FEATURED_SHOT.height}
-                  loading="lazy"
-                  className="absolute inset-0 h-full w-full object-cover object-top opacity-15 transition-opacity duration-300 group-hover:opacity-25"
-                />
-                <div
-                  aria-hidden="true"
-                  className="absolute inset-0 bg-[linear-gradient(180deg,rgba(18,4,5,0.35)_0%,rgba(18,4,5,0.95)_75%)]"
-                />
-                <div
-                  aria-hidden="true"
-                  className="absolute inset-0 bg-[radial-gradient(70%_60%_at_20%_0%,rgba(157,27,32,0.3),transparent_70%)]"
-                />
-                <div className="relative p-7 sm:p-9">
-                  <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-3 py-1.5 text-[11px] font-bold uppercase tracking-widest text-white/85">
-                    <span className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_18px_rgba(157,27,32,0.9)]" />
-                    Featured project
-                  </span>
-                  <h2 className="mt-5 font-display text-3xl font-extrabold text-white sm:text-4xl">
-                    {FEATURED.client.name}
-                  </h2>
-                  <p className="mt-3 max-w-md text-sm leading-relaxed text-white/70 sm:text-base">
-                    {FEATURED.summary}
-                  </p>
-                  {FEATURED_META && FEATURED_META.metrics.length > 0 && (
-                    <div className="mt-6 grid grid-cols-2 gap-3">
-                      {FEATURED_META.metrics.slice(0, 4).map((m) => (
-                        <div
-                          key={m.label}
-                          className="rounded-2xl bg-white/[0.06] p-4 ring-1 ring-white/10"
-                        >
-                          <AnimatedStat
-                            value={m.value}
-                            className="block font-display text-2xl font-extrabold text-white"
-                          />
-                          <p className="mt-1 text-[11px] font-semibold leading-tight text-white/55">
-                            {m.label}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  <span className="mt-7 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-[#7a1418] shadow-[0_14px_40px_-12px_rgba(0,0,0,0.55)] transition-transform duration-200 group-hover:scale-[1.03]">
-                    Read full case study
-                    <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:rotate-45" />
-                  </span>
-                </div>
-              </Link>
+              <HeroCarousel slides={CAROUSEL_SLIDES} />
             </Reveal>
           </div>
         </Container>

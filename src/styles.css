@@ -357,6 +357,65 @@ html.dark {
     }
   }
 
+  /* ── Scroll-progress hairline (see ScrollProgress.tsx). Driven entirely by
+     the compositor via a scroll timeline where supported, so the bar costs no
+     main-thread work. `data-js-driven` is set only when the component had to
+     fall back to a scroll listener, and switches the element to a transform
+     written from JS. ── */
+  .scroll-progress-hairline {
+    transform: scaleX(0);
+  }
+  @supports (animation-timeline: scroll()) {
+    .scroll-progress-hairline:not([data-js-driven]) {
+      animation: scroll-progress-grow linear both;
+      animation-timeline: scroll(root block);
+    }
+    @keyframes scroll-progress-grow {
+      from {
+        transform: scaleX(0);
+      }
+      to {
+        transform: scaleX(1);
+      }
+    }
+  }
+  .scroll-progress-hairline[data-js-driven] {
+    transition: transform 120ms linear;
+  }
+
+  /* ── Reveal: scroll-in fade used ~200x per page (see Reveal.tsx).
+     Deliberately CSS, not JS: opacity/transform transitions are composited,
+     so the whole page's reveal work stays off the main thread. `data-revealed`
+     is set by one shared IntersectionObserver; `.reveal-fallback` on <html> is
+     the page-wide safety net if the observer never fires. ── */
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity var(--duration-base) cubic-bezier(var(--ease-premium)),
+      transform var(--duration-base) cubic-bezier(var(--ease-premium));
+    transition-delay: var(--reveal-delay, 0s);
+  }
+  [data-reveal][data-revealed],
+  .reveal-fallback [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+  /* No JS means no observer, so never leave content stuck at opacity 0. */
+  @media (scripting: none) {
+    [data-reveal] {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
   /* ── Primary/secondary CTA language: calm, reassuring hover instead of
      dramatic transforms - a flat elevation + shadow + slight scale, tuned
      for an older, less mouse-adventurous audience. Red is kept only for the
