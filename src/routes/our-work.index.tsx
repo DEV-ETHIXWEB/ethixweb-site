@@ -204,41 +204,6 @@ function Portfolio() {
         </Container>
       </section>
 
-      {/* ── Impact band - this page's signature: aggregate results summed from
-          the featured case studies below (real numbers, not marketing copy).
-          Forced-dark, colors hardcoded. ── */}
-      <section className="relative overflow-hidden border-y border-white/10 bg-[linear-gradient(105deg,#1c0607_0%,#3a0b0d_50%,#1c0607_100%)] py-10">
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-[radial-gradient(50%_80%_at_50%_0%,rgba(157,27,32,0.35),transparent_70%)]"
-        />
-        <Container className="relative grid grid-cols-2 gap-y-8 lg:grid-cols-4">
-          {[
-            { value: "11,500+", label: "Qualified leads generated" },
-            { value: "$3.50", label: "Lowest cost per lead" },
-            { value: "+60%", label: "Best traffic lift" },
-            { value: "7", label: "Industries represented" },
-          ].map((s, i) => (
-            <Reveal
-              key={s.label}
-              delay={i * 0.06}
-              className={`text-center ${i > 0 ? "lg:border-l lg:border-white/10" : ""}`}
-            >
-              <AnimatedStat
-                value={s.value}
-                className="block font-display text-4xl font-extrabold text-white sm:text-5xl"
-              />
-              <p className="mt-2 text-xs font-semibold uppercase tracking-widest text-white/55">
-                {s.label}
-              </p>
-            </Reveal>
-          ))}
-          <p className="col-span-2 -mb-2 mt-2 text-center text-[11px] text-white/55 lg:col-span-4">
-            Totals across the featured case studies on this page.
-          </p>
-        </Container>
-      </section>
-
       {/* ── Case studies ─────────────────────────────────────────────────── */}
       <section id="case-studies" className="scroll-mt-24 py-24">
         <Container>
@@ -350,7 +315,7 @@ function Portfolio() {
       {/* ── Final CTA ────────────────────────────────────────────────────────
           Full-crimson finale panel, matching the careers page closer. Same in
           both themes, so colors are hardcoded against the brand gradient. */}
-      <section className="py-20">
+      <section className="px-4 py-20 xs:px-6 lg:px-8">
         <Reveal>
           <Container className="relative overflow-hidden rounded-4xl bg-[linear-gradient(135deg,#9d1b20_0%,#6b1114_45%,#30090b_100%)] px-6 py-12 text-center shadow-glow ring-1 ring-white/10 sm:px-12 sm:py-14 lg:py-16">
             <div

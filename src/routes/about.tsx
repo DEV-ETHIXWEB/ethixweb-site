@@ -659,7 +659,7 @@ function About() {
       {/* ── Final CTA ────────────────────────────────────────────────────────
           Crimson finale panel matching the rest of the site; forced-dark,
           hardcoded colors. */}
-      <section className="py-24">
+      <section className="px-4 py-24 xs:px-6 lg:px-8">
         <Reveal>
           <Container className="relative overflow-hidden rounded-4xl bg-[linear-gradient(135deg,#9d1b20_0%,#6b1114_45%,#30090b_100%)] px-6 py-12 text-center shadow-glow ring-1 ring-white/10 sm:px-12 sm:py-14 lg:py-16">
             <div

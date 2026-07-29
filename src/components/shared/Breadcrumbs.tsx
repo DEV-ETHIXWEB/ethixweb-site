@@ -31,8 +31,13 @@ export function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLdStringify(schema) }}
       />
-      <ol className="flex flex-wrap items-center gap-1.5 py-4 text-xs text-muted-foreground">
-        <li className="flex items-center gap-1.5">
+      {/* flex-nowrap + overflow-hidden: this row must never wrap to a second
+          line on mobile. Non-last crumbs are shrink-0 (they're always short);
+          the last crumb (the current page - can be a long job/case-study
+          title) is the only one allowed to shrink, and truncates with an
+          ellipsis instead of wrapping or overflowing. */}
+      <ol className="flex flex-nowrap items-center gap-1.5 overflow-hidden py-4 text-xs leading-4 text-muted-foreground">
+        <li className="flex shrink-0 items-center gap-1.5">
           <Link
             to="/"
             className="flex items-center gap-1 hover:text-foreground transition-colors"
@@ -40,12 +45,15 @@ export function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
           >
             <Home className="h-3.5 w-3.5" />
           </Link>
-          <ChevronRight className="h-3.5 w-3.5 opacity-50" aria-hidden="true" />
+          <ChevronRight className="h-3.5 w-3.5 shrink-0 opacity-50" aria-hidden="true" />
         </li>
         {items.map((item, i) => {
           const isLast = i === items.length - 1;
           return (
-            <li key={item.label} className="flex items-center gap-1.5">
+            <li
+              key={item.label}
+              className={`flex items-center gap-1.5 ${isLast ? "min-w-0" : "shrink-0"}`}
+            >
               {item.to && !isLast ? (
                 <Link to={item.to} className="hover:text-foreground transition-colors">
                   {item.label}
@@ -53,12 +61,14 @@ export function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
               ) : (
                 <span
                   aria-current={isLast ? "page" : undefined}
-                  className={isLast ? "text-foreground font-medium" : ""}
+                  className={isLast ? "truncate text-foreground font-medium" : ""}
                 >
                   {item.label}
                 </span>
               )}
-              {!isLast && <ChevronRight className="h-3.5 w-3.5 opacity-50" aria-hidden="true" />}
+              {!isLast && (
+                <ChevronRight className="h-3.5 w-3.5 shrink-0 opacity-50" aria-hidden="true" />
+              )}
             </li>
           );
         })}

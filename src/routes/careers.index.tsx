@@ -766,7 +766,7 @@ function Careers() {
           Full-crimson finale panel. Like the founder note, it's the same in
           both themes, so every color in here is hardcoded against the brand
           gradient rather than using theme tokens. */}
-      <section className="bg-[#120506] pb-20 pt-8">
+      <section className="bg-[#120506] px-4 pb-20 pt-8 xs:px-6 lg:px-8">
         <Container className="relative overflow-hidden rounded-4xl bg-[linear-gradient(135deg,#9d1b20_0%,#6b1114_45%,#30090b_100%)] px-6 py-12 text-center shadow-glow ring-1 ring-white/10 sm:px-12 sm:py-14 lg:py-16">
           <div
             aria-hidden="true"

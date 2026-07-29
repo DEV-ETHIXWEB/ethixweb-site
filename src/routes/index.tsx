@@ -411,7 +411,7 @@ function Proof() {
 
 function CTA() {
   return (
-    <section className="py-12 sm:py-24">
+    <section className="px-4 py-12 xs:px-6 sm:py-24 lg:px-8">
       <Reveal>
         <Container className="relative overflow-hidden rounded-4xl bg-card shadow-lg lg:aspect-25/12">
           <div className="grid grid-cols-1 items-center gap-8 px-8 py-14 sm:px-12 sm:py-16 lg:h-full lg:grid-cols-[1.13fr_1fr] lg:items-stretch lg:gap-2 lg:px-0 lg:py-0">

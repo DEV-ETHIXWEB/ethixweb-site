@@ -108,7 +108,7 @@ function StepNode({
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.5, delay: i * 0.08 }}
     >
-      <div className="flex flex-col items-start lg:items-center lg:text-center">
+      <div className="flex flex-col items-center text-center">
         <span className="relative z-10 flex h-12 w-12 items-center justify-center">
           {/* Ripple rings - mount once when this step lights up */}
           {rippling && (
