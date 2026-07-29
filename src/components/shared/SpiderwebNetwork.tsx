@@ -3,7 +3,11 @@ import { motion, useSpring, useTransform, type MotionValue } from "framer-motion
 import { DollarSign, Layers3, Palette, PhoneCall, TrendingUp } from "lucide-react";
 import spiderweb from "@/assets/spiderweb.svg";
 import spiderwebLight from "@/assets/spiderweb-light.svg";
-import emblem from "@/assets/emblem-transparent.webp";
+// Displayed at ~39x40px here (the emblem's on-page box) - the -sm variant
+// (300px source, ~5x oversampled for that size) replaces the full 1200px
+// original, which PageSpeed Insights flagged as wasting ~35KiB per fetch
+// for a display size two orders of magnitude smaller than the source.
+import emblem from "@/assets/emblem-transparent-sm.webp";
 
 /** Bump this whenever public/emblem-3d.html's content changes - it has no
  * content hash (it's a static public file, not a bundled/imported asset), so
@@ -57,7 +61,7 @@ const EMBLEM_3D_SCALE = EMBLEM_3D_BASE_SCALE / EMBLEM_3D_WINDOW_GROWTH;
  * "what the 3D tool thinks it's rendering" from "how big it visually ends up"
  * - the tool always sees the same consistent canvas size, only the final
  * compositing shrinks it. */
-const EMBLEM_3D_STAGE_PX = 320;
+const EMBLEM_3D_STAGE_PX = 240;
 
 /* ── Geometry ─────────────────────────────────────────────────────────────────
  * Everything lives in the artwork's own coordinate space (viewBox 1234x772) so
@@ -272,6 +276,25 @@ function GlassEmblem({ mx, reduceMotion }: { mx: MotionValue<number>; reduceMoti
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
+
+  // The iframe's WebGL init (bundled Three.js scene) is heavy enough to
+  // compete with the page's own first paint if it starts immediately - it
+  // was measured as the LCP element's dominant render-delay contributor.
+  // Deferring the `src` assignment by one idle tick lets the browser finish
+  // painting the rest of the hero first, without ever unmounting/remounting
+  // the iframe afterward (that's the thing the comment below warns against -
+  // this only delays the *first* mount, once, and never toggles again).
+  const [emblemSrc, setEmblemSrc] = useState<string | undefined>(undefined);
+  useEffect(() => {
+    if (!showLive3D) return;
+    const src = `/emblem-3d.html?v=${EMBLEM_3D_VERSION}`;
+    if (typeof window.requestIdleCallback === "function") {
+      const id = window.requestIdleCallback(() => setEmblemSrc(src), { timeout: 1500 });
+      return () => window.cancelIdleCallback(id);
+    }
+    const id = window.setTimeout(() => setEmblemSrc(src), 200);
+    return () => window.clearTimeout(id);
+  }, [showLive3D]);
   const stageHeightPx = EMBLEM_3D_STAGE_PX * (406 / 397);
   const iframePx = EMBLEM_3D_STAGE_PX * EMBLEM_3D_SCALE;
   const iframeHeightPx = stageHeightPx * EMBLEM_3D_SCALE;
@@ -343,9 +366,14 @@ function GlassEmblem({ mx, reduceMotion }: { mx: MotionValue<number>; reduceMoti
             }}
           >
             {/* Oversized + centered within the stage (see EMBLEM_3D_SCALE) to
-             * crop the transmission-pass halo out via the stage's overflow:hidden. */}
+             * crop the transmission-pass halo out via the stage's overflow:hidden.
+             * `src` starts undefined and is set exactly once, after an idle tick
+             * (see emblemSrc above) - the iframe itself mounts immediately (still
+             * "always mounted", per the no-toggle rule below), it just doesn't
+             * start loading its heavy WebGL document until the browser has had a
+             * chance to paint everything else first. */}
             <iframe
-              src={`/emblem-3d.html?v=${EMBLEM_3D_VERSION}`}
+              src={emblemSrc}
               title="Ethixweb"
               loading="lazy"
               className="pointer-events-none absolute select-none"
@@ -668,10 +696,21 @@ export function SpiderwebNetwork({
             aria-hidden="true"
             width={VB_W}
             height={VB_H}
+            fetchPriority="high"
+            decoding="async"
             className="h-auto w-full select-none"
             draggable={false}
             style={{
               opacity: 0.95,
+              // SVG-sourced <img> elements don't reliably get the browser's
+              // automatic aspect-ratio-from-attributes reservation the way
+              // raster images do (confirmed via Lighthouse: "Media element
+              // lacking an explicit size" on this exact element, causing a
+              // 0.284 CLS once the file loads and the browser recalculates).
+              // The light-theme sibling doesn't need this - its wrapper div
+              // already sets aspect-ratio and this element is absolutely
+              // positioned inside it, so it can't affect the box size.
+              aspectRatio: `${VB_W} / ${VB_H}`,
               filter:
                 "brightness(0.82) saturate(0.9) drop-shadow(0 0 5px rgba(229,29,37,0.55)) drop-shadow(0 0 26px rgba(229,29,37,0.32))",
             }}

@@ -10,7 +10,11 @@ import {
   Search,
 } from "lucide-react";
 import { useTheme } from "@/components/layout/ThemeProvider";
-import emblem from "@/assets/emblem-transparent.webp";
+// Displayed at 24px here - the -sm variant (300px source) is already ~5x
+// oversampled for that, vs. the full 1200px original wasting ~35KiB per
+// fetch for no visible benefit (confirmed via PageSpeed Insights: "Improve
+// image delivery" flagged this exact file for its SpiderwebNetwork usage).
+import emblem from "@/assets/emblem-transparent-sm.webp";
 
 type ShiftItem = {
   icon: ComponentType<{ className?: string; strokeWidth?: number }>;
