@@ -51,6 +51,26 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://ethixweb.com/our-work/all-phase-plumbing</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ethixweb.com/our-work/garys-pipeline</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ethixweb.com/our-work/catching-chrome</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ethixweb.com/our-work/preventive-home-solutions</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://ethixweb.com/industries</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

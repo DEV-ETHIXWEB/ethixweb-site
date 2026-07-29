@@ -1,5 +1,6 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { jsonLdStringify } from "@/lib/json-ld";
+import { SITE_URL } from "@/lib/site";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { CaseStudyHero } from "@/components/case-study/CaseStudyHero";
 import { IntroCardsSection } from "@/components/case-study/IntroCardsSection";
@@ -59,6 +60,20 @@ export const Route = createFileRoute("/our-work/$slug")({
             image: `https://ethixweb.com${study.heroImage.src}`,
             url: `https://ethixweb.com/our-work/${study.slug}`,
             author: { "@type": "Organization", name: "Ethixweb", sameAs: "https://ethixweb.com" },
+          }),
+        },
+        {
+          type: "application/ld+json",
+          // Schema only - no visible breadcrumb nav on this page's editorial
+          // layout, but search engines still get the trail for rich results.
+          children: jsonLdStringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+              { "@type": "ListItem", position: 2, name: "Our Work", item: `${SITE_URL}/our-work` },
+              { "@type": "ListItem", position: 3, name: study.client.name },
+            ],
           }),
         },
       ],
