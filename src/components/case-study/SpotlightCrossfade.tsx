@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import { Reveal } from "@/components/shared/Reveal";
-import { Checklist } from "@/components/case-study/Checklist";
+import { SpotlightCard } from "@/components/case-study/SpotlightCard";
 import { cn } from "@/lib/utils";
 import type { SpotlightItem } from "@/data/case-studies/types";
 
@@ -19,16 +19,6 @@ export function SpotlightCrossfade({ items }: { items: SpotlightItem[] }) {
     const id = setInterval(() => setActive((a) => (a + 1) % items.length), INTERVAL);
     return () => clearInterval(id);
   }, [items.length, reduce]);
-
-  const card = (item: SpotlightItem) => (
-    <div className="glass-strong w-full rounded-b-[1.75rem] p-7 sm:rounded-[1.5rem] sm:p-8">
-      <h3 className="font-display text-2xl font-bold leading-snug text-foreground">
-        {item.card.title}
-      </h3>
-      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{item.card.description}</p>
-      {item.card.checklist && <Checklist items={item.card.checklist} className="mt-5" />}
-    </div>
-  );
 
   return (
     <Reveal>
@@ -67,7 +57,7 @@ export function SpotlightCrossfade({ items }: { items: SpotlightItem[] }) {
                     i === active ? "opacity-100" : "pointer-events-none opacity-0",
                   )}
                 >
-                  {card(item)}
+                  <SpotlightCard item={item} />
                 </div>
               ))}
             </div>
@@ -78,7 +68,7 @@ export function SpotlightCrossfade({ items }: { items: SpotlightItem[] }) {
           <div className="sm:hidden">
             {items.map((item, i) => (
               <div key={i} className={i === active ? "block" : "hidden"}>
-                {card(item)}
+                <SpotlightCard item={item} />
               </div>
             ))}
           </div>

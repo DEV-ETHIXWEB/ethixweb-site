@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/shared/Reveal";
 import { CaseStudyContainer } from "@/components/case-study/CaseStudyContainer";
+import { Highlighted } from "@/components/case-study/Highlighted";
 import type { CaseStudyDetail } from "@/data/case-studies/types";
 import { getNextCaseStudy } from "@/data/case-studies";
 import spiderweb from "@/assets/spiderweb.svg";
@@ -46,7 +47,11 @@ export function CaseStudyClosingCta({ study }: { study: CaseStudyDetail }) {
         </Reveal>
         <Reveal delay={0.06}>
           <h2 className="mt-4 max-w-xl font-display text-5xl font-extrabold leading-[0.98] tracking-tight text-white sm:text-6xl lg:text-7xl">
-            <HighlightedWhite text={intro.title} highlight={intro.highlight} />
+            <Highlighted
+              text={intro.title}
+              highlight={intro.highlight}
+              className="text-[#e8334a]"
+            />
           </h2>
         </Reveal>
         <Reveal delay={0.12}>
@@ -80,19 +85,6 @@ export function CaseStudyClosingCta({ study }: { study: CaseStudyDetail }) {
         </div>
       </CaseStudyContainer>
     </section>
-  );
-}
-
-function HighlightedWhite({ text, highlight }: { text: string; highlight?: string }) {
-  if (!highlight) return <>{text}</>;
-  const i = text.indexOf(highlight);
-  if (i === -1) return <>{text}</>;
-  return (
-    <>
-      {text.slice(0, i)}
-      <span className="text-[#e8334a]">{highlight}</span>
-      {text.slice(i + highlight.length)}
-    </>
   );
 }
 
