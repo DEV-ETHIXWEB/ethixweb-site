@@ -14,12 +14,19 @@ const bodySchema = z.object({
   candidateName: z.string().trim().min(2).max(120),
   candidateEmail: z.string().trim().email().max(200),
   candidatePhone: z.string().trim().max(30).optional().default(""),
-  resumeUrl: z
-    .string()
-    .url()
-    .regex(RESUME_HOST_RE, "Resume must come from our upload")
-    .nullable()
-    .optional(),
+  // Preprocess so an empty string (the client sends `search.resume ?? null`,
+  // and `?resume=` with no value parses as "" rather than undefined) is
+  // treated the same as "no resume" instead of failing URL validation and
+  // hard-blocking a candidate who has no resume to attach.
+  resumeUrl: z.preprocess(
+    (val) => (val === "" ? null : val),
+    z
+      .string()
+      .url()
+      .regex(RESUME_HOST_RE, "Resume must come from our upload")
+      .nullable()
+      .optional(),
+  ),
 });
 
 export const Route = createFileRoute("/api/screening/start")({

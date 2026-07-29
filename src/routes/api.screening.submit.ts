@@ -18,8 +18,12 @@ const bodySchema = z.object({
       answer: z.string().max(8000),
     }),
   ),
-  tabSwitchCount: z.number().nonnegative().optional().default(0),
-  blurCount: z.number().nonnegative().optional().default(0),
+  // .catch(0) rather than .optional().default(0): these are informational
+  // proctoring counters, not security- or scoring-critical, so a malformed
+  // value from a client-side bug should fall back to 0, not fail the whole
+  // submission and strand a candidate who just finished a timed exam.
+  tabSwitchCount: z.number().nonnegative().catch(0),
+  blurCount: z.number().nonnegative().catch(0),
 });
 
 export const Route = createFileRoute("/api/screening/submit")({

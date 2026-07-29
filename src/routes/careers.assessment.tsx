@@ -116,10 +116,13 @@ function AssessmentPage() {
   const search = Route.useSearch();
 
   const [stage, setStage] = useState<Stage>("details");
-  // Move focus to the new stage's content on change so keyboard/screen-reader
+  // Move focus to the new stage's heading on change so keyboard/screen-reader
   // users get a signal the "page" changed - these stages swap in place with
-  // no navigation event to announce it otherwise. Skip on first mount so we
-  // don't steal focus from wherever the user landed.
+  // no navigation event to announce it otherwise. Every stage renders its own
+  // <h2> (see below), so focus that directly rather than the wrapper div -
+  // an unlabeled div gets no reliable announcement, a heading does. Falls
+  // back to the wrapper itself if a stage is ever added without one. Skip on
+  // first mount so we don't steal focus from wherever the user landed.
   const stageContentRef = useRef<HTMLDivElement>(null);
   const isFirstStageRender = useRef(true);
   useEffect(() => {
@@ -127,7 +130,13 @@ function AssessmentPage() {
       isFirstStageRender.current = false;
       return;
     }
-    stageContentRef.current?.focus();
+    const heading = stageContentRef.current?.querySelector<HTMLElement>("h1, h2, h3");
+    if (heading) {
+      heading.setAttribute("tabindex", "-1");
+      heading.focus();
+    } else {
+      stageContentRef.current?.focus();
+    }
   }, [stage]);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
