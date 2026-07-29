@@ -1,4 +1,8 @@
 {
+  "redirects": [
+    { "source": "/portfolio", "destination": "/our-work", "permanent": true },
+    { "source": "/portfolio/:slug", "destination": "/our-work/:slug", "permanent": true }
+  ],
   "headers": [
     {
       "source": "/:path*",
