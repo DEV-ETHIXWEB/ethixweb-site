@@ -2,13 +2,13 @@ import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { Resend } from "resend";
 import { z } from "zod";
-import { checkRateLimitDurable, clientIp } from "@/lib/rate-limit";
+import { clientIp } from "@/lib/rate-limit";
 import { getSupabase, type ScreeningTestRow } from "@/lib/supabase";
 import { scoreScreeningTest } from "@/lib/screening/anthropic";
 import { getScreeningConfig } from "@/lib/screening/rubrics";
 import { signDecisionToken } from "@/lib/screening/tokens";
 import { escapeHtml, emailRow, emailShell, emailButton, FROM_EMAIL, APP_URL } from "@/lib/email";
-import { isSameOriginRequest } from "@/lib/origin-check";
+import { guardRequest } from "@/lib/api-guard";
 
 const bodySchema = z.object({
   testId: z.string().min(1),
@@ -26,22 +26,13 @@ export const Route = createFileRoute("/api/screening/submit")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        if (!isSameOriginRequest(request)) {
-          return Response.json({ ok: false, error: "Invalid request origin" }, { status: 403 });
-        }
-
-        if (
-          !(await checkRateLimitDurable(
-            `screening-submit:${clientIp(request)}`,
-            10,
-            10 * 60 * 1000,
-          ))
-        ) {
-          return Response.json(
-            { ok: false, error: "Too many requests. Please try again later." },
-            { status: 429 },
-          );
-        }
+        const guard = await guardRequest(
+          request,
+          `screening-submit:${clientIp(request)}`,
+          10,
+          10 * 60 * 1000,
+        );
+        if (guard) return guard;
 
         const raw = await request.json().catch(() => null);
         const parsed = bodySchema.safeParse(raw);

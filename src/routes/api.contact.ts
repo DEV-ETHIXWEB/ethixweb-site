@@ -11,10 +11,10 @@ import {
   emailShell,
   emailButton,
 } from "@/lib/email";
-import { checkRateLimitDurable, clientIp } from "@/lib/rate-limit";
+import { clientIp } from "@/lib/rate-limit";
 import { recordContactSubmission, markNotificationSent, markClickUpTaskLinked } from "@/lib/leads";
 import { createClickUpLeadTask } from "@/lib/clickup";
-import { isSameOriginRequest } from "@/lib/origin-check";
+import { guardRequest } from "@/lib/api-guard";
 
 const TO_EMAIL = "info@ethixweb.com";
 
@@ -22,16 +22,13 @@ export const Route = createFileRoute("/api/contact")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        if (!isSameOriginRequest(request)) {
-          return Response.json({ ok: false, error: "Invalid request origin" }, { status: 403 });
-        }
-
-        if (!(await checkRateLimitDurable(`contact:${clientIp(request)}`, 5, 10 * 60 * 1000))) {
-          return Response.json(
-            { ok: false, error: "Too many requests. Please try again later." },
-            { status: 429 },
-          );
-        }
+        const guard = await guardRequest(
+          request,
+          `contact:${clientIp(request)}`,
+          5,
+          10 * 60 * 1000,
+        );
+        if (guard) return guard;
 
         const body = await request.json().catch(() => null);
         if (!body || typeof body !== "object") {

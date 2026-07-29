@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { z } from "zod";
-import { checkRateLimitDurable, clientIp } from "@/lib/rate-limit";
-import { isSameOriginRequest } from "@/lib/origin-check";
+import { clientIp } from "@/lib/rate-limit";
+import { guardRequest } from "@/lib/api-guard";
 import { getGadsStore } from "@/lib/gads/store";
 import { loadGadsAssessment, resetGadsRowForRetest } from "@/lib/gads/service";
 import { buildGadsExam } from "@/lib/gads/questions";
@@ -33,15 +33,14 @@ export const Route = createFileRoute("/api/gads/begin")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        if (!isSameOriginRequest(request)) {
-          return Response.json({ ok: false, error: "Invalid request origin" }, { status: 403 });
-        }
-        if (!(await checkRateLimitDurable(`gads-begin:${clientIp(request)}`, 8, 10 * 60 * 1000))) {
-          return Response.json(
-            { ok: false, error: "Too many attempts. Please try again later." },
-            { status: 429 },
-          );
-        }
+        const guard = await guardRequest(
+          request,
+          `gads-begin:${clientIp(request)}`,
+          8,
+          10 * 60 * 1000,
+          "Too many attempts. Please try again later.",
+        );
+        if (guard) return guard;
 
         const parsed = bodySchema.safeParse(await request.json().catch(() => null));
         if (!parsed.success) {

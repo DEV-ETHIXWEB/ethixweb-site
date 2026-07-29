@@ -2,9 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { Resend } from "resend";
 import { JOBS } from "@/lib/careers-data";
-import { checkRateLimitDurable, clientIp } from "@/lib/rate-limit";
+import { clientIp } from "@/lib/rate-limit";
 import { recordCareerApplication, markNotificationSent } from "@/lib/leads";
-import { isSameOriginRequest } from "@/lib/origin-check";
+import { guardRequest } from "@/lib/api-guard";
 import {
   NOTICE_PERIOD_LABELS,
   FROM_EMAIL,
@@ -54,16 +54,14 @@ export const Route = createFileRoute("/api/careers/apply")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        if (!isSameOriginRequest(request)) {
-          return Response.json({ ok: false, error: "Invalid request origin" }, { status: 403 });
-        }
-
-        if (!(await checkRateLimitDurable(`apply:${clientIp(request)}`, 5, 10 * 60 * 1000))) {
-          return Response.json(
-            { ok: false, error: "Too many applications submitted. Please try again later." },
-            { status: 429 },
-          );
-        }
+        const guard = await guardRequest(
+          request,
+          `apply:${clientIp(request)}`,
+          5,
+          10 * 60 * 1000,
+          "Too many applications submitted. Please try again later.",
+        );
+        if (guard) return guard;
 
         const body = await request.json().catch(() => null);
         if (!body || typeof body !== "object") {
