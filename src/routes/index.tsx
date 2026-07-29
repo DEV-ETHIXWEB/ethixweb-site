@@ -221,6 +221,10 @@ function Hero() {
                 data-text="business."
                 style={{
                   backgroundImage: "linear-gradient(135deg, #D13A40 0%, #B32228 50%, #8A181C 100%)",
+                  // Tailwind's text-transparent only sets `color`; some older
+                  // WebKit builds need -webkit-text-fill-color too or glyphs
+                  // render partially opaque/white over the gradient.
+                  WebkitTextFillColor: "transparent",
                 }}
               >
                 business.

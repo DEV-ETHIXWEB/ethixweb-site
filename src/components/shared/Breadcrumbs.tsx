@@ -21,7 +21,12 @@ export function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
   };
 
   return (
-    <nav aria-label="Breadcrumb" className="relative z-10 mx-auto max-w-7xl px-6">
+    // No horizontal padding/max-width of its own: this always renders inside
+    // a <Container>, which already owns both. Duplicating them here used to
+    // stack an extra 24px of padding on top of the Container's own
+    // (responsive) padding, nudging the breadcrumb row out of alignment with
+    // the heading/content directly below it.
+    <nav aria-label="Breadcrumb" className="relative z-10">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLdStringify(schema) }}

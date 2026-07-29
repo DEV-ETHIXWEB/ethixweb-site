@@ -718,6 +718,12 @@ html.dark {
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    /* Some older WebKit builds only honor `color: transparent` on a
+       background-clip:text element inconsistently, leaving glyphs partially
+       opaque/white. -webkit-text-fill-color is the property WebKit actually
+       reads for this; .tech-3d/.accent-shimmer already set it, this brings
+       the base gradient-text utility in line. */
+    -webkit-text-fill-color: transparent;
   }
 
   .text-gradient-brand {
@@ -725,6 +731,7 @@ html.dark {
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    -webkit-text-fill-color: transparent;
   }
 
   .grid-bg {
@@ -1386,12 +1393,14 @@ html.dark {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  -webkit-text-fill-color: transparent;
 }
 .light .text-gradient-brand {
   background: linear-gradient(135deg, #8a181c 0%, #c04040 48%, #e07070 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  -webkit-text-fill-color: transparent;
 }
 .light .grid-bg {
   background-image:
