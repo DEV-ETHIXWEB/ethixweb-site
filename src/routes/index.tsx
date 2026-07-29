@@ -242,14 +242,13 @@ function Hero() {
                 Start a project
                 <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
-              <div
-                aria-disabled="true"
-                title="Coming soon"
-                className="btn-secondary inline-flex min-w-[200px] items-center justify-center gap-2 rounded-full px-7 py-3.5 font-bold opacity-60 cursor-not-allowed select-none"
+              <Link
+                to="/our-work"
+                className="btn-secondary group inline-flex min-w-[200px] items-center justify-center gap-2 rounded-full px-7 py-3.5 font-bold"
               >
                 See our work
-                <ArrowUpRight className="h-4 w-4" />
-              </div>
+                <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
             </div>
           </Reveal>
         </div>

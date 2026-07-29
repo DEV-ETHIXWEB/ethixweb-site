@@ -5,7 +5,19 @@ import { ArrowUpRight, Mail, Clock, Building2 } from "lucide-react";
 import { SignalTrace } from "@/components/layout/SignalTrace";
 import spiderweb from "@/assets/spiderweb.svg";
 
-const LIVE_PATHS = new Set(["/", "/contact"]);
+const LIVE_PATHS = new Set([
+  "/",
+  "/about",
+  "/industries",
+  "/services",
+  "/our-work",
+  "/blog",
+  "/careers",
+  "/contact",
+  "/policies/refunds",
+  "/policies/terms",
+  "/policies/privacy",
+]);
 
 const COMPANY_LINKS: [string, string][] = [
   ["About", "/about"],
