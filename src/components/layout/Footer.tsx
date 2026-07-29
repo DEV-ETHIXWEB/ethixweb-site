@@ -16,7 +16,8 @@ const LIVE_PATHS = new Set([
   "/contact",
   "/policies/refunds",
   "/policies/terms",
-  "/policies/privacy",
+  // Privacy Policy is being revised - link shows "coming soon" in the
+  // footer instead of navigating there, until the new version ships.
 ]);
 
 const COMPANY_LINKS: [string, string][] = [
@@ -202,7 +203,11 @@ function FooterCol({ title, links }: { title: string; links: [string, string][] 
                 {label}
               </Link>
             ) : (
-              <span className="inline-flex cursor-not-allowed select-none">
+              <span
+                title="Coming soon"
+                aria-disabled="true"
+                className="inline-flex cursor-not-allowed select-none"
+              >
                 <span className="text-sm text-foreground/65">{label}</span>
               </span>
             )}
