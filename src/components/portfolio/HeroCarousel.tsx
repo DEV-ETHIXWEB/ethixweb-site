@@ -85,9 +85,7 @@ export function HeroCarousel({ slides }: { slides: HeroCarouselSlide[] }) {
         aria-label={`Read the full ${current.client} case study`}
         className="group absolute bottom-4 right-4 z-10 max-w-[calc(100%-2rem)] rounded-2xl bg-[#120405]/85 p-4 ring-1 ring-white/15 backdrop-blur-sm transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 sm:max-w-[19rem] sm:p-5"
       >
-        <h3 className="font-display text-base font-bold text-white sm:text-lg">
-          {current.client}
-        </h3>
+        <h3 className="font-display text-base font-bold text-white sm:text-lg">{current.client}</h3>
         <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-white/70 sm:text-sm">
           {current.headline}
         </p>

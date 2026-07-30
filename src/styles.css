@@ -1224,6 +1224,12 @@ html.dark {
 
   .tech-3d {
     color: #c0272d;
+    /* Parent h1 is .text-gradient, which sets -webkit-text-fill-color:
+       transparent for its own gradient-clip effect. That property inherits;
+       without resetting it here, this span's `color` is set but its glyphs
+       render fully invisible in WebKit/Chromium (fill-color wins over color
+       for paint). */
+    -webkit-text-fill-color: #c0272d;
     animation: tech-glow-pulse 6.5s ease-in-out infinite;
   }
   .tech-3d::after {
