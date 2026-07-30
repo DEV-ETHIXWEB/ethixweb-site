@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { motion, useSpring, useTransform, type MotionValue } from "framer-motion";
 import { DollarSign, Layers3, Palette, PhoneCall, TrendingUp } from "lucide-react";
 import spiderweb from "@/assets/spiderweb.svg";
@@ -167,16 +167,28 @@ const NODE_HOVER_RADIUS = 70;
 const SPOKE_HOVER_DEG = 9;
 const SPOKE_COOLDOWN_MS = 1400;
 
+const SMALL_QUERY = "(max-width: 1023px)";
+
+function subscribeIsSmall(callback: () => void) {
+  const mq = window.matchMedia(SMALL_QUERY);
+  mq.addEventListener("change", callback);
+  return () => mq.removeEventListener("change", callback);
+}
+
+/** Was useState(false) + useEffect: that always painted one frame assuming
+ * "not small" (desktop) before correcting itself post-mount, which is exactly
+ * what a real Lighthouse mobile run caught as this component's CLS culprit -
+ * the correction re-positioned/re-sized the artwork after first paint.
+ * useSyncExternalStore reads the real matchMedia result synchronously before
+ * the browser paints, so mobile never renders the wrong layout to begin with,
+ * while still matching the server-rendered "not small" markup during
+ * hydration (no hydration-mismatch warning). */
 function useIsSmall() {
-  const [small, setSmall] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 1023px)");
-    const update = () => setSmall(mq.matches);
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, []);
-  return small;
+  return useSyncExternalStore(
+    subscribeIsSmall,
+    () => window.matchMedia(SMALL_QUERY).matches,
+    () => false,
+  );
 }
 
 /** Object depth, front face at FRONT_Z down to the back face at BACK_Z. Was

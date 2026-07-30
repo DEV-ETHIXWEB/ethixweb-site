@@ -259,12 +259,33 @@ function Hero() {
 
         {/* Below lg, this becomes a low-opacity full-bleed backdrop sitting behind
          * the text (one cohesive block) instead of a separate stacked section -
-         * at lg: and up it reverts to the original side-by-side grid column. */}
-        <Reveal delay={0.18}>
-          <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center opacity-25 lg:pointer-events-auto lg:static lg:opacity-100 lg:-ml-8">
+         * at lg: and up it reverts to the original side-by-side grid column.
+         *
+         * The `absolute inset-0` div is deliberately OUTSIDE <Reveal>, not
+         * wrapping it: Reveal's own pre-revealed state applies a CSS
+         * `transform`, and `transform` on an element creates a new containing
+         * block for any absolutely-positioned descendant. With inset-0
+         * nested inside Reveal, it was resolving against Reveal's own
+         * wrapper - whose auto-height collapses to 0 since its only child is
+         * itself absolutely positioned (out of flow, contributes nothing to
+         * auto-height). That 0-height window (from first paint until Reveal
+         * fires and drops the transform) was a real, measured mobile CLS:
+         * the whole hero visual rendered at 0 height, then snapped to its
+         * real ~390x537 box once revealed. Keeping inset-0 outside Reveal
+         * means it always resolves against the actual positioned section,
+         * so it's correctly sized from first paint regardless of Reveal's
+         * animation state - Reveal now only fades/slides the content inside
+         * an already-correctly-sized box. */}
+        <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center opacity-25 lg:pointer-events-auto lg:static lg:opacity-100 lg:-ml-8">
+          {/* Reveal's plain wrapper div has no size classes of its own, so as a
+              flex item under items-center (not stretch) it would otherwise
+              shrink-to-fit instead of filling this box the way the old
+              inset-0-direct-parent arrangement did - w-full/h-full restores
+              that. */}
+          <Reveal delay={0.18} className="h-full w-full">
             <HeroWebVisual showBadges={showBadges} />
-          </div>
-        </Reveal>
+          </Reveal>
+        </div>
       </Container>
     </section>
   );
