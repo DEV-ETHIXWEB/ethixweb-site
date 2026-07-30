@@ -476,6 +476,9 @@ const GlobeStage = forwardRef<GlobeStageHandle>(function GlobeStage(_props, ref)
   // Pre-sampled ocean indices - computed once, avoids Math.random() every frame
   const oceanSetRef = useRef<Set<number>>(new Set());
   const visibleRef = useRef(false);
+  /** Set by the render-loop effect; called by the IntersectionObserver to
+   * restart the loop after it has stopped itself off-screen. */
+  const wakeRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
     landMapRef.current = getLandMap();
@@ -514,6 +517,7 @@ const GlobeStage = forwardRef<GlobeStageHandle>(function GlobeStage(_props, ref)
     const io = new IntersectionObserver(
       ([entry]) => {
         visibleRef.current = entry.isIntersecting;
+        if (entry.isIntersecting) wakeRef.current?.();
       },
       { threshold: 0.05 },
     );
@@ -562,11 +566,13 @@ const GlobeStage = forwardRef<GlobeStageHandle>(function GlobeStage(_props, ref)
     let overlayElapsed = 0;
 
     const loop = (now: number) => {
-      if (!visibleRef.current) {
-        last = now;
-        raf = requestAnimationFrame(loop);
-        return;
-      }
+      raf = 0;
+      // Stop scheduling entirely rather than looping on an empty frame. The
+      // old version kept re-arming rAF forever, so the main thread never went
+      // quiet even with the globe far off-screen - which is what kept the page
+      // from ever reaching an idle/interactive state. The observer above calls
+      // wakeRef to start it again.
+      if (!visibleRef.current) return;
       const dt = Math.min(64, now - last);
       last = now;
 
@@ -729,8 +735,21 @@ const GlobeStage = forwardRef<GlobeStageHandle>(function GlobeStage(_props, ref)
       raf = requestAnimationFrame(loop);
     };
 
-    raf = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(raf);
+    const start = () => {
+      if (raf) return;
+      // The loop has been stopped for an unknown stretch of wall-clock time,
+      // so `last` is stale - reset it, or the first frame back would advance
+      // every packet by the whole off-screen duration at once.
+      last = performance.now();
+      raf = requestAnimationFrame(loop);
+    };
+    wakeRef.current = start;
+    start();
+    return () => {
+      wakeRef.current = null;
+      if (raf) cancelAnimationFrame(raf);
+      raf = 0;
+    };
   }, [size]);
 
   useEffect(() => {

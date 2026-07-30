@@ -14,7 +14,7 @@ import emblem from "@/assets/emblem-transparent-sm.webp";
  * without a cache-busting query param, browsers can keep serving a stale
  * cached copy across edits (this bit us: a real clear-color bugfix in that
  * file didn't show up in the browser until this was added). */
-const EMBLEM_3D_VERSION = 8;
+const EMBLEM_3D_VERSION = 9;
 
 /** Root-cause fix for the clip-vs-halo conflict (rather than trading one off
  * against the other): a rotation-angle sweep proved the letter's own worst-case
@@ -277,23 +277,75 @@ function GlassEmblem({ mx, reduceMotion }: { mx: MotionValue<number>; reduceMoti
     return () => ro.disconnect();
   }, []);
 
-  // The iframe's WebGL init (bundled Three.js scene) is heavy enough to
-  // compete with the page's own first paint if it starts immediately - it
-  // was measured as the LCP element's dominant render-delay contributor.
-  // Deferring the `src` assignment by one idle tick lets the browser finish
-  // painting the rest of the hero first, without ever unmounting/remounting
-  // the iframe afterward (that's the thing the comment below warns against -
-  // this only delays the *first* mount, once, and never toggles again).
+  // The iframe's WebGL init (bundled Three.js scene) is by far the most
+  // expensive thing on this page: Lighthouse attributed 1,318ms of script
+  // evaluation to emblem-3d.html, more than the entire app bundle (843ms)
+  // combined. Because it's a same-origin iframe it shares this document's
+  // main thread, so all of that lands in the page's own blocking time.
+  //
+  // It is therefore held back until the first real user interaction, with a
+  // long timer as the backstop for a visitor who just reads without touching
+  // anything. `requestIdleCallback` was tried first and is NOT sufficient:
+  // its `timeout` fires regardless of whether the thread ever went idle, and
+  // during page load it never does, so the scene landed right in the middle
+  // of the load anyway (measured: still ~2s of blocking time, and a score
+  // that swung between 65 and 96 run to run depending on where it landed).
+  //
+  // Interaction is the honest signal here - the emblem is decorative
+  // (pointer-events: none, it only auto-spins), so nothing is lost by it
+  // arriving a moment after the page is usable, and the poster below covers
+  // the gap. Only the *first* mount is delayed; the src is never unset
+  // afterward (that's the thing the comment below warns about).
   const [emblemSrc, setEmblemSrc] = useState<string | undefined>(undefined);
   useEffect(() => {
     if (!showLive3D) return;
-    const src = `/emblem-3d.html?v=${EMBLEM_3D_VERSION}`;
-    if (typeof window.requestIdleCallback === "function") {
-      const id = window.requestIdleCallback(() => setEmblemSrc(src), { timeout: 1500 });
-      return () => window.cancelIdleCallback(id);
-    }
-    const id = window.setTimeout(() => setEmblemSrc(src), 200);
-    return () => window.clearTimeout(id);
+    const events = ["pointerdown", "pointermove", "wheel", "keydown", "touchstart"] as const;
+    let timer = 0;
+    const load = () => {
+      setEmblemSrc(`/emblem-3d.html?v=${EMBLEM_3D_VERSION}`);
+      cleanup();
+    };
+    const cleanup = () => {
+      window.clearTimeout(timer);
+      for (const e of events) window.removeEventListener(e, load);
+    };
+    for (const e of events) window.addEventListener(e, load, { once: true, passive: true });
+    timer = window.setTimeout(load, 8000);
+    return cleanup;
+  }, [showLive3D]);
+
+  // Pause the scene's render loop while it's off-screen. The loop used to run
+  // for the lifetime of the page, which meant the main thread never went quiet
+  // and the page never reached an idle state at all.
+  //
+  // This talks to the scene over postMessage instead of unmounting the iframe
+  // or hiding it, precisely because of the rule documented below: the iframe
+  // stays mounted, visible and composited, holding its last rendered frame, so
+  // there is no reload and no discarded WebGL layer - the two things that
+  // caused the white flash the previous pause attempts ran into.
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const inViewRef = useRef(inView);
+  inViewRef.current = inView;
+  useEffect(() => {
+    if (!showLive3D || !emblemSrc) return;
+    iframeRef.current?.contentWindow?.postMessage(
+      inView ? "emblem3d:resume" : "emblem3d:pause",
+      "*",
+    );
+  }, [inView, showLive3D, emblemSrc]);
+
+  // The scene posts this once it has rendered its first frame; it's the cue to
+  // cross-fade the poster out from under it.
+  const [live3DReady, setLive3DReady] = useState(false);
+  useEffect(() => {
+    if (!showLive3D) return;
+    const onMessage = (e: MessageEvent) => {
+      if (e.source === iframeRef.current?.contentWindow && e.data === "emblem3d:ready") {
+        setLive3DReady(true);
+      }
+    };
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
   }, [showLive3D]);
   const stageHeightPx = EMBLEM_3D_STAGE_PX * (406 / 397);
   const iframePx = EMBLEM_3D_STAGE_PX * EMBLEM_3D_SCALE;
@@ -327,78 +379,104 @@ function GlassEmblem({ mx, reduceMotion }: { mx: MotionValue<number>; reduceMoti
       }}
     >
       {showLive3D ? (
-        <div
-          ref={stageWrapRef}
-          className="absolute aspect-[397/406] overflow-hidden"
-          style={{
-            // 10% bigger "window" than the shared outer wrapper (left/top -5%
-            // centers it, since this sizes off the parent, not itself) - the
-            // outer wrapper (used by the CSS-fallback path too) is untouched;
-            // EMBLEM_3D_SCALE above compensates so the letter's own on-screen
-            // size doesn't change, only the visible stage around it.
-            width: `${EMBLEM_3D_WINDOW_GROWTH * 100}%`,
-            left: `${((1 - EMBLEM_3D_WINDOW_GROWTH) / 2) * 100}%`,
-            top: `${((1 - EMBLEM_3D_WINDOW_GROWTH) / 2) * 100}%`,
-          }}
-        >
-          {/* Fixed-resolution stage (see EMBLEM_3D_STAGE_PX): the 3D tool always
-           * renders at this same size, then gets scaled down via the measured
-           * stageScale to fit whatever this box's real on-page size turns out
-           * to be. Always mounted AND always visible - no unmount-on-scroll,
-           * no display:none toggle, no visibility toggle, nothing that hides
-           * or removes it. Two different "pause it off-screen" attempts each
-           * reintroduced the same white-flash bug (unmounting reloads the
-           * iframe, which briefly shows its nested document's default white
-           * background before its own transparent CSS applies; `display:none`
-           * risks the browser discarding/resetting the iframe's WebGL
-           * compositing layer, which showed the same white flash again on
-           * scroll-back). The only way to guarantee this can never happen
-           * again is to never toggle its rendering state at all - this is a
-           * tiny canvas, the always-on GPU cost is not worth reintroducing a
-           * visible bug for. */}
+        <>
+          {/* Poster for the window between first paint and the deferred scene
+           * actually being ready. It's the same emblem artwork the CSS
+           * fallback path uses, at the same box and filter, so the handoff
+           * reads as the letter starting to spin rather than as a swap. Fades
+           * out (never unmounts) once the scene reports itself ready. */}
+          <img
+            src={emblem}
+            alt=""
+            aria-hidden="true"
+            draggable={false}
+            className="pointer-events-none absolute inset-0 h-full w-full select-none transition-opacity duration-500"
+            style={{ filter: EMBLEM_FACE_FILTER, opacity: live3DReady ? 0 : 1 }}
+          />
           <div
-            className="pointer-events-none absolute left-0 top-0 select-none overflow-hidden"
+            ref={stageWrapRef}
+            className="absolute aspect-[397/406] overflow-hidden"
             style={{
-              width: EMBLEM_3D_STAGE_PX,
-              height: stageHeightPx,
-              transform: `scale(${stageScale})`,
-              transformOrigin: "top left",
+              // 10% bigger "window" than the shared outer wrapper (left/top -5%
+              // centers it, since this sizes off the parent, not itself) - the
+              // outer wrapper (used by the CSS-fallback path too) is untouched;
+              // EMBLEM_3D_SCALE above compensates so the letter's own on-screen
+              // size doesn't change, only the visible stage around it.
+              width: `${EMBLEM_3D_WINDOW_GROWTH * 100}%`,
+              left: `${((1 - EMBLEM_3D_WINDOW_GROWTH) / 2) * 100}%`,
+              top: `${((1 - EMBLEM_3D_WINDOW_GROWTH) / 2) * 100}%`,
             }}
           >
-            {/* Oversized + centered within the stage (see EMBLEM_3D_SCALE) to
-             * crop the transmission-pass halo out via the stage's overflow:hidden.
-             * `src` starts undefined and is set exactly once, after an idle tick
-             * (see emblemSrc above) - the iframe itself mounts immediately (still
-             * "always mounted", per the no-toggle rule below), it just doesn't
-             * start loading its heavy WebGL document until the browser has had a
-             * chance to paint everything else first. */}
-            <iframe
-              src={emblemSrc}
-              title="Ethixweb"
-              loading="lazy"
-              className="pointer-events-none absolute select-none"
+            {/* Fixed-resolution stage (see EMBLEM_3D_STAGE_PX): the 3D tool always
+             * renders at this same size, then gets scaled down via the measured
+             * stageScale to fit whatever this box's real on-page size turns out
+             * to be. Always mounted AND always visible - no unmount-on-scroll,
+             * no display:none toggle, no visibility toggle, nothing that hides
+             * or removes it. Two different "pause it off-screen" attempts each
+             * reintroduced the same white-flash bug (unmounting reloads the
+             * iframe, which briefly shows its nested document's default white
+             * background before its own transparent CSS applies; `display:none`
+             * risks the browser discarding/resetting the iframe's WebGL
+             * compositing layer, which showed the same white flash again on
+             * scroll-back).
+             *
+             * That rule is still in force here - the off-screen pause added
+             * since is a postMessage to the scene's own render loop (see the
+             * `inView` effect above), which leaves this element's mount and
+             * compositing state completely untouched. */}
+            <div
+              className="pointer-events-none absolute left-0 top-0 select-none overflow-hidden"
               style={{
-                border: 0,
-                background: "transparent",
-                // Chrome paints an opaque WHITE backdrop behind any iframe
-                // whose used color-scheme differs from its embedder element's
-                // (the dark-theme "white sheet behind the E" bug). The site
-                // root sets color-scheme: dark in dark theme, which this
-                // iframe would inherit while the embedded document resolves
-                // from the OS prefers-color-scheme - so the two can disagree.
-                // Pin BOTH sides to light (emblem-3d.html declares
-                // `color-scheme: only light`) so no site-theme/OS combination
-                // can ever mismatch. Purely a compositing contract - nothing
-                // inside the iframe is UA-color-scheme-styled.
-                colorScheme: "light",
-                width: iframePx,
-                height: iframeHeightPx,
-                left: (EMBLEM_3D_STAGE_PX - iframePx) / 2,
-                top: (stageHeightPx - iframeHeightPx) / 2,
+                width: EMBLEM_3D_STAGE_PX,
+                height: stageHeightPx,
+                transform: `scale(${stageScale})`,
+                transformOrigin: "top left",
               }}
-            />
+            >
+              {/* Oversized + centered within the stage (see EMBLEM_3D_SCALE) to
+               * crop the transmission-pass halo out via the stage's overflow:hidden.
+               * `src` starts undefined and is set exactly once, once the page has
+               * loaded and gone idle (see emblemSrc above) - the iframe itself
+               * mounts immediately (still "always mounted", per the no-toggle rule
+               * below), it just doesn't start loading its heavy WebGL document
+               * until the browser has finished everything else. */}
+              <iframe
+                ref={iframeRef}
+                onLoad={() => {
+                  // A paused-before-load emblem would otherwise start spinning
+                  // anyway, since the pause effect fires before contentWindow
+                  // exists to receive it.
+                  if (!inViewRef.current) {
+                    iframeRef.current?.contentWindow?.postMessage("emblem3d:pause", "*");
+                  }
+                }}
+                src={emblemSrc}
+                title="Ethixweb"
+                loading="lazy"
+                className="pointer-events-none absolute select-none"
+                style={{
+                  border: 0,
+                  background: "transparent",
+                  // Chrome paints an opaque WHITE backdrop behind any iframe
+                  // whose used color-scheme differs from its embedder element's
+                  // (the dark-theme "white sheet behind the E" bug). The site
+                  // root sets color-scheme: dark in dark theme, which this
+                  // iframe would inherit while the embedded document resolves
+                  // from the OS prefers-color-scheme - so the two can disagree.
+                  // Pin BOTH sides to light (emblem-3d.html declares
+                  // `color-scheme: only light`) so no site-theme/OS combination
+                  // can ever mismatch. Purely a compositing contract - nothing
+                  // inside the iframe is UA-color-scheme-styled.
+                  colorScheme: "light",
+                  width: iframePx,
+                  height: iframeHeightPx,
+                  left: (EMBLEM_3D_STAGE_PX - iframePx) / 2,
+                  top: (stageHeightPx - iframeHeightPx) / 2,
+                }}
+              />
+            </div>
           </div>
-        </div>
+        </>
       ) : (
         <motion.div
           style={{
