@@ -102,6 +102,10 @@
      stay on-brand while text stays readable. ── */
   --error-text: #f87171;
   --primary-text: #e0555a;
+  /* Halo around the navbar's active-page underline (see .nav-link). Carried as
+     a token because the bar needs a much softer glow on the light theme, where
+     a dark-theme-strength bloom reads as a smudge rather than a light source. */
+  --nav-active-glow: rgba(224, 85, 90, 0.5);
   --border: rgba(255, 255, 255, 0.07);
   --input: #100f18;
   --ring: #c0272d;
@@ -160,6 +164,7 @@
      definitions above for why these exist as separate tokens. */
   --error-text: #8a181c;
   --primary-text: #c0272d;
+  --nav-active-glow: rgba(192, 39, 45, 0.32);
   --border: rgba(0, 0, 0, 0.08);
   --input: #ede9e5;
   --ring: #8a181c;
@@ -413,6 +418,76 @@ html.dark {
       opacity: 1;
       transform: none;
       transition: none;
+    }
+  }
+
+  /* ── Navbar active-page indicator ─────────────────────────────────────────
+     Marks which page you're on: the label steps up in weight and a glowing red
+     bar grows in underneath it.
+
+     Driven entirely off `[data-status="active"]`, which TanStack Router already
+     puts on the active <Link>, so there's no JS, no state and no measuring
+     involved - the router changing that attribute is the whole mechanism.
+
+     The bar hangs off the label span rather than the link box, so it spans the
+     word itself and needs no per-layout padding math - the same rule serves the
+     desktop bar and the full-width rows of the mobile menu.
+
+     It's a keyframe animation on mount, NOT a transition between states. Every
+     route renders its own <SiteLayout>, so the whole navbar - links included -
+     unmounts and remounts on each navigation (verified: the active <a> is a
+     different DOM node before and after). A transition has no "from" state to
+     start from on a freshly mounted element and simply snapped to the end
+     value; the bar has to animate itself in on arrival instead.
+
+     Both animated properties are compositor-friendly (opacity/transform), so
+     this costs the main thread nothing. The weight step is deliberately not
+     animated: it would reflow the label's width for the whole run and shove
+     the neighbouring links around. ── */
+  .nav-label {
+    position: relative;
+    display: inline-block;
+    font-weight: 400;
+  }
+  .nav-label::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.4rem;
+    height: 2px;
+    border-radius: 999px;
+    background: var(--primary-text);
+    box-shadow:
+      0 0 6px var(--nav-active-glow),
+      0 0 14px var(--nav-active-glow);
+    opacity: 0;
+    transform: scaleX(0.4);
+    transform-origin: center;
+  }
+  [data-status="active"] .nav-label {
+    font-weight: 650;
+  }
+  [data-status="active"] .nav-label::after {
+    opacity: 1;
+    transform: scaleX(1);
+    animation: nav-underline-in var(--duration-base) cubic-bezier(var(--ease-premium)) both;
+  }
+  /* Grows out from the middle. Starting at 0.4 rather than 0 makes the entrance
+     read as a light coming up rather than a wipe across. */
+  @keyframes nav-underline-in {
+    from {
+      opacity: 0;
+      transform: scaleX(0.4);
+    }
+    to {
+      opacity: 1;
+      transform: scaleX(1);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-status="active"] .nav-label::after {
+      animation: none;
     }
   }
 
@@ -1317,9 +1392,10 @@ html.dark {
   filter: invert(1) brightness(0.15);
 }
 
-/* Navbar link hover / active */
-.light nav a:hover,
-.light nav a.active {
+/* Navbar link hover. The active page is marked by the underline indicator
+   (`.nav-label` above) instead of a filled chip - keeping the tinted background
+   for `.active` too made the two read as competing states. */
+.light nav a:hover {
   background: rgba(0, 0, 0, 0.05) !important;
 }
 
