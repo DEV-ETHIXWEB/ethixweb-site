@@ -102,14 +102,13 @@ export function Navbar() {
                 <Link
                   key={l.to}
                   to={l.to}
-                  className="flex h-9 items-center px-3.5 text-sm text-muted-foreground/80 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded-lg"
-                  activeProps={{
-                    className:
-                      "flex h-9 items-center px-3.5 text-sm font-medium text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded-lg",
-                  }}
+                  // The active treatment (bolder label + glowing underline) is
+                  // pure CSS off the `data-status="active"` attribute the router
+                  // sets here - see `.nav-label` in styles.css.
+                  className="flex h-9 items-center px-3.5 text-sm text-muted-foreground/80 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded-lg aria-[current=page]:text-foreground"
                   activeOptions={{ exact: l.to === "/" }}
                 >
-                  {l.label}
+                  <span className="nav-label">{l.label}</span>
                 </Link>
               ) : (
                 <button
@@ -166,9 +165,10 @@ export function Navbar() {
                         key={l.to}
                         to={l.to}
                         onClick={() => setOpen(false)}
+                        activeOptions={{ exact: l.to === "/" }}
                         className="px-4 py-3 rounded-lg hover:bg-foreground/5 text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
                       >
-                        {l.label}
+                        <span className="nav-label">{l.label}</span>
                       </Link>
                     ) : (
                       <button
