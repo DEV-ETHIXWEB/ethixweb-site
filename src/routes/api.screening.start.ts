@@ -9,6 +9,10 @@ import { guardRequest } from "@/lib/api-guard";
 
 const RESUME_HOST_RE = /^https:\/\/[a-z0-9-]+\.public\.blob\.vercel-storage\.com\//i;
 
+// Ethixweb is not currently hiring. Flip to false (or delete the guard
+// block below) to reopen this endpoint.
+const CAREERS_DISABLED = true;
+
 const bodySchema = z.object({
   roleId: z.string().min(1).max(60),
   candidateName: z.string().trim().min(2).max(120),
@@ -33,6 +37,16 @@ export const Route = createFileRoute("/api/screening/start")({
   server: {
     handlers: {
       POST: async ({ request }) => {
+        // Ethixweb is not currently hiring - the careers application flow
+        // that leads here is redirected to /not-hiring, and this endpoint no
+        // longer starts new screening tests. Delete this block to reopen it.
+        if (CAREERS_DISABLED) {
+          return Response.json(
+            { ok: false, error: "Screening tests are not being issued at this time." },
+            { status: 410 },
+          );
+        }
+
         const guard = await guardRequest(
           request,
           `screening-start:${clientIp(request)}`,

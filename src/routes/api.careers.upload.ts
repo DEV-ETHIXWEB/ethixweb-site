@@ -12,6 +12,10 @@ const ALLOWED_RESUME_TYPES = [
 
 const MAX_RESUME_BYTES = 10 * 1024 * 1024; // 10MB
 
+// Ethixweb is not currently hiring. Flip to false (or delete the guard
+// block below) to reopen this endpoint.
+const CAREERS_DISABLED = true;
+
 // Token handshake for direct-to-Blob resume uploads. The actual file bytes
 // never pass through this function (or Vercel's serverless body limit) -
 // the browser uploads straight to Blob storage using the short-lived token
@@ -21,6 +25,16 @@ export const Route = createFileRoute("/api/careers/upload")({
   server: {
     handlers: {
       POST: async ({ request }) => {
+        // Ethixweb is not currently hiring - the public application flow
+        // (/careers/apply) redirects to /not-hiring, and this endpoint no
+        // longer accepts resume uploads. Delete this block to reopen it.
+        if (CAREERS_DISABLED) {
+          return Response.json(
+            { ok: false, error: "Resume uploads are not being accepted at this time." },
+            { status: 410 },
+          );
+        }
+
         const guard = await guardRequest(
           request,
           `upload:${clientIp(request)}`,

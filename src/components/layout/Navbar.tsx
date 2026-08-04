@@ -13,7 +13,6 @@ const LIVE_PATHS = new Set([
   "/services",
   "/our-work",
   "/blog",
-  "/careers",
   "/contact",
 ]);
 
@@ -24,7 +23,6 @@ export const links = [
   { to: "/services", label: "Services" },
   { to: "/our-work", label: "Our Work" },
   { to: "/blog", label: "Blog" },
-  { to: "/careers", label: "Careers" },
 ];
 
 function ThemeToggle() {

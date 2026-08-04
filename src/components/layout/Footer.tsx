@@ -12,7 +12,6 @@ const LIVE_PATHS = new Set([
   "/services",
   "/our-work",
   "/blog",
-  "/careers",
   "/contact",
   "/policies/refunds",
   "/policies/terms",
@@ -25,7 +24,6 @@ const COMPANY_LINKS: [string, string][] = [
   ["Industries", "/industries"],
   ["Our Work", "/our-work"],
   ["Blog", "/blog"],
-  ["Careers", "/careers"],
   ["Contact", "/contact"],
 ];
 

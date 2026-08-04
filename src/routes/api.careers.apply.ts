@@ -50,10 +50,24 @@ function str(v: unknown): string {
   return typeof v === "string" ? v.trim() : "";
 }
 
+// Ethixweb is not currently hiring. Flip to false (or delete the guard
+// block below) to reopen this endpoint.
+const CAREERS_DISABLED = true;
+
 export const Route = createFileRoute("/api/careers/apply")({
   server: {
     handlers: {
       POST: async ({ request }) => {
+        // Ethixweb is not currently hiring - the public application flow
+        // (/careers/apply) redirects to /not-hiring, and this endpoint no
+        // longer accepts submissions. Delete this block to reopen it.
+        if (CAREERS_DISABLED) {
+          return Response.json(
+            { ok: false, error: "Applications are not being accepted at this time." },
+            { status: 410 },
+          );
+        }
+
         const guard = await guardRequest(
           request,
           `apply:${clientIp(request)}`,

@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as WebDevelopmentRouteImport } from './routes/web-development'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as OurWorkRouteImport } from './routes/our-work'
+import { Route as NotHiringRouteImport } from './routes/not-hiring'
 import { Route as MarketingRouteImport } from './routes/marketing'
 import { Route as IndustriesRouteImport } from './routes/industries'
 import { Route as GraphicDesignRouteImport } from './routes/graphic-design'
@@ -65,6 +66,11 @@ const ServicesRoute = ServicesRouteImport.update({
 const OurWorkRoute = OurWorkRouteImport.update({
   id: '/our-work',
   path: '/our-work',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotHiringRoute = NotHiringRouteImport.update({
+  id: '/not-hiring',
+  path: '/not-hiring',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MarketingRoute = MarketingRouteImport.update({
@@ -275,6 +281,7 @@ export interface FileRoutesByFullPath {
   '/graphic-design': typeof GraphicDesignRoute
   '/industries': typeof IndustriesRoute
   '/marketing': typeof MarketingRoute
+  '/not-hiring': typeof NotHiringRoute
   '/our-work': typeof OurWorkRouteWithChildren
   '/services': typeof ServicesRoute
   '/web-development': typeof WebDevelopmentRoute
@@ -318,6 +325,7 @@ export interface FileRoutesByTo {
   '/graphic-design': typeof GraphicDesignRoute
   '/industries': typeof IndustriesRoute
   '/marketing': typeof MarketingRoute
+  '/not-hiring': typeof NotHiringRoute
   '/services': typeof ServicesRoute
   '/web-development': typeof WebDevelopmentRoute
   '/api/contact': typeof ApiContactRoute
@@ -362,6 +370,7 @@ export interface FileRoutesById {
   '/graphic-design': typeof GraphicDesignRoute
   '/industries': typeof IndustriesRoute
   '/marketing': typeof MarketingRoute
+  '/not-hiring': typeof NotHiringRoute
   '/our-work': typeof OurWorkRouteWithChildren
   '/services': typeof ServicesRoute
   '/web-development': typeof WebDevelopmentRoute
@@ -408,6 +417,7 @@ export interface FileRouteTypes {
     | '/graphic-design'
     | '/industries'
     | '/marketing'
+    | '/not-hiring'
     | '/our-work'
     | '/services'
     | '/web-development'
@@ -451,6 +461,7 @@ export interface FileRouteTypes {
     | '/graphic-design'
     | '/industries'
     | '/marketing'
+    | '/not-hiring'
     | '/services'
     | '/web-development'
     | '/api/contact'
@@ -494,6 +505,7 @@ export interface FileRouteTypes {
     | '/graphic-design'
     | '/industries'
     | '/marketing'
+    | '/not-hiring'
     | '/our-work'
     | '/services'
     | '/web-development'
@@ -539,6 +551,7 @@ export interface RootRouteChildren {
   GraphicDesignRoute: typeof GraphicDesignRoute
   IndustriesRoute: typeof IndustriesRoute
   MarketingRoute: typeof MarketingRoute
+  NotHiringRoute: typeof NotHiringRoute
   OurWorkRoute: typeof OurWorkRouteWithChildren
   ServicesRoute: typeof ServicesRoute
   WebDevelopmentRoute: typeof WebDevelopmentRoute
@@ -588,6 +601,13 @@ declare module '@tanstack/react-router' {
       path: '/our-work'
       fullPath: '/our-work'
       preLoaderRoute: typeof OurWorkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/not-hiring': {
+      id: '/not-hiring'
+      path: '/not-hiring'
+      fullPath: '/not-hiring'
+      preLoaderRoute: typeof NotHiringRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/marketing': {
@@ -908,6 +928,7 @@ const rootRouteChildren: RootRouteChildren = {
   GraphicDesignRoute: GraphicDesignRoute,
   IndustriesRoute: IndustriesRoute,
   MarketingRoute: MarketingRoute,
+  NotHiringRoute: NotHiringRoute,
   OurWorkRoute: OurWorkRouteWithChildren,
   ServicesRoute: ServicesRoute,
   WebDevelopmentRoute: WebDevelopmentRoute,
