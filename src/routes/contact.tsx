@@ -9,6 +9,7 @@ import { Container } from "@/components/shared/Container";
 import { GlowBlob } from "@/components/shared/GlowBlob";
 import { useTheme } from "@/components/layout/ThemeProvider";
 import { WebSpotlight } from "@/components/shared/WebSpotlight";
+import { Turnstile } from "@/components/shared/Turnstile";
 import { trackWebSpotlight } from "@/lib/web-spotlight";
 import { formLabelClass, formInputClass } from "@/lib/form-styles";
 import {
@@ -206,6 +207,8 @@ function ContactBody() {
 
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const turnstileRequired = Boolean(import.meta.env.VITE_TURNSTILE_SITE_KEY);
   const [sel, setSel] = useState<{
     service: ServiceId | null;
     timeline: TimelineId | null;
@@ -225,7 +228,7 @@ function ContactBody() {
   const totalSteps = stepLabels.length;
 
   const canContinue =
-    (step === 1 && (!!sel.service || isDirect)) ||
+    (step === 1 && (!!sel.service || (isDirect && (!turnstileRequired || !!turnstileToken)))) ||
     (step === 2 && !isOther && !!sel.timeline) ||
     (step === 2 && isOther && !!sel.other.trim()) ||
     step === 3;
@@ -245,13 +248,17 @@ function ContactBody() {
     company?: string;
     hearAbout?: string;
   }) => {
+    if (turnstileRequired && !turnstileToken) {
+      setSubmitError("Please complete the verification check.");
+      return;
+    }
     setSubmitting(true);
     setSubmitError(null);
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ ...payload, turnstileToken }),
       });
       if (!res.ok) {
         const data = await res.json().catch(() => null);
@@ -264,6 +271,9 @@ function ContactBody() {
           ? err.message
           : "Something went wrong. Please email info@ethixweb.com directly.",
       );
+      // Turnstile tokens are single-use - clear it so the widget can be
+      // reset/re-verified before the user retries.
+      setTurnstileToken(null);
     } finally {
       setSubmitting(false);
     }
@@ -609,6 +619,15 @@ function ContactBody() {
                                   </label>
                                 ))}
                               </div>
+                              {isDirect && turnstileRequired && (
+                                <div className="mt-3">
+                                  <Turnstile
+                                    theme={isDark ? "dark" : "light"}
+                                    onVerify={setTurnstileToken}
+                                    onExpire={() => setTurnstileToken(null)}
+                                  />
+                                </div>
+                              )}
                               {isDirect && submitError && (
                                 <p
                                   id="direct-submit-error"
@@ -780,6 +799,13 @@ function ContactBody() {
                                   ))}
                                 </select>
                               </div>
+                              {turnstileRequired && (
+                                <Turnstile
+                                  theme={isDark ? "dark" : "light"}
+                                  onVerify={setTurnstileToken}
+                                  onExpire={() => setTurnstileToken(null)}
+                                />
+                              )}
                               {submitError && (
                                 <p
                                   id="submit-error"
@@ -812,7 +838,7 @@ function ContactBody() {
                         <button
                           type="submit"
                           form="contact-form"
-                          disabled={submitting}
+                          disabled={submitting || (turnstileRequired && !turnstileToken)}
                           aria-busy={submitting}
                           aria-describedby={submitError ? "submit-error" : undefined}
                           className="shine-cta magnetic group inline-flex items-center gap-2 rounded-full bg-gradient-brand px-7 py-3 text-sm font-semibold text-white shadow-glow transition disabled:opacity-60 disabled:cursor-not-allowed"

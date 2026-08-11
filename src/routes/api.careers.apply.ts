@@ -5,6 +5,7 @@ import { JOBS } from "@/lib/careers-data";
 import { clientIp } from "@/lib/rate-limit";
 import { recordCareerApplication, markNotificationSent } from "@/lib/leads";
 import { guardRequest } from "@/lib/api-guard";
+import { verifyTurnstile } from "@/lib/turnstile";
 import {
   NOTICE_PERIOD_LABELS,
   FROM_EMAIL,
@@ -83,6 +84,25 @@ export const Route = createFileRoute("/api/careers/apply")({
         }
 
         const data = body as Record<string, unknown>;
+
+        const turnstile = await verifyTurnstile(data.turnstileToken, request);
+        if (!turnstile.ok) {
+          if (turnstile.reason === "not_configured") {
+            console.error("[api/careers/apply] rejecting submission: Turnstile not configured");
+            return Response.json(
+              {
+                ok: false,
+                error: "Applications are temporarily unavailable. Please try again later.",
+              },
+              { status: 503 },
+            );
+          }
+          return Response.json(
+            { ok: false, error: "Verification failed. Please try again." },
+            { status: 403 },
+          );
+        }
+
         const roleId = str(data.role);
         const job = JOBS.find((j) => j.id === roleId);
         const jobTitle = job?.title ?? (str(data.jobTitle) || "General Application");

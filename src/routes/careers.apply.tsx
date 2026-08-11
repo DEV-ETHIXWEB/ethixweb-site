@@ -11,6 +11,7 @@ import { useTheme } from "@/components/layout/ThemeProvider";
 import { SystemConstellation } from "@/components/careers/SystemConstellation";
 import { HeroWebVisual } from "@/components/shared/HeroWebVisual";
 import { WebSpotlight } from "@/components/shared/WebSpotlight";
+import { Turnstile } from "@/components/shared/Turnstile";
 import { trackWebSpotlight } from "@/lib/web-spotlight";
 import { JOBS, getJob } from "@/lib/careers-data";
 import { formLabelClass, formInputClass } from "@/lib/form-styles";
@@ -98,6 +99,8 @@ function ApplyPage() {
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const turnstileRequired = Boolean(import.meta.env.VITE_TURNSTILE_SITE_KEY);
 
   const [roleId, setRoleId] = useState(preselected?.id ?? "");
   const [fullName, setFullName] = useState("");
@@ -127,7 +130,11 @@ function ApplyPage() {
     (step === 2 && !!experience.trim() && !!expectedCtc.trim()) ||
     step === 3;
 
-  const canSubmit = resumeStatus === "done" && !!noticePeriod && !submitting;
+  const canSubmit =
+    resumeStatus === "done" &&
+    !!noticePeriod &&
+    !submitting &&
+    (!turnstileRequired || !!turnstileToken);
 
   const go = (next: number) => {
     setDir(next > step ? 1 : -1);
@@ -216,6 +223,7 @@ function ApplyPage() {
           expectedCtc,
           noticePeriod,
           availability,
+          turnstileToken,
         }),
       });
       if (!res.ok) {
@@ -224,6 +232,7 @@ function ApplyPage() {
       }
       setSent(true);
     } catch (err) {
+      setTurnstileToken(null);
       setSubmitError(
         err instanceof Error
           ? err.message
@@ -678,6 +687,14 @@ function ApplyPage() {
                                 className="mt-2 w-full resize-none rounded-xl border border-border bg-input/60 px-4 py-3 text-base sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/25 transition"
                               />
                             </div>
+
+                            {turnstileRequired && (
+                              <Turnstile
+                                theme={isDark ? "dark" : "light"}
+                                onVerify={setTurnstileToken}
+                                onExpire={() => setTurnstileToken(null)}
+                              />
+                            )}
 
                             {submitError && (
                               <p id="submit-error" role="alert" className="text-sm text-error-text">

@@ -15,6 +15,7 @@ import { clientIp } from "@/lib/rate-limit";
 import { recordContactSubmission, markNotificationSent, markClickUpTaskLinked } from "@/lib/leads";
 import { createClickUpLeadTask } from "@/lib/clickup";
 import { guardRequest } from "@/lib/api-guard";
+import { verifyTurnstile } from "@/lib/turnstile";
 
 const TO_EMAIL = "info@ethixweb.com";
 
@@ -35,10 +36,26 @@ export const Route = createFileRoute("/api/contact")({
           return Response.json({ ok: false, error: "Invalid request body" }, { status: 400 });
         }
 
-        const { service, timeline, other, name, phone, email, company, hearAbout } = body as Record<
-          string,
-          unknown
-        >;
+        const { service, timeline, other, name, phone, email, company, hearAbout, turnstileToken } =
+          body as Record<string, unknown>;
+
+        const turnstile = await verifyTurnstile(turnstileToken, request);
+        if (!turnstile.ok) {
+          if (turnstile.reason === "not_configured") {
+            console.error("[api/contact] rejecting submission: Turnstile not configured");
+            return Response.json(
+              {
+                ok: false,
+                error: "Submissions are temporarily unavailable. Please try again later.",
+              },
+              { status: 503 },
+            );
+          }
+          return Response.json(
+            { ok: false, error: "Verification failed. Please try again." },
+            { status: 403 },
+          );
+        }
 
         const cleanName = typeof name === "string" ? name.trim() : "";
         const cleanEmail = typeof email === "string" ? email.trim() : "";
