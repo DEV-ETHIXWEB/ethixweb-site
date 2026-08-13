@@ -15,7 +15,11 @@ import { Route as OurWorkRouteImport } from './routes/our-work'
 import { Route as NotHiringRouteImport } from './routes/not-hiring'
 import { Route as MarketingRouteImport } from './routes/marketing'
 import { Route as IndustriesRouteImport } from './routes/industries'
+import { Route as HvacPlumbingMarketingRouteImport } from './routes/hvac-plumbing-marketing'
+import { Route as HackathonRouteImport } from './routes/hackathon'
 import { Route as GraphicDesignRouteImport } from './routes/graphic-design'
+import { Route as GoogleAdsManagementRouteImport } from './routes/google-ads-management'
+import { Route as FishingMarineMarketingRouteImport } from './routes/fishing-marine-marketing'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CareersRouteImport } from './routes/careers'
 import { Route as BlogRouteImport } from './routes/blog'
@@ -35,10 +39,17 @@ import { Route as CareersAssessmentRouteImport } from './routes/careers.assessme
 import { Route as CareersApplyRouteImport } from './routes/careers.apply'
 import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
 import { Route as ApiContactRouteImport } from './routes/api.contact'
+import { Route as LandingFishingMarketingSeattleRouteImport } from './routes/landing.fishing-marketing.seattle'
 import { Route as AssessmentGoogleAdsTokenRouteImport } from './routes/assessment.google-ads.$token'
 import { Route as ApiScreeningSubmitRouteImport } from './routes/api.screening.submit'
 import { Route as ApiScreeningStartRouteImport } from './routes/api.screening.start'
 import { Route as ApiScreeningDecisionRouteImport } from './routes/api.screening.decision'
+import { Route as ApiLandingHvacPlumbingRouteImport } from './routes/api.landing.hvac-plumbing'
+import { Route as ApiLandingGoogleAdsManagementRouteImport } from './routes/api.landing.google-ads-management'
+import { Route as ApiLandingFishingSeattleRouteImport } from './routes/api.landing.fishing-seattle'
+import { Route as ApiLandingFishingMarineRouteImport } from './routes/api.landing.fishing-marine'
+import { Route as ApiHackathonVerifyRouteImport } from './routes/api.hackathon.verify'
+import { Route as ApiHackathonUnlockRouteImport } from './routes/api.hackathon.unlock'
 import { Route as ApiGadsSubmitRouteImport } from './routes/api.gads.submit'
 import { Route as ApiGadsStateRouteImport } from './routes/api.gads.state'
 import { Route as ApiGadsSaveRouteImport } from './routes/api.gads.save'
@@ -83,9 +94,29 @@ const IndustriesRoute = IndustriesRouteImport.update({
   path: '/industries',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HvacPlumbingMarketingRoute = HvacPlumbingMarketingRouteImport.update({
+  id: '/hvac-plumbing-marketing',
+  path: '/hvac-plumbing-marketing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HackathonRoute = HackathonRouteImport.update({
+  id: '/hackathon',
+  path: '/hackathon',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GraphicDesignRoute = GraphicDesignRouteImport.update({
   id: '/graphic-design',
   path: '/graphic-design',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GoogleAdsManagementRoute = GoogleAdsManagementRouteImport.update({
+  id: '/google-ads-management',
+  path: '/google-ads-management',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FishingMarineMarketingRoute = FishingMarineMarketingRouteImport.update({
+  id: '/fishing-marine-marketing',
+  path: '/fishing-marine-marketing',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -183,6 +214,12 @@ const ApiContactRoute = ApiContactRouteImport.update({
   path: '/api/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LandingFishingMarketingSeattleRoute =
+  LandingFishingMarketingSeattleRouteImport.update({
+    id: '/landing/fishing-marketing/seattle',
+    path: '/landing/fishing-marketing/seattle',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AssessmentGoogleAdsTokenRoute =
   AssessmentGoogleAdsTokenRouteImport.update({
     id: '/assessment/google-ads/$token',
@@ -202,6 +239,38 @@ const ApiScreeningStartRoute = ApiScreeningStartRouteImport.update({
 const ApiScreeningDecisionRoute = ApiScreeningDecisionRouteImport.update({
   id: '/api/screening/decision',
   path: '/api/screening/decision',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiLandingHvacPlumbingRoute = ApiLandingHvacPlumbingRouteImport.update({
+  id: '/api/landing/hvac-plumbing',
+  path: '/api/landing/hvac-plumbing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiLandingGoogleAdsManagementRoute =
+  ApiLandingGoogleAdsManagementRouteImport.update({
+    id: '/api/landing/google-ads-management',
+    path: '/api/landing/google-ads-management',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiLandingFishingSeattleRoute =
+  ApiLandingFishingSeattleRouteImport.update({
+    id: '/api/landing/fishing-seattle',
+    path: '/api/landing/fishing-seattle',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiLandingFishingMarineRoute = ApiLandingFishingMarineRouteImport.update({
+  id: '/api/landing/fishing-marine',
+  path: '/api/landing/fishing-marine',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiHackathonVerifyRoute = ApiHackathonVerifyRouteImport.update({
+  id: '/api/hackathon/verify',
+  path: '/api/hackathon/verify',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiHackathonUnlockRoute = ApiHackathonUnlockRouteImport.update({
+  id: '/api/hackathon/unlock',
+  path: '/api/hackathon/unlock',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiGadsSubmitRoute = ApiGadsSubmitRouteImport.update({
@@ -278,7 +347,11 @@ export interface FileRoutesByFullPath {
   '/blog': typeof BlogRoute
   '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
+  '/fishing-marine-marketing': typeof FishingMarineMarketingRoute
+  '/google-ads-management': typeof GoogleAdsManagementRoute
   '/graphic-design': typeof GraphicDesignRoute
+  '/hackathon': typeof HackathonRoute
+  '/hvac-plumbing-marketing': typeof HvacPlumbingMarketingRoute
   '/industries': typeof IndustriesRoute
   '/marketing': typeof MarketingRoute
   '/not-hiring': typeof NotHiringRoute
@@ -311,10 +384,17 @@ export interface FileRoutesByFullPath {
   '/api/gads/save': typeof ApiGadsSaveRoute
   '/api/gads/state': typeof ApiGadsStateRoute
   '/api/gads/submit': typeof ApiGadsSubmitRoute
+  '/api/hackathon/unlock': typeof ApiHackathonUnlockRoute
+  '/api/hackathon/verify': typeof ApiHackathonVerifyRoute
+  '/api/landing/fishing-marine': typeof ApiLandingFishingMarineRoute
+  '/api/landing/fishing-seattle': typeof ApiLandingFishingSeattleRoute
+  '/api/landing/google-ads-management': typeof ApiLandingGoogleAdsManagementRoute
+  '/api/landing/hvac-plumbing': typeof ApiLandingHvacPlumbingRoute
   '/api/screening/decision': typeof ApiScreeningDecisionRoute
   '/api/screening/start': typeof ApiScreeningStartRoute
   '/api/screening/submit': typeof ApiScreeningSubmitRoute
   '/assessment/google-ads/$token': typeof AssessmentGoogleAdsTokenRoute
+  '/landing/fishing-marketing/seattle': typeof LandingFishingMarketingSeattleRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -322,7 +402,11 @@ export interface FileRoutesByTo {
   '/ai-automation': typeof AiAutomationRoute
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
+  '/fishing-marine-marketing': typeof FishingMarineMarketingRoute
+  '/google-ads-management': typeof GoogleAdsManagementRoute
   '/graphic-design': typeof GraphicDesignRoute
+  '/hackathon': typeof HackathonRoute
+  '/hvac-plumbing-marketing': typeof HvacPlumbingMarketingRoute
   '/industries': typeof IndustriesRoute
   '/marketing': typeof MarketingRoute
   '/not-hiring': typeof NotHiringRoute
@@ -354,10 +438,17 @@ export interface FileRoutesByTo {
   '/api/gads/save': typeof ApiGadsSaveRoute
   '/api/gads/state': typeof ApiGadsStateRoute
   '/api/gads/submit': typeof ApiGadsSubmitRoute
+  '/api/hackathon/unlock': typeof ApiHackathonUnlockRoute
+  '/api/hackathon/verify': typeof ApiHackathonVerifyRoute
+  '/api/landing/fishing-marine': typeof ApiLandingFishingMarineRoute
+  '/api/landing/fishing-seattle': typeof ApiLandingFishingSeattleRoute
+  '/api/landing/google-ads-management': typeof ApiLandingGoogleAdsManagementRoute
+  '/api/landing/hvac-plumbing': typeof ApiLandingHvacPlumbingRoute
   '/api/screening/decision': typeof ApiScreeningDecisionRoute
   '/api/screening/start': typeof ApiScreeningStartRoute
   '/api/screening/submit': typeof ApiScreeningSubmitRoute
   '/assessment/google-ads/$token': typeof AssessmentGoogleAdsTokenRoute
+  '/landing/fishing-marketing/seattle': typeof LandingFishingMarketingSeattleRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -367,7 +458,11 @@ export interface FileRoutesById {
   '/blog': typeof BlogRoute
   '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
+  '/fishing-marine-marketing': typeof FishingMarineMarketingRoute
+  '/google-ads-management': typeof GoogleAdsManagementRoute
   '/graphic-design': typeof GraphicDesignRoute
+  '/hackathon': typeof HackathonRoute
+  '/hvac-plumbing-marketing': typeof HvacPlumbingMarketingRoute
   '/industries': typeof IndustriesRoute
   '/marketing': typeof MarketingRoute
   '/not-hiring': typeof NotHiringRoute
@@ -400,10 +495,17 @@ export interface FileRoutesById {
   '/api/gads/save': typeof ApiGadsSaveRoute
   '/api/gads/state': typeof ApiGadsStateRoute
   '/api/gads/submit': typeof ApiGadsSubmitRoute
+  '/api/hackathon/unlock': typeof ApiHackathonUnlockRoute
+  '/api/hackathon/verify': typeof ApiHackathonVerifyRoute
+  '/api/landing/fishing-marine': typeof ApiLandingFishingMarineRoute
+  '/api/landing/fishing-seattle': typeof ApiLandingFishingSeattleRoute
+  '/api/landing/google-ads-management': typeof ApiLandingGoogleAdsManagementRoute
+  '/api/landing/hvac-plumbing': typeof ApiLandingHvacPlumbingRoute
   '/api/screening/decision': typeof ApiScreeningDecisionRoute
   '/api/screening/start': typeof ApiScreeningStartRoute
   '/api/screening/submit': typeof ApiScreeningSubmitRoute
   '/assessment/google-ads/$token': typeof AssessmentGoogleAdsTokenRoute
+  '/landing/fishing-marketing/seattle': typeof LandingFishingMarketingSeattleRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -414,7 +516,11 @@ export interface FileRouteTypes {
     | '/blog'
     | '/careers'
     | '/contact'
+    | '/fishing-marine-marketing'
+    | '/google-ads-management'
     | '/graphic-design'
+    | '/hackathon'
+    | '/hvac-plumbing-marketing'
     | '/industries'
     | '/marketing'
     | '/not-hiring'
@@ -447,10 +553,17 @@ export interface FileRouteTypes {
     | '/api/gads/save'
     | '/api/gads/state'
     | '/api/gads/submit'
+    | '/api/hackathon/unlock'
+    | '/api/hackathon/verify'
+    | '/api/landing/fishing-marine'
+    | '/api/landing/fishing-seattle'
+    | '/api/landing/google-ads-management'
+    | '/api/landing/hvac-plumbing'
     | '/api/screening/decision'
     | '/api/screening/start'
     | '/api/screening/submit'
     | '/assessment/google-ads/$token'
+    | '/landing/fishing-marketing/seattle'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -458,7 +571,11 @@ export interface FileRouteTypes {
     | '/ai-automation'
     | '/blog'
     | '/contact'
+    | '/fishing-marine-marketing'
+    | '/google-ads-management'
     | '/graphic-design'
+    | '/hackathon'
+    | '/hvac-plumbing-marketing'
     | '/industries'
     | '/marketing'
     | '/not-hiring'
@@ -490,10 +607,17 @@ export interface FileRouteTypes {
     | '/api/gads/save'
     | '/api/gads/state'
     | '/api/gads/submit'
+    | '/api/hackathon/unlock'
+    | '/api/hackathon/verify'
+    | '/api/landing/fishing-marine'
+    | '/api/landing/fishing-seattle'
+    | '/api/landing/google-ads-management'
+    | '/api/landing/hvac-plumbing'
     | '/api/screening/decision'
     | '/api/screening/start'
     | '/api/screening/submit'
     | '/assessment/google-ads/$token'
+    | '/landing/fishing-marketing/seattle'
   id:
     | '__root__'
     | '/'
@@ -502,7 +626,11 @@ export interface FileRouteTypes {
     | '/blog'
     | '/careers'
     | '/contact'
+    | '/fishing-marine-marketing'
+    | '/google-ads-management'
     | '/graphic-design'
+    | '/hackathon'
+    | '/hvac-plumbing-marketing'
     | '/industries'
     | '/marketing'
     | '/not-hiring'
@@ -535,10 +663,17 @@ export interface FileRouteTypes {
     | '/api/gads/save'
     | '/api/gads/state'
     | '/api/gads/submit'
+    | '/api/hackathon/unlock'
+    | '/api/hackathon/verify'
+    | '/api/landing/fishing-marine'
+    | '/api/landing/fishing-seattle'
+    | '/api/landing/google-ads-management'
+    | '/api/landing/hvac-plumbing'
     | '/api/screening/decision'
     | '/api/screening/start'
     | '/api/screening/submit'
     | '/assessment/google-ads/$token'
+    | '/landing/fishing-marketing/seattle'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -548,7 +683,11 @@ export interface RootRouteChildren {
   BlogRoute: typeof BlogRoute
   CareersRoute: typeof CareersRouteWithChildren
   ContactRoute: typeof ContactRoute
+  FishingMarineMarketingRoute: typeof FishingMarineMarketingRoute
+  GoogleAdsManagementRoute: typeof GoogleAdsManagementRoute
   GraphicDesignRoute: typeof GraphicDesignRoute
+  HackathonRoute: typeof HackathonRoute
+  HvacPlumbingMarketingRoute: typeof HvacPlumbingMarketingRoute
   IndustriesRoute: typeof IndustriesRoute
   MarketingRoute: typeof MarketingRoute
   NotHiringRoute: typeof NotHiringRoute
@@ -574,10 +713,17 @@ export interface RootRouteChildren {
   ApiGadsSaveRoute: typeof ApiGadsSaveRoute
   ApiGadsStateRoute: typeof ApiGadsStateRoute
   ApiGadsSubmitRoute: typeof ApiGadsSubmitRoute
+  ApiHackathonUnlockRoute: typeof ApiHackathonUnlockRoute
+  ApiHackathonVerifyRoute: typeof ApiHackathonVerifyRoute
+  ApiLandingFishingMarineRoute: typeof ApiLandingFishingMarineRoute
+  ApiLandingFishingSeattleRoute: typeof ApiLandingFishingSeattleRoute
+  ApiLandingGoogleAdsManagementRoute: typeof ApiLandingGoogleAdsManagementRoute
+  ApiLandingHvacPlumbingRoute: typeof ApiLandingHvacPlumbingRoute
   ApiScreeningDecisionRoute: typeof ApiScreeningDecisionRoute
   ApiScreeningStartRoute: typeof ApiScreeningStartRoute
   ApiScreeningSubmitRoute: typeof ApiScreeningSubmitRoute
   AssessmentGoogleAdsTokenRoute: typeof AssessmentGoogleAdsTokenRoute
+  LandingFishingMarketingSeattleRoute: typeof LandingFishingMarketingSeattleRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -624,11 +770,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndustriesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/hvac-plumbing-marketing': {
+      id: '/hvac-plumbing-marketing'
+      path: '/hvac-plumbing-marketing'
+      fullPath: '/hvac-plumbing-marketing'
+      preLoaderRoute: typeof HvacPlumbingMarketingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hackathon': {
+      id: '/hackathon'
+      path: '/hackathon'
+      fullPath: '/hackathon'
+      preLoaderRoute: typeof HackathonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/graphic-design': {
       id: '/graphic-design'
       path: '/graphic-design'
       fullPath: '/graphic-design'
       preLoaderRoute: typeof GraphicDesignRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/google-ads-management': {
+      id: '/google-ads-management'
+      path: '/google-ads-management'
+      fullPath: '/google-ads-management'
+      preLoaderRoute: typeof GoogleAdsManagementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fishing-marine-marketing': {
+      id: '/fishing-marine-marketing'
+      path: '/fishing-marine-marketing'
+      fullPath: '/fishing-marine-marketing'
+      preLoaderRoute: typeof FishingMarineMarketingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -764,6 +938,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/landing/fishing-marketing/seattle': {
+      id: '/landing/fishing-marketing/seattle'
+      path: '/landing/fishing-marketing/seattle'
+      fullPath: '/landing/fishing-marketing/seattle'
+      preLoaderRoute: typeof LandingFishingMarketingSeattleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/assessment/google-ads/$token': {
       id: '/assessment/google-ads/$token'
       path: '/assessment/google-ads/$token'
@@ -790,6 +971,48 @@ declare module '@tanstack/react-router' {
       path: '/api/screening/decision'
       fullPath: '/api/screening/decision'
       preLoaderRoute: typeof ApiScreeningDecisionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/landing/hvac-plumbing': {
+      id: '/api/landing/hvac-plumbing'
+      path: '/api/landing/hvac-plumbing'
+      fullPath: '/api/landing/hvac-plumbing'
+      preLoaderRoute: typeof ApiLandingHvacPlumbingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/landing/google-ads-management': {
+      id: '/api/landing/google-ads-management'
+      path: '/api/landing/google-ads-management'
+      fullPath: '/api/landing/google-ads-management'
+      preLoaderRoute: typeof ApiLandingGoogleAdsManagementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/landing/fishing-seattle': {
+      id: '/api/landing/fishing-seattle'
+      path: '/api/landing/fishing-seattle'
+      fullPath: '/api/landing/fishing-seattle'
+      preLoaderRoute: typeof ApiLandingFishingSeattleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/landing/fishing-marine': {
+      id: '/api/landing/fishing-marine'
+      path: '/api/landing/fishing-marine'
+      fullPath: '/api/landing/fishing-marine'
+      preLoaderRoute: typeof ApiLandingFishingMarineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/hackathon/verify': {
+      id: '/api/hackathon/verify'
+      path: '/api/hackathon/verify'
+      fullPath: '/api/hackathon/verify'
+      preLoaderRoute: typeof ApiHackathonVerifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/hackathon/unlock': {
+      id: '/api/hackathon/unlock'
+      path: '/api/hackathon/unlock'
+      fullPath: '/api/hackathon/unlock'
+      preLoaderRoute: typeof ApiHackathonUnlockRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/gads/submit': {
@@ -925,7 +1148,11 @@ const rootRouteChildren: RootRouteChildren = {
   BlogRoute: BlogRoute,
   CareersRoute: CareersRouteWithChildren,
   ContactRoute: ContactRoute,
+  FishingMarineMarketingRoute: FishingMarineMarketingRoute,
+  GoogleAdsManagementRoute: GoogleAdsManagementRoute,
   GraphicDesignRoute: GraphicDesignRoute,
+  HackathonRoute: HackathonRoute,
+  HvacPlumbingMarketingRoute: HvacPlumbingMarketingRoute,
   IndustriesRoute: IndustriesRoute,
   MarketingRoute: MarketingRoute,
   NotHiringRoute: NotHiringRoute,
@@ -951,10 +1178,17 @@ const rootRouteChildren: RootRouteChildren = {
   ApiGadsSaveRoute: ApiGadsSaveRoute,
   ApiGadsStateRoute: ApiGadsStateRoute,
   ApiGadsSubmitRoute: ApiGadsSubmitRoute,
+  ApiHackathonUnlockRoute: ApiHackathonUnlockRoute,
+  ApiHackathonVerifyRoute: ApiHackathonVerifyRoute,
+  ApiLandingFishingMarineRoute: ApiLandingFishingMarineRoute,
+  ApiLandingFishingSeattleRoute: ApiLandingFishingSeattleRoute,
+  ApiLandingGoogleAdsManagementRoute: ApiLandingGoogleAdsManagementRoute,
+  ApiLandingHvacPlumbingRoute: ApiLandingHvacPlumbingRoute,
   ApiScreeningDecisionRoute: ApiScreeningDecisionRoute,
   ApiScreeningStartRoute: ApiScreeningStartRoute,
   ApiScreeningSubmitRoute: ApiScreeningSubmitRoute,
   AssessmentGoogleAdsTokenRoute: AssessmentGoogleAdsTokenRoute,
+  LandingFishingMarketingSeattleRoute: LandingFishingMarketingSeattleRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

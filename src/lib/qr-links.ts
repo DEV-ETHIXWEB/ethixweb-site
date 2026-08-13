@@ -5,4 +5,5 @@
 // redeploying, never reprinting a new QR code.
 export const QR_LINKS: Record<string, string> = {
   amar: "https://ethixweb.com",
+  hackathon: "https://ethixweb.com/hackathon",
 };

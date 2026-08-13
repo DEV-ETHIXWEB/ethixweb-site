@@ -13,7 +13,7 @@ import QRCode from "qrcode";
 import { mkdir } from "node:fs/promises";
 
 const SITE_URL = "https://www.ethixweb.com";
-const SLUGS = ["amar"];
+const SLUGS = ["amar", "hackathon"];
 
 await mkdir("public/qr", { recursive: true });
 

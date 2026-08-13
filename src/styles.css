@@ -755,6 +755,223 @@ html.dark {
     }
   }
 
+  /* ── /hackathon campaign page ────────────────────────────────────────────
+     Small, page-scoped primitives: a mission eyebrow label (the "MISSION 01"
+     numbering tying sections together), a QR scan-line sweep, and an
+     input shake for the wrong-code state. Kept minimal on purpose - this
+     page borrows .premium-card/.web-card/.grid-bg/.text-gradient/.btn-*
+     from the shared system rather than inventing a parallel one. ── */
+  .mission-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--primary-text);
+  }
+  .mission-label::before {
+    content: "";
+    display: block;
+    height: 5px;
+    width: 5px;
+    border-radius: 999px;
+    background: currentColor;
+    box-shadow: 0 0 8px rgba(192, 39, 45, 0.8);
+  }
+
+  .qr-frame {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-xl);
+  }
+  .qr-frame::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(233, 54, 63, 0.85),
+      rgba(255, 200, 202, 0.9),
+      rgba(233, 54, 63, 0.85),
+      transparent
+    );
+    top: 0;
+    filter: drop-shadow(0 0 6px rgba(220, 30, 40, 0.5));
+    animation: qr-scan 3.2s cubic-bezier(var(--ease-premium)) infinite;
+  }
+  @keyframes qr-scan {
+    0% {
+      top: 0;
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    92% {
+      opacity: 1;
+    }
+    100% {
+      top: 100%;
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .qr-frame::after {
+      animation: none;
+      opacity: 0;
+    }
+  }
+
+  .code-input-shake {
+    animation: code-shake 0.42s cubic-bezier(var(--ease-premium));
+  }
+  @keyframes code-shake {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    20% {
+      transform: translateX(-6px);
+    }
+    40% {
+      transform: translateX(5px);
+    }
+    60% {
+      transform: translateX(-4px);
+    }
+    80% {
+      transform: translateX(3px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .code-input-shake {
+      animation: none;
+    }
+  }
+
+  /* Slow ambient drift for hero glow blobs - reads as "alive" without ever
+     drawing the eye like a looping UI animation would. */
+  @keyframes drift-slow {
+    0%,
+    100% {
+      transform: translate(-50%, 0) scale(1);
+    }
+    50% {
+      transform: translate(-50%, 2%) scale(1.06);
+    }
+  }
+  .drift-slow {
+    animation: drift-slow 10s cubic-bezier(var(--ease-premium)) infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .drift-slow {
+      animation: none;
+    }
+  }
+
+  /* Vertical connector line threading between mission sections - a single
+     thin gradient rule, not a full stepper component. */
+  .mission-thread {
+    width: 1px;
+    background: linear-gradient(180deg, transparent, rgba(192, 39, 45, 0.35), transparent);
+  }
+
+  /* ── Mission console (code entry + registration) ─────────────────────────
+     A wide, full-bleed terminal/vault panel replacing two separate narrow
+     stacked cards. The blinking cursor and divider glow are pure CSS so the
+     ambient "ONLINE" feel costs nothing on the main thread. */
+  .console-cursor::after {
+    content: "";
+    display: inline-block;
+    width: 0.55em;
+    height: 1em;
+    margin-left: 0.15em;
+    vertical-align: -0.15em;
+    background: currentColor;
+    animation: console-blink 1s steps(1) infinite;
+  }
+  @keyframes console-blink {
+    0%,
+    49% {
+      opacity: 1;
+    }
+    50%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .console-cursor::after {
+      animation: none;
+      opacity: 1;
+    }
+  }
+
+  .console-divider {
+    background: linear-gradient(
+      180deg,
+      transparent,
+      rgba(192, 39, 45, 0.4) 15%,
+      rgba(192, 39, 45, 0.4) 85%,
+      transparent
+    );
+  }
+
+  .console-scanline {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.025) 0px,
+      rgba(255, 255, 255, 0.025) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    mix-blend-mode: overlay;
+  }
+
+  /* ── Social QR flip cards (/hackathon) ────────────────────────────────────
+     Driven entirely by the `.is-flipped` class the component toggles on
+     click/tap/Enter - not :hover - so the same interaction model works
+     identically with mouse, touch and keyboard (no separate "mobile mode").
+     3D flip via a rotateY on the inner element; both faces are absolutely
+     stacked with backface-visibility hidden. */
+  .flip-card {
+    perspective: 1600px;
+  }
+  .flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(var(--ease-premium));
+  }
+  .flip-card.is-flipped .flip-card-inner {
+    transform: rotateY(180deg);
+  }
+  .flip-card-face {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  .flip-card-back {
+    position: absolute;
+    inset: 0;
+    transform: rotateY(180deg);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .flip-card-inner {
+      transition: none;
+    }
+  }
+
   /* ── Metric card flip - hover reveals a short plain-language explanation
      on the back face instead of the raw stat, e.g. "US First" → "Proudly
      based in the United States." ── */
