@@ -16,7 +16,7 @@ import {
   MousePointerClick,
   ArrowUpRight,
   CheckCircle2,
-  Sparkles,
+  Zap,
 } from "lucide-react";
 
 export const Route = createFileRoute("/web-development")({
@@ -234,7 +234,7 @@ function Page() {
           <GlowBlob size="md" color="primary" blur={120} className="-top-32 -right-32" />
           <Reveal>
             <div className="flex items-center gap-3 mb-6">
-              <Sparkles className="h-5 w-5 text-primary" />
+              <Zap className="h-5 w-5 text-primary" />
               <p className="text-sm uppercase tracking-widest text-primary-text">
                 All of Our Websites Are
               </p>

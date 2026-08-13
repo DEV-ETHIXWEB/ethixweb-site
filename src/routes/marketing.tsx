@@ -15,7 +15,7 @@ import {
   ArrowUpRight,
   CheckCircle2,
   Users,
-  Sparkles,
+  SlidersHorizontal,
 } from "lucide-react";
 
 export const Route = createFileRoute("/marketing")({
@@ -67,7 +67,7 @@ const helpItems = [
     d: "Our data driven ads are designed to boost leads and attract top tier technicians, helping you grow your business efficiently.",
   },
   {
-    i: Sparkles,
+    i: SlidersHorizontal,
     t: "Flexible Plans",
     d: "Enjoy the freedom of no long term contracts, with services designed to scale with your business and needs.",
   },

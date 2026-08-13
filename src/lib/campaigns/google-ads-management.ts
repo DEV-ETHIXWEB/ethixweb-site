@@ -4,7 +4,7 @@ import {
   MessageCircle,
   MessageSquare,
   Code2,
-  Sparkles,
+  BrainCircuit,
   Megaphone,
   ShieldCheck,
   Radar,
@@ -263,7 +263,7 @@ export const googleAdsManagement: CampaignConfig = {
       {
         key: "intelligence",
         title: "Intelligence",
-        icon: Sparkles,
+        icon: BrainCircuit,
         points: ["AI lead capture", "Company knowledge", "LLM-flexible architecture", "Automation"],
       },
       {

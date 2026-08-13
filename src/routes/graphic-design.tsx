@@ -14,7 +14,8 @@ import {
   Layout,
   Package,
   BookOpen,
-  Sparkles,
+  Wand2,
+  Lightbulb,
   Target,
   ShieldCheck,
   Eye,
@@ -63,7 +64,7 @@ const whyMatters = [
     d: "A cohesive brand increases recognition and credibility.",
   },
   {
-    i: Sparkles,
+    i: Wand2,
     t: "Visuals Drive Engagement",
     d: "Professionally designed graphics attract more attention.",
   },
@@ -103,7 +104,11 @@ const services = [
 ];
 
 const whyUs = [
-  { i: Sparkles, t: "Creative Experts", d: "Our team specializes in unique, high impact designs." },
+  {
+    i: Lightbulb,
+    t: "Creative Experts",
+    d: "Our team specializes in unique, high impact designs.",
+  },
   {
     i: Target,
     t: "Custom Branding Strategies",

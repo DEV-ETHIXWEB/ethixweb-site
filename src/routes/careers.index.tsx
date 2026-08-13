@@ -15,7 +15,6 @@ import {
   ArrowUpRight,
   Globe2,
   Handshake,
-  Sparkles,
   Code2,
   GraduationCap,
   Rocket,
@@ -786,7 +785,7 @@ function Careers() {
 
           <Reveal>
             <div className="relative mx-auto max-w-2xl">
-              <Sparkles className="mx-auto h-8 w-8 text-white/90" strokeWidth={1.5} />
+              <Handshake className="mx-auto h-8 w-8 text-white/90" strokeWidth={1.5} />
               <h2 className="mt-4 pb-1 font-display text-4xl font-extrabold leading-tight text-white sm:text-5xl">
                 Don&apos;t see the right role?
               </h2>

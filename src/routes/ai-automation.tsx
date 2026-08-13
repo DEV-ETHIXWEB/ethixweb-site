@@ -6,7 +6,7 @@ import { Reveal } from "@/components/shared/Reveal";
 import { Container } from "@/components/shared/Container";
 import { CardGrid } from "@/components/shared/CardGrid";
 import { CTASection } from "@/components/shared/CTASection";
-import { Bot, Workflow, Brain, MessageSquare, Sparkles, Cable, Gauge } from "lucide-react";
+import { Bot, Workflow, Brain, MessageSquare, Cable, Gauge } from "lucide-react";
 
 export const Route = createFileRoute("/ai-automation")({
   head: () => ({
@@ -88,7 +88,7 @@ function Page() {
                   <p className="text-xs font-bold uppercase tracking-[0.24em] text-primary-text">
                     Automation layer
                   </p>
-                  <Sparkles className="h-4 w-4 shrink-0 text-primary" />
+                  <Workflow className="h-4 w-4 shrink-0 text-primary" />
                 </div>
                 <div className="mt-5 grid gap-3">
                   {[
@@ -118,7 +118,7 @@ function Page() {
         </Container>
       </section>
       <CTASection
-        icon={Sparkles}
+        icon={Workflow}
         title="Let's automate your hardest process."
         ctaLabel="Book a discovery call"
         ctaTo="/contact"

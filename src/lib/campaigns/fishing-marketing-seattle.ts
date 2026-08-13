@@ -7,7 +7,8 @@ import {
   Anchor,
   Send,
   Code2,
-  Sparkles,
+  BrainCircuit,
+  MousePointer2,
   Megaphone,
   Compass,
   ShieldCheck,
@@ -311,7 +312,7 @@ export const fishingMarketingSeattle: CampaignConfig = {
       {
         key: "intelligence",
         title: "Intelligence",
-        icon: Sparkles,
+        icon: BrainCircuit,
         points: ["AI chatbot", "Company knowledge", "LLM-flexible architecture", "Automation"],
       },
       {
@@ -352,7 +353,7 @@ export const fishingMarketingSeattle: CampaignConfig = {
       { label: "Website", icon: Globe2 },
       { label: "Google visibility", icon: Search },
       { label: "Google Ads opportunity", icon: Megaphone },
-      { label: "Conversion experience", icon: Sparkles },
+      { label: "Conversion experience", icon: MousePointer2 },
       { label: "Mobile experience", icon: ShieldCheck },
       { label: "Lead capture", icon: MessageSquare },
       { label: "AI opportunities", icon: MessageCircle },

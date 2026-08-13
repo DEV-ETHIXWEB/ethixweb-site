@@ -149,9 +149,9 @@ export function CampaignLeadForm({ config, meta }: { config: CampaignConfig; met
   };
 
   return (
-    <CampaignSection id="audit-form" className="scroll-mt-24" narrow>
+    <CampaignSection id="audit-form" className="scroll-mt-24">
       <Reveal>
-        <div className="glass-strong relative overflow-hidden rounded-[2rem] p-8 sm:p-10 lg:p-14">
+        <div className="glass-strong relative mx-auto w-full max-w-5xl overflow-hidden rounded-[2rem] p-6 sm:p-10 lg:p-14">
           <GlowBlob size="lg" color="primary" className="-top-24 left-1/2 -translate-x-1/2" />
           <div className="relative mx-auto max-w-2xl text-center">
             <p className="inline-flex items-center gap-1.5 text-sm uppercase tracking-widest text-primary-text">
@@ -183,101 +183,106 @@ export function CampaignLeadForm({ config, meta }: { config: CampaignConfig; met
               <p className="mt-2 text-sm text-muted-foreground">{config.form.successBody}</p>
             </div>
           ) : (
-            <div className="relative mx-auto mt-10 max-w-xl">
-              <StepProgress current={step} />
+            <div className="relative mx-auto mt-10 w-full max-w-2xl">
+              <div className="rounded-[1.5rem] border border-white/[0.07] bg-black/20 p-5 sm:p-8 lg:p-10">
+                <StepProgress current={step} />
 
-              <div className="relative mt-8 min-h-[260px] overflow-hidden">
-                <AnimatePresence mode="wait" custom={direction} initial={false}>
-                  <motion.div
-                    key={step}
-                    custom={direction}
-                    initial={reduce ? { opacity: 0 } : { opacity: 0, x: direction * 24 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={reduce ? { opacity: 0 } : { opacity: 0, x: direction * -24 }}
-                    transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    {step === 1 && (
-                      <StepBusinessType
-                        config={config}
-                        value={data.businessType}
-                        onChange={(v) => {
-                          markStarted();
-                          setData((d) => ({ ...d, businessType: v }));
-                        }}
-                      />
-                    )}
-                    {step === 2 && (
-                      <StepGoal
-                        config={config}
-                        value={data.goal}
-                        onChange={(v) => setData((d) => ({ ...d, goal: v }))}
-                      />
-                    )}
-                    {step === 3 && (
-                      <StepAboutBusiness
-                        data={data}
-                        onChange={(patch) => setData((d) => ({ ...d, ...patch }))}
-                        websitePlaceholder={config.form.websitePlaceholder}
-                      />
-                    )}
-                    {step === 4 && (
-                      <StepContact
-                        data={data}
-                        onChange={(patch) => setData((d) => ({ ...d, ...patch }))}
-                        token={token}
-                        setToken={setToken}
-                      />
-                    )}
-                  </motion.div>
-                </AnimatePresence>
-              </div>
+                <div className="relative mt-8 min-h-[260px] overflow-hidden">
+                  <AnimatePresence mode="wait" custom={direction} initial={false}>
+                    <motion.div
+                      key={step}
+                      custom={direction}
+                      initial={reduce ? { opacity: 0 } : { opacity: 0, x: direction * 24 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={reduce ? { opacity: 0 } : { opacity: 0, x: direction * -24 }}
+                      transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      {step === 1 && (
+                        <StepBusinessType
+                          config={config}
+                          value={data.businessType}
+                          onChange={(v) => {
+                            markStarted();
+                            setData((d) => ({ ...d, businessType: v }));
+                          }}
+                        />
+                      )}
+                      {step === 2 && (
+                        <StepGoal
+                          config={config}
+                          value={data.goal}
+                          onChange={(v) => setData((d) => ({ ...d, goal: v }))}
+                        />
+                      )}
+                      {step === 3 && (
+                        <StepAboutBusiness
+                          data={data}
+                          onChange={(patch) => setData((d) => ({ ...d, ...patch }))}
+                          websitePlaceholder={config.form.websitePlaceholder}
+                        />
+                      )}
+                      {step === 4 && (
+                        <StepContact
+                          data={data}
+                          onChange={(patch) => setData((d) => ({ ...d, ...patch }))}
+                          token={token}
+                          setToken={setToken}
+                        />
+                      )}
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
 
-              {state === "error" && (
-                <p role="alert" className="mt-4 text-center text-sm text-error-text">
-                  {errorMsg}
-                </p>
-              )}
-
-              <div className="mt-8 flex items-center justify-between gap-4">
-                <button
-                  type="button"
-                  onClick={handleBack}
-                  disabled={step === 1}
-                  className="btn-secondary inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-bold disabled:pointer-events-none disabled:opacity-0"
-                >
-                  <ArrowLeft className="h-4 w-4" /> Back
-                </button>
-
-                {step < TOTAL_STEPS ? (
-                  <button
-                    type="button"
-                    onClick={handleNext}
-                    disabled={!canAdvance}
-                    className="btn-primary shine-cta inline-flex items-center gap-2 rounded-full border border-transparent px-6 py-3 text-sm font-bold disabled:opacity-50"
-                  >
-                    Continue <ArrowRight className="h-4 w-4" />
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={handleSubmit}
-                    disabled={state === "submitting"}
-                    className="btn-primary shine-cta inline-flex items-center gap-2 rounded-full border border-transparent px-6 py-3 text-sm font-bold disabled:opacity-60"
-                  >
-                    {state === "submitting" ? (
-                      <>
-                        <Loader2 className="h-4 w-4 animate-spin" /> Sending...
-                      </>
-                    ) : (
-                      <>
-                        {config.offer.headline} <ArrowUpRight className="h-4 w-4" />
-                      </>
-                    )}
-                  </button>
+                {state === "error" && (
+                  <p role="alert" className="mt-4 text-center text-sm text-error-text">
+                    {errorMsg}
+                  </p>
                 )}
+
+                <div className="mt-8 flex items-center gap-4 border-t border-white/[0.06] pt-6">
+                  {step > 1 && (
+                    <button
+                      type="button"
+                      onClick={handleBack}
+                      className="btn-secondary inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-bold"
+                    >
+                      <ArrowLeft className="h-4 w-4" /> Back
+                    </button>
+                  )}
+
+                  <div className={step > 1 ? "ml-auto" : "w-full"}>
+                    {step < TOTAL_STEPS ? (
+                      <button
+                        type="button"
+                        onClick={handleNext}
+                        disabled={!canAdvance}
+                        className={`btn-primary shine-cta inline-flex items-center justify-center gap-2 rounded-full border border-transparent px-6 py-3 text-sm font-bold disabled:opacity-40 ${step === 1 ? "w-full sm:w-auto" : ""}`}
+                      >
+                        Continue <ArrowRight className="h-4 w-4" />
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={handleSubmit}
+                        disabled={state === "submitting"}
+                        className="btn-primary shine-cta inline-flex items-center gap-2 rounded-full border border-transparent px-6 py-3 text-sm font-bold disabled:opacity-60"
+                      >
+                        {state === "submitting" ? (
+                          <>
+                            <Loader2 className="h-4 w-4 animate-spin" /> Sending...
+                          </>
+                        ) : (
+                          <>
+                            {config.offer.headline} <ArrowUpRight className="h-4 w-4" />
+                          </>
+                        )}
+                      </button>
+                    )}
+                  </div>
+                </div>
               </div>
 
-              <p className="mt-4 text-center text-xs text-muted-foreground">
+              <p className="mt-5 text-center text-xs text-muted-foreground">
                 No spam. No fake guarantees. Just an honest look at your setup.
               </p>
             </div>
@@ -297,7 +302,10 @@ function StepProgress({ current }: { current: number }) {
       aria-valuemax={TOTAL_STEPS}
       aria-valuetext={`Step ${current} of ${TOTAL_STEPS}: ${STEP_LABELS[current - 1]}`}
     >
-      <div className="flex items-center justify-between">
+      <p className="text-center text-xs font-semibold uppercase tracking-widest text-primary-text sm:hidden">
+        Step {current} of {TOTAL_STEPS} &middot; {STEP_LABELS[current - 1]}
+      </p>
+      <div className="mt-3 flex items-center justify-between sm:mt-0">
         {STEP_LABELS.map((label, i) => {
           const n = i + 1;
           const active = n === current;
@@ -305,22 +313,22 @@ function StepProgress({ current }: { current: number }) {
           return (
             <div
               key={label}
-              className="relative flex flex-1 flex-col items-center gap-2 last:flex-none"
+              className="relative flex flex-1 flex-col items-center gap-2.5 last:flex-none"
             >
               <div
-                className={`flex h-8 w-8 items-center justify-center rounded-full border text-xs font-bold transition-colors ${
+                className={`flex h-9 w-9 items-center justify-center rounded-full border-2 text-xs font-bold transition-all duration-300 ${
                   done
-                    ? "border-primary bg-primary text-primary-foreground"
+                    ? "border-primary bg-primary text-primary-foreground shadow-[0_0_0_4px_rgba(229,29,37,0.14)]"
                     : active
-                      ? "border-primary text-primary"
-                      : "border-white/15 text-muted-foreground"
+                      ? "border-primary bg-primary/10 text-primary shadow-[0_0_0_4px_rgba(229,29,37,0.14)]"
+                      : "border-white/15 bg-white/[0.03] text-muted-foreground"
                 }`}
               >
-                {done ? <Check className="h-3.5 w-3.5" /> : n}
+                {done ? <Check className="h-4 w-4" /> : n}
               </div>
               <span
                 className={`hidden text-[10px] font-semibold uppercase tracking-wide sm:block ${
-                  active ? "text-foreground" : "text-muted-foreground"
+                  active || done ? "text-foreground" : "text-muted-foreground"
                 }`}
               >
                 {label}
@@ -328,10 +336,13 @@ function StepProgress({ current }: { current: number }) {
               {i < STEP_LABELS.length - 1 && (
                 <div
                   aria-hidden="true"
-                  className={`absolute left-[calc(50%+1.25rem)] right-[calc(-50%+1.25rem)] top-4 h-px ${
-                    done ? "bg-primary" : "bg-white/10"
-                  }`}
-                />
+                  className="absolute left-[calc(50%+1.375rem)] right-[calc(-50%+1.375rem)] top-[18px] h-0.5 rounded-full bg-white/10"
+                >
+                  <div
+                    className="h-full rounded-full bg-primary transition-all duration-500"
+                    style={{ width: done ? "100%" : "0%" }}
+                  />
+                </div>
               )}
             </div>
           );
@@ -366,14 +377,20 @@ function OptionGrid<T extends { id: string; label: string }>({
             role="radio"
             aria-checked={selected}
             onClick={() => onChange(opt.id)}
-            className={`flex items-center justify-between gap-2 rounded-2xl border px-5 py-4 text-left text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${
+            className={`flex items-center justify-between gap-2 rounded-2xl border px-5 py-4 text-left text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${
               selected
                 ? "option-card-selected border-primary bg-primary/10 text-foreground"
-                : "border-white/10 bg-white/[0.03] text-muted-foreground hover:border-white/20 hover:text-foreground"
+                : "border-white/10 bg-white/[0.03] text-muted-foreground hover:border-white/20 hover:bg-white/[0.05] hover:text-foreground"
             }`}
           >
             {opt.label}
-            {selected && <Check className="h-4 w-4 shrink-0 text-primary" />}
+            <span
+              className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-colors ${
+                selected ? "border-primary bg-primary" : "border-white/15 bg-transparent"
+              }`}
+            >
+              {selected && <Check className="h-3.5 w-3.5 text-primary-foreground" />}
+            </span>
           </button>
         );
       })}
