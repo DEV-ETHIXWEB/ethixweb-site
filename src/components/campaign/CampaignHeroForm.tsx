@@ -29,7 +29,7 @@ const EMPTY_FORM: FormData = {
 };
 
 const fieldClass =
-  "w-full rounded-xl border border-transparent bg-white px-4 py-3 text-sm font-medium text-[#1a1013] placeholder:text-[#8a7a7c] focus:border-[#1a1013]/20 focus:outline-none focus:ring-2 focus:ring-white/60 transition";
+  "w-full rounded-xl border border-transparent bg-[#f5efee] px-4 py-3 text-sm font-medium text-[#1a1013] placeholder:text-[#8a7a7c] focus:border-primary/30 focus:outline-none focus:ring-2 focus:ring-primary/25 transition";
 const selectClass = `${fieldClass} appearance-none bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%231a1013%22 stroke-width=%222%22><path d=%22M6 9l6 6 6-6%22/></svg>')] bg-[length:18px] bg-[right_0.75rem_center] bg-no-repeat pr-10`;
 
 /** Single-panel, all-fields-visible hero lead form: every field is visible
@@ -120,20 +120,20 @@ export function CampaignHeroForm({ config, meta }: { config: CampaignConfig; met
   return (
     <div
       id="audit-form"
-      className="relative scroll-mt-24 overflow-hidden rounded-[1.75rem] bg-[linear-gradient(150deg,#9d1b20_0%,#6b1114_55%,#2a0709_100%)] p-6 shadow-[0_30px_70px_-25px_rgba(0,0,0,0.6)] ring-1 ring-white/10 sm:p-8"
+      className="relative scroll-mt-24 overflow-hidden rounded-[1.75rem] bg-[linear-gradient(160deg,#3a1216_0%,#26090c_55%,#160608_100%)] p-6 shadow-[0_30px_70px_-25px_rgba(0,0,0,0.65)] ring-1 ring-white/[0.08] sm:p-8"
     >
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_0%,rgba(255,255,255,0.12),transparent_70%)]"
+        className="absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_0%,rgba(255,255,255,0.05),transparent_70%)]"
       />
       <div className="relative">
-        <p className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-white/70">
+        <p className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-primary-text">
           {config.offer.eyebrow}
         </p>
-        <h2 className="mt-2 font-display text-2xl font-extrabold leading-tight text-white sm:text-3xl">
+        <h2 className="mt-2 font-display text-2xl font-bold leading-tight text-white sm:text-3xl">
           {config.offer.headline}
         </h2>
-        <p className="mt-2 text-sm leading-relaxed text-white/70">
+        <p className="mt-2 text-sm leading-relaxed text-white/60">
           Get a real look at your website, Google visibility and lead capture, free.
         </p>
 
@@ -246,7 +246,7 @@ export function CampaignHeroForm({ config, meta }: { config: CampaignConfig; met
           <button
             type="submit"
             disabled={state === "submitting"}
-            className="mt-1 flex w-full items-center justify-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-extrabold text-[#7a1418] shadow-[0_14px_32px_-12px_rgba(0,0,0,0.5)] transition hover:bg-white/90 disabled:opacity-70"
+            className="mt-1 flex w-full items-center justify-center gap-2 rounded-xl bg-[#f5efee] px-6 py-3.5 text-sm font-bold text-[#1a1013] shadow-[0_14px_32px_-12px_rgba(0,0,0,0.5)] transition hover:bg-white disabled:opacity-70"
           >
             {state === "submitting" ? (
               <>
