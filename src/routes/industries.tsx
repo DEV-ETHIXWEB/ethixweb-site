@@ -19,6 +19,7 @@ import {
   Mail,
   ArrowUpRight,
   AlertTriangle,
+  Megaphone,
 } from "lucide-react";
 
 export const Route = createFileRoute("/industries")({
@@ -96,6 +97,33 @@ const fishing = [
     i: Mail,
     t: "Reliable Email & IT",
     d: "Pro grade business email and tech support for booking hardware on the boat.",
+  },
+];
+
+const CAMPAIGN_PAGES = [
+  {
+    icon: Wrench,
+    title: "HVAC & Plumbing Marketing",
+    description: "Turn search demand into qualified calls and booked jobs.",
+    to: "/hvac-plumbing-marketing" as const,
+  },
+  {
+    icon: Anchor,
+    title: "Fishing & Marine Marketing",
+    description: "More bookings, without missing the next customer.",
+    to: "/fishing-marine-marketing" as const,
+  },
+  {
+    icon: Megaphone,
+    title: "Google Ads Management",
+    description: "Turn search intent into measurable leads.",
+    to: "/google-ads-management" as const,
+  },
+  {
+    icon: MapPin,
+    title: "Seattle Fishing Charter Marketing",
+    description: "Built for the Puget Sound market.",
+    to: "/landing/fishing-marketing/seattle" as const,
   },
 ];
 
@@ -217,6 +245,45 @@ function Industries() {
           ],
         }}
       />
+
+      {/* ── Campaign pages ───────────────────────────────────────────────── */}
+      <section className="py-16">
+        <Container>
+          <Reveal>
+            <div className="max-w-2xl">
+              <p className="text-sm uppercase tracking-widest text-primary-text">Growth pages</p>
+              <h2 className="mt-3 font-display text-4xl font-bold text-gradient pb-1 sm:text-5xl">
+                See the acquisition system for your industry.
+              </h2>
+              <p className="mt-4 text-muted-foreground leading-relaxed">
+                Each of these is a live, working page you can open right now.
+              </p>
+            </div>
+          </Reveal>
+          <div className="mt-10 grid gap-4 sm:grid-cols-2">
+            {CAMPAIGN_PAGES.map((page, i) => (
+              <Reveal key={page.to} delay={i * 0.05}>
+                <Link
+                  to={page.to}
+                  onMouseMove={trackWebSpotlight}
+                  className="group relative block h-full overflow-hidden rounded-3xl glass p-6 transition-colors duration-300 hover:bg-white/[0.06]"
+                >
+                  <WebSpotlight />
+                  <span className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-2xl bg-primary text-primary-foreground shadow-glow ring-1 ring-white/15">
+                    <span className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/25 via-transparent to-transparent" />
+                    <page.icon className="relative h-5 w-5" strokeWidth={2} />
+                  </span>
+                  <h3 className="mt-4 font-display text-base font-semibold">{page.title}</h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+                    {page.description}
+                  </p>
+                  <ArrowUpRight className="mt-4 h-4 w-4 text-primary transition group-hover:rotate-45" />
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+        </Container>
+      </section>
 
       {/* ── Final CTA ────────────────────────────────────────────────────────
           Crimson finale panel matching the rest of the site; forced-dark,

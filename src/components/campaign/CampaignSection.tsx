@@ -11,8 +11,8 @@ import { cn } from "@/lib/utils";
 // reading measure sets `narrow` to constrain an INNER wrapper instead of
 // shrinking the outer Container, so its content still starts flush with
 // every other section's edge (see CampaignProblem/CampaignFaq/CampaignLeadForm/
-// CampaignCaseStudy/CampaignOwnership/CampaignAccessibility/CampaignLocalMarket
-// for the narrow case, CampaignFunnel/CampaignAds/CampaignWebsite/etc. for full-grid).
+// CampaignCaseStudy/CampaignLocalMarket for the narrow case, CampaignFunnel/
+// CampaignAds/CampaignWebsite/etc. for full-grid).
 //
 // Vertical rhythm is standardized here too: `band` sections (alternating
 // tinted background) get the taller py-16/sm:py-24 beat; plain sections get

@@ -1,17 +1,12 @@
 import { useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { Check, Sparkles, Loader2 } from "lucide-react";
+import { Check, Database } from "lucide-react";
 import { Reveal } from "@/components/shared/Reveal";
 import { CampaignSection } from "@/components/campaign/CampaignSection";
 import type { CampaignConfig } from "@/lib/campaigns/types";
 
-const LLM_OPTIONS = ["OpenAI", "Anthropic", "Google", "Other"] as const;
-
 /**
  * Client-side simulated conversation - no live LLM call, no API key exposed.
- * Preset questions swap in canned answers from the campaign config with a
- * short "typing" delay so it reads as a real exchange rather than an
- * instant content swap.
+ * Preset questions swap in canned answers from the campaign config.
  */
 export function CampaignAiDemoSection({ config }: { config: CampaignConfig }) {
   const { aiSection } = config;
@@ -36,25 +31,6 @@ export function CampaignAiDemoSection({ config }: { config: CampaignConfig }) {
             </li>
           ))}
         </ul>
-        <div className="mt-6">
-          <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-            LLM-flexible architecture
-          </p>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {LLM_OPTIONS.map((name) => (
-              <span
-                key={name}
-                className="rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 text-xs text-muted-foreground"
-              >
-                {name}
-              </span>
-            ))}
-          </div>
-          <p className="mt-2 text-xs text-muted-foreground">
-            Built to switch or combine model providers as your needs change, not locked to one
-            vendor.
-          </p>
-        </div>
       </Reveal>
       <Reveal delay={0.1}>
         <InteractiveDemoCard config={config} />
@@ -67,21 +43,13 @@ type Turn = { question: string; answer: string };
 
 function InteractiveDemoCard({ config }: { config: CampaignConfig }) {
   const { aiSection } = config;
-  const reduce = useReducedMotion();
   const [history, setHistory] = useState<Turn[]>([aiSection.demo.opening]);
-  const [pendingQuestion, setPendingQuestion] = useState<string | null>(null);
   const [askedIds, setAskedIds] = useState<Set<string>>(new Set());
   const [activeCategory, setActiveCategory] = useState(0);
 
   const askPreset = (turn: Turn) => {
-    if (pendingQuestion) return;
     setAskedIds((prev) => new Set(prev).add(turn.question));
-    setPendingQuestion(turn.question);
-    const delay = reduce ? 0 : 650;
-    window.setTimeout(() => {
-      setHistory((h) => [...h, turn]);
-      setPendingQuestion(null);
-    }, delay);
+    setHistory((h) => [...h, turn]);
   };
 
   const remainingPresets = aiSection.demo.presets.filter((p) => !askedIds.has(p.question));
@@ -90,12 +58,11 @@ function InteractiveDemoCard({ config }: { config: CampaignConfig }) {
 
   return (
     <div className="premium-card relative mx-auto max-w-md overflow-hidden rounded-[2rem] p-6 sm:p-7">
-      <div className="absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-primary/20 blur-3xl" />
       <div className="relative flex items-center justify-between gap-2 border-b border-white/10 pb-4">
         <p className="text-xs font-bold uppercase tracking-[0.24em] text-primary-text">
           Business knowledge
         </p>
-        <Sparkles className="h-4 w-4 shrink-0 text-primary" />
+        <Database className="h-4 w-4 shrink-0 text-primary" />
       </div>
 
       {categories.length > 1 && (
@@ -138,36 +105,15 @@ function InteractiveDemoCard({ config }: { config: CampaignConfig }) {
 
       <div className="relative mt-6 rounded-2xl border border-white/10 bg-[#0C0D10]/70 p-4">
         <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
-          Try it: click a question below
+          Sample questions and answers
         </p>
-        <div className="space-y-2.5 max-h-72 overflow-y-auto themed-scroll pr-1" aria-live="polite">
+        <div className="space-y-4 max-h-72 overflow-y-auto themed-scroll pr-1" aria-live="polite">
           {history.map((turn, i) => (
-            <div key={`${turn.question}-${i}`} className="space-y-2.5">
-              <div className="ml-auto max-w-[85%] rounded-xl rounded-tr-sm bg-white/[0.08] px-3.5 py-2.5 text-xs text-foreground">
-                {turn.question}
-              </div>
-              <div className="mr-auto max-w-[90%] rounded-xl rounded-tl-sm bg-primary/15 px-3.5 py-2.5 text-xs text-foreground">
-                {turn.answer}
-              </div>
+            <div key={`${turn.question}-${i}`}>
+              <p className="text-xs font-semibold text-foreground">{turn.question}</p>
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{turn.answer}</p>
             </div>
           ))}
-          <AnimatePresence>
-            {pendingQuestion && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="space-y-2.5"
-              >
-                <div className="ml-auto max-w-[85%] rounded-xl rounded-tr-sm bg-white/[0.08] px-3.5 py-2.5 text-xs text-foreground">
-                  {pendingQuestion}
-                </div>
-                <div className="mr-auto flex items-center gap-1.5 rounded-xl rounded-tl-sm bg-primary/15 px-3.5 py-2.5 text-xs text-muted-foreground">
-                  <Loader2 className="h-3 w-3 animate-spin" /> Typing...
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
         </div>
 
         {remainingPresets.length > 0 && (
@@ -177,8 +123,7 @@ function InteractiveDemoCard({ config }: { config: CampaignConfig }) {
                 key={turn.question}
                 type="button"
                 onClick={() => askPreset(turn)}
-                disabled={!!pendingQuestion}
-                className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs text-muted-foreground transition hover:border-primary/40 hover:text-foreground disabled:opacity-50"
+                className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
               >
                 {turn.question}
               </button>

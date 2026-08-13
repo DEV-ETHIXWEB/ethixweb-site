@@ -6,15 +6,12 @@ import { trackCampaignEvent, captureAttribution } from "@/lib/campaigns/tracking
 import { CampaignHero } from "@/components/campaign/CampaignHero";
 import { CampaignProblem } from "@/components/campaign/CampaignProblem";
 import { CampaignAiDemoSection } from "@/components/campaign/CampaignAiDemo";
-import { CampaignSystem } from "@/components/campaign/CampaignSystem";
 import { CampaignAds } from "@/components/campaign/CampaignAds";
 import { CampaignFunnel } from "@/components/campaign/CampaignFunnel";
 import { CampaignLocalMarket } from "@/components/campaign/CampaignLocalMarket";
 import { CampaignSeasonality } from "@/components/campaign/CampaignSeasonality";
 import { CampaignWebsite } from "@/components/campaign/CampaignWebsite";
 import { CampaignWhyEthixweb } from "@/components/campaign/CampaignWhyEthixweb";
-import { CampaignAccessibility } from "@/components/campaign/CampaignAccessibility";
-import { CampaignOwnership } from "@/components/campaign/CampaignOwnership";
 import { CampaignCaseStudy } from "@/components/campaign/CampaignCaseStudy";
 import { CampaignLeadForm } from "@/components/campaign/CampaignLeadForm";
 import { CampaignFaqSection } from "@/components/campaign/CampaignFaq";
@@ -48,15 +45,12 @@ export function CampaignLandingPage({ config }: { config: CampaignConfig }) {
       <CampaignHero config={config} meta={meta} />
       <CampaignProblem config={config} />
       <CampaignAiDemoSection config={config} />
-      <CampaignSystem config={config} />
       <CampaignAds config={config} />
       <CampaignFunnel config={config} />
       {config.localMarket && <CampaignLocalMarket config={config} />}
       {config.seasonality && <CampaignSeasonality config={config} />}
       <CampaignWebsite config={config} />
       <CampaignWhyEthixweb config={config} />
-      <CampaignAccessibility config={config} />
-      {config.ownership && <CampaignOwnership config={config} />}
       <CampaignCaseStudy config={config} />
       <CampaignFaqSection config={config} />
       <CampaignLeadForm config={config} meta={meta} />

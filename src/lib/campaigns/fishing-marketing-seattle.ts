@@ -1,7 +1,7 @@
 import {
   Search,
   Globe2,
-  Bot,
+  MessageCircle,
   PhoneMissed,
   MessageSquare,
   Anchor,
@@ -70,14 +70,14 @@ export const fishingMarketingSeattle: CampaignConfig = {
     flowLabel: "Search to booking",
     flow: [
       { label: "Search", icon: Search },
-      { label: "Ad", icon: Globe2 },
+      { label: "Ad", icon: Megaphone },
       { label: "Website", icon: Globe2 },
-      { label: "AI", icon: Bot },
+      { label: "AI", icon: MessageCircle },
       { label: "Booking", icon: Anchor },
     ],
     points: [
       { icon: Gauge, label: "Fast, mobile-first landing pages" },
-      { icon: Bot, label: "AI answers while you're on the water" },
+      { icon: MessageCircle, label: "AI answers while you're on the water" },
       { icon: Radar, label: "Every lead tracked back to its source" },
     ],
   },
@@ -194,7 +194,7 @@ export const fishingMarketingSeattle: CampaignConfig = {
     items: [
       { icon: Search, label: "Ads bring the visitor" },
       { icon: Globe2, label: "Website converts the visitor" },
-      { icon: Bot, label: "AI captures the question" },
+      { icon: MessageCircle, label: "AI captures the question" },
       { icon: Radar, label: "Tracking shows where the lead came from" },
       { icon: Send, label: "Automation follows up" },
       { icon: Anchor, label: "You get the opportunity" },
@@ -232,7 +232,11 @@ export const fishingMarketingSeattle: CampaignConfig = {
     headline: "From search to booked trip.",
     steps: [
       { title: "Get Found", description: "Google search & ads bring them in", icon: Search },
-      { title: "Land & Engage", description: "Fast page, AI answers questions", icon: Bot },
+      {
+        title: "Land & Engage",
+        description: "Fast page, AI answers questions",
+        icon: MessageCircle,
+      },
       { title: "Capture", description: "Lead, call or inquiry, tracked", icon: MessageSquare },
       { title: "Book", description: "Follow-up turns it into revenue", icon: Anchor },
     ],
@@ -351,7 +355,7 @@ export const fishingMarketingSeattle: CampaignConfig = {
       { label: "Conversion experience", icon: Sparkles },
       { label: "Mobile experience", icon: ShieldCheck },
       { label: "Lead capture", icon: MessageSquare },
-      { label: "AI opportunities", icon: Bot },
+      { label: "AI opportunities", icon: MessageCircle },
       { label: "Tracking", icon: Radar },
     ],
   },

@@ -49,7 +49,7 @@ export function CampaignHero({ config, meta }: { config: CampaignConfig; meta: C
           </div>
           <p className="mt-5 text-xs text-muted-foreground">{config.hero.trustMessage}</p>
         </Reveal>
-        <Reveal delay={0.1}>
+        <Reveal delay={0.1} className="-mt-[100px]">
           <CampaignHeroSystemCard config={config} />
         </Reveal>
       </Container>
@@ -92,28 +92,28 @@ function CampaignHeroSystemCard({ config }: { config: CampaignConfig }) {
   const progressPct = n > 1 ? (activeIndex / (n - 1)) * 100 : 0;
 
   return (
-    <div className="premium-card relative mx-auto max-w-md overflow-hidden rounded-[2rem] p-6 sm:p-7">
+    <div className="premium-card relative mx-auto max-w-sm overflow-hidden rounded-[2rem] p-5 sm:p-6">
       <div className="absolute -top-16 -right-16 h-40 w-40 rounded-full bg-primary/25 blur-3xl" />
       <p className="text-xs font-bold uppercase tracking-[0.24em] text-primary-text">{flowLabel}</p>
-      <div className="relative mt-6">
+      <div className="relative mt-5">
         <div
           aria-hidden="true"
-          className="absolute left-[10%] right-[10%] top-[22px] h-px bg-white/10"
+          className="absolute left-[10%] right-[10%] top-[18px] h-px bg-white/10"
         />
         <div
           aria-hidden="true"
-          className="absolute left-[10%] top-[22px] h-px bg-gradient-to-r from-primary/40 to-primary transition-[width] duration-500 ease-out"
+          className="absolute left-[10%] top-[18px] h-px bg-gradient-to-r from-primary/40 to-primary transition-[width] duration-500 ease-out"
           style={{ width: `${(progressPct / 100) * 80}%` }}
         />
         <motion.div
           aria-hidden="true"
-          className="absolute top-[22px] h-2 w-2 -translate-y-1/2 rounded-full bg-primary"
+          className="absolute top-[18px] z-0 h-2 w-2 -translate-y-1/2 rounded-full bg-primary"
           style={{ boxShadow: "0 0 12px 4px rgba(229,29,37,0.7)" }}
           animate={{ left: `${10 + (progressPct / 100) * 80}%` }}
           transition={reduce ? { duration: 0 } : { duration: 0.5, ease: "easeOut" }}
         />
         <div
-          className="relative flex items-center justify-between"
+          className="relative z-10 flex items-center justify-between"
           role="tablist"
           aria-label={`${flowLabel} stages`}
         >
@@ -133,14 +133,14 @@ function CampaignHeroSystemCard({ config }: { config: CampaignConfig }) {
                 className="flex flex-1 flex-col items-center gap-2 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
               >
                 <span
-                  className={`flex h-11 w-11 items-center justify-center rounded-full border transition-all duration-300 ${
+                  className={`relative flex h-9 w-9 items-center justify-center rounded-full border bg-[#1a1013] transition-all duration-300 before:absolute before:inset-0 before:rounded-full before:transition-colors before:duration-300 ${
                     active
-                      ? "border-primary/60 bg-primary/15 shadow-[0_0_0_4px_rgba(229,29,37,0.12)]"
-                      : "border-white/10 bg-white/[0.05]"
+                      ? "border-primary/60 shadow-[0_0_0_4px_rgba(229,29,37,0.12)] before:bg-primary/15"
+                      : "border-white/10 before:bg-white/[0.05]"
                   }`}
                 >
                   <step.icon
-                    className={`h-5 w-5 transition-colors duration-300 ${active ? "text-primary" : "text-primary/70"}`}
+                    className={`relative h-4 w-4 transition-colors duration-300 ${active ? "text-primary" : "text-primary/70"}`}
                     strokeWidth={1.75}
                   />
                 </span>

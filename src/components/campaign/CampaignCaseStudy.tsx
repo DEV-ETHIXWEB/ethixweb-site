@@ -1,4 +1,4 @@
-import { Sparkles, ArrowRight } from "lucide-react";
+import { TrendingUp, ArrowRight } from "lucide-react";
 import { Reveal } from "@/components/shared/Reveal";
 import { CampaignSection } from "@/components/campaign/CampaignSection";
 import type { CampaignConfig } from "@/lib/campaigns/types";
@@ -14,7 +14,7 @@ export function CampaignCaseStudy({ config }: { config: CampaignConfig }) {
       <CampaignSection compact narrow>
         <Reveal>
           <div className="glass relative overflow-hidden rounded-[2rem] border-dashed p-8 text-center sm:p-10">
-            <Sparkles className="mx-auto h-8 w-8 text-primary/60" strokeWidth={1.5} />
+            <TrendingUp className="mx-auto h-8 w-8 text-primary/60" strokeWidth={1.5} />
             <h2 className="mt-4 font-display text-2xl font-semibold">
               Real Results From a {locationPrefix}
               {config.industry} Business
