@@ -5,6 +5,7 @@ import { isValidEmail } from "@/lib/utils";
 import type { CampaignConfig } from "@/lib/campaigns/types";
 import type { CampaignMeta } from "@/lib/campaigns/tracking";
 import { trackCampaignEvent, captureAttribution } from "@/lib/campaigns/tracking";
+import { trackLeadFormConversion } from "@/lib/gtag";
 
 type SubmitState = "idle" | "submitting" | "success" | "error";
 
@@ -96,6 +97,7 @@ export function CampaignHeroForm({ config, meta }: { config: CampaignConfig; met
       }
       setState("success");
       trackCampaignEvent("campaign_form_submit", meta);
+      trackLeadFormConversion();
     } catch {
       setErrorMsg("Something went wrong. Please try again.");
       setState("error");

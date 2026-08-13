@@ -12,6 +12,7 @@ import { WebSpotlight } from "@/components/shared/WebSpotlight";
 import { Turnstile } from "@/components/shared/Turnstile";
 import { trackWebSpotlight } from "@/lib/web-spotlight";
 import { formLabelClass, formInputClass } from "@/lib/form-styles";
+import { trackLeadFormConversion } from "@/lib/gtag";
 import {
   Mail,
   MapPin,
@@ -265,6 +266,7 @@ function ContactBody() {
         throw new Error(data?.error || "Request failed");
       }
       setSent(true);
+      trackLeadFormConversion();
     } catch (err) {
       setSubmitError(
         err instanceof Error
