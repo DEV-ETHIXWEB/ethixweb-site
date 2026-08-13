@@ -141,7 +141,7 @@ const SERVICES = [
     title: "Brand & Creative",
     description:
       "Identity, ad creative and photography direction that looks trustworthy and premium.",
-    to: "/services",
+    to: "/graphic-design",
   },
   {
     icon: ShoppingCart,
