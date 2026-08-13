@@ -13,7 +13,6 @@ import { CampaignSeasonality } from "@/components/campaign/CampaignSeasonality";
 import { CampaignWebsite } from "@/components/campaign/CampaignWebsite";
 import { CampaignWhyEthixweb } from "@/components/campaign/CampaignWhyEthixweb";
 import { CampaignCaseStudy } from "@/components/campaign/CampaignCaseStudy";
-import { CampaignLeadForm } from "@/components/campaign/CampaignLeadForm";
 import { CampaignFaqSection } from "@/components/campaign/CampaignFaq";
 import { CampaignFinalCta } from "@/components/campaign/CampaignFinalCta";
 import { CampaignMobileCta } from "@/components/campaign/CampaignMobileCta";
@@ -53,7 +52,6 @@ export function CampaignLandingPage({ config }: { config: CampaignConfig }) {
       <CampaignWhyEthixweb config={config} />
       <CampaignCaseStudy config={config} />
       <CampaignFaqSection config={config} />
-      <CampaignLeadForm config={config} meta={meta} />
       <CampaignFinalCta config={config} meta={meta} />
       <CampaignMobileCta config={config} meta={meta} />
     </SiteLayout>

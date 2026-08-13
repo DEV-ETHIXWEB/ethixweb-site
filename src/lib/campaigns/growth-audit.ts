@@ -20,41 +20,41 @@ import {
 } from "lucide-react";
 import type { CampaignConfig } from "./types";
 
-const CANONICAL_PATH = "/google-ads-management";
+const CANONICAL_PATH = "/growth-audit";
 
-export const googleAdsManagement: CampaignConfig = {
-  id: "google-ads-management",
-  industry: "Paid Search",
+export const growthAudit: CampaignConfig = {
+  id: "growth-audit",
+  industry: "Local Service",
   audience:
-    "Businesses actively looking for Google Ads management, Local Services Ads users, PPC/lead-generation buyers and local service businesses",
+    "HVAC, plumbing, fishing/marine, electrical, construction and other local service businesses looking for more qualified leads from Google Ads, their website and AI-driven lead capture",
 
   seo: {
-    title: "Google Ads Management | PPC & Local Services Ads | Ethixweb",
+    title: "Free Growth Audit | Google Ads, Website & AI Lead Capture | Ethixweb",
     description:
-      "Ethixweb runs Google Ads and Local Services Ads campaigns built around measurable leads, not vanity clicks: keyword strategy, conversion tracking, landing pages and ongoing optimization. Get a free ads audit.",
-    ogTitle: "Google Ads Management | Ethixweb",
+      "Ethixweb builds the website, Google Ads and AI lead capture system that turns search demand into qualified calls and booked jobs. Get a free growth audit.",
+    ogTitle: "Free Growth Audit | Ethixweb",
     ogDescription:
-      "Turn search intent into measurable leads. Campaign structure, tracking and landing pages built to convert, not just spend.",
+      "Turn search demand into qualified leads. Website, Google Ads and AI lead capture built to convert, not just spend.",
     path: CANONICAL_PATH,
   },
 
   schema: {
-    serviceType: "Google Ads and PPC Campaign Management",
-    serviceName: "Google Ads Management",
+    serviceType: "Digital Marketing and Lead Generation",
+    serviceName: "Growth Audit",
     serviceDescription:
-      "Google Ads and Local Services Ads campaign setup, landing pages, conversion tracking and ongoing optimization.",
+      "Website, Google Ads, conversion tracking and AI lead capture built and managed as one connected system for local service businesses.",
     areaServed: [{ type: "Place", name: "United States" }],
   },
 
   hero: {
-    eyebrow: "Google Ads Management",
-    headline: "Turn Search Intent Into Measurable Leads.",
+    eyebrow: "Free Growth Audit",
+    headline: "Turn Search Demand Into Booked Jobs.",
     subheadline:
-      "Ethixweb builds and manages Google Ads and Local Services Ads campaigns around business outcomes, not vanity metrics: relevant keywords, fast landing pages, real conversion tracking and ongoing optimization.",
-    primaryCta: "Get My Free Ads Audit",
+      "Ethixweb builds the website, Google Ads and AI lead capture system that gets your business found, contacted and booked, with every lead tracked back to its source.",
+    primaryCta: "Get My Free Growth Audit",
     secondaryCta: "Book a Strategy Call",
     trustMessage: "Built with accessibility in mind · No spam, no fake guarantees",
-    flowLabel: "Search to conversion",
+    flowLabel: "Search to booked job",
     flow: [
       { label: "Search", icon: Search },
       { label: "Ad", icon: Megaphone },
@@ -179,7 +179,7 @@ export const googleAdsManagement: CampaignConfig = {
   systemSection: {
     eyebrow: "The full system",
     headline: "It's More Than an Ads Account.",
-    body: "Ads, landing page, AI, tracking and optimization, working as one system instead of a campaign running in isolation.",
+    body: "Website, ads, AI and tracking, working as one connected system instead of pieces running in isolation.",
     items: [
       { icon: Search, label: "Research finds real intent" },
       { icon: Megaphone, label: "Ads reach the right searches" },
@@ -238,10 +238,10 @@ export const googleAdsManagement: CampaignConfig = {
 
   website: {
     eyebrow: "Your landing page",
-    headline: "Your Landing Page Should Convert the Click You Paid For.",
-    body: "Sending paid traffic to a slow, generic homepage wastes ad spend. We build landing pages matched to the ad, fast on mobile, with one clear next step.",
+    headline: "Your Website Should Sell the Job Before You Answer the Phone.",
+    body: "A slow, generic homepage wastes ad spend and search traffic alike. We build pages matched to what brought the click, fast on mobile, with one clear next step.",
     points: [
-      "Message match with the ad that brought the click",
+      "Message match with the ad or search that brought the click",
       "Fast load times on real phones, not just lab tests",
       "Accessible navigation and forms",
       "One clear, immediate call to action",
@@ -296,18 +296,18 @@ export const googleAdsManagement: CampaignConfig = {
   },
 
   offer: {
-    eyebrow: "Free Google Ads Growth Audit",
-    headline: "Get My Free Ads Audit",
-    body: "We'll take a real look at your account structure (or your current lack of one), keyword strategy, landing page, conversion tracking and where budget is likely being wasted, then tell you honestly what's worth fixing first.",
+    eyebrow: "Free Growth Audit",
+    headline: "Get My Free Growth Audit",
+    body: "We'll take a real look at your website, Google visibility, Google Ads opportunity, conversion experience, mobile experience, lead capture, AI opportunities and tracking, then tell you honestly what's worth fixing first.",
     checks: [
-      { label: "Account/campaign structure", icon: Target },
-      { label: "Keyword strategy", icon: Search },
-      { label: "Landing page", icon: Globe2 },
-      { label: "Conversion tracking", icon: Radar },
+      { label: "Website", icon: Globe2 },
+      { label: "Google visibility", icon: Search },
+      { label: "Google Ads opportunity", icon: Megaphone },
+      { label: "Conversion experience", icon: Target },
       { label: "Mobile experience", icon: ShieldCheck },
       { label: "Lead capture", icon: MessageSquare },
       { label: "AI opportunities", icon: MessageCircle },
-      { label: "Reporting", icon: BarChart3 },
+      { label: "Tracking", icon: Radar },
     ],
   },
 
@@ -315,7 +315,9 @@ export const googleAdsManagement: CampaignConfig = {
     businessTypes: [
       { id: "hvac", label: "HVAC" },
       { id: "plumbing", label: "Plumbing" },
-      { id: "fishing-marine", label: "Fishing / Marine" },
+      { id: "hvac-plumbing", label: "HVAC + Plumbing" },
+      { id: "fishing-charter", label: "Fishing Charter" },
+      { id: "marine-business", label: "Marine Business" },
       { id: "electrical", label: "Electrical" },
       { id: "construction", label: "Construction" },
       { id: "professional-services", label: "Professional Services" },
@@ -326,67 +328,67 @@ export const googleAdsManagement: CampaignConfig = {
       { id: "leads", label: "More Leads" },
       { id: "wasted-spend", label: "Lower Wasted Spend" },
       { id: "ads", label: "Google Ads" },
-      { id: "lsa", label: "Local Services Ads" },
+      { id: "website", label: "New Website" },
+      { id: "ai-lead-capture", label: "AI Lead Capture" },
       { id: "tracking", label: "Conversion Tracking" },
-      { id: "landing-page", label: "Better Landing Page" },
       { id: "full-system", label: "Full Growth System" },
       { id: "not-sure", label: "Not Sure" },
     ],
     successHeadline: "You're all set.",
     successBody:
-      "Your ads audit request has been received. We'll review the information and get back to you.",
+      "Your growth audit request has been received. We'll review the information and get back to you.",
     websitePlaceholder: "yourcompany.com",
   },
 
   faqs: [
     {
-      q: "How much does Google Ads management cost?",
-      a: "Management pricing depends on account size and scope, and is separate from your actual ad spend budget. We'll give you real numbers after the free ads audit, not a generic package price.",
+      q: "How much does this cost?",
+      a: "Pricing depends on the scope of work, and is separate from your ad spend budget. We'll give you real numbers after the free audit, not a generic package price.",
     },
     {
-      q: "Do you manage Local Services Ads too?",
+      q: "Can you build an HVAC or plumbing website?",
+      a: "Yes. We build fast, accessible, conversion-focused websites for HVAC, plumbing and other local service businesses.",
+    },
+    {
+      q: "Can you run Google Ads and Local Services Ads?",
       a: "Yes, where relevant to your business. We can advise on LSA strategy alongside standard Search campaigns.",
     },
     {
-      q: "Can you guarantee a certain number of leads?",
-      a: "No. Nobody honestly can. What we can guarantee is a structured, transparent approach: relevant keywords, real tracking and ongoing optimization based on what the data shows.",
+      q: "Can the AI answer emergency calls?",
+      a: "It can answer common questions and capture lead details around the clock, so an inquiry never goes unanswered overnight or during a busy job. A real team member follows up on every lead it captures.",
     },
     {
-      q: "Do I need a new landing page to run ads?",
-      a: "Not always, but your landing page needs to load fast, work on mobile and match the ad that brought the click. If your current site can't do that, ads traffic gets wasted. We'll tell you honestly which one you need.",
-    },
-    {
-      q: "Can you set up conversion tracking?",
-      a: "Yes. Call tracking and form-conversion tracking are part of how we measure whether a campaign is actually working, not just whether it's spending.",
-    },
-    {
-      q: "Can the AI assistant help with leads from my ads?",
-      a: "Yes. It can answer common questions and capture lead details the moment a paid visitor lands, on a knowledge base built from your actual business information.",
+      q: "Can the AI be trained on our services and pricing approach?",
+      a: "Yes. It's trained on your actual business information, so answers reflect how you really operate.",
     },
     {
       q: "Can I choose which AI model powers the assistant?",
       a: "Our architecture is LLM-flexible, so you're not locked into one provider as models and pricing change.",
     },
     {
-      q: "Do you work with businesses outside the Seattle area?",
-      a: "Yes. Google Ads management is a national-capable service. Tell us about your market on the audit request.",
+      q: "Can you track calls and bookings from Google Ads?",
+      a: "Yes. Call tracking and form-conversion tracking are part of how we measure whether a campaign is actually working, not just whether it's spending.",
     },
     {
-      q: "Do you have a Google Partner badge?",
-      a: "We don't make certification or partner-status claims we haven't verified. If that changes, we'll say so plainly rather than imply it.",
+      q: "Can you redesign an existing website?",
+      a: "Yes. We can rebuild an existing site or start fresh, depending on what will actually move the needle for your business.",
     },
     {
-      q: "What if I already have an ads account running?",
-      a: "We can audit the existing account and tell you honestly what's working, what's wasting spend, and what we'd change.",
+      q: "Do you work outside Seattle?",
+      a: "Yes. This is a national-capable service. Tell us about your market on the audit request.",
+    },
+    {
+      q: "Do I need a new website to run Google Ads?",
+      a: "Not always, but your landing page needs to load fast, work on mobile and match the ad that brought the click. If your current site can't do that, ad traffic gets wasted. We'll tell you honestly which one you need.",
     },
   ],
 
   finalCta: {
-    headline: "Every Day Without Tracking Is Budget You Can't Account For.",
-    body: "Let's find out what your ads are actually producing, and fix what isn't working.",
-    primaryCta: "Get My Free Ads Audit",
+    headline: "Your Next Job Is Already Being Searched For.",
+    body: "Let's find out what your current setup is actually producing, and fix what isn't working.",
+    primaryCta: "Get My Free Growth Audit",
     secondaryCta: "Book a Strategy Call",
   },
 
-  submitEndpoint: "/api/landing/google-ads-management",
+  submitEndpoint: "/api/landing/growth-audit",
 };

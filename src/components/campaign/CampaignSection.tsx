@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 // edge is always the same max-w-7xl grid; a section that wants a narrower
 // reading measure sets `narrow` to constrain an INNER wrapper instead of
 // shrinking the outer Container, so its content still starts flush with
-// every other section's edge (see CampaignProblem/CampaignFaq/CampaignLeadForm/
+// every other section's edge (see CampaignProblem/CampaignFaq/
 // CampaignCaseStudy/CampaignLocalMarket for the narrow case, CampaignFunnel/
 // CampaignAds/CampaignWebsite/etc. for full-grid).
 //
