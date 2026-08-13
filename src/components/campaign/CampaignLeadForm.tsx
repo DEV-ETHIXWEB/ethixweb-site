@@ -14,13 +14,12 @@ import { GlowBlob } from "@/components/shared/GlowBlob";
 import { Turnstile } from "@/components/shared/Turnstile";
 import { CampaignSection } from "@/components/campaign/CampaignSection";
 import { formLabelClass, formInputClass } from "@/lib/form-styles";
+import { isValidEmail } from "@/lib/utils";
 import type { CampaignConfig } from "@/lib/campaigns/types";
 import type { CampaignMeta } from "@/lib/campaigns/tracking";
 import { trackCampaignEvent, captureAttribution } from "@/lib/campaigns/tracking";
 
 type SubmitState = "idle" | "submitting" | "success" | "error";
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 interface FormData {
   businessType: string;
@@ -107,7 +106,7 @@ export function CampaignLeadForm({ config, meta }: { config: CampaignConfig; met
       setState("error");
       return;
     }
-    if (!EMAIL_RE.test(data.email.trim())) {
+    if (!isValidEmail(data.email.trim())) {
       setErrorMsg("Enter a valid email address.");
       setState("error");
       return;
@@ -488,7 +487,7 @@ function StepContact({
   setToken: (t: string) => void;
 }) {
   const [emailTouched, setEmailTouched] = useState(false);
-  const emailInvalid = emailTouched && data.email.trim() !== "" && !EMAIL_RE.test(data.email);
+  const emailInvalid = emailTouched && data.email.trim() !== "" && !isValidEmail(data.email);
 
   return (
     <div>

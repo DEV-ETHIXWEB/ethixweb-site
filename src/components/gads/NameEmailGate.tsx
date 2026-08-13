@@ -2,8 +2,7 @@ import { useState } from "react";
 import { Loader2, ShieldCheck } from "lucide-react";
 import { Reveal } from "@/components/shared/Reveal";
 import { formInputClass, formLabelClass } from "@/lib/form-styles";
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+import { isValidEmail } from "@/lib/utils";
 
 interface NameEmailGateProps {
   onSubmit: (name: string, email: string) => Promise<void>;
@@ -19,7 +18,7 @@ export function NameEmailGate({ onSubmit, error }: NameEmailGateProps) {
   const [email, setEmail] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  const canSubmit = name.trim().length > 1 && EMAIL_RE.test(email.trim());
+  const canSubmit = name.trim().length > 1 && isValidEmail(email.trim());
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

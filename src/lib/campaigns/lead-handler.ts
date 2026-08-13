@@ -5,6 +5,7 @@ import { recordContactSubmission, markNotificationSent, markClickUpTaskLinked } 
 import { createClickUpLeadTask } from "@/lib/clickup";
 import { guardRequest } from "@/lib/api-guard";
 import { verifyTurnstile } from "@/lib/turnstile";
+import { isValidEmail } from "@/lib/utils";
 
 // Shared POST handler for every campaign landing page's lead-submit endpoint
 // (src/routes/api.landing.*.ts). One implementation, driven by per-campaign
@@ -110,8 +111,7 @@ export function createCampaignLeadHandler(cfg: CampaignLeadHandlerConfig) {
       );
     }
 
-    const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!EMAIL_RE.test(cleanEmail)) {
+    if (!isValidEmail(cleanEmail)) {
       return Response.json(
         { ok: false, error: "Please enter a valid email address" },
         { status: 400 },

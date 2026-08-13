@@ -140,6 +140,13 @@ export function Footer() {
                   <span className="text-xs text-muted-foreground">
                     Registered in Wyoming, United States
                   </span>
+                  <br />
+                  <Link
+                    to="/locations/kent-wa"
+                    className="text-xs text-muted-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded"
+                  >
+                    Serving Kent, WA
+                  </Link>
                 </span>
               </li>
               <li className="flex items-start gap-2.5">

@@ -16,6 +16,7 @@ import { recordContactSubmission, markNotificationSent, markClickUpTaskLinked } 
 import { createClickUpLeadTask } from "@/lib/clickup";
 import { guardRequest } from "@/lib/api-guard";
 import { verifyTurnstile } from "@/lib/turnstile";
+import { isValidEmail } from "@/lib/utils";
 
 const TO_EMAIL = "info@ethixweb.com";
 
@@ -71,8 +72,7 @@ export const Route = createFileRoute("/api/contact")({
           );
         }
 
-        const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!EMAIL_RE.test(cleanEmail)) {
+        if (!isValidEmail(cleanEmail)) {
           return Response.json(
             { ok: false, error: "Please enter a valid email address" },
             { status: 400 },

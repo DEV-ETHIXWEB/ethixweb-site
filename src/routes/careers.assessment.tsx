@@ -26,6 +26,7 @@ import { ExamRoom } from "@/components/assessment/ExamRoom";
 import { useMediaRecording } from "@/hooks/useMediaRecording";
 import { JOBS, getJob } from "@/lib/careers-data";
 import { formInputClass, formLabelClass } from "@/lib/form-styles";
+import { isValidEmail } from "@/lib/utils";
 import {
   EXAM_DURATION_MINUTES,
   TOTAL_QUESTIONS,
@@ -53,7 +54,6 @@ export const Route = createFileRoute("/careers/assessment")({
 });
 
 const STORAGE_KEY = "ethixweb-assessment-session";
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const EXPERIENCE_OPTIONS = ["0-1 years", "1-3 years", "3-5 years", "5-8 years", "8+ years"];
 const ALLOWED_RESUME_TYPES = [
   "application/pdf",
@@ -230,7 +230,7 @@ function AssessmentPage() {
 
   const detailsComplete =
     name.trim().length > 1 &&
-    EMAIL_RE.test(email) &&
+    isValidEmail(email) &&
     !!getJob(roleId) &&
     experience.length > 0 &&
     resumeStatus === "done" &&

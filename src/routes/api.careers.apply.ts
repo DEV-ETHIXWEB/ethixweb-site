@@ -6,6 +6,7 @@ import { clientIp } from "@/lib/rate-limit";
 import { recordCareerApplication, markNotificationSent } from "@/lib/leads";
 import { guardRequest } from "@/lib/api-guard";
 import { verifyTurnstile } from "@/lib/turnstile";
+import { isValidEmail } from "@/lib/utils";
 import {
   NOTICE_PERIOD_LABELS,
   FROM_EMAIL,
@@ -16,7 +17,6 @@ import {
 } from "@/lib/email";
 
 const TO_EMAIL = "info@ethixweb.com";
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const URL_RE = /^https?:\/\/.+/i;
 // Vercel Blob's public storage host - resumeUrl must come from our own
 // upload endpoint (api.careers.upload.ts), never an arbitrary external URL,
@@ -132,7 +132,7 @@ export const Route = createFileRoute("/api/careers/apply")({
             { status: 400 },
           );
         }
-        if (!EMAIL_RE.test(payload.email)) {
+        if (!isValidEmail(payload.email)) {
           return Response.json(
             { ok: false, error: "Please enter a valid email address" },
             { status: 400 },
