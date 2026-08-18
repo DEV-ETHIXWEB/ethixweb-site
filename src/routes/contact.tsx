@@ -90,8 +90,8 @@ export const Route = createFileRoute("/contact")({
       { property: "og:title", content: "Contact Ethixweb" },
       { property: "og:description", content: "Start a project with our team." },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://ethixweb.com/ethixweb.png" },
-      { property: "og:url", content: "https://ethixweb.com/contact" },
+      { property: "og:image", content: "https://www.ethixweb.com/ethixweb.png" },
+      { property: "og:url", content: "https://www.ethixweb.com/contact" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Contact Ethixweb" },
       {
@@ -99,10 +99,10 @@ export const Route = createFileRoute("/contact")({
         content:
           "Tell us about your project and get a personalised roadmap within one business day.",
       },
-      { name: "twitter:image", content: "https://ethixweb.com/ethixweb.png" },
+      { name: "twitter:image", content: "https://www.ethixweb.com/ethixweb.png" },
       { name: "robots", content: "index, follow" },
     ],
-    links: [{ rel: "canonical", href: "https://ethixweb.com/contact" }],
+    links: [{ rel: "canonical", href: "https://www.ethixweb.com/contact" }],
     scripts: [
       {
         type: "application/ld+json",
@@ -110,14 +110,14 @@ export const Route = createFileRoute("/contact")({
           "@context": "https://schema.org",
           "@type": "ContactPage",
           name: "Contact Ethixweb",
-          url: "https://ethixweb.com/contact",
+          url: "https://www.ethixweb.com/contact",
           description:
             "Tell us about your project and get a personalised roadmap within one business day.",
           mainEntity: {
             "@type": "Organization",
             name: "Ethixweb",
             email: "akash@ethixweb.com",
-            url: "https://ethixweb.com",
+            url: "https://www.ethixweb.com",
             address: {
               "@type": "PostalAddress",
               addressLocality: "Kent",

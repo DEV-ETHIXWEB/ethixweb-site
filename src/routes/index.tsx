@@ -48,8 +48,8 @@ export const Route = createFileRoute("/")({
           "AI automation, websites, web applications, CRM integrations, SEO, ads, maintenance, and digital operations.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://ethixweb.com/ethixweb.png" },
-      { property: "og:url", content: "https://ethixweb.com/" },
+      { property: "og:image", content: "https://www.ethixweb.com/ethixweb.png" },
+      { property: "og:url", content: "https://www.ethixweb.com/" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Ethixweb - We run the tech. You run the business." },
       {
@@ -57,10 +57,10 @@ export const Route = createFileRoute("/")({
         content:
           "We manage your digital operation, from AI booking agents and CRM integrations to websites, SEO and ads.",
       },
-      { name: "twitter:image", content: "https://ethixweb.com/ethixweb.png" },
+      { name: "twitter:image", content: "https://www.ethixweb.com/ethixweb.png" },
       { name: "robots", content: "index, follow" },
     ],
-    links: [{ rel: "canonical", href: "https://ethixweb.com/" }],
+    links: [{ rel: "canonical", href: "https://www.ethixweb.com/" }],
     scripts: [
       {
         type: "application/ld+json",
@@ -68,8 +68,8 @@ export const Route = createFileRoute("/")({
           "@context": "https://schema.org",
           "@type": "ProfessionalService",
           name: "Ethixweb",
-          url: "https://ethixweb.com",
-          logo: "https://ethixweb.com/ethixweb.png",
+          url: "https://www.ethixweb.com",
+          logo: "https://www.ethixweb.com/ethixweb.png",
           description: "AI automation, websites, CRM integrations, SEO, and digital operations.",
           email: "info@ethixweb.com",
           openingHours: "Mo-Fr 09:00-17:00",

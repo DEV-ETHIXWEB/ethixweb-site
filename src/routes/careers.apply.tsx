@@ -75,7 +75,7 @@ export const Route = createFileRoute("/careers/apply")({
       { name: "description", content: "Apply for an open role at Ethixweb in a few quick steps." },
       { name: "robots", content: "noindex, follow" },
     ],
-    links: [{ rel: "canonical", href: "https://ethixweb.com/careers/apply" }],
+    links: [{ rel: "canonical", href: "https://www.ethixweb.com/careers/apply" }],
   }),
   component: ApplyPage,
 });

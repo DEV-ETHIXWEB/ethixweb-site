@@ -43,8 +43,8 @@ export const Route = createFileRoute("/our-work/")({
       { property: "og:title", content: "Our Work - Ethixweb Case Studies" },
       { property: "og:description", content: "Selected client work and measurable results." },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://ethixweb.com/ethixweb.png" },
-      { property: "og:url", content: "https://ethixweb.com/our-work" },
+      { property: "og:image", content: "https://www.ethixweb.com/ethixweb.png" },
+      { property: "og:url", content: "https://www.ethixweb.com/our-work" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Our Work - Ethixweb Case Studies" },
       {
@@ -52,10 +52,10 @@ export const Route = createFileRoute("/our-work/")({
         content:
           "Real case studies from Ethixweb: websites, SEO and paid media that generated thousands of qualified leads.",
       },
-      { name: "twitter:image", content: "https://ethixweb.com/ethixweb.png" },
+      { name: "twitter:image", content: "https://www.ethixweb.com/ethixweb.png" },
       { name: "robots", content: "index, follow" },
     ],
-    links: [{ rel: "canonical", href: "https://ethixweb.com/our-work" }],
+    links: [{ rel: "canonical", href: "https://www.ethixweb.com/our-work" }],
     scripts: [
       {
         type: "application/ld+json",
@@ -63,7 +63,7 @@ export const Route = createFileRoute("/our-work/")({
           "@context": "https://schema.org",
           "@type": "ItemList",
           name: "Ethixweb Our Work",
-          url: "https://ethixweb.com/our-work",
+          url: "https://www.ethixweb.com/our-work",
           description:
             "Real case studies from Ethixweb: websites, SEO and paid media that generated thousands of qualified leads.",
           itemListElement: CASE_STUDIES.map((s, i) => ({

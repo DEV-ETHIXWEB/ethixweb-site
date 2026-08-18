@@ -94,13 +94,13 @@ export const Route = createRootRoute({
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Ethixweb" },
       { property: "og:locale", content: "en_US" },
-      { property: "og:image", content: "https://ethixweb.com/ethixweb.png" },
+      { property: "og:image", content: "https://www.ethixweb.com/ethixweb.png" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
       { property: "og:image:alt", content: "Ethixweb - Premium Technology Partner" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@ethixweb" },
-      { name: "twitter:image", content: "https://ethixweb.com/ethixweb.png" },
+      { name: "twitter:image", content: "https://www.ethixweb.com/ethixweb.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -138,8 +138,8 @@ const SCHEMA_ORG_ORGANIZATION = jsonLdStringify({
   "@context": "https://schema.org",
   "@type": "Organization",
   name: "Ethixweb",
-  url: "https://ethixweb.com",
-  logo: "https://ethixweb.com/ethixweb.png",
+  url: "https://www.ethixweb.com",
+  logo: "https://www.ethixweb.com/ethixweb.png",
   description:
     "Digital operations, AI automation, websites, software, CRM integrations, SEO, ads, and fast support for US focused teams.",
   email: "akash@ethixweb.com",
@@ -155,7 +155,7 @@ const SCHEMA_ORG_WEBSITE = jsonLdStringify({
   "@context": "https://schema.org",
   "@type": "WebSite",
   name: "Ethixweb",
-  url: "https://ethixweb.com",
+  url: "https://www.ethixweb.com",
   description: "Premium technology partner for US home service businesses.",
 });
 

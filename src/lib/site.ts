@@ -2,4 +2,4 @@
 // structured data, canonical URLs) - kept separate from lib/email.ts so
 // non-email code doesn't couple to a module dedicated to Resend templates.
 
-export const SITE_URL = import.meta.env.VITE_SITE_URL || "https://ethixweb.com";
+export const SITE_URL = import.meta.env.VITE_SITE_URL || "https://www.ethixweb.com";

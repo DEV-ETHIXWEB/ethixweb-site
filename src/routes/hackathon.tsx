@@ -36,7 +36,7 @@ function XIcon({ className }: { className?: string }) {
 }
 
 const STORAGE_KEY = "hackathon-unlock-proof";
-const HACKATHON_URL = "https://ethixweb.com/hackathon";
+const HACKATHON_URL = "https://www.ethixweb.com/hackathon";
 const QR_SRC = "/qr/hackathon.png";
 
 const SOCIALS = [
@@ -812,18 +812,18 @@ export const Route = createFileRoute("/hackathon")({
         content: "Explore Ethixweb's social channels, find the hidden code, unlock registration.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://ethixweb.com/ethixweb.png" },
-      { property: "og:url", content: "https://ethixweb.com/hackathon" },
+      { property: "og:image", content: "https://www.ethixweb.com/ethixweb.png" },
+      { property: "og:url", content: "https://www.ethixweb.com/hackathon" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Ethixweb Hackathon | Code. Find. Unlock." },
       {
         name: "twitter:description",
         content: "Explore Ethixweb's social channels, find the hidden code, unlock registration.",
       },
-      { name: "twitter:image", content: "https://ethixweb.com/ethixweb.png" },
+      { name: "twitter:image", content: "https://www.ethixweb.com/ethixweb.png" },
       { name: "robots", content: "index, follow" },
     ],
-    links: [{ rel: "canonical", href: "https://ethixweb.com/hackathon" }],
+    links: [{ rel: "canonical", href: "https://www.ethixweb.com/hackathon" }],
     scripts: [
       {
         type: "application/ld+json",
@@ -833,11 +833,11 @@ export const Route = createFileRoute("/hackathon")({
           name: hackathonConfig.hackathonName,
           description:
             "A code is hidden across Ethixweb's social channels. Find it, enter it, and unlock registration for the Ethixweb Hackathon.",
-          url: "https://ethixweb.com/hackathon",
+          url: "https://www.ethixweb.com/hackathon",
           organizer: {
             "@type": "Organization",
             name: "Ethixweb",
-            url: "https://ethixweb.com",
+            url: "https://www.ethixweb.com",
           },
         }),
       },

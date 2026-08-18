@@ -37,18 +37,18 @@ export const Route = createFileRoute("/about")({
         content: "Our story, how we work and why home service contractors trust us.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://ethixweb.com/ethixweb.png" },
-      { property: "og:url", content: "https://ethixweb.com/about" },
+      { property: "og:image", content: "https://www.ethixweb.com/ethixweb.png" },
+      { property: "og:url", content: "https://www.ethixweb.com/about" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "About Ethixweb" },
       {
         name: "twitter:description",
         content: "Our story, how we work and why home service contractors trust us.",
       },
-      { name: "twitter:image", content: "https://ethixweb.com/ethixweb.png" },
+      { name: "twitter:image", content: "https://www.ethixweb.com/ethixweb.png" },
       { name: "robots", content: "index, follow" },
     ],
-    links: [{ rel: "canonical", href: "https://ethixweb.com/about" }],
+    links: [{ rel: "canonical", href: "https://www.ethixweb.com/about" }],
     scripts: [
       {
         type: "application/ld+json",
@@ -56,14 +56,14 @@ export const Route = createFileRoute("/about")({
           "@context": "https://schema.org",
           "@type": "AboutPage",
           name: "About Ethixweb",
-          url: "https://ethixweb.com/about",
+          url: "https://www.ethixweb.com/about",
           description:
             "Ethixweb is a small, senior team helping US home service contractors grow with marketing that moves revenue.",
           mainEntity: {
             "@type": "Organization",
             name: "Ethixweb",
-            url: "https://ethixweb.com",
-            logo: "https://ethixweb.com/ethixweb.png",
+            url: "https://www.ethixweb.com",
+            logo: "https://www.ethixweb.com/ethixweb.png",
             email: "akash@ethixweb.com",
             foundingDate: "2020",
             address: {

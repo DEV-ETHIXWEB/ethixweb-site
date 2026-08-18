@@ -1,7 +1,7 @@
 import { jsonLdStringify } from "@/lib/json-ld";
 import type { CampaignConfig } from "./types";
 
-const SITE_URL = "https://ethixweb.com";
+const SITE_URL = "https://www.ethixweb.com";
 
 /** Builds the full TanStack Start `head()` return value from a campaign
  * config, so every campaign route gets consistent, correct meta/OG/Twitter/

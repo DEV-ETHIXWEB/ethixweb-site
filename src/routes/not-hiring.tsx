@@ -21,8 +21,8 @@ export const Route = createFileRoute("/not-hiring")({
           "Ethixweb is not currently hiring. Check back in the future for new opportunities.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://ethixweb.com/ethixweb.png" },
-      { property: "og:url", content: "https://ethixweb.com/not-hiring" },
+      { property: "og:image", content: "https://www.ethixweb.com/ethixweb.png" },
+      { property: "og:url", content: "https://www.ethixweb.com/not-hiring" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Careers | Ethixweb - No Current Openings" },
       {
@@ -30,10 +30,10 @@ export const Route = createFileRoute("/not-hiring")({
         content:
           "Ethixweb is not currently hiring. Check back in the future for new opportunities.",
       },
-      { name: "twitter:image", content: "https://ethixweb.com/ethixweb.png" },
+      { name: "twitter:image", content: "https://www.ethixweb.com/ethixweb.png" },
       { name: "robots", content: "noindex, follow" },
     ],
-    links: [{ rel: "canonical", href: "https://ethixweb.com/not-hiring" }],
+    links: [{ rel: "canonical", href: "https://www.ethixweb.com/not-hiring" }],
   }),
   component: NotHiring,
 });

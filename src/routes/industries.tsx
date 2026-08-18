@@ -36,8 +36,8 @@ export const Route = createFileRoute("/industries")({
         content: "Industry specific websites, AI booking and CRM management.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://ethixweb.com/ethixweb.png" },
-      { property: "og:url", content: "https://ethixweb.com/industries" },
+      { property: "og:image", content: "https://www.ethixweb.com/ethixweb.png" },
+      { property: "og:url", content: "https://www.ethixweb.com/industries" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Industries - HVAC, Plumbing & Fishing" },
       {
@@ -45,10 +45,10 @@ export const Route = createFileRoute("/industries")({
         content:
           "Specialized tech and marketing systems for HVAC, plumbing and fishing charter operators.",
       },
-      { name: "twitter:image", content: "https://ethixweb.com/ethixweb.png" },
+      { name: "twitter:image", content: "https://www.ethixweb.com/ethixweb.png" },
       { name: "robots", content: "index, follow" },
     ],
-    links: [{ rel: "canonical", href: "https://ethixweb.com/industries" }],
+    links: [{ rel: "canonical", href: "https://www.ethixweb.com/industries" }],
   }),
   component: Industries,
 });
@@ -113,10 +113,10 @@ const INDUSTRIES_SCHEMA = jsonLdStringify({
   "@context": "https://schema.org",
   "@type": "Service",
   name: "Industry-Specific Technology Systems",
-  provider: { "@type": "Organization", name: "Ethixweb", url: "https://ethixweb.com" },
+  provider: { "@type": "Organization", name: "Ethixweb", url: "https://www.ethixweb.com" },
   description:
     "Specialized tech and marketing systems for HVAC, plumbing and fishing charter operators.",
-  url: "https://ethixweb.com/industries",
+  url: "https://www.ethixweb.com/industries",
   areaServed: { "@type": "Country", name: "United States" },
   serviceType: "Industry-Specific Digital Operations",
 });

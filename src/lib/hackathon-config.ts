@@ -12,7 +12,7 @@ export const hackathonConfig = {
   prizes: "Prizes to be announced",
 
   // TODO: replace with the live registration form URL before launch.
-  registrationUrl: "https://ethixweb.com/contact",
+  registrationUrl: "https://www.ethixweb.com/contact",
   // TODO: replace with the real WhatsApp community invite link before launch.
   whatsappUrl: "",
 

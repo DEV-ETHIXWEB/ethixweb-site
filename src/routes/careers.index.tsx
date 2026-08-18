@@ -38,8 +38,8 @@ export const Route = createFileRoute("/careers/")({
       { property: "og:title", content: "Careers at Ethixweb" },
       { property: "og:description", content: "Open roles at a remote first, senior led team." },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://ethixweb.com/ethixweb.png" },
-      { property: "og:url", content: "https://ethixweb.com/careers" },
+      { property: "og:image", content: "https://www.ethixweb.com/ethixweb.png" },
+      { property: "og:url", content: "https://www.ethixweb.com/careers" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Careers at Ethixweb" },
       {
@@ -47,10 +47,10 @@ export const Route = createFileRoute("/careers/")({
         content:
           "Join Ethixweb, a small, remote first team building websites, AI automation, SEO and software for US businesses.",
       },
-      { name: "twitter:image", content: "https://ethixweb.com/ethixweb.png" },
+      { name: "twitter:image", content: "https://www.ethixweb.com/ethixweb.png" },
       { name: "robots", content: "index, follow" },
     ],
-    links: [{ rel: "canonical", href: "https://ethixweb.com/careers" }],
+    links: [{ rel: "canonical", href: "https://www.ethixweb.com/careers" }],
     scripts: [
       {
         type: "application/ld+json",
@@ -61,7 +61,7 @@ export const Route = createFileRoute("/careers/")({
           itemListElement: JOBS.map((job, i) => ({
             "@type": "ListItem",
             position: i + 1,
-            url: `https://ethixweb.com/careers/${job.slug}`,
+            url: `https://www.ethixweb.com/careers/${job.slug}`,
             item: {
               "@type": "JobPosting",
               title: job.title,
@@ -71,8 +71,8 @@ export const Route = createFileRoute("/careers/")({
               hiringOrganization: {
                 "@type": "Organization",
                 name: "Ethixweb",
-                sameAs: "https://ethixweb.com",
-                logo: "https://ethixweb.com/ethixweb.png",
+                sameAs: "https://www.ethixweb.com",
+                logo: "https://www.ethixweb.com/ethixweb.png",
               },
               jobLocationType: "TELECOMMUTE",
               applicantLocationRequirements: { "@type": "Country", name: "India" },

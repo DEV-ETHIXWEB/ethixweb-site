@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://ethixweb.com/sitemap_index.xml
+Sitemap: https://www.ethixweb.com/sitemap_index.xml
