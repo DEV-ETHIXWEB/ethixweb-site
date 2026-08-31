@@ -210,29 +210,36 @@ function Hero() {
               Premium digital operations team
             </div>
           </Reveal>
-          <Reveal delay={0.08}>
-            <h1 className="mt-7 max-w-5xl pb-2 text-[clamp(2.61rem,6.34vw,6.16rem)] font-extrabold leading-[0.9] text-gradient">
-              We run the{" "}
-              <span className="tech-3d relative inline-block" data-text="tech.">
-                tech.
-              </span>
-              <br />
-              You run the{" "}
-              <span
-                className="accent-shimmer relative inline-block bg-clip-text text-transparent"
-                data-text="business."
-                style={{
-                  backgroundImage: "linear-gradient(135deg, #D13A40 0%, #B32228 50%, #8A181C 100%)",
-                  // Tailwind's text-transparent only sets `color`; some older
-                  // WebKit builds need -webkit-text-fill-color too or glyphs
-                  // render partially opaque/white over the gradient.
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
-                business.
-              </span>
-            </h1>
-          </Reveal>
+          {/* Not wrapped in <Reveal>: this h1 is the page's LCP element, and
+              Reveal's composited opacity/transform transition leaves a
+              corrupted, non-self-healing paint of its background-clip:text
+              gradient in real Chromium and WebKit alike once the transition
+              ends - reproducible every time, not Safari-specific (see the
+              [data-reveal] stale-paint note below for the same mechanism
+              on other cards). Skipping the animation on this element
+              avoids the bug entirely and is better for perceived load
+              performance anyway - the LCP heading shouldn't fade in. */}
+          <h1 className="mt-7 max-w-5xl pb-2 text-[clamp(2.61rem,6.34vw,6.16rem)] font-extrabold leading-[0.9] text-gradient">
+            We run the{" "}
+            <span className="tech-3d relative inline-block" data-text="tech.">
+              tech.
+            </span>
+            <br />
+            You run the{" "}
+            <span
+              className="accent-shimmer relative inline-block bg-clip-text text-transparent"
+              data-text="business."
+              style={{
+                backgroundImage: "linear-gradient(135deg, #D13A40 0%, #B32228 50%, #8A181C 100%)",
+                // Tailwind's text-transparent only sets `color`; some older
+                // WebKit builds need -webkit-text-fill-color too or glyphs
+                // render partially opaque/white over the gradient.
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              business.
+            </span>
+          </h1>
           <Reveal delay={0.16}>
             <p className="mt-7 max-w-2xl text-lg font-medium leading-8 text-foreground/75 sm:text-xl">
               We manage your digital operation, from AI booking agents and CRM integrations to
