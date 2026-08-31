@@ -176,6 +176,26 @@ function RootShell({ children }: { children: ReactNode }) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: SCHEMA_ORG_WEBSITE }}
         />
+        {/* [data-reveal] elements (~200/page) start at opacity:0 in pure CSS,
+            before any JS runs, and only become visible once React hydrates
+            and Reveal's IntersectionObserver fires - or its own 1.4s
+            fallback timer, which itself only starts counting once React has
+            hydrated far enough to run that component's useEffect. On a slow
+            or heavily throttled device, the entire page can sit blank for
+            however long the framework bundle takes to download, parse, and
+            hydrate, with nothing to catch it. This second, independent
+            fallback runs from a tiny inline script in <head> - parsed and
+            executed before the framework bundle is even requested, with no
+            dependency on React ever mounting - as a hard ceiling on how
+            long the page can stay blank regardless of how slow or stuck JS
+            hydration is. Harmless no-op once the framework's own path wins
+            first, since adding the class twice is idempotent. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "setTimeout(function(){document.documentElement.classList.add('reveal-fallback')},2000)",
+          }}
+        />
       </head>
       <body>
         {children}
