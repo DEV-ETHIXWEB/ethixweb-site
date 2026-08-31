@@ -51,3 +51,7 @@ image (*.png
 /HERO/
 /public/NEW FORMAT/
 /public/OUR Work Case Studies DYNAMIC LAYOUT/
+
+# Personal reference material (prompts, checklists, exported PDFs) - not app source
+/DATA/
+/MY SKILLS _AKASH/

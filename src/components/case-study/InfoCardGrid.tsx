@@ -28,7 +28,7 @@ export function InfoCardGrid({
     <div ref={gridRef} className="mt-10 grid gap-5 sm:grid-cols-3">
       {cards.map((card, i) => (
         <Reveal key={card.title} delay={i * 0.06}>
-          <div className="relative h-full rounded-3xl border border-border bg-card p-7 shadow-sm">
+          <div className="relative flex h-full flex-col rounded-3xl border border-border bg-card p-7 shadow-sm">
             {glowLines && (
               <motion.span
                 aria-hidden="true"

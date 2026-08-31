@@ -29,7 +29,7 @@ function ThemeToggle() {
   const { theme, toggle } = useTheme();
   return (
     <motion.button
-      onClick={toggle}
+      onClick={(e) => toggle({ x: e.clientX, y: e.clientY })}
       className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
       whileTap={{ scale: 0.9 }}
       aria-label="Toggle theme"

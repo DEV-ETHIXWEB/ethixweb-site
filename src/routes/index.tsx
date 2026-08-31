@@ -27,6 +27,7 @@ import { HeroWebVisual } from "@/components/shared/HeroWebVisual";
 import { SystemShift } from "@/components/home/SystemShift";
 import { WebSpotlight } from "@/components/shared/WebSpotlight";
 import { trackWebSpotlight } from "@/lib/web-spotlight";
+import { SERVICE_CATALOG, SERVICE_CATALOG_TOTAL } from "@/lib/services-catalog";
 
 const GlobalNetwork = lazy(() =>
   import("@/components/home/GlobalNetwork").then((m) => ({ default: m.GlobalNetwork })),
@@ -156,6 +157,7 @@ function Home() {
         <Hero />
         <SignalStrip />
         <Services />
+        <ServiceCatalogTeaser />
         <Suspense fallback={null}>
           <GlobalNetwork />
         </Suspense>
@@ -346,6 +348,80 @@ function Services() {
                   <p className="mt-3 text-sm leading-6 text-foreground/75">{service.desc}</p>
                 </div>
               </div>
+            </Reveal>
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+}
+
+function ServiceCatalogTeaser() {
+  return (
+    <section className="relative overflow-hidden py-20 sm:py-24">
+      <GlowBlob size="lg" color="brand" blur={160} className="right-0 bottom-0 opacity-60" />
+      <Container className="relative">
+        <Reveal>
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <div className="max-w-2xl">
+              <p className="mb-4 text-sm font-bold uppercase tracking-[0.24em] text-primary-text">
+                Full service catalog
+              </p>
+              <h2 className="pb-1 text-5xl font-extrabold leading-tight text-gradient sm:text-6xl">
+                {SERVICE_CATALOG_TOTAL} services, one accountable team.
+              </h2>
+              <p className="mt-4 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg">
+                From website builds to AI receptionists, ad campaigns, reporting, accessibility, and
+                ongoing support - every capability we run, grouped by category.
+              </p>
+            </div>
+            <Link
+              to="/services"
+              hash="what-we-offer"
+              className="btn-secondary group inline-flex shrink-0 items-center gap-2 rounded-full px-6 py-3 font-bold"
+            >
+              See all {SERVICE_CATALOG_TOTAL} services
+              <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </Link>
+          </div>
+        </Reveal>
+
+        <div className="mt-14 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+          {SERVICE_CATALOG.map((category, index) => (
+            <Reveal key={category.title} delay={(index % 3) * 0.05} className="h-full">
+              <Link
+                to="/services"
+                hash="what-we-offer"
+                className="group premium-card relative isolate flex h-full -translate-y-1.5 flex-col overflow-hidden rounded-2xl p-7 shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+              >
+                <category.icon
+                  aria-hidden="true"
+                  strokeWidth={1}
+                  className="pointer-events-none absolute -bottom-6 -right-6 h-32 w-32 scale-110 text-primary/[0.08]"
+                />
+
+                <div className="relative flex items-center gap-3.5">
+                  <span className="flex h-12 w-12 shrink-0 scale-105 items-center justify-center overflow-hidden rounded-2xl bg-primary text-primary-foreground shadow-glow ring-1 ring-white/15">
+                    <span className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/25 via-transparent to-transparent" />
+                    <category.icon className="relative h-5 w-5" strokeWidth={2} />
+                  </span>
+                  <h3 className="font-display text-xl font-bold text-foreground">
+                    {category.title}
+                  </h3>
+                  <span className="ml-auto shrink-0 rounded-full border border-white/10 bg-background/40 px-2.5 py-1 text-xs font-semibold text-muted-foreground">
+                    {category.items.length} services
+                  </span>
+                </div>
+
+                <p className="relative mt-4 flex-1 text-sm leading-6 text-foreground/75">
+                  {category.teaser}
+                </p>
+
+                <span className="relative mt-6 inline-flex items-center gap-1.5 border-t border-white/10 pt-5 text-sm font-semibold text-primary">
+                  See services
+                  <ArrowUpRight className="h-3.5 w-3.5 translate-x-0.5 -translate-y-0.5" />
+                </span>
+              </Link>
             </Reveal>
           ))}
         </div>

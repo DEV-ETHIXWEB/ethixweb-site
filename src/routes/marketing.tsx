@@ -135,7 +135,7 @@ function Page() {
             </p>
             <Link
               to="/contact"
-              className="mt-10 inline-flex items-center gap-2 rounded-full bg-gradient-brand px-7 py-3.5 font-medium shadow-glow hover:scale-[1.03] transition-transform"
+              className="mt-10 inline-flex items-center gap-2 rounded-full bg-gradient-brand px-7 py-3.5 font-medium shadow-glow transition-transform hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
             >
               Contact Us <ArrowUpRight className="h-4 w-4" />
             </Link>
@@ -238,7 +238,7 @@ function Page() {
               <Reveal key={p.name} delay={i * 0.08}>
                 <div
                   onMouseMove={trackWebSpotlight}
-                  className={`group relative h-full overflow-hidden rounded-3xl p-8 ${
+                  className={`group relative flex h-full flex-col overflow-hidden rounded-3xl p-8 ${
                     p.featured
                       ? "bg-gradient-brand shadow-glow ring-1 ring-primary/40"
                       : "glass hover:bg-white/[0.06] transition"
@@ -263,7 +263,11 @@ function Page() {
                   >
                     {p.ads}
                   </p>
-                  <ul className="mt-6 space-y-3">
+                  {/* mb-8 guarantees a floor gap above the CTA even in the tallest
+                      card in the row; the button's own mt-auto then absorbs
+                      whatever's left in shorter cards, pinning it flush to the
+                      bottom instead of leaving a lopsided gap only on some plans. */}
+                  <ul className="mt-6 mb-8 space-y-3">
                     {p.perks.map((perk) => (
                       <li key={perk} className="flex items-start gap-2 text-sm">
                         <CheckCircle2
@@ -275,7 +279,7 @@ function Page() {
                   </ul>
                   <Link
                     to="/contact"
-                    className={`mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-medium ${
+                    className={`mt-auto inline-flex w-full items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-medium ${
                       p.featured
                         ? "bg-background text-foreground hover:scale-[1.02] transition-transform"
                         : "bg-gradient-brand text-primary-foreground hover:scale-[1.02] transition-transform"

@@ -712,7 +712,12 @@ function Careers() {
                     }}
                     viewport={{ once: true, margin: "-80px" }}
                     transition={{ duration: 0.7, delay: i * 0.25, ease: "easeOut" }}
-                    className="relative flex h-full flex-col overflow-hidden rounded-3xl border bg-white/[0.05] p-6 backdrop-blur-sm hover:bg-white/[0.08]"
+                    // [-webkit-mask-image]: same Safari backdrop-filter/border-radius
+                    // clip bug fixed sitewide on .glass/.glass-strong/.premium-card
+                    // (see styles.css) - this card builds its glass look from raw
+                    // Tailwind utilities instead of one of those classes, so it needs
+                    // the same fix applied directly.
+                    className="relative flex h-full flex-col overflow-hidden rounded-3xl border bg-white/[0.05] p-6 backdrop-blur-sm hover:bg-white/[0.08] [-webkit-mask-image:-webkit-radial-gradient(white,black)]"
                   >
                     <motion.span
                       aria-hidden="true"

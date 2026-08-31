@@ -843,8 +843,8 @@ export function SpiderwebNetwork({
               {NODES.filter((n) => n.spoke === si).map((n, ni) => (
                 <circle
                   key={ni}
-                  cx={n.x}
-                  cy={n.y}
+                  cx={n.x.toFixed(1)}
+                  cy={n.y.toFixed(1)}
                   r={2.4}
                   className="web-node"
                   style={

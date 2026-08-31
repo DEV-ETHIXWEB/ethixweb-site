@@ -10,22 +10,8 @@ import { HeroWebVisual } from "@/components/shared/HeroWebVisual";
 import { MarqueeBand } from "@/components/shared/MarqueeBand";
 import { EditorialHeader } from "@/components/shared/EditorialHeader";
 import { EngagementRhythm } from "@/components/shared/EngagementRhythm";
-import {
-  ArrowUpRight,
-  ChevronDown,
-  Code2,
-  Megaphone,
-  Search,
-  Palette,
-  BarChart3,
-  PhoneCall,
-  ShoppingCart,
-  Share2,
-  Telescope,
-  Map,
-  Hammer,
-  TrendingUp,
-} from "lucide-react";
+import { SERVICE_CATALOG, SERVICE_CATALOG_TOTAL } from "@/lib/services-catalog";
+import { ArrowUpRight, ChevronDown, Telescope, Map, Hammer, TrendingUp } from "lucide-react";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -98,60 +84,6 @@ export const Route = createFileRoute("/services")({
   component: Services,
 });
 
-const SERVICES = [
-  {
-    icon: Code2,
-    title: "Website Design & Dev",
-    description: "WordPress, Astro and headless builds: fast, mobile first, built to convert.",
-    to: "/web-development",
-  },
-  {
-    icon: Megaphone,
-    title: "Google Ads",
-    description:
-      "Search campaigns managed by senior media buyers, optimized weekly for booked jobs.",
-    to: "/marketing",
-  },
-  {
-    icon: PhoneCall,
-    title: "Local Services Ads",
-    description: "Google LSA setup, verification and optimization for top of page placement.",
-    to: "/marketing",
-  },
-  {
-    icon: Search,
-    title: "SEO & Local SEO",
-    description: "Technical SEO, content engines, GBP optimization and local authority building.",
-    to: "/services",
-  },
-  {
-    icon: BarChart3,
-    title: "Conversion Tracking",
-    description: "GA4, GTM and CallRail setup so every lead is attributed to its real source.",
-    to: "/services",
-  },
-  {
-    icon: Share2,
-    title: "Social & Content",
-    description: "Social media management and content that builds trust in your local market.",
-    to: "/marketing",
-  },
-  {
-    icon: Palette,
-    title: "Brand & Creative",
-    description:
-      "Identity, ad creative and photography direction that looks trustworthy and premium.",
-    to: "/graphic-design",
-  },
-  {
-    icon: ShoppingCart,
-    title: "CRM & Lead Systems",
-    description:
-      "CRM integrations, lifecycle flows and lead routing that turn calls into customers.",
-    to: "/ai-automation",
-  },
-];
-
 const ENGAGEMENT_STEPS = [
   {
     icon: Telescope,
@@ -206,7 +138,7 @@ function ServiceFaq({ q, a }: { q: string; a: string }) {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
+        className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors hover:bg-foreground/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
       >
         <span className="text-sm font-medium sm:text-base">{q}</span>
         <ChevronDown
@@ -288,7 +220,10 @@ function Services() {
         </Container>
       </section>
 
-      <MarqueeBand items={SERVICES.map((s) => s.title)} rotate={false} />
+      <MarqueeBand
+        items={SERVICE_CATALOG.flatMap((category) => category.items.map((item) => item.title))}
+        rotate={false}
+      />
 
       {/* ── What we offer ─────────────────────────────────────────────────── */}
       <section id="what-we-offer" className="scroll-mt-24 py-24">
@@ -299,7 +234,7 @@ function Services() {
                 aria-hidden="true"
                 className="select-none font-display text-6xl font-extrabold leading-none text-transparent [-webkit-text-stroke:1.5px_rgba(165,28,34,0.5)] sm:text-7xl"
               >
-                {String(SERVICES.length).padStart(2, "0")}
+                {String(SERVICE_CATALOG_TOTAL).padStart(2, "0")}
               </span>
               <div className="h-px flex-1 bg-gradient-to-r from-primary/40 to-transparent" />
             </div>
@@ -313,47 +248,79 @@ function Services() {
                 Everything under one roof.
               </h2>
               <p className="mt-4 text-base leading-7 text-muted-foreground">
-                Eight capabilities, one accountable team - so nothing falls between the agency
-                cracks.
+                {SERVICE_CATALOG_TOTAL} services across website, AI, growth, data, accessibility,
+                and support - run by one team instead of five disconnected vendors.
               </p>
             </div>
           </Reveal>
 
-          <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {SERVICES.map((item, i) => (
-              <Reveal key={item.title} delay={(i % 4) * 0.06}>
-                <Link
-                  to={item.to}
-                  className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-foreground/[0.02] p-6 transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/35 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
-                >
-                  {/* Crimson wash that sweeps in on hover */}
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/[0.07] to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                  <span
+          <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {SERVICE_CATALOG.map((category, i) => {
+              const ctaLabel = category.to === "/contact" ? "Get in touch" : "Learn more";
+              const CategoryCard = (
+                <div className="group/cat premium-card relative isolate flex h-full -translate-y-1.5 flex-col overflow-hidden rounded-3xl p-7 shadow-lg">
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/[0.08] to-transparent" />
+                  <category.icon
                     aria-hidden="true"
-                    className="absolute right-5 top-4 select-none font-display text-4xl font-extrabold leading-none text-transparent transition-all duration-300 [-webkit-text-stroke:1.5px_rgba(165,28,34,0.25)] group-hover:[-webkit-text-stroke:1.5px_rgba(165,28,34,0.55)]"
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
+                    strokeWidth={1}
+                    className="pointer-events-none absolute -bottom-6 -right-6 h-32 w-32 scale-110 text-primary/[0.08]"
+                  />
 
-                  <span className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-primary text-primary-foreground shadow-glow ring-1 ring-white/15">
-                    <span className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/25 via-transparent to-transparent" />
-                    <item.icon className="relative h-5 w-5" strokeWidth={2} />
-                  </span>
+                  <div className="relative flex items-center gap-3.5">
+                    <span className="flex h-12 w-12 shrink-0 scale-105 items-center justify-center overflow-hidden rounded-2xl bg-primary text-primary-foreground shadow-glow ring-1 ring-white/15">
+                      <span className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/25 via-transparent to-transparent" />
+                      <category.icon className="relative h-5 w-5" strokeWidth={2} />
+                    </span>
+                    <h3 className="font-display text-lg font-bold tracking-tight">
+                      {category.title}
+                    </h3>
+                    <span className="ml-auto shrink-0 rounded-full border border-border bg-background/40 px-2.5 py-1 text-xs font-semibold text-muted-foreground">
+                      {String(category.items.length).padStart(2, "0")}
+                    </span>
+                  </div>
 
-                  <h3 className="relative mt-5 font-display text-lg font-semibold transition-colors duration-300 group-hover:text-primary">
-                    {item.title}
-                  </h3>
-                  <p className="relative mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
-                    {item.description}
-                  </p>
+                  <ul className="relative mt-6 space-y-4 border-t border-border/70 pt-5">
+                    {category.items.map((item) => (
+                      <li key={item.title} className="flex gap-3">
+                        <item.icon
+                          className="mt-0.5 h-4 w-4 shrink-0 text-primary"
+                          strokeWidth={1.75}
+                        />
+                        <div>
+                          <p className="text-sm font-semibold text-foreground">{item.title}</p>
+                          <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
+                            {item.description}
+                          </p>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
 
-                  <span className="relative mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-foreground/70 transition-colors duration-300 group-hover:text-primary">
-                    Learn more
-                    <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  {/* mt-auto pins this to the card's bottom edge regardless of how
+                      many items sit above it, so every card - 2 items or 6 - ends
+                      on the same footer band instead of a variable-length list. */}
+                  <span className="relative mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold text-primary">
+                    {ctaLabel}
+                    <ArrowUpRight className="h-3.5 w-3.5 translate-x-0.5 -translate-y-0.5" />
                   </span>
-                </Link>
-              </Reveal>
-            ))}
+                </div>
+              );
+
+              return (
+                <Reveal key={category.title} delay={(i % 3) * 0.06} className="h-full">
+                  {category.to ? (
+                    <Link
+                      to={category.to}
+                      className="block h-full rounded-3xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+                    >
+                      {CategoryCard}
+                    </Link>
+                  ) : (
+                    CategoryCard
+                  )}
+                </Reveal>
+              );
+            })}
           </div>
         </Container>
       </section>

@@ -476,7 +476,7 @@ export function ExamRunner({
                   }
                 }
               }}
-              className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3 font-bold text-primary-foreground shadow-glow"
+              className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3 font-bold text-primary-foreground shadow-glow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/70"
             >
               <Maximize className="h-4 w-4" />
               Return to fullscreen & continue

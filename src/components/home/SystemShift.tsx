@@ -167,7 +167,11 @@ export function SystemShift() {
         <img
           src={emblem}
           alt="Ethixweb"
+          width={24}
+          height={24}
           draggable={false}
+          loading="lazy"
+          decoding="async"
           className="h-6 w-6 select-none object-contain transition-[filter] duration-500"
           style={{ filter: active && isDark ? EMBLEM_WHITE_FILTER : EMBLEM_CRIMSON_FILTER }}
         />

@@ -42,13 +42,17 @@ export function CardGrid({
 }
 
 export function IconCard({ icon: Icon, title, description, to }: CardGridItem) {
+  // flex-col + mt-auto on the arrow: descriptions vary in length across
+  // callers, so without this the arrow lands at a different height in every
+  // card and shorter cards leave dead space below it instead of a flush,
+  // consistently-aligned row.
   const content = (
     <>
       <Icon className="mb-5 h-9 w-9 text-primary" strokeWidth={1.5} />
       <h3 className="font-display text-lg font-semibold">{title}</h3>
       <p className="mt-2 text-sm text-muted-foreground">{description}</p>
       {to && (
-        <ArrowUpRight className="mt-5 h-4 w-4 text-primary transition group-hover:rotate-45" />
+        <ArrowUpRight className="mt-auto h-4 w-4 pt-5 text-primary transition group-hover:rotate-45" />
       )}
       <WebSpotlight />
     </>
@@ -59,7 +63,7 @@ export function IconCard({ icon: Icon, title, description, to }: CardGridItem) {
       <Link
         to={to}
         onMouseMove={trackWebSpotlight}
-        className="glass group relative block h-full overflow-hidden rounded-3xl p-7 transition hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+        className="glass group relative flex h-full flex-col overflow-hidden rounded-3xl p-7 transition hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
       >
         {content}
       </Link>
@@ -69,7 +73,7 @@ export function IconCard({ icon: Icon, title, description, to }: CardGridItem) {
   return (
     <div
       onMouseMove={trackWebSpotlight}
-      className="glass group relative h-full overflow-hidden rounded-3xl p-7"
+      className="glass group relative flex h-full flex-col overflow-hidden rounded-3xl p-7"
     >
       {content}
     </div>

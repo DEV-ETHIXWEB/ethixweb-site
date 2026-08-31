@@ -59,7 +59,11 @@ export const Route = createFileRoute("/our-work/$slug")({
             about: study.client.name,
             image: `https://www.ethixweb.com${study.heroImage.src}`,
             url: `https://www.ethixweb.com/our-work/${study.slug}`,
-            author: { "@type": "Organization", name: "Ethixweb", sameAs: "https://www.ethixweb.com" },
+            author: {
+              "@type": "Organization",
+              name: "Ethixweb",
+              sameAs: "https://www.ethixweb.com",
+            },
           }),
         },
         {
