@@ -15,8 +15,7 @@ const LIVE_PATHS = new Set([
   "/contact",
   "/policies/refunds",
   "/policies/terms",
-  // Privacy Policy is being revised - link shows "coming soon" in the
-  // footer instead of navigating there, until the new version ships.
+  "/policies/privacy",
 ]);
 
 const COMPANY_LINKS: [string, string][] = [

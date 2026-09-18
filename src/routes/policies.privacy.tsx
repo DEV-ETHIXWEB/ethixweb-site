@@ -65,48 +65,63 @@ function PrivacyPolicy() {
   return (
     <SiteLayout>
       <PageHero eyebrow="Policies" title="Privacy Policy">
-        Last updated: January 2025
+        Last updated: September 2026
       </PageHero>
       <section className="py-20">
         <Container size="narrow" className="space-y-5">
           <Reveal>
-            <div className="flex items-center gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-5 py-4 text-sm text-amber-700 dark:text-amber-400">
-              <span aria-hidden="true">🚧</span>
-              <p>Privacy Policy is being updated. A revised version will be published soon.</p>
-            </div>
+            <Section title="1. Who We Are">
+              <p>
+                Ethixweb operates through two related companies: Ethixweb USA LLC, registered in
+                Wyoming, United States, and Ethixweb India Private Limited, based in New Delhi,
+                India. In this policy, "Ethixweb", "we", and "us" refer to both.
+              </p>
+              <p>
+                Ethixweb USA LLC works directly with our clients, and our team at Ethixweb India
+                Private Limited carries out the design, development, marketing, and support work.
+                Both companies follow this same privacy policy.
+              </p>
+            </Section>
           </Reveal>
           <Reveal delay={0.03}>
-            <Section title="1. Information We Collect">
+            <Section title="2. Information We Collect">
               <p>We collect information you provide directly, including:</p>
               <ul className="list-disc pl-5 space-y-1">
-                <li>Name, email address, and company name when you fill out our contact form</li>
-                <li>Project details and requirements you share with us</li>
-                <li>Payment information processed securely through Stripe or PayPal</li>
+                <li>Name, email address, phone number, and company name when you contact us</li>
+                <li>Project details and materials you share with us</li>
+                <li>Resumes and application details when you apply for a job with us</li>
               </ul>
               <p>
-                We also collect standard web analytics data (pages visited, time on site, browser
-                type) via privacy respecting tools. We do not sell personal data.
+                We also collect basic technical data (such as pages visited, browser type, and IP
+                address) and information about which ad or campaign brought you to our site.
               </p>
             </Section>
           </Reveal>
           <Reveal delay={0.06}>
-            <Section title="2. How We Use Your Information">
+            <Section title="3. How We Use Your Information">
               <p>Your information is used to:</p>
               <ul className="list-disc pl-5 space-y-1">
                 <li>Respond to your enquiries and deliver project services</li>
                 <li>Send project updates and invoices</li>
-                <li>Improve our website and services</li>
+                <li>Review job applications</li>
+                <li>Improve our website, services, and marketing</li>
                 <li>Comply with legal obligations</li>
               </ul>
-              <p>
-                We do not use your data for targeted advertising or share it with third parties
-                except as necessary to deliver services (e.g., payment processors, hosting
-                providers).
-              </p>
             </Section>
           </Reveal>
           <Reveal delay={0.08}>
-            <Section title="3. Data Storage & Security">
+            <Section title="4. Sharing Your Information">
+              <p>
+                We do not sell your personal data. Your information may be shared between Ethixweb
+                USA LLC and Ethixweb India Private Limited so our team can work on your project, and
+                with trusted service providers (such as hosting, email, and payment providers) only
+                as needed to run our business. We may also disclose information when required by
+                law.
+              </p>
+            </Section>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <Section title="5. Data Storage & Security">
               <p>
                 Your data is stored on secure servers. We use industry standard encryption (TLS/SSL)
                 for data in transit and access controls for data at rest. No method of transmission
@@ -115,17 +130,17 @@ function PrivacyPolicy() {
               </p>
             </Section>
           </Reveal>
-          <Reveal delay={0.1}>
-            <Section title="4. Cookies">
+          <Reveal delay={0.12}>
+            <Section title="6. Cookies">
               <p>
-                This website uses minimal cookies to ensure functionality (theme preferences,
-                session state). We do not use third party tracking cookies. You may disable cookies
-                in your browser settings; some features may not work as expected.
+                This website uses cookies to remember your preferences (such as light or dark mode)
+                and, through Google Ads, to measure how our advertising performs. You may disable
+                cookies in your browser settings; some features may not work as expected.
               </p>
             </Section>
           </Reveal>
-          <Reveal delay={0.12}>
-            <Section title="5. Your Rights">
+          <Reveal delay={0.14}>
+            <Section title="7. Your Rights">
               <p>You have the right to:</p>
               <ul className="list-disc pl-5 space-y-1">
                 <li>Access the personal data we hold about you</li>
@@ -142,8 +157,8 @@ function PrivacyPolicy() {
               </p>
             </Section>
           </Reveal>
-          <Reveal delay={0.14}>
-            <Section title="6. Third Party Services">
+          <Reveal delay={0.16}>
+            <Section title="8. Third Party Services">
               <p>
                 Our site may link to third party websites. We are not responsible for their privacy
                 practices. We recommend reviewing their policies before submitting personal
@@ -151,8 +166,8 @@ function PrivacyPolicy() {
               </p>
             </Section>
           </Reveal>
-          <Reveal delay={0.16}>
-            <Section title="7. Children's Privacy">
+          <Reveal delay={0.18}>
+            <Section title="9. Children's Privacy">
               <p>
                 Our services are not directed at individuals under 13. We do not knowingly collect
                 data from children. If you believe a child has provided us data, please contact us
@@ -160,8 +175,8 @@ function PrivacyPolicy() {
               </p>
             </Section>
           </Reveal>
-          <Reveal delay={0.18}>
-            <Section title="8. Changes to This Policy">
+          <Reveal delay={0.2}>
+            <Section title="10. Changes to This Policy">
               <p>
                 We may update this policy periodically. The "Last updated" date at the top reflects
                 the most recent revision. Continued use of our site after changes constitutes
@@ -169,7 +184,7 @@ function PrivacyPolicy() {
               </p>
             </Section>
           </Reveal>
-          <Reveal delay={0.24}>
+          <Reveal delay={0.26}>
             <div className="glass-strong rounded-3xl p-8 text-center">
               <h3 className="font-display text-lg font-semibold">Privacy questions?</h3>
               <p className="mt-2 text-sm text-muted-foreground">
