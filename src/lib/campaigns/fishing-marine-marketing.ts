@@ -32,7 +32,7 @@ export const fishingMarineMarketing: CampaignConfig = {
   seo: {
     title: "Fishing & Marine Marketing | Websites, AI & Google Ads | Ethixweb",
     description:
-      "Ethixweb builds the website, AI lead assistant and Google Ads system that helps fishing charters, guides and marine businesses turn more searches into bookings. Get a free growth audit.",
+      "Ethixweb builds the website, AI lead assistant and Google Ads system that helps fishing charters, guides and marine businesses turn more searches into bookings. Get found online and generate more leads.",
     ogTitle: "Fishing & Marine Marketing | Ethixweb",
     ogDescription:
       "Website + AI + Google Ads for fishing and marine businesses. More bookings, better customer experience, less time chasing inquiries.",
@@ -52,7 +52,7 @@ export const fishingMarineMarketing: CampaignConfig = {
     headline: "More Bookings. Better Customer Experience. Less Time Chasing Inquiries.",
     subheadline:
       "Ethixweb builds the website, AI lead assistant and Google Ads system that helps fishing charters, guides and marine businesses get found, answer inquiries and turn more searches into bookings, never missing the next customer while you're on the water.",
-    primaryCta: "Get My Free Growth Audit",
+    primaryCta: "Get More Leads",
     secondaryCta: "Book a Strategy Call",
     trustMessage: "Built with accessibility in mind · No spam, no fake guarantees",
     flowLabel: "Search to booking",
@@ -292,9 +292,9 @@ export const fishingMarineMarketing: CampaignConfig = {
   },
 
   offer: {
-    eyebrow: "Free Fishing & Marine Growth Audit",
-    headline: "Get My Free Growth Audit",
-    body: "We'll take a real look at your website, Google visibility, Google Ads opportunity, conversion experience, mobile experience, lead capture, AI opportunities and tracking, then tell you honestly what's worth fixing first.",
+    eyebrow: "Get Found. Get More Leads.",
+    headline: "Start Getting More Leads",
+    body: "We help your business get found online and turn more searches into bookings. Tell us where you are today and we'll show you where the extra leads will come from, across your website, Google visibility, ads, lead capture and tracking.",
     checks: [
       { label: "Website", icon: Globe2 },
       { label: "Google visibility", icon: Search },
@@ -327,14 +327,14 @@ export const fishingMarineMarketing: CampaignConfig = {
     ],
     successHeadline: "You're all set.",
     successBody:
-      "Your growth audit request has been received. We'll review the information and get back to you.",
+      "Your request has been received. We'll review the information and get back to you.",
     websitePlaceholder: "yourbusiness.com",
   },
 
   faqs: [
     {
       q: "How much does fishing or marine business marketing cost?",
-      a: "It depends on scope: a new website, ongoing Google Ads management and an AI lead assistant are priced differently than a single service. We'll give you real numbers after the free growth audit, not a generic package price.",
+      a: "It depends on scope: a new website, ongoing Google Ads management and an AI lead assistant are priced differently than a single service. We'll give you real numbers once we understand your business, not a generic package price.",
     },
     {
       q: "Can you build a website for a fishing or marine business?",
@@ -362,7 +362,7 @@ export const fishingMarineMarketing: CampaignConfig = {
     },
     {
       q: "Can you redesign an existing website?",
-      a: "Yes. Many of the businesses we work with already have a site. We can rebuild it or improve it depending on what the audit finds.",
+      a: "Yes. Many of the businesses we work with already have a site. We can rebuild it or improve it depending on what will bring you the most leads.",
     },
     {
       q: "Do you work with businesses outside one specific region?",
@@ -377,7 +377,7 @@ export const fishingMarineMarketing: CampaignConfig = {
   finalCta: {
     headline: "Your Next Customer Is Already Searching.",
     body: "Let's make sure they find you, trust you, and get an answer before they move on.",
-    primaryCta: "Get My Free Growth Audit",
+    primaryCta: "Get More Leads",
     secondaryCta: "Book a Strategy Call",
   },
 

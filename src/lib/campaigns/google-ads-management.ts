@@ -38,7 +38,7 @@ export const googleAdsManagement: CampaignConfig = {
   seo: {
     title: "Google Ads Management Agency Seattle | PPC & Local Services Ads | Ethixweb",
     description:
-      "Ethixweb runs Google Ads and Local Services Ads campaigns built around measurable leads, not vanity clicks: keyword strategy, conversion tracking, landing pages and ongoing optimization. Get a free ads audit.",
+      "Ethixweb runs Google Ads and Local Services Ads campaigns built around measurable leads, not vanity clicks: keyword strategy, conversion tracking, landing pages and ongoing optimization. Get found online and generate more leads.",
     ogTitle: "Google Ads Management Agency | Ethixweb",
     ogDescription:
       "Turn search intent into measurable leads. Campaign structure, tracking and landing pages built to convert, not just spend.",
@@ -58,7 +58,7 @@ export const googleAdsManagement: CampaignConfig = {
     headline: "Turn Search Intent Into Measurable Leads.",
     subheadline:
       "Ethixweb builds and manages Google Ads and Local Services Ads campaigns around business outcomes, not vanity metrics: relevant keywords, fast landing pages, real conversion tracking and ongoing optimization.",
-    primaryCta: "Get My Free Ads Audit",
+    primaryCta: "Get More Leads",
     secondaryCta: "Book a Strategy Call",
     trustMessage: "Built with accessibility in mind · No spam, no fake guarantees",
     flowLabel: "Search to conversion",
@@ -312,9 +312,9 @@ export const googleAdsManagement: CampaignConfig = {
   },
 
   offer: {
-    eyebrow: "Free Google Ads Growth Audit",
-    headline: "Get My Free Ads Audit",
-    body: "We'll take a real look at your account structure (or your current lack of one), keyword strategy, landing page, conversion tracking and where budget is likely being wasted, then tell you honestly what's worth fixing first.",
+    eyebrow: "Get Found. Get More Leads.",
+    headline: "Start Getting More Leads",
+    body: "We help your business get found on Google and turn ad spend into qualified leads. Tell us where your account is today and we'll show you where the extra leads will come from: keyword strategy, landing pages, conversion tracking and cutting wasted budget.",
     checks: [
       { label: "Account/campaign structure", icon: Target },
       { label: "Keyword strategy", icon: Search },
@@ -350,14 +350,14 @@ export const googleAdsManagement: CampaignConfig = {
     ],
     successHeadline: "You're all set.",
     successBody:
-      "Your ads audit request has been received. We'll review the information and get back to you.",
+      "Your request has been received. We'll review the information and get back to you.",
     websitePlaceholder: "yourcompany.com",
   },
 
   faqs: [
     {
       q: "How much does Google Ads management cost?",
-      a: "Management pricing depends on account size and scope, and is separate from your actual ad spend budget. We'll give you real numbers after the free ads audit, not a generic package price.",
+      a: "Management pricing depends on account size and scope, and is separate from your actual ad spend budget. We'll give you real numbers once we understand your account, not a generic package price.",
     },
     {
       q: "Do you manage Local Services Ads too?",
@@ -385,22 +385,22 @@ export const googleAdsManagement: CampaignConfig = {
     },
     {
       q: "Do you work with businesses outside the Seattle area?",
-      a: "Yes. Google Ads management is a national-capable service. Tell us about your market on the audit request.",
+      a: "Yes. Google Ads management is a national-capable service. Tell us about your market when you reach out.",
     },
     {
       q: "What if I already have an ads account running?",
-      a: "We can audit the existing account and tell you honestly what's working, what's wasting spend, and what we'd change.",
+      a: "We can review the existing account and tell you honestly what's working, what's wasting spend, and what we'd change.",
     },
     {
       q: "Do you only work with Seattle businesses?",
-      a: "Seattle is where we're most connected locally, but the service itself is national-capable. Tell us about your market on the audit request.",
+      a: "Seattle is where we're most connected locally, but the service itself is national-capable. Tell us about your market when you reach out.",
     },
   ],
 
   finalCta: {
     headline: "Every Day Without Tracking Is Budget You Can't Account For.",
     body: "Let's find out what your ads are actually producing, and fix what isn't working.",
-    primaryCta: "Get My Free Ads Audit",
+    primaryCta: "Get More Leads",
     secondaryCta: "Book a Strategy Call",
   },
 

@@ -299,8 +299,8 @@ function Page() {
       <CTASection
         icon={Megaphone}
         title="Ready to grow on social?"
-        description="We'll audit your current social presence and come back with a clear, no jargon plan."
-        ctaLabel="Get a free audit"
+        description="Tell us about your business and we'll come back with a clear, no jargon plan to get you found online and bring in more leads."
+        ctaLabel="Get more leads"
         ctaTo="/contact"
       />
     </SiteLayout>

@@ -31,11 +31,11 @@ export function CampaignMobileCta({
     >
       <div className="flex items-center gap-2">
         <a
-          href="#audit-form"
+          href="#lead-form"
           onClick={() => trackCampaignEvent("campaign_cta_click", meta, { cta: "sticky_mobile" })}
           className="btn-primary flex flex-1 items-center justify-center gap-2 rounded-full border border-transparent px-6 py-3 text-sm font-bold"
         >
-          Get Free Audit <ArrowUpRight className="h-4 w-4" />
+          Get More Leads <ArrowUpRight className="h-4 w-4" />
         </a>
         {config.phone && (
           <a

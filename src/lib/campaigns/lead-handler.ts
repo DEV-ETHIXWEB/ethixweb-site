@@ -178,11 +178,11 @@ export function createCampaignLeadHandler(cfg: CampaignLeadHandlerConfig) {
     const summaryTable = `<table role="presentation" width="100%" style="border-collapse:collapse;">${summaryRows}</table>`;
 
     const notificationHtml = emailShell({
-      eyebrow: `${cfg.sourceLabel} growth audit request`,
+      eyebrow: `${cfg.sourceLabel} lead request`,
       footerText: `Sent automatically from ${cfg.emailFooterSource} &middot; ethixweb.com`,
       bodyHtml: `
         <p style="margin:0 0 8px;font-size:15px;line-height:1.5;color:#1a1a1a;">
-          <strong>${escapeHtml(cleanName)}</strong> requested a free growth audit from ${escapeHtml(cfg.emailFooterSource)}. Here's what they shared:
+          <strong>${escapeHtml(cleanName)}</strong> sent a lead request from ${escapeHtml(cfg.emailFooterSource)}. Here's what they shared:
         </p>
         ${summaryTable}
         <div style="margin-top:20px;">
@@ -197,7 +197,7 @@ export function createCampaignLeadHandler(cfg: CampaignLeadHandlerConfig) {
         from: FROM_EMAIL,
         to: TO_EMAIL,
         replyTo: cleanEmail,
-        subject: `Growth audit request: ${cleanBusiness || cleanName} (${cfg.sourceLabel})`,
+        subject: `New lead request: ${cleanBusiness || cleanName} (${cfg.sourceLabel})`,
         html: notificationHtml,
       });
 

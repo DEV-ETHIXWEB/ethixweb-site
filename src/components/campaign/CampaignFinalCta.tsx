@@ -19,7 +19,7 @@ export function CampaignFinalCta({ config, meta }: { config: CampaignConfig; met
           <p className="mx-auto mt-4 max-w-lg text-primary-foreground/90">{finalCta.body}</p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <a
-              href="#audit-form"
+              href="#lead-form"
               onClick={() =>
                 trackCampaignEvent("campaign_cta_click", meta, { cta: "final_primary" })
               }

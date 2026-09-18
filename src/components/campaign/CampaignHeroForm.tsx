@@ -109,7 +109,7 @@ export function CampaignHeroForm({ config, meta }: { config: CampaignConfig; met
   if (state === "success") {
     return (
       <div
-        id="audit-form"
+        id="lead-form"
         className="glass-strong relative scroll-mt-24 overflow-hidden rounded-[1.75rem] p-8 text-center sm:p-10"
       >
         <CheckCircle2 className="mx-auto h-10 w-10 text-primary" />
@@ -121,7 +121,7 @@ export function CampaignHeroForm({ config, meta }: { config: CampaignConfig; met
 
   return (
     <div
-      id="audit-form"
+      id="lead-form"
       className="relative scroll-mt-24 overflow-hidden rounded-[1.75rem] bg-[linear-gradient(160deg,#3a1216_0%,#26090c_55%,#160608_100%)] p-6 shadow-[0_30px_70px_-25px_rgba(0,0,0,0.65)] ring-1 ring-white/[0.08] sm:p-8"
     >
       <div
@@ -136,7 +136,7 @@ export function CampaignHeroForm({ config, meta }: { config: CampaignConfig; met
           {config.offer.headline}
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-white/60">
-          Get a real look at your website, Google visibility and lead capture, free.
+          We help your business get found online and turn more searches into leads.
         </p>
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-3.5">
@@ -262,7 +262,7 @@ export function CampaignHeroForm({ config, meta }: { config: CampaignConfig; met
           </button>
 
           <p className="text-center text-[11px] leading-relaxed text-white/55">
-            No spam, no fake guarantees. We'll follow up personally with your audit.
+            No spam, no fake guarantees. We'll follow up with you personally.
           </p>
         </form>
       </div>

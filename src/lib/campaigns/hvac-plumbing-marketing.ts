@@ -39,7 +39,7 @@ export const hvacPlumbingMarketing: CampaignConfig = {
   seo: {
     title: "Plumbing & HVAC Marketing Agency | Websites, SEO & Google Ads | Ethixweb",
     description:
-      "Ethixweb builds the website, Google Ads and AI lead capture system that turns search demand into qualified calls and booked jobs for plumbing and HVAC companies. Get a free growth audit.",
+      "Ethixweb builds the website, Google Ads and AI lead capture system that turns search demand into qualified calls and booked jobs for plumbing and HVAC companies. Get found online and generate more leads.",
     ogTitle: "Plumbing & HVAC Marketing Agency | Ethixweb",
     ogDescription:
       "More qualified calls. More booked jobs. Less wasted ad spend. Websites, SEO, Google Ads and AI lead capture built for plumbing and HVAC companies.",
@@ -59,7 +59,7 @@ export const hvacPlumbingMarketing: CampaignConfig = {
     headline: "More Qualified Calls. More Booked Jobs. Less Wasted Ad Spend.",
     subheadline:
       "Ethixweb builds the website, AI receptionist and Google Ads system that helps HVAC and plumbing companies turn search demand into qualified calls and booked jobs, with every lead tracked back to its source.",
-    primaryCta: "Get My Free Growth Audit",
+    primaryCta: "Get More Leads",
     secondaryCta: "Book a Strategy Call",
     trustMessage: "Built with accessibility in mind · No spam, no fake guarantees",
     flowLabel: "Search to booked job",
@@ -303,9 +303,9 @@ export const hvacPlumbingMarketing: CampaignConfig = {
   },
 
   offer: {
-    eyebrow: "Free HVAC & Plumbing Growth Audit",
-    headline: "Get My Free Growth Audit",
-    body: "We'll take a real look at your website, Google visibility, Google Ads and Local Services Ads opportunity, conversion experience, mobile experience, lead capture, AI opportunities and tracking, then tell you honestly what's worth fixing first.",
+    eyebrow: "Get Found. Get More Leads.",
+    headline: "Start Getting More Leads",
+    body: "We help your business get found online and turn more searches into qualified calls and booked jobs. Tell us where you are today and we'll show you where the extra leads will come from, across your website, Google visibility, ads, lead capture and tracking.",
     checks: [
       { label: "Website", icon: Globe2 },
       { label: "Google visibility", icon: Search },
@@ -339,14 +339,14 @@ export const hvacPlumbingMarketing: CampaignConfig = {
     ],
     successHeadline: "You're all set.",
     successBody:
-      "Your growth audit request has been received. We'll review the information and get back to you.",
+      "Your request has been received. We'll review the information and get back to you.",
     websitePlaceholder: "yourcompany.com",
   },
 
   faqs: [
     {
       q: "How much does HVAC or plumbing marketing cost?",
-      a: "Pricing depends on the scope of work, and is separate from your ad spend budget. We'll give you real numbers after the free audit, not a generic package price.",
+      a: "Pricing depends on the scope of work, and is separate from your ad spend budget. We'll give you real numbers once we understand your business, not a generic package price.",
     },
     {
       q: "Can you build an HVAC or plumbing website?",
@@ -374,7 +374,7 @@ export const hvacPlumbingMarketing: CampaignConfig = {
     },
     {
       q: "Do you work outside Seattle?",
-      a: "Yes. This is a national-capable service. Tell us about your market on the audit request.",
+      a: "Yes. This is a national-capable service. Tell us about your market when you reach out.",
     },
     {
       q: "Do I need a new website to run Google Ads?",
@@ -385,7 +385,7 @@ export const hvacPlumbingMarketing: CampaignConfig = {
   finalCta: {
     headline: "Your Next Job Is Already Being Searched For.",
     body: "Let's find out what your current setup is actually producing, and fix what isn't working.",
-    primaryCta: "Get My Free Growth Audit",
+    primaryCta: "Get More Leads",
     secondaryCta: "Book a Strategy Call",
   },
 

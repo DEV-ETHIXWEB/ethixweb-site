@@ -21,8 +21,8 @@ export function CampaignCaseStudy({ config }: { config: CampaignConfig }) {
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-sm text-muted-foreground leading-relaxed">
               This is where a real client story goes once we have one to share: problem, strategy,
-              implementation, leads, bookings and cost per lead. Until then, the free growth audit
-              is the fastest way to see our process and technology firsthand.
+              implementation, leads, bookings and cost per lead. Until then, reaching out is the
+              fastest way to see how we help businesses get found online and generate more leads.
             </p>
           </div>
         </Reveal>
