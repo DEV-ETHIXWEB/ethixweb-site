@@ -137,7 +137,7 @@ function ScreeningPage() {
       </PageHero>
 
       <section className="py-8 sm:py-16">
-        <Container size="medium">
+        <Container>
           <AnimatePresence mode="wait">
             {stage === "intro" || stage === "error" ? (
               <Reveal key="intro">

@@ -243,53 +243,57 @@ function Page() {
         <Container className="glass-strong relative overflow-hidden rounded-[2.5rem] p-8 sm:p-10 lg:p-16">
           <GlowBlob size="md" color="primary" blur={120} className="-top-32 -left-32" />
           <GlowBlob size="md" color="brand" blur={120} className="-bottom-32 -right-32" />
-          <Reveal>
-            <p className="text-sm uppercase tracking-widest text-primary-text mb-4 relative">
-              Why Us
-            </p>
-            <h2 className="relative font-display text-5xl font-bold text-gradient max-w-3xl pb-1">
-              Graphic Design & Branding
-            </h2>
-            <div className="relative mt-6 space-y-5 text-muted-foreground leading-relaxed max-w-3xl">
-              <p>
-                Your brand is more than just a logo. It's the story, personality and visual identity
-                that sets your business apart. Strong branding and eye catching graphic design
-                create a lasting impression, build trust and connect with your audience.
+          <Reveal className="grid items-center gap-x-16 lg:grid-cols-2">
+            <div>
+              <p className="text-sm uppercase tracking-widest text-primary-text mb-4 relative">
+                Why Us
               </p>
-              <p>
-                Our Graphic Design & Branding services help businesses establish a unique and
-                professional identity that attracts customers and strengthens brand loyalty.
-              </p>
+              <h2 className="relative font-display text-5xl font-bold text-gradient pb-1">
+                Graphic Design & Branding
+              </h2>
+              <div className="relative mt-6 space-y-5 text-muted-foreground leading-relaxed">
+                <p>
+                  Your brand is more than just a logo. It's the story, personality and visual
+                  identity that sets your business apart. Strong branding and eye catching graphic
+                  design create a lasting impression, build trust and connect with your audience.
+                </p>
+                <p>
+                  Our Graphic Design & Branding services help businesses establish a unique and
+                  professional identity that attracts customers and strengthens brand loyalty.
+                </p>
+              </div>
             </div>
-            <div className="relative mt-10 grid sm:grid-cols-2 gap-3 max-w-2xl">
-              {[
-                "Distinctive visual identity",
-                "Cohesive brand system",
-                "Print + digital ready",
-                "Built to scale with you",
-              ].map((p) => (
-                <div
-                  key={p}
-                  className="flex items-center gap-3 rounded-2xl bg-white/[0.03] border border-white/5 px-5 py-3"
+            <div>
+              <div className="relative mt-10 grid sm:grid-cols-2 gap-3 lg:mt-0">
+                {[
+                  "Distinctive visual identity",
+                  "Cohesive brand system",
+                  "Print + digital ready",
+                  "Built to scale with you",
+                ].map((p) => (
+                  <div
+                    key={p}
+                    className="flex items-center gap-3 rounded-2xl bg-white/[0.03] border border-white/5 px-5 py-3"
+                  >
+                    <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
+                    <span className="text-sm">{p}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="relative mt-10 flex flex-wrap gap-4">
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center gap-2 rounded-full bg-gradient-brand px-7 py-3.5 font-medium shadow-glow transition-transform hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
                 >
-                  <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
-                  <span className="text-sm">{p}</span>
-                </div>
-              ))}
-            </div>
-            <div className="relative mt-10 flex flex-wrap gap-4">
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 rounded-full bg-gradient-brand px-7 py-3.5 font-medium shadow-glow transition-transform hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
-              >
-                Request a consultation <ArrowUpRight className="h-4 w-4" />
-              </Link>
-              <Link
-                to="/our-work"
-                className="inline-flex items-center gap-2 rounded-full glass px-7 py-3.5 font-medium transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
-              >
-                See our work <ArrowUpRight className="h-4 w-4" />
-              </Link>
+                  Request a consultation <ArrowUpRight className="h-4 w-4" />
+                </Link>
+                <Link
+                  to="/our-work"
+                  className="inline-flex items-center gap-2 rounded-full glass px-7 py-3.5 font-medium transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+                >
+                  See our work <ArrowUpRight className="h-4 w-4" />
+                </Link>
+              </div>
             </div>
           </Reveal>
         </Container>

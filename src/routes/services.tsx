@@ -341,14 +341,14 @@ function Services() {
 
       {/* ── FAQs ─────────────────────────────────────────────────────────── */}
       <section className="py-20">
-        <Container size="medium">
+        <Container>
           <EditorialHeader
             className="mb-10"
             index="?"
             eyebrow="Before you ask"
             title="The questions every new client asks."
           />
-          <div className="space-y-3">
+          <div className="grid items-start gap-3 lg:grid-cols-2">
             {FAQS.map((faq) => (
               <ServiceFaq key={faq.q} q={faq.q} a={faq.a} />
             ))}

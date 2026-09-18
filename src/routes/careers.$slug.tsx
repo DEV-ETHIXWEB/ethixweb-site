@@ -118,7 +118,7 @@ function JobDetail() {
           blur={120}
           className="top-0 left-1/2 -translate-x-1/2"
         />
-        <Container size="medium" className="relative">
+        <Container className="relative">
           <Breadcrumbs items={[{ label: "Careers", to: "/careers" }, { label: job.title }]} />
           <Reveal>
             <div className="flex flex-wrap items-center gap-2">
@@ -171,7 +171,7 @@ function JobDetail() {
 
       {/* ── Body ─────────────────────────────────────────────────────────── */}
       <section className="px-4 py-16 xs:px-6 lg:px-8">
-        <div className="mx-auto max-w-6xl grid gap-12 lg:grid-cols-[1.6fr_1fr] lg:items-start">
+        <div className="mx-auto max-w-7xl grid gap-12 lg:grid-cols-[1.6fr_1fr] lg:items-start">
           {/* Main content */}
           <div className="space-y-14">
             <Reveal>

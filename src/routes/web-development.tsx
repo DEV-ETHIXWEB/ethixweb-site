@@ -142,13 +142,15 @@ function Page() {
 
       {/* What We Do */}
       <section className="py-24">
-        <Container size="medium" className="text-center">
+        <Container className="grid items-center gap-x-16 text-center lg:grid-cols-2 lg:text-left">
           <Reveal>
             <p className="text-sm uppercase tracking-widest text-primary-text mb-4">What We Do</p>
             <h2 className="font-display text-5xl font-bold text-gradient pb-1">
               Expert Website Design for Home Service Businesses
             </h2>
-            <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
+          </Reveal>
+          <Reveal delay={0.08}>
+            <p className="mt-6 text-lg text-muted-foreground leading-relaxed lg:mt-0">
               A well designed website is crucial for any home service business looking to stand out
               in today's competitive market. Our expert website design services focus on creating
               visually appealing, user friendly websites that not only represent your brand but also

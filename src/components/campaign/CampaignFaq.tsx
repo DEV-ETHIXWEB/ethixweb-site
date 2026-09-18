@@ -6,7 +6,7 @@ import type { CampaignConfig, CampaignFaq as CampaignFaqEntry } from "@/lib/camp
 
 export function CampaignFaqSection({ config }: { config: CampaignConfig }) {
   return (
-    <CampaignSection band narrow>
+    <CampaignSection band>
       <Reveal>
         <div className="text-center">
           <p className="text-sm uppercase tracking-widest text-primary-text">FAQ</p>
@@ -15,7 +15,7 @@ export function CampaignFaqSection({ config }: { config: CampaignConfig }) {
           </h2>
         </div>
       </Reveal>
-      <div className="mt-12 space-y-3">
+      <div className="mt-12 grid items-start gap-3 lg:grid-cols-2">
         {config.faqs.map((f, i) => (
           <Reveal key={f.q} delay={Math.min(i * 0.03, 0.3)}>
             <FaqItem faq={f} />

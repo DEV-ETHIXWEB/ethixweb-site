@@ -170,7 +170,7 @@ function Page() {
       </PageHero>
 
       <section className="py-16">
-        <Container size="medium" className="glass-strong rounded-[2rem] p-8 sm:p-10 lg:p-14">
+        <Container className="glass-strong rounded-[2rem] p-8 sm:p-10 lg:p-14">
           <Reveal>
             <p className="text-sm uppercase tracking-widest text-primary-text">Local web design</p>
             <h2 className="mt-3 font-display text-4xl font-bold text-gradient pb-1">

@@ -590,100 +590,106 @@ function Careers() {
         <div className="absolute inset-0 grid-bg opacity-15" />
 
         <Container className="relative">
-          <div className="mx-auto max-w-3xl">
-            <Reveal>
-              <div className="flex items-baseline gap-5">
-                <span
-                  aria-hidden="true"
-                  className="select-none font-display text-6xl font-extrabold leading-none text-transparent [-webkit-text-stroke:1.5px_rgba(242,84,91,0.4)] sm:text-7xl"
-                >
-                  04
-                </span>
-                <div className="h-px flex-1 bg-gradient-to-r from-[#f2545b]/40 to-transparent" />
-              </div>
-            </Reveal>
-            <Reveal delay={0.08}>
-              <p className="mt-6 text-sm uppercase tracking-widest text-[#f2545b]">
-                Who thrives at Ethixweb
-              </p>
-            </Reveal>
-            <Reveal delay={0.14}>
-              <h2 className="mt-4 font-display text-3xl font-bold leading-tight text-white sm:text-[2.75rem] sm:leading-[1.15]">
-                If you love solving{" "}
-                <span className="text-[#f2545b]">one more interesting problem</span> before logging
-                off, you&apos;ll feel right at home here.
-              </h2>
-            </Reveal>
+          {/* Heading left (sticky), manifesto right on desktop - fills the full grid
+              instead of a narrow centered column. */}
+          <div className="grid gap-x-16 lg:grid-cols-[1fr_1.15fr]">
+            <div className="lg:sticky lg:top-28 lg:self-start">
+              <Reveal>
+                <div className="flex items-baseline gap-5">
+                  <span
+                    aria-hidden="true"
+                    className="select-none font-display text-6xl font-extrabold leading-none text-transparent [-webkit-text-stroke:1.5px_rgba(242,84,91,0.4)] sm:text-7xl"
+                  >
+                    04
+                  </span>
+                  <div className="h-px flex-1 bg-gradient-to-r from-[#f2545b]/40 to-transparent" />
+                </div>
+              </Reveal>
+              <Reveal delay={0.08}>
+                <p className="mt-6 text-sm uppercase tracking-widest text-[#f2545b]">
+                  Who thrives at Ethixweb
+                </p>
+              </Reveal>
+              <Reveal delay={0.14}>
+                <h2 className="mt-4 font-display text-3xl font-bold leading-tight text-white sm:text-[2.75rem] sm:leading-[1.15]">
+                  If you love solving{" "}
+                  <span className="text-[#f2545b]">one more interesting problem</span> before
+                  logging off, you&apos;ll feel right at home here.
+                </h2>
+              </Reveal>
 
-            {/* Glowing accent line - a soft pulse of light travels it on loop */}
-            <Reveal delay={0.2}>
-              <div className="relative mt-9 h-px w-full max-w-md overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-r from-[#f2545b]/50 via-white/15 to-transparent" />
-                {!reduceMotion && (
-                  <motion.div
-                    className="absolute top-0 h-full w-1/3 bg-gradient-to-r from-transparent via-[#ff8a8f] to-transparent"
-                    animate={{ left: ["-33%", "100%"] }}
-                    transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
-                  />
-                )}
-              </div>
-            </Reveal>
-
-            <ManifestoLine className="mt-9">
-              <p className="text-xl font-semibold leading-relaxed text-white sm:text-2xl">
-                We built this team for people who show up curious, take ownership, and genuinely
-                enjoy the craft of building good things - keep reading.
-              </p>
-            </ManifestoLine>
-
-            <div className="mt-8 space-y-6 text-lg leading-8 text-white/70">
-              <ManifestoLine>
-                <p>
-                  We are building a team of <Hl>relentlessly curious</Hl> people. People who learn
-                  because they genuinely enjoy learning, not because someone asked them to.
-                </p>
-              </ManifestoLine>
-              <ManifestoLine>
-                <p>
-                  We value <Hl>ownership over titles</Hl>, <Hl>initiative over instructions</Hl>,
-                  and the confidence to speak up, share an idea, or respectfully push back -
-                  including on us.
-                </p>
-              </ManifestoLine>
-              <ManifestoLine>
-                <p>
-                  Technology moves fast, and we love that. We stay curious, keep experimenting, and
-                  aim to become <Hl>a little better than yesterday</Hl> on every project.
-                </p>
-              </ManifestoLine>
-              <ManifestoLine>
-                <p>
-                  We are looking for <Hl>builders</Hl> - people who enjoy solving meaningful
-                  problems, take on responsibility with enthusiasm, and treat every hard problem as
-                  a chance to grow.
-                </p>
-              </ManifestoLine>
-              <ManifestoLine>
-                <p>
-                  If you are looking for a place where you will be{" "}
-                  <Hl>challenged, trusted and supported</Hl>, surrounded by people who push each
-                  other to become better every day - you will feel at home here.
-                </p>
-              </ManifestoLine>
+              {/* Glowing accent line - a soft pulse of light travels it on loop */}
+              <Reveal delay={0.2}>
+                <div className="relative mt-9 h-px w-full max-w-md overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#f2545b]/50 via-white/15 to-transparent" />
+                  {!reduceMotion && (
+                    <motion.div
+                      className="absolute top-0 h-full w-1/3 bg-gradient-to-r from-transparent via-[#ff8a8f] to-transparent"
+                      animate={{ left: ["-33%", "100%"] }}
+                      transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                  )}
+                </div>
+              </Reveal>
             </div>
 
-            <Reveal delay={0.1}>
-              <div className="mt-10 flex items-center gap-4">
-                <div className="h-px w-10 bg-[#f2545b]/60" />
-                <p className="text-sm font-semibold uppercase tracking-widest text-white/60">
-                  The Ethixweb founders
+            <div>
+              <ManifestoLine className="mt-9 lg:mt-0">
+                <p className="text-xl font-semibold leading-relaxed text-white sm:text-2xl">
+                  We built this team for people who show up curious, take ownership, and genuinely
+                  enjoy the craft of building good things - keep reading.
                 </p>
+              </ManifestoLine>
+
+              <div className="mt-8 space-y-6 text-lg leading-8 text-white/70">
+                <ManifestoLine>
+                  <p>
+                    We are building a team of <Hl>relentlessly curious</Hl> people. People who learn
+                    because they genuinely enjoy learning, not because someone asked them to.
+                  </p>
+                </ManifestoLine>
+                <ManifestoLine>
+                  <p>
+                    We value <Hl>ownership over titles</Hl>, <Hl>initiative over instructions</Hl>,
+                    and the confidence to speak up, share an idea, or respectfully push back -
+                    including on us.
+                  </p>
+                </ManifestoLine>
+                <ManifestoLine>
+                  <p>
+                    Technology moves fast, and we love that. We stay curious, keep experimenting,
+                    and aim to become <Hl>a little better than yesterday</Hl> on every project.
+                  </p>
+                </ManifestoLine>
+                <ManifestoLine>
+                  <p>
+                    We are looking for <Hl>builders</Hl> - people who enjoy solving meaningful
+                    problems, take on responsibility with enthusiasm, and treat every hard problem
+                    as a chance to grow.
+                  </p>
+                </ManifestoLine>
+                <ManifestoLine>
+                  <p>
+                    If you are looking for a place where you will be{" "}
+                    <Hl>challenged, trusted and supported</Hl>, surrounded by people who push each
+                    other to become better every day - you will feel at home here.
+                  </p>
+                </ManifestoLine>
               </div>
-            </Reveal>
+
+              <Reveal delay={0.1}>
+                <div className="mt-10 flex items-center gap-4">
+                  <div className="h-px w-10 bg-[#f2545b]/60" />
+                  <p className="text-sm font-semibold uppercase tracking-widest text-white/60">
+                    The Ethixweb founders
+                  </p>
+                </div>
+              </Reveal>
+            </div>
           </div>
 
           {/* What we value */}
-          <div className="mx-auto mt-24 max-w-6xl">
+          <div className="mt-24">
             <Reveal>
               <p className="text-center text-sm uppercase tracking-widest text-[#f2545b]">
                 What we value

@@ -262,7 +262,7 @@ function ApplyPage() {
       />
 
       <section className="px-4 py-12 xs:px-6 lg:px-8">
-        <div className="mx-auto max-w-6xl">
+        <div className="mx-auto max-w-7xl">
           <Reveal>
             <div className="relative grid lg:grid-cols-[1fr_1.55fr] gap-0 overflow-hidden rounded-3xl shadow-elegant text-white">
               {/* Left panel */}

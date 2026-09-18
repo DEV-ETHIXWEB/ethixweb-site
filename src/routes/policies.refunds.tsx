@@ -68,9 +68,9 @@ function RefundsPolicy() {
         Last updated: January 2025
       </PageHero>
       <section className="py-20">
-        <Container size="narrow" className="space-y-5">
+        <Container className="grid gap-5 lg:grid-cols-2">
           <Reveal>
-            <Section title="Project Cancellations">
+            <Section className="h-full" title="Project Cancellations">
               <p>
                 Clients may cancel a project at any time by providing written notice to{" "}
                 <a href="mailto:info@ethixweb.com" className="text-primary hover:underline">
@@ -86,7 +86,7 @@ function RefundsPolicy() {
             </Section>
           </Reveal>
           <Reveal delay={0.06}>
-            <Section title="Refund Eligibility">
+            <Section className="h-full" title="Refund Eligibility">
               <p>Refunds are available under the following conditions:</p>
               <ul className="list-disc pl-5 space-y-1">
                 <li>
@@ -109,7 +109,7 @@ function RefundsPolicy() {
             </Section>
           </Reveal>
           <Reveal delay={0.12}>
-            <Section title="Monthly Retainers">
+            <Section className="h-full" title="Monthly Retainers">
               <p>
                 Monthly retainer agreements may be cancelled with 30 days' written notice. Fees for
                 the current billing cycle are non-refundable. The final month of service will be
@@ -118,14 +118,14 @@ function RefundsPolicy() {
             </Section>
           </Reveal>
           <Reveal delay={0.18}>
-            <Section title="Processing Time">
+            <Section className="h-full" title="Processing Time">
               <p>
                 Approved refunds are processed within 7-14 business days and returned to the
                 original payment method. Stripe or PayPal processing fees are non-recoverable.
               </p>
             </Section>
           </Reveal>
-          <Reveal delay={0.24}>
+          <Reveal delay={0.24} className="lg:col-span-2">
             <Section title="Contact">
               <p>
                 For refund requests or cancellation notices, please email{" "}
@@ -136,7 +136,7 @@ function RefundsPolicy() {
               </p>
             </Section>
           </Reveal>
-          <Reveal delay={0.3}>
+          <Reveal delay={0.3} className="lg:col-span-2">
             <div className="glass-strong rounded-3xl p-8 text-center">
               <h3 className="font-display text-lg font-semibold">Have a question?</h3>
               <p className="mt-2 text-sm text-muted-foreground">

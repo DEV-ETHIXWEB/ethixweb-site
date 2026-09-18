@@ -11,7 +11,7 @@ export function CampaignCaseStudy({ config }: { config: CampaignConfig }) {
 
   if (caseStudy.status === "coming-soon") {
     return (
-      <CampaignSection compact narrow>
+      <CampaignSection compact>
         <Reveal>
           <div className="glass relative overflow-hidden rounded-[2rem] border-dashed p-8 text-center sm:p-10">
             <TrendingUp className="mx-auto h-8 w-8 text-primary/60" strokeWidth={1.5} />

@@ -420,7 +420,7 @@ function AssessmentPage() {
       </PageHero>
 
       <section className="py-8 sm:py-16">
-        <Container size="medium">
+        <Container>
           <div ref={stageContentRef} tabIndex={-1} className="focus:outline-none">
             {stage === "details" && (
               <Reveal>

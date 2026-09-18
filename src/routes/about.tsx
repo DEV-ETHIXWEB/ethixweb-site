@@ -566,7 +566,7 @@ function About() {
 
       {/* ── The difference - this page's signature comparison block ──────── */}
       <section className="py-20">
-        <Container size="medium">
+        <Container>
           <EditorialHeader
             className="mb-12"
             index="06"
@@ -623,7 +623,7 @@ function About() {
       </section>
 
       <section className="py-16">
-        <Container size="narrow">
+        <Container>
           <Reveal>
             <div className="glass relative overflow-hidden rounded-3xl p-8 text-center shadow-glow ring-1 ring-primary/15 sm:p-10">
               <GlowBlob
