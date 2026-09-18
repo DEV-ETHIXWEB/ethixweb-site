@@ -98,7 +98,21 @@ function InfiniteCarousel({ brand }: { brand: string }) {
   const initialized = useRef(false);
   const dragging = useRef(false);
   const visible = useRef(false);
+  const trackWidth = useRef(0);
   const reduceMotion = useReducedMotion();
+
+  // Measure the track only when its size actually changes. Reading scrollWidth
+  // inside the frame loop forced a synchronous layout on every frame for the
+  // life of the page - even while the carousel was off-screen.
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => {
+      trackWidth.current = el.offsetWidth;
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   // Watch the static outer wrapper, not the track itself - the track is
   // constantly translated by the animation it's gating, so observing it
@@ -119,7 +133,7 @@ function InfiniteCarousel({ brand }: { brand: string }) {
   }, []);
 
   useAnimationFrame((_, delta) => {
-    const trackW = trackRef.current?.scrollWidth ?? 0;
+    const trackW = trackWidth.current;
     const half = trackW / 2;
     if (half <= 0) return;
     if (!initialized.current) {
@@ -144,7 +158,7 @@ function InfiniteCarousel({ brand }: { brand: string }) {
     <div ref={wrapRef} className="overflow-x-hidden overflow-y-visible py-4">
       <motion.div
         ref={trackRef}
-        className="flex cursor-grab gap-5 active:cursor-grabbing"
+        className="flex w-max cursor-grab gap-5 active:cursor-grabbing"
         style={{ x }}
         drag="x"
         dragElastic={0.05}

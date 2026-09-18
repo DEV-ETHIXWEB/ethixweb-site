@@ -8,6 +8,7 @@ import spiderwebLight from "@/assets/spiderweb-light.svg";
 // original, which PageSpeed Insights flagged as wasting ~35KiB per fetch
 // for a display size two orders of magnitude smaller than the source.
 import emblem from "@/assets/emblem-transparent-sm.webp";
+import { usePauseOffscreen } from "@/hooks/usePauseOffscreen";
 
 /** Bump this whenever public/emblem-3d.html's content changes - it has no
  * content hash (it's a static public file, not a bundled/imported asset), so
@@ -308,23 +309,39 @@ function GlassEmblem({ mx, reduceMotion }: { mx: MotionValue<number>; reduceMoti
   // arriving a moment after the page is usable, and the poster below covers
   // the gap. Only the *first* mount is delayed; the src is never unset
   // afterward (that's the thing the comment below warns about).
+  //
+  // But the interaction must not be a scroll: loading on the first `wheel`
+  // put that ~1s WebGL init right at the start of the visitor's first scroll,
+  // which froze it (measured: a 1,017ms frame on the homepage). So any
+  // interaction only *arms* the load, and it fires once scrolling has been
+  // quiet for SCROLL_QUIET_MS - and only while the emblem is on screen.
   const [emblemSrc, setEmblemSrc] = useState<string | undefined>(undefined);
   useEffect(() => {
-    if (!showLive3D) return;
-    const events = ["pointerdown", "pointermove", "wheel", "keydown", "touchstart"] as const;
-    let timer = 0;
-    const load = () => {
-      setEmblemSrc(`/emblem-3d.html?v=${EMBLEM_3D_VERSION}`);
-      cleanup();
+    if (!showLive3D || emblemSrc || !inView) return;
+    const SCROLL_QUIET_MS = 700;
+    const armEvents = ["pointerdown", "pointermove", "keydown"] as const;
+    const scrollEvents = ["scroll", "wheel", "touchstart", "touchmove"] as const;
+    let quietTimer = 0;
+    const load = () => setEmblemSrc(`/emblem-3d.html?v=${EMBLEM_3D_VERSION}`);
+    // First interaction arms the countdown; it doesn't restart on every mouse move.
+    const arm = () => {
+      if (!quietTimer) quietTimer = window.setTimeout(load, SCROLL_QUIET_MS);
     };
-    const cleanup = () => {
-      window.clearTimeout(timer);
-      for (const e of events) window.removeEventListener(e, load);
+    // Scrolling pushes the countdown back, so the init never lands mid-scroll.
+    const restart = () => {
+      window.clearTimeout(quietTimer);
+      quietTimer = window.setTimeout(load, SCROLL_QUIET_MS);
     };
-    for (const e of events) window.addEventListener(e, load, { once: true, passive: true });
-    timer = window.setTimeout(load, 8000);
-    return cleanup;
-  }, [showLive3D]);
+    for (const e of armEvents) window.addEventListener(e, arm, { passive: true });
+    for (const e of scrollEvents) window.addEventListener(e, restart, { passive: true });
+    const backstop = window.setTimeout(arm, 8000);
+    return () => {
+      window.clearTimeout(backstop);
+      window.clearTimeout(quietTimer);
+      for (const e of armEvents) window.removeEventListener(e, arm);
+      for (const e of scrollEvents) window.removeEventListener(e, restart);
+    };
+  }, [showLive3D, emblemSrc, inView]);
 
   // Pause the scene's render loop while it's off-screen. The loop used to run
   // for the lifetime of the page, which meant the main thread never went quiet
@@ -658,6 +675,7 @@ export function SpiderwebNetwork({
    * a quiet background texture instead of the homepage's full-strength hero. */
   webOpacity?: number;
 }) {
+  const overlayRef = usePauseOffscreen<SVGSVGElement>();
   const wrapRef = useRef<HTMLDivElement>(null);
   const spokeGroupRefs = useRef<(SVGGElement | null)[]>([]);
   const spokeAnimRefs = useRef<(SVGAnimationElement | null)[]>([]);
@@ -808,9 +826,13 @@ export function SpiderwebNetwork({
         )}
 
         {/* Interactive overlay network - same coordinate space as the artwork */}
+        {/* will-change gives the 48 pulsing nodes their own layer: without it every
+            pulse frame also repaints the drop-shadow-filtered artwork underneath.
+            usePauseOffscreen freezes the pulses once the hero is scrolled past. */}
         <svg
           viewBox={`0 0 ${VB_W} ${VB_H}`}
-          className={`absolute inset-0 h-full w-full ${reduceMotion ? "web-static" : ""}`}
+          className={`absolute inset-0 h-full w-full will-change-transform ${reduceMotion ? "web-static" : ""}`}
+          ref={overlayRef}
           aria-hidden="true"
         >
           {/* Density strands + rings, faint so the drawn web stays the star */}

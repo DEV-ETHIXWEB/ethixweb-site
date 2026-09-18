@@ -1,4 +1,5 @@
 import type { ComponentType } from "react";
+import { usePauseOffscreen } from "@/hooks/usePauseOffscreen";
 
 export type PipelineStage = {
   icon: ComponentType<{ className?: string; strokeWidth?: number }>;
@@ -9,8 +10,10 @@ export type PipelineStage = {
 /** A row of stage cards, all shown in their full/solid state by default - no
  * hover or tap required to read any of them. */
 export function PipelineDiagram({ stages }: { stages: PipelineStage[] }) {
+  // The connectors' flowing dashes animate background-position (a repaint per frame).
+  const ref = usePauseOffscreen<HTMLDivElement>();
   return (
-    <div className="flex flex-col lg:flex-row lg:items-stretch">
+    <div ref={ref} className="flex flex-col lg:flex-row lg:items-stretch">
       {stages.map((stage, i) => (
         <div key={stage.title} className="flex flex-1 flex-col lg:flex-row lg:items-stretch">
           <div className="premium-card web-card relative flex w-full flex-1 flex-col gap-4 rounded-2xl border p-6 text-left">

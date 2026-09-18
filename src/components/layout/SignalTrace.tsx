@@ -1,4 +1,5 @@
 import { useId } from "react";
+import { usePauseOffscreen } from "@/hooks/usePauseOffscreen";
 
 const NODES = [
   { x: 18, y: 132 },
@@ -16,9 +17,13 @@ function buildPath(nodes: { x: number; y: number }[]) {
 export function SignalTrace({ className = "" }: { className?: string }) {
   const gid = useId();
   const path = buildPath(NODES);
+  // Lives in the footer on every page, so it is off-screen almost always - and its
+  // blur-filtered SVG repaints every frame while animating.
+  const ref = usePauseOffscreen<SVGSVGElement>();
 
   return (
     <svg
+      ref={ref}
       viewBox="0 0 160 160"
       className={`signal-trace pointer-events-none ${className}`}
       aria-hidden="true"

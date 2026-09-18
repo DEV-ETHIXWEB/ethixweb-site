@@ -1939,6 +1939,16 @@ html {
   }
 }
 
+/* Set by usePauseOffscreen(): freeze decorative loops while out of view. */
+[data-offscreen],
+[data-offscreen]::before,
+[data-offscreen]::after,
+[data-offscreen] *,
+[data-offscreen] *::before,
+[data-offscreen] *::after {
+  animation-play-state: paused !important;
+}
+
 /* ── RotatingText component ─────────────────────────────────────────────── */
 .text-rotate {
   display: inline-flex;
