@@ -68,8 +68,8 @@ function PrivacyPolicy() {
         Last updated: September 2026
       </PageHero>
       <section className="py-20">
-        <Container size="narrow" className="space-y-5">
-          <Reveal>
+        <Container className="grid gap-5 lg:grid-cols-2">
+          <Reveal className="lg:col-span-2">
             <Section title="1. Who We Are">
               <p>
                 Ethixweb operates through two related companies: Ethixweb USA LLC, registered in
@@ -84,7 +84,7 @@ function PrivacyPolicy() {
             </Section>
           </Reveal>
           <Reveal delay={0.03}>
-            <Section title="2. Information We Collect">
+            <Section className="h-full" title="2. Information We Collect">
               <p>We collect information you provide directly, including:</p>
               <ul className="list-disc pl-5 space-y-1">
                 <li>Name, email address, phone number, and company name when you contact us</li>
@@ -98,7 +98,7 @@ function PrivacyPolicy() {
             </Section>
           </Reveal>
           <Reveal delay={0.06}>
-            <Section title="3. How We Use Your Information">
+            <Section className="h-full" title="3. How We Use Your Information">
               <p>Your information is used to:</p>
               <ul className="list-disc pl-5 space-y-1">
                 <li>Respond to your enquiries and deliver project services</li>
@@ -110,7 +110,7 @@ function PrivacyPolicy() {
             </Section>
           </Reveal>
           <Reveal delay={0.08}>
-            <Section title="4. Sharing Your Information">
+            <Section className="h-full" title="4. Sharing Your Information">
               <p>
                 We do not sell your personal data. Your information may be shared between Ethixweb
                 USA LLC and Ethixweb India Private Limited so our team can work on your project, and
@@ -121,7 +121,7 @@ function PrivacyPolicy() {
             </Section>
           </Reveal>
           <Reveal delay={0.1}>
-            <Section title="5. Data Storage & Security">
+            <Section className="h-full" title="5. Data Storage & Security">
               <p>
                 Your data is stored on secure servers. We use industry standard encryption (TLS/SSL)
                 for data in transit and access controls for data at rest. No method of transmission
@@ -131,7 +131,7 @@ function PrivacyPolicy() {
             </Section>
           </Reveal>
           <Reveal delay={0.12}>
-            <Section title="6. Cookies">
+            <Section className="h-full" title="6. Cookies">
               <p>
                 This website uses cookies to remember your preferences (such as light or dark mode)
                 and, through Google Ads, to measure how our advertising performs. You may disable
@@ -140,7 +140,7 @@ function PrivacyPolicy() {
             </Section>
           </Reveal>
           <Reveal delay={0.14}>
-            <Section title="7. Your Rights">
+            <Section className="h-full" title="7. Your Rights">
               <p>You have the right to:</p>
               <ul className="list-disc pl-5 space-y-1">
                 <li>Access the personal data we hold about you</li>
@@ -158,7 +158,7 @@ function PrivacyPolicy() {
             </Section>
           </Reveal>
           <Reveal delay={0.16}>
-            <Section title="8. Third Party Services">
+            <Section className="h-full" title="8. Third Party Services">
               <p>
                 Our site may link to third party websites. We are not responsible for their privacy
                 practices. We recommend reviewing their policies before submitting personal
@@ -167,7 +167,7 @@ function PrivacyPolicy() {
             </Section>
           </Reveal>
           <Reveal delay={0.18}>
-            <Section title="9. Children's Privacy">
+            <Section className="h-full" title="9. Children's Privacy">
               <p>
                 Our services are not directed at individuals under 13. We do not knowingly collect
                 data from children. If you believe a child has provided us data, please contact us
@@ -175,7 +175,7 @@ function PrivacyPolicy() {
               </p>
             </Section>
           </Reveal>
-          <Reveal delay={0.2}>
+          <Reveal delay={0.2} className="lg:col-span-2">
             <Section title="10. Changes to This Policy">
               <p>
                 We may update this policy periodically. The "Last updated" date at the top reflects
@@ -184,7 +184,7 @@ function PrivacyPolicy() {
               </p>
             </Section>
           </Reveal>
-          <Reveal delay={0.26}>
+          <Reveal delay={0.26} className="lg:col-span-2">
             <div className="glass-strong rounded-3xl p-8 text-center">
               <h3 className="font-display text-lg font-semibold">Privacy questions?</h3>
               <p className="mt-2 text-sm text-muted-foreground">

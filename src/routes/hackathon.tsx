@@ -509,8 +509,8 @@ function HackathonPage() {
             </h2>
             <p className="mt-4 max-w-md text-sm text-muted-foreground sm:text-base">
               Scan this page to begin your Ethixweb Hackathon journey, or share the link directly.
-              Everything you need &mdash; the channels to explore, the code to find, and
-              registration itself &mdash; lives on this one page.
+              Everything you need lives on this one page: the channels to explore, the code to find,
+              and registration itself.
             </p>
             <div className="mt-7 flex flex-wrap items-center gap-3">
               <div className="flex items-center gap-2 rounded-full border border-border bg-input/40 px-4 py-2 font-mono text-xs text-muted-foreground sm:text-sm">
