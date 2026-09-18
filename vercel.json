@@ -1,7 +1,57 @@
 {
+  "trailingSlash": false,
   "redirects": [
     { "source": "/portfolio", "destination": "/our-work", "permanent": true },
-    { "source": "/portfolio/:slug", "destination": "/our-work/:slug", "permanent": true }
+    { "source": "/portfolio/:slug", "destination": "/our-work/:slug", "permanent": true },
+    { "source": "/home{/}?", "destination": "/", "permanent": true },
+    { "source": "/about-us{/}?", "destination": "/about", "permanent": true },
+    { "source": "/contact-us{/}?", "destination": "/contact", "permanent": true },
+    { "source": "/seo{/}?", "destination": "/services", "permanent": true },
+    { "source": "/website-design{/}?", "destination": "/web-development", "permanent": true },
+    { "source": "/social-media-marketing{/}?", "destination": "/marketing", "permanent": true },
+    {
+      "source": "/graphic-design-branding{/}?",
+      "destination": "/graphic-design",
+      "permanent": true
+    },
+    { "source": "/pay-per-click{/}?", "destination": "/google-ads-management", "permanent": true },
+    {
+      "source": "/local-services-ads{/}?",
+      "destination": "/google-ads-management",
+      "permanent": true
+    },
+    {
+      "source": "/hvac-plumbing{/}?",
+      "destination": "/hvac-plumbing-marketing",
+      "permanent": true
+    },
+    { "source": "/hvac{/}?", "destination": "/hvac-plumbing-marketing", "permanent": true },
+    { "source": "/plumbing{/}?", "destination": "/hvac-plumbing-marketing", "permanent": true },
+    { "source": "/electric{/}?", "destination": "/industries", "permanent": true },
+    { "source": "/retail{/}?", "destination": "/industries", "permanent": true },
+    { "source": "/kent-wa{/}?", "destination": "/locations/kent-wa", "permanent": true },
+    {
+      "source": "/how-kent-wa-contractors-can-use-local-seo-to-book-more-jobs{/}?",
+      "destination": "/locations/kent-wa",
+      "permanent": true
+    },
+    {
+      "source": "/why-home-service-businesses-in-kent-wa-seriously-need-a-real-website-design-in-2025{/}?",
+      "destination": "/locations/kent-wa",
+      "permanent": true
+    },
+    {
+      "source": "/top-seo-mistakes-kent-wa-home-service-companies-make-and-how-to-fix-them{/}?",
+      "destination": "/locations/kent-wa",
+      "permanent": true
+    },
+    { "source": "/privacy-policy{/}?", "destination": "/policies/privacy", "permanent": true },
+    { "source": "/terms-and-conditions{/}?", "destination": "/policies/terms", "permanent": true },
+    {
+      "source": "/cancellation-and-refunds{/}?",
+      "destination": "/policies/refunds",
+      "permanent": true
+    }
   ],
   "headers": [
     {
