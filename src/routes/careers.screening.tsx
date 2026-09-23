@@ -8,6 +8,7 @@ import { PageHero } from "@/components/shared/PageHero";
 import { Container } from "@/components/shared/Container";
 import { Reveal } from "@/components/shared/Reveal";
 import { getJob } from "@/lib/careers-data";
+import { isValidPhone } from "@/lib/utils";
 import { useProctoringSignals } from "@/hooks/useProctoringSignals";
 import { useQuestionTimer } from "@/hooks/useQuestionTimer";
 
@@ -54,7 +55,8 @@ function ScreeningPage() {
   const proctoring = useProctoringSignals();
 
   const current = questions[step];
-  const canStart = name.trim().length > 1 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const canStart =
+    name.trim().length > 1 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && isValidPhone(phone);
 
   async function startTest() {
     setStage("loading");
@@ -175,10 +177,11 @@ function ScreeningPage() {
                   </div>
                   <label className="mt-4 block">
                     <span className="text-xs uppercase tracking-widest text-muted-foreground">
-                      Phone (optional)
+                      Phone
                     </span>
                     <input
                       type="tel"
+                      required
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       className="mt-2 w-full rounded-xl border border-white/10 bg-black/85 px-4 py-3 text-base text-white transition focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 sm:text-sm"

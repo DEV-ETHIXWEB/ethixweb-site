@@ -16,7 +16,7 @@ import { recordContactSubmission, markNotificationSent, markClickUpTaskLinked } 
 import { createClickUpLeadTask } from "@/lib/clickup";
 import { guardRequest } from "@/lib/api-guard";
 import { verifyTurnstile } from "@/lib/turnstile";
-import { isValidEmail } from "@/lib/utils";
+import { isValidEmail, isValidPhone } from "@/lib/utils";
 
 const TO_EMAIL = "info@ethixweb.com";
 
@@ -65,9 +65,9 @@ export const Route = createFileRoute("/api/contact")({
         const cleanCompany = typeof company === "string" ? company.trim() : "";
         const cleanHearAbout = typeof hearAbout === "string" ? hearAbout.trim() : "";
 
-        if (!cleanName || !cleanEmail) {
+        if (!cleanName || !cleanEmail || !cleanPhone) {
           return Response.json(
-            { ok: false, error: "Name and email are required" },
+            { ok: false, error: "Name, email and phone are required" },
             { status: 400 },
           );
         }
@@ -75,6 +75,13 @@ export const Route = createFileRoute("/api/contact")({
         if (!isValidEmail(cleanEmail)) {
           return Response.json(
             { ok: false, error: "Please enter a valid email address" },
+            { status: 400 },
+          );
+        }
+
+        if (!isValidPhone(cleanPhone)) {
+          return Response.json(
+            { ok: false, error: "Please enter a valid phone number" },
             { status: 400 },
           );
         }

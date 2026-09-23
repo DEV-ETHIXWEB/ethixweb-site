@@ -26,7 +26,7 @@ import { ExamRoom } from "@/components/assessment/ExamRoom";
 import { useMediaRecording } from "@/hooks/useMediaRecording";
 import { JOBS, getJob } from "@/lib/careers-data";
 import { formInputClass, formLabelClass } from "@/lib/form-styles";
-import { isValidEmail } from "@/lib/utils";
+import { isValidEmail, isValidPhone } from "@/lib/utils";
 import {
   EXAM_DURATION_MINUTES,
   TOTAL_QUESTIONS,
@@ -231,6 +231,7 @@ function AssessmentPage() {
   const detailsComplete =
     name.trim().length > 1 &&
     isValidEmail(email) &&
+    isValidPhone(phone) &&
     !!getJob(roleId) &&
     experience.length > 0 &&
     resumeStatus === "done" &&
@@ -453,9 +454,10 @@ function AssessmentPage() {
                       />
                     </label>
                     <label className="block">
-                      <span className={formLabelClass}>Phone</span>
+                      <span className={formLabelClass}>Phone *</span>
                       <input
                         type="tel"
+                        required
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         className={formInputClass}

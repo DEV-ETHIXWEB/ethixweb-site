@@ -13,6 +13,7 @@ import { Turnstile } from "@/components/shared/Turnstile";
 import { trackWebSpotlight } from "@/lib/web-spotlight";
 import { formLabelClass, formInputClass } from "@/lib/form-styles";
 import { trackLeadFormConversion } from "@/lib/gtag";
+import { isValidPhone } from "@/lib/utils";
 import {
   Mail,
   MapPin,
@@ -221,7 +222,8 @@ function ContactBody() {
 
   const isOther = sel.service === "other";
   // Direct-contact path: bottom fields filled, no card selected
-  const isDirect = !sel.service && !!(sel.dcName.trim() && sel.dcEmail.trim());
+  const isDirect =
+    !sel.service && !!(sel.dcName.trim() && sel.dcEmail.trim() && sel.dcPhone.trim());
 
   const stepLabels = isOther
     ? ["What do you need", "Tell us more", "Your details"]
@@ -251,6 +253,16 @@ function ContactBody() {
   }) => {
     if (turnstileRequired && !turnstileToken) {
       setSubmitError("Please complete the verification check.");
+      return;
+    }
+    // Phone is required on every lead form - it's how we follow up.
+    const phone = payload.phone?.trim() ?? "";
+    if (!phone) {
+      setSubmitError("Please enter your phone number.");
+      return;
+    }
+    if (!isValidPhone(phone)) {
+      setSubmitError("Please enter a valid phone number.");
       return;
     }
     setSubmitting(true);
@@ -585,19 +597,19 @@ function ContactBody() {
                                 {[
                                   {
                                     key: "dcName",
-                                    placeholder: "Your name",
+                                    placeholder: "Your name*",
                                     type: "text",
                                     label: "Name",
                                   },
                                   {
                                     key: "dcPhone",
-                                    placeholder: "Phone number",
+                                    placeholder: "Phone number*",
                                     type: "tel",
                                     label: "Phone",
                                   },
                                   {
                                     key: "dcEmail",
-                                    placeholder: "Email address",
+                                    placeholder: "Email address*",
                                     type: "email",
                                     label: "Email",
                                   },
@@ -761,12 +773,7 @@ function ContactBody() {
                                 <Field label="Email" name="email" type="email" />
                               </div>
                               <div className="grid sm:grid-cols-2 gap-4">
-                                <Field
-                                  label="Phone (optional)"
-                                  name="phone"
-                                  type="tel"
-                                  required={false}
-                                />
+                                <Field label="Phone" name="phone" type="tel" />
                                 <Field label="Company (optional)" name="company" required={false} />
                               </div>
                               {!isOther && (
@@ -855,6 +862,10 @@ function ContactBody() {
                           whileHover={canContinue && !submitting ? { scale: 1.02 } : {}}
                           whileTap={canContinue && !submitting ? { scale: 0.97 } : {}}
                           onClick={canContinue && !submitting ? advance : undefined}
+                          // Inert rather than [disabled] so it stays focusable and
+                          // explains itself; now that phone is required too, it is
+                          // worth telling assistive tech the step isn't complete.
+                          aria-disabled={!canContinue || submitting}
                           aria-busy={isDirect ? submitting : undefined}
                           aria-describedby={
                             isDirect && submitError ? "direct-submit-error" : undefined

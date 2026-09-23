@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { ArrowUpRight, CheckCircle2, Loader2 } from "lucide-react";
 import { Turnstile } from "@/components/shared/Turnstile";
-import { isValidEmail } from "@/lib/utils";
+import { isValidEmail, isValidPhone } from "@/lib/utils";
 import type { CampaignConfig } from "@/lib/campaigns/types";
 import type { CampaignMeta } from "@/lib/campaigns/tracking";
 import { trackCampaignEvent, captureAttribution } from "@/lib/campaigns/tracking";
@@ -59,13 +59,23 @@ export function CampaignHeroForm({ config, meta }: { config: CampaignConfig; met
     e.preventDefault();
     if (isSubmitting.current) return;
 
-    if (!data.firstName.trim() || !data.lastName.trim() || !data.email.trim()) {
-      setErrorMsg("First name, last name and email are required.");
+    if (
+      !data.firstName.trim() ||
+      !data.lastName.trim() ||
+      !data.email.trim() ||
+      !data.phone.trim()
+    ) {
+      setErrorMsg("First name, last name, email and phone are required.");
       setState("error");
       return;
     }
     if (!isValidEmail(data.email.trim())) {
       setErrorMsg("Enter a valid email address.");
+      setState("error");
+      return;
+    }
+    if (!isValidPhone(data.phone.trim())) {
+      setErrorMsg("Enter a valid phone number.");
       setState("error");
       return;
     }
@@ -187,9 +197,10 @@ export function CampaignHeroForm({ config, meta }: { config: CampaignConfig; met
 
           <input
             type="tel"
+            required
             autoComplete="tel"
             maxLength={30}
-            placeholder="Phone"
+            placeholder="Phone*"
             value={data.phone}
             onChange={(e) => setData((d) => ({ ...d, phone: e.target.value }))}
             className={fieldClass}
