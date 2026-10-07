@@ -550,8 +550,8 @@ function About() {
                       Avg. client rating
                     </p>
                     <p className="relative mt-6 border-t border-white/10 pt-6 text-base leading-relaxed text-white/85">
-                      &ldquo;The team communicated clearly, worked efficiently, and delivered beyond
-                      expectations.&rdquo;
+                      &ldquo;The team was easy to work with, great communication and done in
+                      efficient time.&rdquo;
                     </p>
                     <p className="relative mt-4 text-xs font-semibold uppercase tracking-widest text-[#f2545b]">
                       Kayla Kjl - verified client

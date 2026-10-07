@@ -11,24 +11,33 @@ import { trackWebSpotlight } from "@/lib/web-spotlight";
 const BRAND_DARK = "#ffffff";
 const BRAND_LIGHT = "#c0272d";
 
+// Pulled from https://www.trustpilot.com/review/ethixweb.com - every entry is
+// the reviewer's own wording, newest first. Keep this list in sync with the
+// public profile; do not paraphrase or invent entries.
 const REVIEWS = [
   {
     stars: 5,
-    text: "Ethixweb created an incredible business website with a modern design and all the features we needed. The team communicated clearly, worked efficiently, and delivered beyond expectations.",
-    author: "Kayla Kjl",
-    date: "March 2025",
+    text: "I have been contacted by many people/companies that want to build a website for my business, but I'm always skeptical about it. I decided to give Ethixweb that chance and they have proven themselves! I have been with them 2 years and within that first year my business had doubled. The second year my business had doubled again. My website is easy to follow, has everything on it I asked for, it loads fast and it's easy to maintain. The folks at Ethixweb are very professional, schedule meetings via video when I need something fixed and are on top of it. My computer skills are absolute garbage, so I am very lucky to have Ethixweb a part of my business!",
+    author: "Ryan Taylor",
+    date: "October 2026",
   },
   {
     stars: 5,
-    text: "Quick and thorough service. Changes were handled fast, communication was excellent, and the entire process felt effortless. A great experience from start to finish.",
+    text: "I had Ethixweb.com create me a website not only did they do it extremely professional, but they did it extremely fast and it came out fabulous they are very professional and they communicate great. I would highly recommend this company to create your next website. They are exceptional.",
+    author: "Clinton Mcculloch",
+    date: "October 2026",
+  },
+  {
+    stars: 5,
+    text: "Amar is very thorough and quick to make changes on our website. Over the years that has been my biggest issue with web designers. Small changes can take way too long. Thankfully that is not the case here. Good service! Very happy customer!!",
     author: "Leslie Whitehurst-Manners",
     date: "April 2026",
   },
   {
     stars: 5,
-    text: "Professional, affordable, and highly reliable. The team delivered exactly what I needed and made the entire process smooth and stress free.",
-    author: "Ryan Taylor",
-    date: "April 2025",
+    text: "Ethixweb did an incredible job on our business website. It is very sharp, modern looking and has all the extra bells and whistles we need. The team was easy to work with, great communication and done in efficient time. They provided all details from start to finish and gave details to us moving forward with our website. I'd highly recommend them!!",
+    author: "Kayla Kjl",
+    date: "March 2025",
   },
 ];
 
@@ -158,7 +167,7 @@ function InfiniteCarousel({ brand }: { brand: string }) {
     <div ref={wrapRef} className="overflow-x-hidden overflow-y-visible py-4">
       <motion.div
         ref={trackRef}
-        className="flex w-max cursor-grab gap-5 active:cursor-grabbing"
+        className="flex w-max cursor-grab items-start gap-5 active:cursor-grabbing"
         style={{ x }}
         drag="x"
         dragElastic={0.05}
