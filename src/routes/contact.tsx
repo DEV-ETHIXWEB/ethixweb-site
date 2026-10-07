@@ -1,60 +1,36 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { jsonLdStringify } from "@/lib/json-ld";
-import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { useState, useEffect, useRef, type FormEvent } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { PageHero } from "@/components/shared/PageHero";
 import { Reveal } from "@/components/shared/Reveal";
 import { Container } from "@/components/shared/Container";
 import { GlowBlob } from "@/components/shared/GlowBlob";
 import { useTheme } from "@/components/layout/ThemeProvider";
-import { WebSpotlight } from "@/components/shared/WebSpotlight";
 import { Turnstile } from "@/components/shared/Turnstile";
-import { trackWebSpotlight } from "@/lib/web-spotlight";
 import { formLabelClass, formInputClass } from "@/lib/form-styles";
 import { trackLeadFormConversion } from "@/lib/gtag";
-import { isValidPhone } from "@/lib/utils";
-import {
-  Mail,
-  MapPin,
-  ArrowUpRight,
-  Bot,
-  Globe2,
-  Cable,
-  Search,
-  Code2,
-  MessageSquare,
-  Check,
-  Building2,
-} from "lucide-react";
+import { isValidPhone, normalizeWebsiteUrl } from "@/lib/utils";
+import { Mail, MapPin, ArrowUpRight, Check, Building2 } from "lucide-react";
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 
-const SERVICES = [
-  { id: "website", label: "Website", icon: Globe2, desc: "Landing pages & business sites" },
-  { id: "ai", label: "AI Automation", icon: Bot, desc: "Chatbots, agents & workflows" },
-  { id: "crm", label: "CRM & Integrations", icon: Cable, desc: "HubSpot, GoHighLevel, Zapier" },
-  { id: "seo", label: "SEO & Ads", icon: Search, desc: "Organic growth & paid campaigns" },
-  { id: "webapp", label: "Web Application", icon: Code2, desc: "Portals, dashboards & tools" },
-  { id: "other", label: "Something else", icon: MessageSquare, desc: "Tell us in your own words" },
-] as const;
-
-const TIMELINES = [
-  { id: "asap", label: "ASAP", sub: "Under 2 weeks" },
-  { id: "month", label: "This month", sub: "2-4 weeks" },
-  { id: "quarter", label: "This quarter", sub: "1-3 months" },
-  { id: "planning", label: "Just planning", sub: "3+ months out" },
-] as const;
-
-// Keep ids in sync with HEAR_ABOUT_LABELS in src/lib/email.ts - the id is
-// what gets submitted; the server maps it back to a display label.
-const HEAR_ABOUT_OPTIONS = [
-  { id: "google", label: "Google search" },
-  { id: "referral", label: "Referral / word of mouth" },
-  { id: "social", label: "Social media" },
-  { id: "linkedin", label: "LinkedIn" },
-  { id: "repeat", label: "Worked with us before" },
-  { id: "other", label: "Other" },
+// Amar's three qualifying details are all this form asks for, so the left
+// panel explains the process instead of tracking wizard steps.
+const NEXT_STEPS = [
+  {
+    title: "You share three details",
+    body: "Your name, your phone number and your website. Nothing else.",
+  },
+  {
+    title: "We study your site",
+    body: "How it ranks, how it loads and where it loses people, before we speak.",
+  },
+  {
+    title: "We call you",
+    body: "A short call to work out whether we are the right fit for each other.",
+  },
 ] as const;
 
 // Faint floating accent dots echoing the Hero's starfield - cheap (no canvas/JS),
@@ -66,17 +42,6 @@ const FLOAT_DOTS = [
   { top: "26%", left: "10%", size: 3, blur: 4 },
 ] as const;
 
-type ServiceId = (typeof SERVICES)[number]["id"];
-type TimelineId = (typeof TIMELINES)[number]["id"];
-
-// ── Variants ─────────────────────────────────────────────────────────────────
-
-const slide = {
-  enter: (d: number) => ({ x: d > 0 ? 40 : -40, opacity: 0 }),
-  center: { x: 0, opacity: 1 },
-  exit: (d: number) => ({ x: d > 0 ? -40 : 40, opacity: 0 }),
-};
-
 // ── Route ────────────────────────────────────────────────────────────────────
 
 export const Route = createFileRoute("/contact")({
@@ -86,7 +51,7 @@ export const Route = createFileRoute("/contact")({
       {
         name: "description",
         content:
-          "Tell us about your project and get a personalised roadmap within one business day.",
+          "Share your name, phone number and website, and we'll call you within one business day.",
       },
       { property: "og:title", content: "Contact Ethixweb" },
       { property: "og:description", content: "Start a project with our team." },
@@ -98,7 +63,7 @@ export const Route = createFileRoute("/contact")({
       {
         name: "twitter:description",
         content:
-          "Tell us about your project and get a personalised roadmap within one business day.",
+          "Share your name, phone number and website, and we'll call you within one business day.",
       },
       { name: "twitter:image", content: "https://www.ethixweb.com/ethixweb.png" },
       { name: "robots", content: "index, follow" },
@@ -113,7 +78,7 @@ export const Route = createFileRoute("/contact")({
           name: "Contact Ethixweb",
           url: "https://www.ethixweb.com/contact",
           description:
-            "Tell us about your project and get a personalised roadmap within one business day.",
+            "Share your name, phone number and website, and we'll call you within one business day.",
           mainEntity: {
             "@type": "Organization",
             name: "Ethixweb",
@@ -150,8 +115,6 @@ function ContactBody() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
   const reduceMotion = useReducedMotion();
-  const stepDotBorder = isDark ? "rgba(255,255,255,0.15)" : "rgba(16,15,20,0.18)";
-  const stepLineBg = isDark ? "rgba(255,255,255,0.08)" : "rgba(16,15,20,0.1)";
 
   // Spotlight tracking for the left panel's web: the CSS vars are written
   // directly to the DOM (not React state) so the reveal follows the cursor
@@ -183,8 +146,6 @@ function ContactBody() {
     };
   }, [reduceMotion]);
 
-  const [step, setStep] = useState(1);
-  const [dir, setDir] = useState(1);
   const [sent, setSent] = useState(false);
 
   useEffect(() => {
@@ -193,85 +154,53 @@ function ContactBody() {
     }
   }, []);
 
-  // Move focus to the new step's heading so keyboard/screen-reader users get
-  // a signal the "page" changed - AnimatePresence swaps content in place with
-  // no navigation event to announce it otherwise. Skip on first mount so we
-  // don't steal focus from wherever the user landed.
-  const stepHeadingRef = useRef<HTMLHeadingElement>(null);
-  const isFirstStepRender = useRef(true);
-  useEffect(() => {
-    if (isFirstStepRender.current) {
-      isFirstStepRender.current = false;
-      return;
-    }
-    stepHeadingRef.current?.focus();
-  }, [step]);
-
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const turnstileRequired = Boolean(import.meta.env.VITE_TURNSTILE_SITE_KEY);
-  const [sel, setSel] = useState<{
-    service: ServiceId | null;
-    timeline: TimelineId | null;
-    other: string;
-    dcName: string;
-    dcPhone: string;
-    dcEmail: string;
-  }>({ service: null, timeline: null, other: "", dcName: "", dcPhone: "", dcEmail: "" });
 
-  const isOther = sel.service === "other";
-  // Direct-contact path: bottom fields filled, no card selected
-  const isDirect =
-    !sel.service && !!(sel.dcName.trim() && sel.dcEmail.trim() && sel.dcPhone.trim());
+  // The three details that qualify a lead. Everything else about the project
+  // is worked out on the call, so nothing else belongs in this form.
+  const [form, setForm] = useState({ name: "", phone: "", website: "" });
+  const setField = (key: keyof typeof form, value: string) =>
+    setForm((f) => ({ ...f, [key]: value }));
+  const ready = Boolean(form.name.trim() && form.phone.trim() && form.website.trim());
 
-  const stepLabels = isOther
-    ? ["What do you need", "Tell us more", "Your details"]
-    : ["What do you need", "Your timeline", "Your details"];
-  const totalSteps = stepLabels.length;
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (submitting) return;
 
-  const canContinue =
-    (step === 1 && (!!sel.service || (isDirect && (!turnstileRequired || !!turnstileToken)))) ||
-    (step === 2 && !isOther && !!sel.timeline) ||
-    (step === 2 && isOther && !!sel.other.trim()) ||
-    step === 3;
-
-  const go = (next: number) => {
-    setDir(next > step ? 1 : -1);
-    setStep(next);
-  };
-
-  const submitLead = async (payload: {
-    service?: string | null;
-    timeline?: string | null;
-    other?: string;
-    name: string;
-    phone?: string;
-    email: string;
-    company?: string;
-    hearAbout?: string;
-  }) => {
     if (turnstileRequired && !turnstileToken) {
       setSubmitError("Please complete the verification check.");
       return;
     }
-    // Phone is required on every lead form - it's how we follow up.
-    const phone = payload.phone?.trim() ?? "";
-    if (!phone) {
-      setSubmitError("Please enter your phone number.");
+
+    const name = form.name.trim();
+    if (!name) {
+      setSubmitError("Please enter your name.");
       return;
     }
+    // Phone is required on every lead form - it's how we follow up.
+    const phone = form.phone.trim();
     if (!isValidPhone(phone)) {
       setSubmitError("Please enter a valid phone number.");
       return;
     }
+    // Normalise here as well as on the server so "acme.com" and
+    // "https://acme.com" are accepted without the round trip to find out.
+    const website = normalizeWebsiteUrl(form.website);
+    if (!website) {
+      setSubmitError("Please enter a valid website address, like yourbusiness.com.");
+      return;
+    }
+
     setSubmitting(true);
     setSubmitError(null);
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...payload, turnstileToken }),
+        body: JSON.stringify({ name, phone, website, turnstileToken }),
       });
       if (!res.ok) {
         const data = await res.json().catch(() => null);
@@ -293,23 +222,14 @@ function ContactBody() {
     }
   };
 
-  const advance = () => {
-    if (step === 1 && isDirect) {
-      go(totalSteps);
-      submitLead({ name: sel.dcName, phone: sel.dcPhone, email: sel.dcEmail });
-      return;
-    }
-    go(step + 1);
-  };
-
   // Status label shown at bottom-left
-  const status = sent ? "SENT ✓" : canContinue ? "READY TO CONTINUE" : "WAITING FOR YOU";
+  const status = sent ? "SENT ✓" : ready ? "READY TO SEND" : "WAITING FOR YOU";
 
   return (
     <>
       <PageHero eyebrow="Contact" title="Let's get you more booked jobs.">
-        Tell us about your business. We'll reply within one business day with a clear, no jargon
-        plan.
+        Three details is all we need to get started. We'll look at your website and call you within
+        one business day.
       </PageHero>
 
       <section className="relative overflow-hidden py-16 sm:py-20">
@@ -377,71 +297,37 @@ function ContactBody() {
                     <span className="text-primary">worth building.</span>
                   </h2>
                   <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-                    Tell us what you need. We'll shape it with you.
+                    Three details now. The real conversation happens on the call.
                   </p>
 
-                  {/* Vertical step tracker */}
+                  {/* What happens next */}
                   <div className="mt-10">
-                    {stepLabels.map((label, i) => {
-                      const done = i + 1 < step;
-                      const active = i + 1 === step;
-                      const pending = i + 1 > step;
-                      return (
-                        <div key={label} className="flex gap-3">
-                          <div className="flex flex-col items-center">
-                            <motion.div
-                              animate={{
-                                backgroundColor:
-                                  done || active ? "var(--color-primary)" : "transparent",
-                                borderColor:
-                                  done || active ? "var(--color-primary)" : stepDotBorder,
-                                boxShadow:
-                                  done || active
-                                    ? "0 0 14px rgba(192,39,45,0.55)"
-                                    : "0 0 0 rgba(0,0,0,0)",
-                              }}
-                              transition={{ duration: 0.3 }}
-                              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 text-xs font-bold"
-                            >
-                              {done ? (
-                                <Check className="h-3.5 w-3.5 text-primary-foreground" />
-                              ) : (
-                                <span
-                                  className={
-                                    active ? "text-primary-foreground" : "text-muted-foreground"
-                                  }
-                                >
-                                  {i + 1}
-                                </span>
-                              )}
-                            </motion.div>
-                            {i < stepLabels.length - 1 && (
-                              <motion.div
-                                animate={{
-                                  backgroundColor: done ? "rgba(192,39,45,0.45)" : stepLineBg,
-                                }}
-                                transition={{ duration: 0.4 }}
-                                className="my-1 w-px"
-                                style={{ height: 28 }}
-                              />
-                            )}
-                          </div>
-                          <p
-                            className={`mb-0 pb-6 pt-0.5 text-sm font-medium transition-all duration-300 leading-none ${
-                              active
-                                ? "text-foreground"
-                                : done
-                                  ? "text-muted-foreground"
-                                  : pending
-                                    ? "text-muted-foreground"
-                                    : ""
-                            }`}
+                    {NEXT_STEPS.map((item, i) => (
+                      <div key={item.title} className="flex gap-3">
+                        <div className="flex flex-col items-center">
+                          <div
+                            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 border-primary bg-primary text-xs font-bold text-primary-foreground"
+                            style={{ boxShadow: "0 0 14px rgba(192,39,45,0.55)" }}
                           >
-                            {label}
+                            {i + 1}
+                          </div>
+                          {i < NEXT_STEPS.length - 1 && (
+                            <div
+                              className="my-1 w-px"
+                              style={{ height: 40, background: "rgba(192,39,45,0.45)" }}
+                            />
+                          )}
+                        </div>
+                        <div className="mb-0 pb-6 pt-0.5">
+                          <p className="text-sm font-medium leading-none text-foreground">
+                            {item.title}
+                          </p>
+                          <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">
+                            {item.body}
                           </p>
                         </div>
-                      );
-                    })}
+                      </div>
+                    ))}
                   </div>
                 </div>
 
@@ -487,403 +373,79 @@ function ContactBody() {
                 <div className="pointer-events-none absolute inset-0 grid-bg opacity-20" />
                 {!sent ? (
                   <>
-                    {/* Step header */}
-                    <AnimatePresence mode="wait" custom={dir}>
-                      <motion.div
-                        key={`h-${step}`}
-                        custom={dir}
-                        variants={slide}
-                        initial="enter"
-                        animate="center"
-                        exit="exit"
-                        transition={{ duration: 0.24, ease: "easeOut" }}
-                        className="relative z-10 mb-6"
-                      >
-                        <h3
-                          ref={stepHeadingRef}
-                          tabIndex={-1}
-                          className="text-xl font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded"
-                        >
-                          {step === 1 && "What do you need help with?"}
-                          {step === 2 && !isOther && "When do you want to start?"}
-                          {step === 2 && isOther && "Tell us more about your idea"}
-                          {step === 3 && "Almost there: your details"}
-                        </h3>
-                        <p className="mt-1 text-sm text-muted-foreground">
-                          Step {step} of {totalSteps} ·{" "}
-                          {step === 3 ? "enter your info" : "pick one"}
-                        </p>
-                      </motion.div>
-                    </AnimatePresence>
+                    {/* Form header */}
+                    <div className="relative z-10 mb-6">
+                      <h3 className="text-xl font-bold">Tell us where to call you.</h3>
+                      <p className="mt-1 text-sm text-muted-foreground">
+                        Three details &middot; about 20 seconds
+                      </p>
+                    </div>
 
-                    {/* Step body */}
+                    {/* Form body */}
                     <div className="relative z-10 flex-1">
-                      <AnimatePresence mode="wait" custom={dir}>
-                        {/* Step 1 - service */}
-                        {step === 1 && (
-                          <motion.div
-                            key="s1"
-                            custom={dir}
-                            variants={slide}
-                            initial="enter"
-                            animate="center"
-                            exit="exit"
-                            transition={{ duration: 0.24, ease: "easeOut" }}
-                          >
-                            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                              {SERVICES.map(({ id, label, icon: Icon, desc }, index) => {
-                                const active = sel.service === id;
-                                return (
-                                  <motion.button
-                                    key={id}
-                                    type="button"
-                                    aria-pressed={active}
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0, scale: active ? 1.015 : 1 }}
-                                    transition={{
-                                      opacity: {
-                                        duration: 0.24,
-                                        delay: index * 0.035,
-                                        ease: "easeOut",
-                                      },
-                                      y: { duration: 0.24, delay: index * 0.035, ease: "easeOut" },
-                                      scale: { duration: 0.22, ease: "easeOut" },
-                                    }}
-                                    whileHover={{ scale: 1.03, y: -2 }}
-                                    whileTap={{ scale: 0.97 }}
-                                    onClick={() => setSel((s) => ({ ...s, service: id }))}
-                                    onMouseMove={trackWebSpotlight}
-                                    className={`web-card group relative rounded-2xl p-4 text-left transition-all duration-200 premium-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${
-                                      active ? "option-card-selected" : ""
-                                    }`}
-                                  >
-                                    <WebSpotlight />
-                                    {active && (
-                                      <span
-                                        style={{ position: "absolute" }}
-                                        className="right-3 top-3 z-10 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-md"
-                                      >
-                                        <Check className="h-3 w-3" strokeWidth={3} />
-                                      </span>
-                                    )}
-                                    <Icon
-                                      className={`relative h-5 w-5 mb-2.5 transition-colors ${active ? "text-primary" : "text-muted-foreground group-hover:text-primary"}`}
-                                      strokeWidth={1.6}
-                                    />
-                                    <p className="relative font-semibold text-sm leading-snug text-foreground">
-                                      {label}
-                                    </p>
-                                    <p className="relative mt-1 text-xs leading-snug text-muted-foreground">
-                                      {desc}
-                                    </p>
-                                  </motion.button>
-                                );
-                              })}
-                            </div>
-
-                            {/* Direct-contact fallback */}
-                            <div
-                              className={`glass mt-4 rounded-xl p-4 transition-all duration-200 ${
-                                isDirect ? "option-card-selected" : ""
-                              }`}
-                            >
-                              <p className="mb-3 text-sm leading-snug text-muted-foreground">
-                                Can't find what you're looking for?{" "}
-                                <span className="text-foreground">
-                                  Let our team member reach out to you.
-                                </span>
-                              </p>
-                              <div className="grid gap-2 sm:grid-cols-3">
-                                {[
-                                  {
-                                    key: "dcName",
-                                    placeholder: "Your name*",
-                                    type: "text",
-                                    label: "Name",
-                                  },
-                                  {
-                                    key: "dcPhone",
-                                    placeholder: "Phone number*",
-                                    type: "tel",
-                                    label: "Phone",
-                                  },
-                                  {
-                                    key: "dcEmail",
-                                    placeholder: "Email address*",
-                                    type: "email",
-                                    label: "Email",
-                                  },
-                                ].map(({ key, placeholder, type, label }) => (
-                                  <label key={key} className="sr-only-label block">
-                                    <span className="sr-only">{label}</span>
-                                    <input
-                                      type={type}
-                                      value={sel[key as "dcName" | "dcPhone" | "dcEmail"]}
-                                      onChange={(e) =>
-                                        setSel((s) => ({
-                                          ...s,
-                                          [key]: e.target.value,
-                                          service: null,
-                                        }))
-                                      }
-                                      placeholder={placeholder}
-                                      aria-label={label}
-                                      className="w-full rounded-lg border border-border bg-input/60 px-3 py-2 text-base sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/25 transition"
-                                    />
-                                  </label>
-                                ))}
-                              </div>
-                              {isDirect && turnstileRequired && (
-                                <div className="mt-3">
-                                  <Turnstile
-                                    theme={isDark ? "dark" : "light"}
-                                    onVerify={setTurnstileToken}
-                                    onExpire={() => setTurnstileToken(null)}
-                                  />
-                                </div>
-                              )}
-                              {isDirect && submitError && (
-                                <p
-                                  id="direct-submit-error"
-                                  role="alert"
-                                  className="mt-3 text-sm text-error-text"
-                                >
-                                  {submitError}
-                                </p>
-                              )}
-                            </div>
-                          </motion.div>
+                      <form id="contact-form" onSubmit={onSubmit} className="space-y-4">
+                        <Field
+                          label="Name"
+                          name="name"
+                          autoComplete="name"
+                          placeholder="Jane Smith"
+                          value={form.name}
+                          onChange={(v) => setField("name", v)}
+                        />
+                        <Field
+                          label="Phone"
+                          name="phone"
+                          type="tel"
+                          inputMode="tel"
+                          autoComplete="tel"
+                          placeholder="+1 555 123 4567"
+                          value={form.phone}
+                          onChange={(v) => setField("phone", v)}
+                        />
+                        <Field
+                          label="Website"
+                          name="website"
+                          inputMode="url"
+                          autoComplete="url"
+                          placeholder="yourbusiness.com"
+                          value={form.website}
+                          onChange={(v) => setField("website", v)}
+                        />
+                        <p className="text-xs leading-relaxed text-muted-foreground">
+                          We go through your website before the call, so the first conversation
+                          starts with what's actually costing you jobs.
+                        </p>
+                        {turnstileRequired && (
+                          <Turnstile
+                            theme={isDark ? "dark" : "light"}
+                            onVerify={setTurnstileToken}
+                            onExpire={() => setTurnstileToken(null)}
+                          />
                         )}
-
-                        {/* Step 2 - timeline */}
-                        {step === 2 && !isOther && (
-                          <motion.div
-                            key="s2"
-                            custom={dir}
-                            variants={slide}
-                            initial="enter"
-                            animate="center"
-                            exit="exit"
-                            transition={{ duration: 0.24, ease: "easeOut" }}
-                          >
-                            <div className="grid grid-cols-2 gap-3">
-                              {TIMELINES.map(({ id, label, sub }, index) => {
-                                const active = sel.timeline === id;
-                                return (
-                                  <motion.button
-                                    key={id}
-                                    type="button"
-                                    aria-pressed={active}
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0, scale: active ? 1.015 : 1 }}
-                                    transition={{
-                                      opacity: {
-                                        duration: 0.24,
-                                        delay: index * 0.04,
-                                        ease: "easeOut",
-                                      },
-                                      y: { duration: 0.24, delay: index * 0.04, ease: "easeOut" },
-                                      scale: { duration: 0.22, ease: "easeOut" },
-                                    }}
-                                    whileHover={{ scale: 1.03, y: -2 }}
-                                    whileTap={{ scale: 0.97 }}
-                                    onClick={() => setSel((s) => ({ ...s, timeline: id }))}
-                                    onMouseMove={trackWebSpotlight}
-                                    className={`group premium-card relative overflow-hidden rounded-2xl p-5 text-left transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${
-                                      active ? "option-card-selected" : ""
-                                    }`}
-                                  >
-                                    <WebSpotlight />
-                                    {active && (
-                                      <span
-                                        style={{ position: "absolute" }}
-                                        className="right-3 top-3 z-10 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-md"
-                                      >
-                                        <Check className="h-3 w-3" strokeWidth={3} />
-                                      </span>
-                                    )}
-                                    <p className="font-semibold text-foreground">{label}</p>
-                                    <p className="mt-1 text-xs text-muted-foreground">{sub}</p>
-                                  </motion.button>
-                                );
-                              })}
-                            </div>
-                          </motion.div>
+                        {submitError && (
+                          <p id="submit-error" role="alert" className="text-sm text-error-text">
+                            {submitError}
+                          </p>
                         )}
-
-                        {/* Step 2 - other textarea */}
-                        {step === 2 && isOther && (
-                          <motion.div
-                            key="s2-other"
-                            custom={dir}
-                            variants={slide}
-                            initial="enter"
-                            animate="center"
-                            exit="exit"
-                            transition={{ duration: 0.24, ease: "easeOut" }}
-                          >
-                            <textarea
-                              rows={7}
-                              value={sel.other}
-                              onChange={(e) => setSel((s) => ({ ...s, other: e.target.value }))}
-                              placeholder="e.g. We need an internal tool that tracks client jobs and sends automated follow ups..."
-                              aria-label="Tell us more about your idea"
-                              className="w-full rounded-xl border border-border bg-input/60 px-4 py-3 text-base sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/25 transition resize-none"
-                            />
-                          </motion.div>
-                        )}
-
-                        {/* Final step - contact details */}
-                        {step === 3 && (
-                          <motion.div
-                            key="s4"
-                            custom={dir}
-                            variants={slide}
-                            initial="enter"
-                            animate="center"
-                            exit="exit"
-                            transition={{ duration: 0.24, ease: "easeOut" }}
-                          >
-                            <p className="mb-5 text-sm text-muted-foreground leading-relaxed">
-                              Enter your details and we'll send a personalised plan within one
-                              business day.
-                            </p>
-                            <form
-                              id="contact-form"
-                              onSubmit={(e) => {
-                                e.preventDefault();
-                                const data = new FormData(e.currentTarget);
-                                submitLead({
-                                  service: sel.service,
-                                  timeline: sel.timeline,
-                                  // "Something else" collects details in step 2;
-                                  // every other path via the optional textarea here.
-                                  other: sel.other || String(data.get("details") ?? ""),
-                                  name: String(data.get("name") ?? ""),
-                                  phone: String(data.get("phone") ?? ""),
-                                  email: String(data.get("email") ?? ""),
-                                  company: String(data.get("company") ?? ""),
-                                  hearAbout: String(data.get("hearAbout") ?? ""),
-                                });
-                              }}
-                              className="space-y-4"
-                            >
-                              <div className="grid sm:grid-cols-2 gap-4">
-                                <Field label="Name" name="name" />
-                                <Field label="Email" name="email" type="email" />
-                              </div>
-                              <div className="grid sm:grid-cols-2 gap-4">
-                                <Field label="Phone" name="phone" type="tel" />
-                                <Field label="Company (optional)" name="company" required={false} />
-                              </div>
-                              {!isOther && (
-                                <div>
-                                  <label className={formLabelClass} htmlFor="details">
-                                    Project details (optional)
-                                  </label>
-                                  <textarea
-                                    id="details"
-                                    name="details"
-                                    rows={3}
-                                    placeholder="Anything else we should know?"
-                                    className={`${formInputClass} resize-none`}
-                                  />
-                                </div>
-                              )}
-                              <div>
-                                <label className={formLabelClass} htmlFor="hearAbout">
-                                  How did you hear about us? (optional)
-                                </label>
-                                <select
-                                  id="hearAbout"
-                                  name="hearAbout"
-                                  defaultValue=""
-                                  className={formInputClass}
-                                >
-                                  <option value="">Select an option</option>
-                                  {HEAR_ABOUT_OPTIONS.map(({ id, label }) => (
-                                    <option key={id} value={id}>
-                                      {label}
-                                    </option>
-                                  ))}
-                                </select>
-                              </div>
-                              {turnstileRequired && (
-                                <Turnstile
-                                  theme={isDark ? "dark" : "light"}
-                                  onVerify={setTurnstileToken}
-                                  onExpire={() => setTurnstileToken(null)}
-                                />
-                              )}
-                              {submitError && (
-                                <p
-                                  id="submit-error"
-                                  role="alert"
-                                  className="text-sm text-error-text"
-                                >
-                                  {submitError}
-                                </p>
-                              )}
-                            </form>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
+                      </form>
                     </div>
 
                     {/* Bottom action row */}
-                    <div className="relative z-10 mt-8 flex items-center justify-between gap-4 border-t border-border pt-6">
-                      {step > 1 ? (
-                        <button
-                          onClick={() => go(step - 1)}
-                          className="-ml-2 px-2 py-3 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                        >
-                          ← Back
-                        </button>
-                      ) : (
-                        <div />
-                      )}
-
-                      {step === 3 ? (
-                        <button
-                          type="submit"
-                          form="contact-form"
-                          disabled={submitting || (turnstileRequired && !turnstileToken)}
-                          aria-busy={submitting}
-                          aria-describedby={submitError ? "submit-error" : undefined}
-                          className="shine-cta magnetic group inline-flex items-center gap-2 rounded-full bg-gradient-brand px-7 py-3 text-sm font-semibold text-white shadow-glow transition disabled:opacity-60 disabled:cursor-not-allowed"
-                        >
-                          <span aria-live="polite">
-                            {submitting ? "Sending…" : "Send my roadmap"}
-                          </span>
-                          <ArrowUpRight className="h-4 w-4 transition-transform group-hover:rotate-45" />
-                        </button>
-                      ) : (
-                        <motion.button
-                          whileHover={canContinue && !submitting ? { scale: 1.02 } : {}}
-                          whileTap={canContinue && !submitting ? { scale: 0.97 } : {}}
-                          onClick={canContinue && !submitting ? advance : undefined}
-                          // Inert rather than [disabled] so it stays focusable and
-                          // explains itself; now that phone is required too, it is
-                          // worth telling assistive tech the step isn't complete.
-                          aria-disabled={!canContinue || submitting}
-                          aria-busy={isDirect ? submitting : undefined}
-                          aria-describedby={
-                            isDirect && submitError ? "direct-submit-error" : undefined
-                          }
-                          className={`shine-cta inline-flex items-center gap-2 rounded-full border px-7 py-3 text-sm font-bold transition-all duration-300 ${
-                            canContinue && !submitting
-                              ? "border-primary bg-primary text-primary-foreground shadow-glow hover:bg-primary/90 cursor-pointer"
-                              : "border-border bg-foreground/5 text-muted-foreground/60 cursor-not-allowed"
-                          }`}
-                        >
-                          <span aria-live={isDirect ? "polite" : undefined}>
-                            {isDirect ? (submitting ? "Sending…" : "Get a callback") : "Continue"}
-                          </span>
-                          <ArrowUpRight
-                            className={`h-4 w-4 transition-all ${canContinue ? "text-primary-foreground" : "text-muted-foreground/40"}`}
-                          />
-                        </motion.button>
-                      )}
+                    <div className="relative z-10 mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-border pt-6">
+                      <p className="text-xs text-muted-foreground">
+                        One call. No drip sequence, no spam.
+                      </p>
+                      <button
+                        type="submit"
+                        form="contact-form"
+                        disabled={submitting || (turnstileRequired && !turnstileToken)}
+                        aria-busy={submitting}
+                        aria-describedby={submitError ? "submit-error" : undefined}
+                        className="shine-cta magnetic group inline-flex shrink-0 items-center gap-2 rounded-full bg-gradient-brand px-7 py-3 text-sm font-semibold text-white shadow-glow transition disabled:opacity-60 disabled:cursor-not-allowed"
+                      >
+                        <span aria-live="polite">{submitting ? "Sending…" : "Book my call"}</span>
+                        <ArrowUpRight className="h-4 w-4 transition-transform group-hover:rotate-45" />
+                      </button>
                     </div>
                   </>
                 ) : (
@@ -915,8 +477,8 @@ function ContactBody() {
                       transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
                       className="max-w-sm text-lg leading-relaxed text-foreground/90"
                     >
-                      We've received your details and will send your personalised roadmap within one
-                      business day.
+                      We've got your details and we're already looking at your website. Expect a
+                      call within one business day.
                     </motion.p>
                   </motion.div>
                 )}
@@ -1057,19 +619,38 @@ function Field({
   label,
   name,
   type = "text",
-  required = true,
+  inputMode,
+  autoComplete,
+  placeholder,
+  value,
+  onChange,
 }: {
   label: string;
   name: string;
   type?: string;
-  required?: boolean;
+  inputMode?: "tel" | "url";
+  autoComplete?: string;
+  placeholder?: string;
+  value: string;
+  onChange: (value: string) => void;
 }) {
   return (
     <div>
       <label className={formLabelClass} htmlFor={name}>
         {label}
       </label>
-      <input id={name} name={name} type={type} required={required} className={formInputClass} />
+      <input
+        id={name}
+        name={name}
+        type={type}
+        inputMode={inputMode}
+        autoComplete={autoComplete}
+        placeholder={placeholder}
+        required
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className={formInputClass}
+      />
     </div>
   );
 }

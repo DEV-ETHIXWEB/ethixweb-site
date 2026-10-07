@@ -2,8 +2,11 @@ import { getSupabase } from "./supabase";
 
 export interface ContactSubmissionInput {
   name: string;
-  email: string;
+  // Optional since the contact form stopped asking for it - the campaign
+  // landing forms still collect it. See supabase/migrations/0006.
+  email?: string;
   phone?: string;
+  website?: string;
   company?: string;
   service?: string | null;
   timeline?: string | null;
@@ -72,8 +75,9 @@ export async function markNotificationSent(table: LeadTable, id: string | null):
 export function recordContactSubmission(input: ContactSubmissionInput): Promise<string | null> {
   return insertLead("contact_submissions", {
     name: input.name,
-    email: input.email,
+    email: input.email || null,
     phone: input.phone || null,
+    website: input.website || null,
     company: input.company || null,
     service: input.service || null,
     timeline: input.timeline || null,

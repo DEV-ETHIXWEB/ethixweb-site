@@ -12,8 +12,9 @@ const DEFAULT_ASSIGNEES = [95288619];
 
 export interface ClickUpLeadInput {
   name: string;
-  email: string;
+  email?: string;
   phone?: string;
+  website?: string;
   company?: string;
   service?: string | null;
   timeline?: string | null;
@@ -55,8 +56,9 @@ export async function createClickUpLeadTask(input: ClickUpLeadInput): Promise<st
     "## New website lead",
     "",
     `**Name:** ${input.name}`,
-    `**Email:** ${input.email}`,
     input.phone && `**Phone:** ${input.phone}`,
+    input.website && `**Website:** ${input.website}`,
+    input.email && `**Email:** ${input.email}`,
     input.company && `**Company:** ${input.company}`,
     serviceLabel && `**Service interested in:** ${serviceLabel}`,
     timelineLabel && `**Timeline:** ${timelineLabel}`,

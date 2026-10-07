@@ -1,25 +1,20 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { Resend } from "resend";
-import {
-  SERVICE_LABELS,
-  TIMELINE_LABELS,
-  HEAR_ABOUT_LABELS,
-  FROM_EMAIL,
-  escapeHtml,
-  emailRow,
-  emailShell,
-  emailButton,
-} from "@/lib/email";
+import { FROM_EMAIL, escapeHtml, emailRow, emailShell, emailButton } from "@/lib/email";
 import { clientIp } from "@/lib/rate-limit";
 import { recordContactSubmission, markNotificationSent, markClickUpTaskLinked } from "@/lib/leads";
 import { createClickUpLeadTask } from "@/lib/clickup";
 import { guardRequest } from "@/lib/api-guard";
 import { verifyTurnstile } from "@/lib/turnstile";
-import { isValidEmail, isValidPhone } from "@/lib/utils";
+import { isValidPhone, normalizeWebsiteUrl } from "@/lib/utils";
 
 const TO_EMAIL = "info@ethixweb.com";
 
+// The contact form is a qualifier, not an intake questionnaire: it collects
+// the three things needed to open a conversation (name, phone, website) and
+// the rest is established on the call. Deliberately no email field - the
+// follow-up is a phone call, so the number is what has to be right.
 export const Route = createFileRoute("/api/contact")({
   server: {
     handlers: {
@@ -37,8 +32,7 @@ export const Route = createFileRoute("/api/contact")({
           return Response.json({ ok: false, error: "Invalid request body" }, { status: 400 });
         }
 
-        const { service, timeline, other, name, phone, email, company, hearAbout, turnstileToken } =
-          body as Record<string, unknown>;
+        const { name, phone, website, turnstileToken } = body as Record<string, unknown>;
 
         const turnstile = await verifyTurnstile(turnstileToken, request);
         if (!turnstile.ok) {
@@ -59,22 +53,12 @@ export const Route = createFileRoute("/api/contact")({
         }
 
         const cleanName = typeof name === "string" ? name.trim() : "";
-        const cleanEmail = typeof email === "string" ? email.trim() : "";
         const cleanPhone = typeof phone === "string" ? phone.trim() : "";
-        const cleanOther = typeof other === "string" ? other.trim() : "";
-        const cleanCompany = typeof company === "string" ? company.trim() : "";
-        const cleanHearAbout = typeof hearAbout === "string" ? hearAbout.trim() : "";
+        const rawWebsite = typeof website === "string" ? website.trim() : "";
 
-        if (!cleanName || !cleanEmail || !cleanPhone) {
+        if (!cleanName || !cleanPhone || !rawWebsite) {
           return Response.json(
-            { ok: false, error: "Name, email and phone are required" },
-            { status: 400 },
-          );
-        }
-
-        if (!isValidEmail(cleanEmail)) {
-          return Response.json(
-            { ok: false, error: "Please enter a valid email address" },
+            { ok: false, error: "Name, phone and website are required" },
             { status: 400 },
           );
         }
@@ -86,18 +70,21 @@ export const Route = createFileRoute("/api/contact")({
           );
         }
 
+        const cleanWebsite = normalizeWebsiteUrl(rawWebsite);
+        if (!cleanWebsite) {
+          return Response.json(
+            { ok: false, error: "Please enter a valid website address" },
+            { status: 400 },
+          );
+        }
+
         // Durable record first - a bounced/filtered notification email must
         // never be the only trace of this lead. Best-effort: never throws,
         // and doesn't block the request if Supabase isn't configured.
         const leadId = await recordContactSubmission({
           name: cleanName,
-          email: cleanEmail,
           phone: cleanPhone,
-          company: cleanCompany,
-          service: typeof service === "string" ? service : null,
-          timeline: typeof timeline === "string" ? timeline : null,
-          hearAbout: cleanHearAbout || null,
-          projectDetails: cleanOther,
+          website: cleanWebsite,
         });
 
         // Mirror the lead into ClickUp (Team Space > Ethixweb > Leads) so it
@@ -105,13 +92,8 @@ export const Route = createFileRoute("/api/contact")({
         // like the Supabase record - never blocks or fails the submission.
         const clickUpTaskId = await createClickUpLeadTask({
           name: cleanName,
-          email: cleanEmail,
           phone: cleanPhone,
-          company: cleanCompany,
-          service: typeof service === "string" ? service : null,
-          timeline: typeof timeline === "string" ? timeline : null,
-          hearAbout: cleanHearAbout || null,
-          message: cleanOther,
+          website: cleanWebsite,
         });
         await markClickUpTaskLinked(leadId, clickUpTaskId);
 
@@ -124,61 +106,47 @@ export const Route = createFileRoute("/api/contact")({
           );
         }
 
-        const serviceLabel =
-          typeof service === "string" ? (SERVICE_LABELS[service] ?? service) : null;
-        const timelineLabel =
-          typeof timeline === "string" ? (TIMELINE_LABELS[timeline] ?? timeline) : null;
-        const hearAboutLabel = cleanHearAbout
-          ? (HEAR_ABOUT_LABELS[cleanHearAbout] ?? cleanHearAbout)
-          : null;
         const firstName = cleanName.split(" ")[0] || cleanName;
+        const websiteHost = new URL(cleanWebsite).hostname.replace(/^www\./, "");
+        // Everything a dialler won't accept has to go, but a leading + is part
+        // of the number for anyone outside the US.
+        const dialable = cleanPhone.replace(/[^\d+]/g, "");
 
         const summaryRows = [
-          serviceLabel && emailRow("Service", escapeHtml(serviceLabel)),
-          cleanOther && emailRow("Project details", escapeHtml(cleanOther)),
-          timelineLabel && emailRow("Timeline", escapeHtml(timelineLabel)),
           emailRow("Name", escapeHtml(cleanName)),
-          cleanCompany && emailRow("Company", escapeHtml(cleanCompany)),
-          hearAboutLabel && emailRow("How they heard about us", escapeHtml(hearAboutLabel)),
-          cleanPhone &&
-            emailRow(
-              "Phone",
-              `<a href="tel:${escapeHtml(cleanPhone)}">${escapeHtml(cleanPhone)}</a>`,
-            ),
+          emailRow("Phone", `<a href="tel:${escapeHtml(dialable)}">${escapeHtml(cleanPhone)}</a>`),
           emailRow(
-            "Email",
-            `<a href="mailto:${escapeHtml(cleanEmail)}">${escapeHtml(cleanEmail)}</a>`,
+            "Website",
+            `<a href="${escapeHtml(cleanWebsite)}">${escapeHtml(websiteHost)}</a>`,
           ),
-        ]
-          .filter(Boolean)
-          .join("");
+        ].join("");
 
         const summaryTable = `<table role="presentation" width="100%" style="border-collapse:collapse;">${summaryRows}</table>`;
 
         // ── Internal notification (sent to the Ethixweb team) ──────────────
         const notificationHtml = emailShell({
-          eyebrow: "New project inquiry",
+          eyebrow: "New lead to qualify",
           footerText: "Sent automatically from the Ethixweb contact form &middot; ethixweb.com",
           bodyHtml: `
             <p style="margin:0 0 8px;font-size:15px;line-height:1.5;color:#1a1a1a;">
-              <strong>${escapeHtml(cleanName)}</strong> just submitted the contact form on the website. Here's what they shared:
+              <strong>${escapeHtml(cleanName)}</strong> just submitted the contact form. Give their site a look, then call to qualify:
             </p>
             ${summaryTable}
             <div style="margin-top:20px;">
-              ${emailButton(`mailto:${escapeHtml(cleanEmail)}`, `Reply to ${escapeHtml(firstName)}`)}
+              ${emailButton(`tel:${escapeHtml(dialable)}`, `Call ${escapeHtml(firstName)}`)}
             </div>`,
         });
 
         const resend = new Resend(apiKey);
 
         // Notification to the Ethixweb team is the critical send - the lead
-        // is only considered captured if this succeeds.
+        // is only considered captured if this succeeds. No reply-to: the form
+        // no longer collects an email address, and the follow-up is a call.
         try {
           const { error } = await resend.emails.send({
             from: FROM_EMAIL,
             to: TO_EMAIL,
-            replyTo: cleanEmail,
-            subject: `New project inquiry from ${cleanName}`,
+            subject: `New lead: ${cleanName} (${websiteHost})`,
             html: notificationHtml,
           });
 
@@ -192,11 +160,6 @@ export const Route = createFileRoute("/api/contact")({
           return Response.json({ ok: false, error: "Failed to send email" }, { status: 502 });
         }
 
-        // No confirmation email is sent to the submitted address: doing so
-        // would let anyone use this endpoint to relay a branded email to an
-        // arbitrary inbox with no ownership check. The in-app success state
-        // already confirms receipt; the team reply (above) is the only
-        // outbound email tied to the submitted address.
         return Response.json({ ok: true }, { status: 201 });
       },
     },
