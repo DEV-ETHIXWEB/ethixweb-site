@@ -48,6 +48,7 @@ export function CampaignHeroForm({ config, meta }: { config: CampaignConfig; met
   const isSubmitting = useRef(false);
 
   const emailInvalid = emailTouched && data.email.trim() !== "" && !isValidEmail(data.email);
+  const turnstileRequired = Boolean(import.meta.env.VITE_TURNSTILE_SITE_KEY);
 
   const markStarted = () => {
     if (hasTrackedStart.current) return;
@@ -79,6 +80,17 @@ export function CampaignHeroForm({ config, meta }: { config: CampaignConfig; met
       setState("error");
       return;
     }
+    // Turnstile renders as an interactive "Verify you are human" checkbox, and
+    // the button sits right under it - so it is easy to submit without ticking
+    // it. Catch that here: without this the request goes to the server, comes
+    // back 403, and the visitor is told "Verification failed" with no idea what
+    // to do about it. These are the paid-traffic pages; that costs real leads.
+    if (turnstileRequired && !token) {
+      setErrorMsg('Please tick the "Verify you are human" box above, then try again.');
+      setState("error");
+      return;
+    }
+
     isSubmitting.current = true;
     setState("submitting");
     setErrorMsg("");
