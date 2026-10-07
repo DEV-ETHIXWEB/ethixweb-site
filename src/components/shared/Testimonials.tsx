@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useAnimationFrame, useMotionValue, useReducedMotion } from "framer-motion";
 import { Star, ExternalLink } from "lucide-react";
 import { Reveal } from "@/components/shared/Reveal";
@@ -41,6 +41,10 @@ const REVIEWS = [
   },
 ];
 
+// Reviews run from 40 to 110 words. Every card is the same size regardless,
+// so a long one is clamped and offers "Read more" rather than towering over
+// the rest of the carousel.
+
 function StarRow({
   count,
   brand,
@@ -69,13 +73,41 @@ function TrustpilotLogo({ size = "sm" }: { size?: "sm" | "lg" }) {
   return <span className={`${label} font-bold tracking-tight text-foreground`}>Trustpilot</span>;
 }
 
-function ReviewCard({ review, brand }: { review: (typeof REVIEWS)[number]; brand: string }) {
+function ReviewCard({
+  review,
+  brand,
+  expanded,
+  onToggle,
+}: {
+  review: (typeof REVIEWS)[number];
+  brand: string;
+  expanded: boolean;
+  onToggle: () => void;
+}) {
+  const textRef = useRef<HTMLParagraphElement>(null);
+  const [isClamped, setIsClamped] = useState(false);
+
+  // Whether the text actually overflows its six clamped lines depends on the
+  // card's width, so measure it rather than guessing from a character count,
+  // and re-measure when the card is resized.
+  useEffect(() => {
+    const el = textRef.current;
+    if (!el) return;
+    const measure = () => setIsClamped(el.scrollHeight > el.clientHeight + 1);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   return (
     <motion.div
       whileHover={{ y: -4, scale: 1.015 }}
       onMouseMove={trackWebSpotlight}
       transition={{ type: "spring", stiffness: 300, damping: 22 }}
-      className="premium-card group relative min-w-60 sm:min-w-75 max-w-72 sm:max-w-90 shrink-0 overflow-hidden rounded-2xl p-6"
+      className={`premium-card group relative flex min-w-60 max-w-72 shrink-0 flex-col overflow-hidden rounded-2xl p-6 sm:min-w-75 sm:max-w-90 ${
+        expanded ? "" : "h-84"
+      }`}
     >
       <div
         className="pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full blur-2xl"
@@ -85,9 +117,29 @@ function ReviewCard({ review, brand }: { review: (typeof REVIEWS)[number]; brand
 
       <StarRow count={review.stars} brand={brand} />
 
-      <p className="mt-4 text-sm leading-7 text-muted-foreground">&ldquo;{review.text}&rdquo;</p>
+      <p
+        ref={textRef}
+        className={`mt-4 text-sm leading-7 text-muted-foreground ${expanded ? "" : "line-clamp-6"}`}
+      >
+        &ldquo;{review.text}&rdquo;
+      </p>
 
-      <div className="mt-5 flex items-center justify-between border-t border-border pt-4">
+      {(isClamped || expanded) && (
+        <button
+          type="button"
+          onClick={onToggle}
+          aria-expanded={expanded}
+          // The carousel is dragging-enabled, so a plain click has to be
+          // distinguished from the end of a drag - stopPropagation keeps the
+          // toggle from firing when someone drags across the card.
+          onPointerDown={(e) => e.stopPropagation()}
+          className="relative mt-2 self-start text-xs font-bold uppercase tracking-widest text-primary-text transition hover:opacity-80"
+        >
+          {expanded ? "Show less" : "Read more"}
+        </button>
+      )}
+
+      <div className="mt-auto flex items-center justify-between border-t border-border pt-4">
         <div>
           <p className="text-sm font-bold text-foreground">{review.author}</p>
           <p className="mt-0.5 text-[11px] uppercase tracking-widest text-muted-foreground/60">
@@ -109,6 +161,11 @@ function InfiniteCarousel({ brand }: { brand: string }) {
   const visible = useRef(false);
   const trackWidth = useRef(0);
   const reduceMotion = useReducedMotion();
+  const [expanded, setExpanded] = useState<number | null>(null);
+  // The frame loop below reads this, and a captured state value would go
+  // stale there, so mirror it into a ref.
+  const expandedRef = useRef<number | null>(null);
+  expandedRef.current = expanded;
 
   // Measure the track only when its size actually changes. Reading scrollWidth
   // inside the frame loop forced a synchronous layout on every frame for the
@@ -151,7 +208,8 @@ function InfiniteCarousel({ brand }: { brand: string }) {
       return;
     }
     if (!visible.current) return;
-    if (!dragging.current && !reduceMotion) {
+    // Hold still while a review is open, so it can actually be read.
+    if (!dragging.current && !reduceMotion && expandedRef.current === null) {
       x.set(x.get() + 0.4 * delta * 0.06);
     }
     // Wrap so dragging (and autoplay) can roam freely while staying seamless -
@@ -180,7 +238,13 @@ function InfiniteCarousel({ brand }: { brand: string }) {
         }}
       >
         {duplicated.map((r, i) => (
-          <ReviewCard key={i} review={r} brand={brand} />
+          <ReviewCard
+            key={i}
+            review={r}
+            brand={brand}
+            expanded={expanded === i}
+            onToggle={() => setExpanded((cur) => (cur === i ? null : i))}
+          />
         ))}
       </motion.div>
     </div>
