@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { jsonLdStringify } from "@/lib/json-ld";
 import {
   Outlet,
@@ -34,9 +34,57 @@ function NotFoundComponent() {
   );
 }
 
+// A deploy replaces the hashed asset files, so a tab opened before it can ask
+// for a chunk that no longer exists and land here. There is nothing for anyone
+// to fix by reading an error page: the fresh index.html lists the new chunks,
+// so just go and get it. Guarded by a sessionStorage flag so a genuine load
+// failure cannot turn into a reload loop.
+const CHUNK_RELOAD_KEY = "ethixweb:chunk-reload";
+
+function isStaleChunkError(error: unknown): boolean {
+  const message = error instanceof Error ? `${error.name} ${error.message}` : String(error ?? "");
+  return /ChunkLoadError|dynamically imported module|Importing a module script failed|error loading dynamically imported/i.test(
+    message,
+  );
+}
+
 function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
+  const [reloading, setReloading] = useState(false);
+
+  useEffect(() => {
+    if (!isStaleChunkError(error)) return;
+    try {
+      if (sessionStorage.getItem(CHUNK_RELOAD_KEY)) return;
+      sessionStorage.setItem(CHUNK_RELOAD_KEY, "1");
+    } catch {
+      // Private mode or blocked storage: without somewhere to record the
+      // attempt there is no loop guard, so leave the error page up.
+      return;
+    }
+    setReloading(true);
+    window.location.reload();
+  }, [error]);
+
+  // Clear the guard once a page has survived, so the next deploy gets its own
+  // single retry rather than being locked out by a flag from weeks ago.
+  useEffect(() => {
+    if (isStaleChunkError(error)) return;
+    try {
+      sessionStorage.removeItem(CHUNK_RELOAD_KEY);
+    } catch {
+      /* nothing to clear */
+    }
+  }, [error]);
+
+  if (reloading) {
+    return (
+      <div className="flex min-h-dvh items-center justify-center bg-background px-4">
+        <p className="text-sm text-muted-foreground">Loading the latest version…</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-dvh items-center justify-center bg-background px-4">
