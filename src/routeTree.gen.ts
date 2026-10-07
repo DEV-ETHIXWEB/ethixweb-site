@@ -9,134 +9,64 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WebDevelopmentRouteImport } from './routes/web-development'
-import { Route as ServicesRouteImport } from './routes/services'
-import { Route as OurWorkRouteImport } from './routes/our-work'
-import { Route as NotHiringRouteImport } from './routes/not-hiring'
-import { Route as MarketingRouteImport } from './routes/marketing'
-import { Route as IndustriesRouteImport } from './routes/industries'
-import { Route as HvacPlumbingMarketingRouteImport } from './routes/hvac-plumbing-marketing'
-import { Route as HackathonRouteImport } from './routes/hackathon'
-import { Route as GraphicDesignRouteImport } from './routes/graphic-design'
-import { Route as GoogleAdsManagementRouteImport } from './routes/google-ads-management'
-import { Route as FishingMarineMarketingRouteImport } from './routes/fishing-marine-marketing'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as CareersRouteImport } from './routes/careers'
-import { Route as BlogRouteImport } from './routes/blog'
-import { Route as AiAutomationRouteImport } from './routes/ai-automation'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as OurWorkIndexRouteImport } from './routes/our-work.index'
-import { Route as CareersIndexRouteImport } from './routes/careers.index'
-import { Route as QrSlugRouteImport } from './routes/qr.$slug'
-import { Route as PoliciesTermsRouteImport } from './routes/policies.terms'
-import { Route as PoliciesRefundsRouteImport } from './routes/policies.refunds'
-import { Route as PoliciesPrivacyRouteImport } from './routes/policies.privacy'
-import { Route as OurWorkSlugRouteImport } from './routes/our-work.$slug'
-import { Route as LocationsKentWaRouteImport } from './routes/locations.kent-wa'
-import { Route as CareersScreeningRouteImport } from './routes/careers.screening'
-import { Route as CareersAssessmentRouteImport } from './routes/careers.assessment'
-import { Route as CareersApplyRouteImport } from './routes/careers.apply'
-import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AiAutomationRouteImport } from './routes/ai-automation'
+import { Route as BlogRouteImport } from './routes/blog'
+import { Route as CareersRouteImport } from './routes/careers'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as FishingMarineMarketingRouteImport } from './routes/fishing-marine-marketing'
+import { Route as GoogleAdsManagementRouteImport } from './routes/google-ads-management'
+import { Route as GraphicDesignRouteImport } from './routes/graphic-design'
+import { Route as HackathonRouteImport } from './routes/hackathon'
+import { Route as HvacPlumbingMarketingRouteImport } from './routes/hvac-plumbing-marketing'
+import { Route as IndustriesRouteImport } from './routes/industries'
+import { Route as MarketingRouteImport } from './routes/marketing'
+import { Route as NotHiringRouteImport } from './routes/not-hiring'
+import { Route as OurWorkRouteImport } from './routes/our-work'
+import { Route as ServicesRouteImport } from './routes/services'
+import { Route as WebDevelopmentRouteImport } from './routes/web-development'
 import { Route as ApiContactRouteImport } from './routes/api.contact'
-import { Route as LandingFishingMarketingSeattleRouteImport } from './routes/landing.fishing-marketing.seattle'
-import { Route as AssessmentGoogleAdsTokenRouteImport } from './routes/assessment.google-ads.$token'
-import { Route as ApiScreeningSubmitRouteImport } from './routes/api.screening.submit'
-import { Route as ApiScreeningStartRouteImport } from './routes/api.screening.start'
-import { Route as ApiScreeningDecisionRouteImport } from './routes/api.screening.decision'
-import { Route as ApiLandingHvacPlumbingMarketingRouteImport } from './routes/api.landing.hvac-plumbing-marketing'
-import { Route as ApiLandingGoogleAdsManagementRouteImport } from './routes/api.landing.google-ads-management'
-import { Route as ApiLandingFishingSeattleRouteImport } from './routes/api.landing.fishing-seattle'
-import { Route as ApiLandingFishingMarineRouteImport } from './routes/api.landing.fishing-marine'
-import { Route as ApiHackathonVerifyRouteImport } from './routes/api.hackathon.verify'
-import { Route as ApiHackathonUnlockRouteImport } from './routes/api.hackathon.unlock'
-import { Route as ApiGadsSubmitRouteImport } from './routes/api.gads.submit'
-import { Route as ApiGadsStateRouteImport } from './routes/api.gads.state'
-import { Route as ApiGadsSaveRouteImport } from './routes/api.gads.save'
-import { Route as ApiGadsMediaUploadRouteImport } from './routes/api.gads.media-upload'
-import { Route as ApiGadsBeginRouteImport } from './routes/api.gads.begin'
-import { Route as ApiGadsAdvanceRouteImport } from './routes/api.gads.advance'
-import { Route as ApiCareersUploadRouteImport } from './routes/api.careers.upload'
-import { Route as ApiCareersApplyRouteImport } from './routes/api.careers.apply'
-import { Route as ApiAssessmentSubmitRouteImport } from './routes/api.assessment.submit'
-import { Route as ApiAssessmentStateRouteImport } from './routes/api.assessment.state'
-import { Route as ApiAssessmentStartRouteImport } from './routes/api.assessment.start'
-import { Route as ApiAssessmentSaveRouteImport } from './routes/api.assessment.save'
+import { Route as CareersIndexRouteImport } from './routes/careers.index'
+import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
+import { Route as CareersApplyRouteImport } from './routes/careers.apply'
+import { Route as CareersAssessmentRouteImport } from './routes/careers.assessment'
+import { Route as CareersScreeningRouteImport } from './routes/careers.screening'
+import { Route as LocationsKentWaRouteImport } from './routes/locations.kent-wa'
+import { Route as OurWorkIndexRouteImport } from './routes/our-work.index'
+import { Route as OurWorkSlugRouteImport } from './routes/our-work.$slug'
+import { Route as PoliciesPrivacyRouteImport } from './routes/policies.privacy'
+import { Route as PoliciesRefundsRouteImport } from './routes/policies.refunds'
+import { Route as PoliciesTermsRouteImport } from './routes/policies.terms'
+import { Route as QrSlugRouteImport } from './routes/qr.$slug'
 import { Route as ApiAssessmentRecordingUploadRouteImport } from './routes/api.assessment.recording-upload'
+import { Route as ApiAssessmentSaveRouteImport } from './routes/api.assessment.save'
+import { Route as ApiAssessmentStartRouteImport } from './routes/api.assessment.start'
+import { Route as ApiAssessmentStateRouteImport } from './routes/api.assessment.state'
+import { Route as ApiAssessmentSubmitRouteImport } from './routes/api.assessment.submit'
+import { Route as ApiCareersApplyRouteImport } from './routes/api.careers.apply'
+import { Route as ApiCareersUploadRouteImport } from './routes/api.careers.upload'
+import { Route as ApiGadsAdvanceRouteImport } from './routes/api.gads.advance'
+import { Route as ApiGadsBeginRouteImport } from './routes/api.gads.begin'
+import { Route as ApiGadsMediaUploadRouteImport } from './routes/api.gads.media-upload'
+import { Route as ApiGadsSaveRouteImport } from './routes/api.gads.save'
+import { Route as ApiGadsStateRouteImport } from './routes/api.gads.state'
+import { Route as ApiGadsSubmitRouteImport } from './routes/api.gads.submit'
+import { Route as ApiHackathonUnlockRouteImport } from './routes/api.hackathon.unlock'
+import { Route as ApiHackathonVerifyRouteImport } from './routes/api.hackathon.verify'
+import { Route as ApiLandingFishingMarineRouteImport } from './routes/api.landing.fishing-marine'
+import { Route as ApiLandingFishingSeattleRouteImport } from './routes/api.landing.fishing-seattle'
+import { Route as ApiLandingGoogleAdsManagementRouteImport } from './routes/api.landing.google-ads-management'
+import { Route as ApiLandingHvacPlumbingMarketingRouteImport } from './routes/api.landing.hvac-plumbing-marketing'
+import { Route as ApiScreeningDecisionRouteImport } from './routes/api.screening.decision'
+import { Route as ApiScreeningStartRouteImport } from './routes/api.screening.start'
+import { Route as ApiScreeningSubmitRouteImport } from './routes/api.screening.submit'
+import { Route as AssessmentGoogleAdsTokenRouteImport } from './routes/assessment.google-ads.$token'
+import { Route as LandingFishingMarketingSeattleRouteImport } from './routes/landing.fishing-marketing.seattle'
 
-const WebDevelopmentRoute = WebDevelopmentRouteImport.update({
-  id: '/web-development',
-  path: '/web-development',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesRoute = ServicesRouteImport.update({
-  id: '/services',
-  path: '/services',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OurWorkRoute = OurWorkRouteImport.update({
-  id: '/our-work',
-  path: '/our-work',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const NotHiringRoute = NotHiringRouteImport.update({
-  id: '/not-hiring',
-  path: '/not-hiring',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MarketingRoute = MarketingRouteImport.update({
-  id: '/marketing',
-  path: '/marketing',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndustriesRoute = IndustriesRouteImport.update({
-  id: '/industries',
-  path: '/industries',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HvacPlumbingMarketingRoute = HvacPlumbingMarketingRouteImport.update({
-  id: '/hvac-plumbing-marketing',
-  path: '/hvac-plumbing-marketing',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HackathonRoute = HackathonRouteImport.update({
-  id: '/hackathon',
-  path: '/hackathon',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GraphicDesignRoute = GraphicDesignRouteImport.update({
-  id: '/graphic-design',
-  path: '/graphic-design',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GoogleAdsManagementRoute = GoogleAdsManagementRouteImport.update({
-  id: '/google-ads-management',
-  path: '/google-ads-management',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FishingMarineMarketingRoute = FishingMarineMarketingRouteImport.update({
-  id: '/fishing-marine-marketing',
-  path: '/fishing-marine-marketing',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CareersRoute = CareersRouteImport.update({
-  id: '/careers',
-  path: '/careers',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BlogRoute = BlogRouteImport.update({
-  id: '/blog',
-  path: '/blog',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AiAutomationRoute = AiAutomationRouteImport.update({
-  id: '/ai-automation',
-  path: '/ai-automation',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -144,64 +74,89 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AiAutomationRoute = AiAutomationRouteImport.update({
+  id: '/ai-automation',
+  path: '/ai-automation',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OurWorkIndexRoute = OurWorkIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => OurWorkRoute,
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CareersRoute = CareersRouteImport.update({
+  id: '/careers',
+  path: '/careers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FishingMarineMarketingRoute = FishingMarineMarketingRouteImport.update({
+  id: '/fishing-marine-marketing',
+  path: '/fishing-marine-marketing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GoogleAdsManagementRoute = GoogleAdsManagementRouteImport.update({
+  id: '/google-ads-management',
+  path: '/google-ads-management',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GraphicDesignRoute = GraphicDesignRouteImport.update({
+  id: '/graphic-design',
+  path: '/graphic-design',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HackathonRoute = HackathonRouteImport.update({
+  id: '/hackathon',
+  path: '/hackathon',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HvacPlumbingMarketingRoute = HvacPlumbingMarketingRouteImport.update({
+  id: '/hvac-plumbing-marketing',
+  path: '/hvac-plumbing-marketing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndustriesRoute = IndustriesRouteImport.update({
+  id: '/industries',
+  path: '/industries',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MarketingRoute = MarketingRouteImport.update({
+  id: '/marketing',
+  path: '/marketing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotHiringRoute = NotHiringRouteImport.update({
+  id: '/not-hiring',
+  path: '/not-hiring',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OurWorkRoute = OurWorkRouteImport.update({
+  id: '/our-work',
+  path: '/our-work',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WebDevelopmentRoute = WebDevelopmentRouteImport.update({
+  id: '/web-development',
+  path: '/web-development',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiContactRoute = ApiContactRouteImport.update({
+  id: '/api/contact',
+  path: '/api/contact',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const CareersIndexRoute = CareersIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => CareersRoute,
-} as any)
-const QrSlugRoute = QrSlugRouteImport.update({
-  id: '/qr/$slug',
-  path: '/qr/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PoliciesTermsRoute = PoliciesTermsRouteImport.update({
-  id: '/policies/terms',
-  path: '/policies/terms',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PoliciesRefundsRoute = PoliciesRefundsRouteImport.update({
-  id: '/policies/refunds',
-  path: '/policies/refunds',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PoliciesPrivacyRoute = PoliciesPrivacyRouteImport.update({
-  id: '/policies/privacy',
-  path: '/policies/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OurWorkSlugRoute = OurWorkSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => OurWorkRoute,
-} as any)
-const LocationsKentWaRoute = LocationsKentWaRouteImport.update({
-  id: '/locations/kent-wa',
-  path: '/locations/kent-wa',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CareersScreeningRoute = CareersScreeningRouteImport.update({
-  id: '/screening',
-  path: '/screening',
-  getParentRoute: () => CareersRoute,
-} as any)
-const CareersAssessmentRoute = CareersAssessmentRouteImport.update({
-  id: '/assessment',
-  path: '/assessment',
-  getParentRoute: () => CareersRoute,
-} as any)
-const CareersApplyRoute = CareersApplyRouteImport.update({
-  id: '/apply',
-  path: '/apply',
   getParentRoute: () => CareersRoute,
 } as any)
 const CareersSlugRoute = CareersSlugRouteImport.update({
@@ -209,42 +164,141 @@ const CareersSlugRoute = CareersSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => CareersRoute,
 } as any)
-const ApiContactRoute = ApiContactRouteImport.update({
-  id: '/api/contact',
-  path: '/api/contact',
+const CareersApplyRoute = CareersApplyRouteImport.update({
+  id: '/apply',
+  path: '/apply',
+  getParentRoute: () => CareersRoute,
+} as any)
+const CareersAssessmentRoute = CareersAssessmentRouteImport.update({
+  id: '/assessment',
+  path: '/assessment',
+  getParentRoute: () => CareersRoute,
+} as any)
+const CareersScreeningRoute = CareersScreeningRouteImport.update({
+  id: '/screening',
+  path: '/screening',
+  getParentRoute: () => CareersRoute,
+} as any)
+const LocationsKentWaRoute = LocationsKentWaRouteImport.update({
+  id: '/locations/kent-wa',
+  path: '/locations/kent-wa',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LandingFishingMarketingSeattleRoute =
-  LandingFishingMarketingSeattleRouteImport.update({
-    id: '/landing/fishing-marketing/seattle',
-    path: '/landing/fishing-marketing/seattle',
+const OurWorkIndexRoute = OurWorkIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => OurWorkRoute,
+} as any)
+const OurWorkSlugRoute = OurWorkSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => OurWorkRoute,
+} as any)
+const PoliciesPrivacyRoute = PoliciesPrivacyRouteImport.update({
+  id: '/policies/privacy',
+  path: '/policies/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PoliciesRefundsRoute = PoliciesRefundsRouteImport.update({
+  id: '/policies/refunds',
+  path: '/policies/refunds',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PoliciesTermsRoute = PoliciesTermsRouteImport.update({
+  id: '/policies/terms',
+  path: '/policies/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QrSlugRoute = QrSlugRouteImport.update({
+  id: '/qr/$slug',
+  path: '/qr/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAssessmentRecordingUploadRoute =
+  ApiAssessmentRecordingUploadRouteImport.update({
+    id: '/api/assessment/recording-upload',
+    path: '/api/assessment/recording-upload',
     getParentRoute: () => rootRouteImport,
   } as any)
-const AssessmentGoogleAdsTokenRoute =
-  AssessmentGoogleAdsTokenRouteImport.update({
-    id: '/assessment/google-ads/$token',
-    path: '/assessment/google-ads/$token',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ApiScreeningSubmitRoute = ApiScreeningSubmitRouteImport.update({
-  id: '/api/screening/submit',
-  path: '/api/screening/submit',
+const ApiAssessmentSaveRoute = ApiAssessmentSaveRouteImport.update({
+  id: '/api/assessment/save',
+  path: '/api/assessment/save',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiScreeningStartRoute = ApiScreeningStartRouteImport.update({
-  id: '/api/screening/start',
-  path: '/api/screening/start',
+const ApiAssessmentStartRoute = ApiAssessmentStartRouteImport.update({
+  id: '/api/assessment/start',
+  path: '/api/assessment/start',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiScreeningDecisionRoute = ApiScreeningDecisionRouteImport.update({
-  id: '/api/screening/decision',
-  path: '/api/screening/decision',
+const ApiAssessmentStateRoute = ApiAssessmentStateRouteImport.update({
+  id: '/api/assessment/state',
+  path: '/api/assessment/state',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiLandingHvacPlumbingMarketingRoute =
-  ApiLandingHvacPlumbingMarketingRouteImport.update({
-    id: '/api/landing/hvac-plumbing-marketing',
-    path: '/api/landing/hvac-plumbing-marketing',
+const ApiAssessmentSubmitRoute = ApiAssessmentSubmitRouteImport.update({
+  id: '/api/assessment/submit',
+  path: '/api/assessment/submit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCareersApplyRoute = ApiCareersApplyRouteImport.update({
+  id: '/api/careers/apply',
+  path: '/api/careers/apply',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCareersUploadRoute = ApiCareersUploadRouteImport.update({
+  id: '/api/careers/upload',
+  path: '/api/careers/upload',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiGadsAdvanceRoute = ApiGadsAdvanceRouteImport.update({
+  id: '/api/gads/advance',
+  path: '/api/gads/advance',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiGadsBeginRoute = ApiGadsBeginRouteImport.update({
+  id: '/api/gads/begin',
+  path: '/api/gads/begin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiGadsMediaUploadRoute = ApiGadsMediaUploadRouteImport.update({
+  id: '/api/gads/media-upload',
+  path: '/api/gads/media-upload',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiGadsSaveRoute = ApiGadsSaveRouteImport.update({
+  id: '/api/gads/save',
+  path: '/api/gads/save',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiGadsStateRoute = ApiGadsStateRouteImport.update({
+  id: '/api/gads/state',
+  path: '/api/gads/state',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiGadsSubmitRoute = ApiGadsSubmitRouteImport.update({
+  id: '/api/gads/submit',
+  path: '/api/gads/submit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiHackathonUnlockRoute = ApiHackathonUnlockRouteImport.update({
+  id: '/api/hackathon/unlock',
+  path: '/api/hackathon/unlock',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiHackathonVerifyRoute = ApiHackathonVerifyRouteImport.update({
+  id: '/api/hackathon/verify',
+  path: '/api/hackathon/verify',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiLandingFishingMarineRoute = ApiLandingFishingMarineRouteImport.update({
+  id: '/api/landing/fishing-marine',
+  path: '/api/landing/fishing-marine',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiLandingFishingSeattleRoute =
+  ApiLandingFishingSeattleRouteImport.update({
+    id: '/api/landing/fishing-seattle',
+    path: '/api/landing/fishing-seattle',
     getParentRoute: () => rootRouteImport,
   } as any)
 const ApiLandingGoogleAdsManagementRoute =
@@ -253,91 +307,37 @@ const ApiLandingGoogleAdsManagementRoute =
     path: '/api/landing/google-ads-management',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiLandingFishingSeattleRoute =
-  ApiLandingFishingSeattleRouteImport.update({
-    id: '/api/landing/fishing-seattle',
-    path: '/api/landing/fishing-seattle',
+const ApiLandingHvacPlumbingMarketingRoute =
+  ApiLandingHvacPlumbingMarketingRouteImport.update({
+    id: '/api/landing/hvac-plumbing-marketing',
+    path: '/api/landing/hvac-plumbing-marketing',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiLandingFishingMarineRoute = ApiLandingFishingMarineRouteImport.update({
-  id: '/api/landing/fishing-marine',
-  path: '/api/landing/fishing-marine',
+const ApiScreeningDecisionRoute = ApiScreeningDecisionRouteImport.update({
+  id: '/api/screening/decision',
+  path: '/api/screening/decision',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiHackathonVerifyRoute = ApiHackathonVerifyRouteImport.update({
-  id: '/api/hackathon/verify',
-  path: '/api/hackathon/verify',
+const ApiScreeningStartRoute = ApiScreeningStartRouteImport.update({
+  id: '/api/screening/start',
+  path: '/api/screening/start',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiHackathonUnlockRoute = ApiHackathonUnlockRouteImport.update({
-  id: '/api/hackathon/unlock',
-  path: '/api/hackathon/unlock',
+const ApiScreeningSubmitRoute = ApiScreeningSubmitRouteImport.update({
+  id: '/api/screening/submit',
+  path: '/api/screening/submit',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiGadsSubmitRoute = ApiGadsSubmitRouteImport.update({
-  id: '/api/gads/submit',
-  path: '/api/gads/submit',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiGadsStateRoute = ApiGadsStateRouteImport.update({
-  id: '/api/gads/state',
-  path: '/api/gads/state',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiGadsSaveRoute = ApiGadsSaveRouteImport.update({
-  id: '/api/gads/save',
-  path: '/api/gads/save',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiGadsMediaUploadRoute = ApiGadsMediaUploadRouteImport.update({
-  id: '/api/gads/media-upload',
-  path: '/api/gads/media-upload',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiGadsBeginRoute = ApiGadsBeginRouteImport.update({
-  id: '/api/gads/begin',
-  path: '/api/gads/begin',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiGadsAdvanceRoute = ApiGadsAdvanceRouteImport.update({
-  id: '/api/gads/advance',
-  path: '/api/gads/advance',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiCareersUploadRoute = ApiCareersUploadRouteImport.update({
-  id: '/api/careers/upload',
-  path: '/api/careers/upload',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiCareersApplyRoute = ApiCareersApplyRouteImport.update({
-  id: '/api/careers/apply',
-  path: '/api/careers/apply',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiAssessmentSubmitRoute = ApiAssessmentSubmitRouteImport.update({
-  id: '/api/assessment/submit',
-  path: '/api/assessment/submit',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiAssessmentStateRoute = ApiAssessmentStateRouteImport.update({
-  id: '/api/assessment/state',
-  path: '/api/assessment/state',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiAssessmentStartRoute = ApiAssessmentStartRouteImport.update({
-  id: '/api/assessment/start',
-  path: '/api/assessment/start',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiAssessmentSaveRoute = ApiAssessmentSaveRouteImport.update({
-  id: '/api/assessment/save',
-  path: '/api/assessment/save',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiAssessmentRecordingUploadRoute =
-  ApiAssessmentRecordingUploadRouteImport.update({
-    id: '/api/assessment/recording-upload',
-    path: '/api/assessment/recording-upload',
+const AssessmentGoogleAdsTokenRoute =
+  AssessmentGoogleAdsTokenRouteImport.update({
+    id: '/assessment/google-ads/$token',
+    path: '/assessment/google-ads/$token',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const LandingFishingMarketingSeattleRoute =
+  LandingFishingMarketingSeattleRouteImport.update({
+    id: '/landing/fishing-marketing/seattle',
+    path: '/landing/fishing-marketing/seattle',
     getParentRoute: () => rootRouteImport,
   } as any)
 
@@ -729,109 +729,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/web-development': {
-      id: '/web-development'
-      path: '/web-development'
-      fullPath: '/web-development'
-      preLoaderRoute: typeof WebDevelopmentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services': {
-      id: '/services'
-      path: '/services'
-      fullPath: '/services'
-      preLoaderRoute: typeof ServicesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/our-work': {
-      id: '/our-work'
-      path: '/our-work'
-      fullPath: '/our-work'
-      preLoaderRoute: typeof OurWorkRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/not-hiring': {
-      id: '/not-hiring'
-      path: '/not-hiring'
-      fullPath: '/not-hiring'
-      preLoaderRoute: typeof NotHiringRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/marketing': {
-      id: '/marketing'
-      path: '/marketing'
-      fullPath: '/marketing'
-      preLoaderRoute: typeof MarketingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/industries': {
-      id: '/industries'
-      path: '/industries'
-      fullPath: '/industries'
-      preLoaderRoute: typeof IndustriesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/hvac-plumbing-marketing': {
-      id: '/hvac-plumbing-marketing'
-      path: '/hvac-plumbing-marketing'
-      fullPath: '/hvac-plumbing-marketing'
-      preLoaderRoute: typeof HvacPlumbingMarketingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/hackathon': {
-      id: '/hackathon'
-      path: '/hackathon'
-      fullPath: '/hackathon'
-      preLoaderRoute: typeof HackathonRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/graphic-design': {
-      id: '/graphic-design'
-      path: '/graphic-design'
-      fullPath: '/graphic-design'
-      preLoaderRoute: typeof GraphicDesignRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/google-ads-management': {
-      id: '/google-ads-management'
-      path: '/google-ads-management'
-      fullPath: '/google-ads-management'
-      preLoaderRoute: typeof GoogleAdsManagementRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/fishing-marine-marketing': {
-      id: '/fishing-marine-marketing'
-      path: '/fishing-marine-marketing'
-      fullPath: '/fishing-marine-marketing'
-      preLoaderRoute: typeof FishingMarineMarketingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/careers': {
-      id: '/careers'
-      path: '/careers'
-      fullPath: '/careers'
-      preLoaderRoute: typeof CareersRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/blog': {
-      id: '/blog'
-      path: '/blog'
-      fullPath: '/blog'
-      preLoaderRoute: typeof BlogRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/ai-automation': {
-      id: '/ai-automation'
-      path: '/ai-automation'
-      fullPath: '/ai-automation'
-      preLoaderRoute: typeof AiAutomationRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -841,88 +743,123 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/ai-automation': {
+      id: '/ai-automation'
+      path: '/ai-automation'
+      fullPath: '/ai-automation'
+      preLoaderRoute: typeof AiAutomationRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/our-work/': {
-      id: '/our-work/'
-      path: '/'
-      fullPath: '/our-work/'
-      preLoaderRoute: typeof OurWorkIndexRouteImport
-      parentRoute: typeof OurWorkRoute
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/careers': {
+      id: '/careers'
+      path: '/careers'
+      fullPath: '/careers'
+      preLoaderRoute: typeof CareersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fishing-marine-marketing': {
+      id: '/fishing-marine-marketing'
+      path: '/fishing-marine-marketing'
+      fullPath: '/fishing-marine-marketing'
+      preLoaderRoute: typeof FishingMarineMarketingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/google-ads-management': {
+      id: '/google-ads-management'
+      path: '/google-ads-management'
+      fullPath: '/google-ads-management'
+      preLoaderRoute: typeof GoogleAdsManagementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/graphic-design': {
+      id: '/graphic-design'
+      path: '/graphic-design'
+      fullPath: '/graphic-design'
+      preLoaderRoute: typeof GraphicDesignRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hackathon': {
+      id: '/hackathon'
+      path: '/hackathon'
+      fullPath: '/hackathon'
+      preLoaderRoute: typeof HackathonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hvac-plumbing-marketing': {
+      id: '/hvac-plumbing-marketing'
+      path: '/hvac-plumbing-marketing'
+      fullPath: '/hvac-plumbing-marketing'
+      preLoaderRoute: typeof HvacPlumbingMarketingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/industries': {
+      id: '/industries'
+      path: '/industries'
+      fullPath: '/industries'
+      preLoaderRoute: typeof IndustriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketing': {
+      id: '/marketing'
+      path: '/marketing'
+      fullPath: '/marketing'
+      preLoaderRoute: typeof MarketingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/not-hiring': {
+      id: '/not-hiring'
+      path: '/not-hiring'
+      fullPath: '/not-hiring'
+      preLoaderRoute: typeof NotHiringRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/our-work': {
+      id: '/our-work'
+      path: '/our-work'
+      fullPath: '/our-work'
+      preLoaderRoute: typeof OurWorkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services': {
+      id: '/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/web-development': {
+      id: '/web-development'
+      path: '/web-development'
+      fullPath: '/web-development'
+      preLoaderRoute: typeof WebDevelopmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/contact': {
+      id: '/api/contact'
+      path: '/api/contact'
+      fullPath: '/api/contact'
+      preLoaderRoute: typeof ApiContactRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/careers/': {
       id: '/careers/'
       path: '/'
       fullPath: '/careers/'
       preLoaderRoute: typeof CareersIndexRouteImport
-      parentRoute: typeof CareersRoute
-    }
-    '/qr/$slug': {
-      id: '/qr/$slug'
-      path: '/qr/$slug'
-      fullPath: '/qr/$slug'
-      preLoaderRoute: typeof QrSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/policies/terms': {
-      id: '/policies/terms'
-      path: '/policies/terms'
-      fullPath: '/policies/terms'
-      preLoaderRoute: typeof PoliciesTermsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/policies/refunds': {
-      id: '/policies/refunds'
-      path: '/policies/refunds'
-      fullPath: '/policies/refunds'
-      preLoaderRoute: typeof PoliciesRefundsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/policies/privacy': {
-      id: '/policies/privacy'
-      path: '/policies/privacy'
-      fullPath: '/policies/privacy'
-      preLoaderRoute: typeof PoliciesPrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/our-work/$slug': {
-      id: '/our-work/$slug'
-      path: '/$slug'
-      fullPath: '/our-work/$slug'
-      preLoaderRoute: typeof OurWorkSlugRouteImport
-      parentRoute: typeof OurWorkRoute
-    }
-    '/locations/kent-wa': {
-      id: '/locations/kent-wa'
-      path: '/locations/kent-wa'
-      fullPath: '/locations/kent-wa'
-      preLoaderRoute: typeof LocationsKentWaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/careers/screening': {
-      id: '/careers/screening'
-      path: '/screening'
-      fullPath: '/careers/screening'
-      preLoaderRoute: typeof CareersScreeningRouteImport
-      parentRoute: typeof CareersRoute
-    }
-    '/careers/assessment': {
-      id: '/careers/assessment'
-      path: '/assessment'
-      fullPath: '/careers/assessment'
-      preLoaderRoute: typeof CareersAssessmentRouteImport
-      parentRoute: typeof CareersRoute
-    }
-    '/careers/apply': {
-      id: '/careers/apply'
-      path: '/apply'
-      fullPath: '/careers/apply'
-      preLoaderRoute: typeof CareersApplyRouteImport
       parentRoute: typeof CareersRoute
     }
     '/careers/$slug': {
@@ -932,165 +869,81 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CareersSlugRouteImport
       parentRoute: typeof CareersRoute
     }
-    '/api/contact': {
-      id: '/api/contact'
-      path: '/api/contact'
-      fullPath: '/api/contact'
-      preLoaderRoute: typeof ApiContactRouteImport
+    '/careers/apply': {
+      id: '/careers/apply'
+      path: '/apply'
+      fullPath: '/careers/apply'
+      preLoaderRoute: typeof CareersApplyRouteImport
+      parentRoute: typeof CareersRoute
+    }
+    '/careers/assessment': {
+      id: '/careers/assessment'
+      path: '/assessment'
+      fullPath: '/careers/assessment'
+      preLoaderRoute: typeof CareersAssessmentRouteImport
+      parentRoute: typeof CareersRoute
+    }
+    '/careers/screening': {
+      id: '/careers/screening'
+      path: '/screening'
+      fullPath: '/careers/screening'
+      preLoaderRoute: typeof CareersScreeningRouteImport
+      parentRoute: typeof CareersRoute
+    }
+    '/locations/kent-wa': {
+      id: '/locations/kent-wa'
+      path: '/locations/kent-wa'
+      fullPath: '/locations/kent-wa'
+      preLoaderRoute: typeof LocationsKentWaRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/landing/fishing-marketing/seattle': {
-      id: '/landing/fishing-marketing/seattle'
-      path: '/landing/fishing-marketing/seattle'
-      fullPath: '/landing/fishing-marketing/seattle'
-      preLoaderRoute: typeof LandingFishingMarketingSeattleRouteImport
+    '/our-work/': {
+      id: '/our-work/'
+      path: '/'
+      fullPath: '/our-work/'
+      preLoaderRoute: typeof OurWorkIndexRouteImport
+      parentRoute: typeof OurWorkRoute
+    }
+    '/our-work/$slug': {
+      id: '/our-work/$slug'
+      path: '/$slug'
+      fullPath: '/our-work/$slug'
+      preLoaderRoute: typeof OurWorkSlugRouteImport
+      parentRoute: typeof OurWorkRoute
+    }
+    '/policies/privacy': {
+      id: '/policies/privacy'
+      path: '/policies/privacy'
+      fullPath: '/policies/privacy'
+      preLoaderRoute: typeof PoliciesPrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/assessment/google-ads/$token': {
-      id: '/assessment/google-ads/$token'
-      path: '/assessment/google-ads/$token'
-      fullPath: '/assessment/google-ads/$token'
-      preLoaderRoute: typeof AssessmentGoogleAdsTokenRouteImport
+    '/policies/refunds': {
+      id: '/policies/refunds'
+      path: '/policies/refunds'
+      fullPath: '/policies/refunds'
+      preLoaderRoute: typeof PoliciesRefundsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/screening/submit': {
-      id: '/api/screening/submit'
-      path: '/api/screening/submit'
-      fullPath: '/api/screening/submit'
-      preLoaderRoute: typeof ApiScreeningSubmitRouteImport
+    '/policies/terms': {
+      id: '/policies/terms'
+      path: '/policies/terms'
+      fullPath: '/policies/terms'
+      preLoaderRoute: typeof PoliciesTermsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/screening/start': {
-      id: '/api/screening/start'
-      path: '/api/screening/start'
-      fullPath: '/api/screening/start'
-      preLoaderRoute: typeof ApiScreeningStartRouteImport
+    '/qr/$slug': {
+      id: '/qr/$slug'
+      path: '/qr/$slug'
+      fullPath: '/qr/$slug'
+      preLoaderRoute: typeof QrSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/screening/decision': {
-      id: '/api/screening/decision'
-      path: '/api/screening/decision'
-      fullPath: '/api/screening/decision'
-      preLoaderRoute: typeof ApiScreeningDecisionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/landing/hvac-plumbing-marketing': {
-      id: '/api/landing/hvac-plumbing-marketing'
-      path: '/api/landing/hvac-plumbing-marketing'
-      fullPath: '/api/landing/hvac-plumbing-marketing'
-      preLoaderRoute: typeof ApiLandingHvacPlumbingMarketingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/landing/google-ads-management': {
-      id: '/api/landing/google-ads-management'
-      path: '/api/landing/google-ads-management'
-      fullPath: '/api/landing/google-ads-management'
-      preLoaderRoute: typeof ApiLandingGoogleAdsManagementRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/landing/fishing-seattle': {
-      id: '/api/landing/fishing-seattle'
-      path: '/api/landing/fishing-seattle'
-      fullPath: '/api/landing/fishing-seattle'
-      preLoaderRoute: typeof ApiLandingFishingSeattleRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/landing/fishing-marine': {
-      id: '/api/landing/fishing-marine'
-      path: '/api/landing/fishing-marine'
-      fullPath: '/api/landing/fishing-marine'
-      preLoaderRoute: typeof ApiLandingFishingMarineRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/hackathon/verify': {
-      id: '/api/hackathon/verify'
-      path: '/api/hackathon/verify'
-      fullPath: '/api/hackathon/verify'
-      preLoaderRoute: typeof ApiHackathonVerifyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/hackathon/unlock': {
-      id: '/api/hackathon/unlock'
-      path: '/api/hackathon/unlock'
-      fullPath: '/api/hackathon/unlock'
-      preLoaderRoute: typeof ApiHackathonUnlockRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/gads/submit': {
-      id: '/api/gads/submit'
-      path: '/api/gads/submit'
-      fullPath: '/api/gads/submit'
-      preLoaderRoute: typeof ApiGadsSubmitRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/gads/state': {
-      id: '/api/gads/state'
-      path: '/api/gads/state'
-      fullPath: '/api/gads/state'
-      preLoaderRoute: typeof ApiGadsStateRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/gads/save': {
-      id: '/api/gads/save'
-      path: '/api/gads/save'
-      fullPath: '/api/gads/save'
-      preLoaderRoute: typeof ApiGadsSaveRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/gads/media-upload': {
-      id: '/api/gads/media-upload'
-      path: '/api/gads/media-upload'
-      fullPath: '/api/gads/media-upload'
-      preLoaderRoute: typeof ApiGadsMediaUploadRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/gads/begin': {
-      id: '/api/gads/begin'
-      path: '/api/gads/begin'
-      fullPath: '/api/gads/begin'
-      preLoaderRoute: typeof ApiGadsBeginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/gads/advance': {
-      id: '/api/gads/advance'
-      path: '/api/gads/advance'
-      fullPath: '/api/gads/advance'
-      preLoaderRoute: typeof ApiGadsAdvanceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/careers/upload': {
-      id: '/api/careers/upload'
-      path: '/api/careers/upload'
-      fullPath: '/api/careers/upload'
-      preLoaderRoute: typeof ApiCareersUploadRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/careers/apply': {
-      id: '/api/careers/apply'
-      path: '/api/careers/apply'
-      fullPath: '/api/careers/apply'
-      preLoaderRoute: typeof ApiCareersApplyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/assessment/submit': {
-      id: '/api/assessment/submit'
-      path: '/api/assessment/submit'
-      fullPath: '/api/assessment/submit'
-      preLoaderRoute: typeof ApiAssessmentSubmitRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/assessment/state': {
-      id: '/api/assessment/state'
-      path: '/api/assessment/state'
-      fullPath: '/api/assessment/state'
-      preLoaderRoute: typeof ApiAssessmentStateRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/assessment/start': {
-      id: '/api/assessment/start'
-      path: '/api/assessment/start'
-      fullPath: '/api/assessment/start'
-      preLoaderRoute: typeof ApiAssessmentStartRouteImport
+    '/api/assessment/recording-upload': {
+      id: '/api/assessment/recording-upload'
+      path: '/api/assessment/recording-upload'
+      fullPath: '/api/assessment/recording-upload'
+      preLoaderRoute: typeof ApiAssessmentRecordingUploadRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/assessment/save': {
@@ -1100,11 +953,158 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAssessmentSaveRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/assessment/recording-upload': {
-      id: '/api/assessment/recording-upload'
-      path: '/api/assessment/recording-upload'
-      fullPath: '/api/assessment/recording-upload'
-      preLoaderRoute: typeof ApiAssessmentRecordingUploadRouteImport
+    '/api/assessment/start': {
+      id: '/api/assessment/start'
+      path: '/api/assessment/start'
+      fullPath: '/api/assessment/start'
+      preLoaderRoute: typeof ApiAssessmentStartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/assessment/state': {
+      id: '/api/assessment/state'
+      path: '/api/assessment/state'
+      fullPath: '/api/assessment/state'
+      preLoaderRoute: typeof ApiAssessmentStateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/assessment/submit': {
+      id: '/api/assessment/submit'
+      path: '/api/assessment/submit'
+      fullPath: '/api/assessment/submit'
+      preLoaderRoute: typeof ApiAssessmentSubmitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/careers/apply': {
+      id: '/api/careers/apply'
+      path: '/api/careers/apply'
+      fullPath: '/api/careers/apply'
+      preLoaderRoute: typeof ApiCareersApplyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/careers/upload': {
+      id: '/api/careers/upload'
+      path: '/api/careers/upload'
+      fullPath: '/api/careers/upload'
+      preLoaderRoute: typeof ApiCareersUploadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/gads/advance': {
+      id: '/api/gads/advance'
+      path: '/api/gads/advance'
+      fullPath: '/api/gads/advance'
+      preLoaderRoute: typeof ApiGadsAdvanceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/gads/begin': {
+      id: '/api/gads/begin'
+      path: '/api/gads/begin'
+      fullPath: '/api/gads/begin'
+      preLoaderRoute: typeof ApiGadsBeginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/gads/media-upload': {
+      id: '/api/gads/media-upload'
+      path: '/api/gads/media-upload'
+      fullPath: '/api/gads/media-upload'
+      preLoaderRoute: typeof ApiGadsMediaUploadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/gads/save': {
+      id: '/api/gads/save'
+      path: '/api/gads/save'
+      fullPath: '/api/gads/save'
+      preLoaderRoute: typeof ApiGadsSaveRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/gads/state': {
+      id: '/api/gads/state'
+      path: '/api/gads/state'
+      fullPath: '/api/gads/state'
+      preLoaderRoute: typeof ApiGadsStateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/gads/submit': {
+      id: '/api/gads/submit'
+      path: '/api/gads/submit'
+      fullPath: '/api/gads/submit'
+      preLoaderRoute: typeof ApiGadsSubmitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/hackathon/unlock': {
+      id: '/api/hackathon/unlock'
+      path: '/api/hackathon/unlock'
+      fullPath: '/api/hackathon/unlock'
+      preLoaderRoute: typeof ApiHackathonUnlockRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/hackathon/verify': {
+      id: '/api/hackathon/verify'
+      path: '/api/hackathon/verify'
+      fullPath: '/api/hackathon/verify'
+      preLoaderRoute: typeof ApiHackathonVerifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/landing/fishing-marine': {
+      id: '/api/landing/fishing-marine'
+      path: '/api/landing/fishing-marine'
+      fullPath: '/api/landing/fishing-marine'
+      preLoaderRoute: typeof ApiLandingFishingMarineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/landing/fishing-seattle': {
+      id: '/api/landing/fishing-seattle'
+      path: '/api/landing/fishing-seattle'
+      fullPath: '/api/landing/fishing-seattle'
+      preLoaderRoute: typeof ApiLandingFishingSeattleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/landing/google-ads-management': {
+      id: '/api/landing/google-ads-management'
+      path: '/api/landing/google-ads-management'
+      fullPath: '/api/landing/google-ads-management'
+      preLoaderRoute: typeof ApiLandingGoogleAdsManagementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/landing/hvac-plumbing-marketing': {
+      id: '/api/landing/hvac-plumbing-marketing'
+      path: '/api/landing/hvac-plumbing-marketing'
+      fullPath: '/api/landing/hvac-plumbing-marketing'
+      preLoaderRoute: typeof ApiLandingHvacPlumbingMarketingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/screening/decision': {
+      id: '/api/screening/decision'
+      path: '/api/screening/decision'
+      fullPath: '/api/screening/decision'
+      preLoaderRoute: typeof ApiScreeningDecisionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/screening/start': {
+      id: '/api/screening/start'
+      path: '/api/screening/start'
+      fullPath: '/api/screening/start'
+      preLoaderRoute: typeof ApiScreeningStartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/screening/submit': {
+      id: '/api/screening/submit'
+      path: '/api/screening/submit'
+      fullPath: '/api/screening/submit'
+      preLoaderRoute: typeof ApiScreeningSubmitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/assessment/google-ads/$token': {
+      id: '/assessment/google-ads/$token'
+      path: '/assessment/google-ads/$token'
+      fullPath: '/assessment/google-ads/$token'
+      preLoaderRoute: typeof AssessmentGoogleAdsTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/landing/fishing-marketing/seattle': {
+      id: '/landing/fishing-marketing/seattle'
+      path: '/landing/fishing-marketing/seattle'
+      fullPath: '/landing/fishing-marketing/seattle'
+      preLoaderRoute: typeof LandingFishingMarketingSeattleRouteImport
       parentRoute: typeof rootRouteImport
     }
   }

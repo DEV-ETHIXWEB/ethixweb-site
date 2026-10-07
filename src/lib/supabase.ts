@@ -22,13 +22,7 @@ export function getSupabase(): SupabaseClient {
 }
 
 export type ScreeningStatus =
-  | "pending"
-  | "in_progress"
-  | "submitted"
-  | "scored"
-  | "approved"
-  | "rejected"
-  | "expired";
+  "pending" | "in_progress" | "submitted" | "scored" | "approved" | "rejected" | "expired";
 
 export interface ScreeningQuestion {
   id: string;

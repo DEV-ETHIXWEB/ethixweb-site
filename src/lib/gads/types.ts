@@ -218,10 +218,7 @@ export interface GadsScores {
 export type GadsStatus = "pending" | "in_progress" | "submitted" | "scored" | "expired";
 export type GadsSubmitReason = "manual" | "timer" | "violations" | "auto_expired";
 export type GadsRecommendation =
-  | "highly_recommended"
-  | "recommended"
-  | "borderline"
-  | "not_recommended";
+  "highly_recommended" | "recommended" | "borderline" | "not_recommended";
 
 export const GADS_RECOMMENDATION_LABELS: Record<GadsRecommendation, string> = {
   highly_recommended: "Highly Recommended",
