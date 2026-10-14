@@ -229,8 +229,7 @@ export const PREVENTIVE_HOME_SOLUTIONS: CaseStudyDetail = {
     primaryCta: { label: "Start a Project", href: "/contact" },
     secondaryCta: {
       label: "Book a Free Discovery Call",
-      href: "https://calendly.com/ethixweb-agency/30min?month=2026-06",
-      external: true,
+      href: "/contact",
     },
   },
 };

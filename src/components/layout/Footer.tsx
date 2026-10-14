@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Logo } from "@/components/layout/Logo";
 import { Container } from "@/components/shared/Container";
-import { ArrowUpRight, Mail, Clock, Building2 } from "lucide-react";
+import { Mail, Clock, Building2 } from "lucide-react";
 import { SignalTrace } from "@/components/layout/SignalTrace";
 import spiderweb from "@/assets/spiderweb.svg";
 
@@ -177,15 +177,6 @@ export function Footer() {
               Ethixweb USA LLC | Registered in Wyoming, United States
             </p>
           </div>
-          <a
-            href="https://calendly.com/ethixweb-agency/30min?month=2026-06"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group relative z-10 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded"
-          >
-            Book an appointment{" "}
-            <ArrowUpRight className="h-4 w-4 transition-transform group-hover:rotate-45" />
-          </a>
         </div>
       </Container>
     </footer>
