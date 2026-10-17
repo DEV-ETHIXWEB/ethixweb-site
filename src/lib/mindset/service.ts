@@ -84,12 +84,28 @@ export async function beginMindsetAssessment(input: BeginInput): Promise<BeginRe
   const prior = await getMindsetStore().findByEmail(email, DEDUP_LOOKBACK);
 
   for (const row of prior) {
-    if (row.status === "submitted" || row.status === "scored") {
+    if (row.status === "submitted" || row.status === "scored" || row.status === "expired") {
       return { ok: false, reason: "already_completed" };
     }
-    if (row.status === "in_progress" && Date.now() < new Date(row.expires_at).getTime()) {
+    if (row.status !== "in_progress") continue;
+
+    if (Date.now() < new Date(row.expires_at).getTime()) {
       return { ok: false, reason: "in_progress_elsewhere" };
     }
+
+    // The clock ran out on an attempt nobody finished. Starting over would
+    // hand them a second sitting having already read all 35 questions, which
+    // is exactly what "one attempt" is supposed to prevent. Finalize what
+    // they did answer instead, so the attempt is scored and reported like
+    // any other, then refuse the retry. Without this an abandoned exam would
+    // also never reach the recruiter at all: nothing else finalizes a row
+    // whose candidate simply closed the tab.
+    try {
+      await finalizeMindsetAssessment({ row, reason: "auto_expired" });
+    } catch (err) {
+      console.error("[mindset] finalizing an abandoned attempt failed:", err);
+    }
+    return { ok: false, reason: "already_completed" };
   }
 
   const questions = buildMindsetExam();
