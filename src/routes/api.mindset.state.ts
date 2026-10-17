@@ -24,7 +24,7 @@ export const Route = createFileRoute("/api/mindset/state")({
         const guard = await guardRequest(
           request,
           `mindset-state:${clientIp(request)}`,
-          60,
+          300,
           10 * 60 * 1000,
         );
         if (guard) return guard;

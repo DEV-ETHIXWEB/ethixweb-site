@@ -22,10 +22,14 @@ export const Route = createFileRoute("/api/mindset/begin")({
   server: {
     handlers: {
       POST: async ({ request }) => {
+        // Per IP, so it has to allow a whole batch starting together from one
+        // shared network (a college lab, an office) rather than one person.
+        // Starting an exam is already bounded by the one-attempt-per-email
+        // check below, which is the real guard; this only stops a flood.
         const guard = await guardRequest(
           request,
           `mindset-begin:${clientIp(request)}`,
-          5,
+          60,
           10 * 60 * 1000,
         );
         if (guard) return guard;

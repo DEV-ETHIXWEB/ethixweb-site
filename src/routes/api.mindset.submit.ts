@@ -25,7 +25,7 @@ export const Route = createFileRoute("/api/mindset/submit")({
         const guard = await guardRequest(
           request,
           `mindset-submit:${clientIp(request)}`,
-          10,
+          100,
           10 * 60 * 1000,
         );
         if (guard) return guard;

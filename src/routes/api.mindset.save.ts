@@ -50,10 +50,19 @@ export const Route = createFileRoute("/api/mindset/save")({
   server: {
     handlers: {
       POST: async ({ request }) => {
+        // By far the busiest endpoint: the client autosaves every 5s, so a
+        // single 15 minute sitting costs roughly 180 calls on its own. The
+        // limit has to be sized per BATCH, not per candidate, because a
+        // college lab or an office all share one public IP: at the original
+        // 400 the third candidate on a shared network was locked out
+        // mid-exam. 12000 covers ~50 simultaneous sittings with headroom for
+        // the client's retries, and still stops a runaway script. The real
+        // protection against abuse is the session token and the one-attempt
+        // email check, not this.
         const guard = await guardRequest(
           request,
           `mindset-save:${clientIp(request)}`,
-          400,
+          12000,
           10 * 60 * 1000,
         );
         if (guard) return guard;

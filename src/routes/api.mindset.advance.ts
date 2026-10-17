@@ -37,7 +37,7 @@ export const Route = createFileRoute("/api/mindset/advance")({
         const guard = await guardRequest(
           request,
           `mindset-advance:${clientIp(request)}`,
-          200,
+          3000,
           10 * 60 * 1000,
         );
         if (guard) return guard;
