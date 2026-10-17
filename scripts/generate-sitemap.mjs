@@ -83,6 +83,7 @@ const EXCLUDED = {
   "careers.assessment.tsx": "noindex",
   "not-hiring.tsx": "noindex",
   "assessment.google-ads.$token.tsx": "private single-use exam link, noindex",
+  "assessment.mindset.tsx": "candidate exam, one attempt per person, noindex",
   "qr.$slug.ts": "QR redirect endpoint",
   "hackathon.tsx": "temporary event page",
 };
