@@ -135,12 +135,28 @@ export function getMindsetStore(): MindsetStore {
   if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
     return supabaseStore;
   }
+
+  // On a serverless host the in-memory store is not a degraded mode, it is
+  // silent data loss: each request can land on a different instance, so a
+  // candidate's exam vanishes partway through and the row that should have
+  // been emailed and scored never existed. Worse, it looks fine until
+  // someone is 30 questions deep. Fail loudly at the first call instead.
+  // `VERCEL` is set on every Vercel deployment, including previews.
+  if (process.env.VERCEL) {
+    throw new Error(
+      "[mindset-store] SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are not set on this " +
+        "deployment. Refusing to run the assessment on the in-memory store, which loses " +
+        "candidate answers between requests. Set both in the Vercel project's environment " +
+        "variables and redeploy.",
+    );
+  }
+
   usingMemoryStore = true;
   if (!warnedOnce) {
     warnedOnce = true;
     console.warn(
       "[mindset-store] SUPABASE_URL is not configured - running the mindset assessment on an " +
-        "in-memory store (resets on every restart, not for real use).",
+        "in-memory store (resets on every restart, local development only).",
     );
   }
   return inMemoryStore;

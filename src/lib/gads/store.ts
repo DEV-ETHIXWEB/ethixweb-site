@@ -186,6 +186,19 @@ export function getGadsStore(): GadsStore {
   if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
     cachedStore = supabaseStore;
   } else {
+    // Never on a deployed host. Two reasons, either of them sufficient: the
+    // in-memory store loses a candidate's exam between requests because each
+    // one can hit a different instance, and seedDevRows() would publish the
+    // fixed DEV_TOKEN/AKASH_DEV_TOKEN links as live, working exams that
+    // anyone could guess. `VERCEL` is set on every Vercel deployment.
+    if (process.env.VERCEL) {
+      throw new Error(
+        "[gads-store] SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are not set on this " +
+          "deployment. Refusing to fall back to the in-memory store, which would lose exam " +
+          "answers between requests and expose the hardcoded dev tokens as live links. Set " +
+          "both in the Vercel project's environment variables and redeploy.",
+      );
+    }
     usingMemoryStore = true;
     seedDevRows();
     cachedStore = inMemoryStore;
