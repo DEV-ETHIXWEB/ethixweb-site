@@ -926,6 +926,103 @@ html.dark {
     background: linear-gradient(180deg, transparent, rgba(192, 39, 45, 0.35), transparent);
   }
 
+  /* ── /assessment/mindset exam room ──────────────────────────────────────
+     The exam is laid out as two facing surfaces, the way a candidate sits a
+     paper exam: question booklet on the left, answer sheet on the right.
+     The left surface is lifted a shade so it reads as the page being read
+     from, the right sits back so the filled option slot is the brightest
+     thing on it. The hairline between them is the gutter of the open
+     booklet, carried in CSS rather than as a border utility so it can fade
+     at both ends instead of hitting the chrome. ── */
+  .exam-panel-left {
+    position: relative;
+    background:
+      radial-gradient(ellipse 80% 55% at 12% 0%, rgba(138, 24, 28, 0.1), transparent 70%),
+      linear-gradient(180deg, rgba(24, 15, 15, 0.72), rgba(12, 13, 16, 0.4));
+  }
+  .exam-panel-left::after {
+    content: "";
+    position: absolute;
+    inset-block: 12%;
+    inset-inline-end: 0;
+    width: 1px;
+    background: linear-gradient(
+      180deg,
+      transparent,
+      rgba(255, 255, 255, 0.12) 22%,
+      rgba(255, 255, 255, 0.12) 78%,
+      transparent
+    );
+  }
+  @media (width < 64rem) {
+    .exam-panel-left::after {
+      display: none;
+    }
+  }
+
+  .exam-panel-right {
+    background: linear-gradient(180deg, rgba(12, 13, 16, 0.6), rgba(16, 15, 24, 0.75));
+  }
+
+  /* A selected option slot gets a solid rule down its leading edge, the
+     pen stroke on an answer sheet. Drawn as a pseudo-element so it can sit
+     flush inside the rounded corner without a second border. */
+  .option-slot {
+    position: relative;
+    overflow: hidden;
+  }
+  .option-slot[aria-checked="true"]::before {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: 3px;
+    background: var(--primary);
+  }
+
+  .light .exam-panel-left {
+    background:
+      radial-gradient(ellipse 80% 55% at 12% 0%, rgba(192, 39, 45, 0.07), transparent 70%),
+      linear-gradient(180deg, #ffffff, #fbf7f6);
+  }
+  .light .exam-panel-left::after {
+    background: linear-gradient(
+      180deg,
+      transparent,
+      rgba(0, 0, 0, 0.1) 22%,
+      rgba(0, 0, 0, 0.1) 78%,
+      transparent
+    );
+  }
+  .light .exam-panel-right {
+    background: linear-gradient(180deg, #fdfbfa, #f6f2f0);
+  }
+
+  /* The shared form input sits on page backgrounds, not on the exam's own
+     darker right-hand surface, where it loses almost all presence. This
+     lifts just the exam's fields back to a readable edge without touching
+     the site-wide input style. */
+  .exam-field {
+    background: rgba(255, 255, 255, 0.035);
+    border-color: rgba(255, 255, 255, 0.14);
+  }
+  .exam-field:hover {
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+  .light .exam-field {
+    background: #ffffff;
+    border-color: rgba(0, 0, 0, 0.14);
+  }
+
+  /* The countdown pulses only as a last-minute signal, and never for anyone
+     who has asked the system to stop moving things. */
+  @media (prefers-reduced-motion: reduce) {
+    .exam-root .animate-pulse,
+    .exam-root .animate-spin {
+      animation: none;
+    }
+  }
+
   /* ── Mission console (code entry + registration) ─────────────────────────
      A wide, full-bleed terminal/vault panel replacing two separate narrow
      stacked cards. The blinking cursor and divider glow are pure CSS so the

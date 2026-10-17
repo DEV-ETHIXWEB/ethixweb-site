@@ -27,6 +27,7 @@ import { Route as OurWorkRouteImport } from './routes/our-work'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as WebDevelopmentRouteImport } from './routes/web-development'
 import { Route as ApiContactRouteImport } from './routes/api.contact'
+import { Route as AssessmentMindsetRouteImport } from './routes/assessment.mindset'
 import { Route as CareersIndexRouteImport } from './routes/careers.index'
 import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
 import { Route as CareersApplyRouteImport } from './routes/careers.apply'
@@ -58,6 +59,11 @@ import { Route as ApiLandingFishingMarineRouteImport } from './routes/api.landin
 import { Route as ApiLandingFishingSeattleRouteImport } from './routes/api.landing.fishing-seattle'
 import { Route as ApiLandingGoogleAdsManagementRouteImport } from './routes/api.landing.google-ads-management'
 import { Route as ApiLandingHvacPlumbingMarketingRouteImport } from './routes/api.landing.hvac-plumbing-marketing'
+import { Route as ApiMindsetAdvanceRouteImport } from './routes/api.mindset.advance'
+import { Route as ApiMindsetBeginRouteImport } from './routes/api.mindset.begin'
+import { Route as ApiMindsetSaveRouteImport } from './routes/api.mindset.save'
+import { Route as ApiMindsetStateRouteImport } from './routes/api.mindset.state'
+import { Route as ApiMindsetSubmitRouteImport } from './routes/api.mindset.submit'
 import { Route as ApiScreeningDecisionRouteImport } from './routes/api.screening.decision'
 import { Route as ApiScreeningStartRouteImport } from './routes/api.screening.start'
 import { Route as ApiScreeningSubmitRouteImport } from './routes/api.screening.submit'
@@ -152,6 +158,11 @@ const WebDevelopmentRoute = WebDevelopmentRouteImport.update({
 const ApiContactRoute = ApiContactRouteImport.update({
   id: '/api/contact',
   path: '/api/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AssessmentMindsetRoute = AssessmentMindsetRouteImport.update({
+  id: '/assessment/mindset',
+  path: '/assessment/mindset',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CareersIndexRoute = CareersIndexRouteImport.update({
@@ -313,6 +324,31 @@ const ApiLandingHvacPlumbingMarketingRoute =
     path: '/api/landing/hvac-plumbing-marketing',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiMindsetAdvanceRoute = ApiMindsetAdvanceRouteImport.update({
+  id: '/api/mindset/advance',
+  path: '/api/mindset/advance',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiMindsetBeginRoute = ApiMindsetBeginRouteImport.update({
+  id: '/api/mindset/begin',
+  path: '/api/mindset/begin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiMindsetSaveRoute = ApiMindsetSaveRouteImport.update({
+  id: '/api/mindset/save',
+  path: '/api/mindset/save',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiMindsetStateRoute = ApiMindsetStateRouteImport.update({
+  id: '/api/mindset/state',
+  path: '/api/mindset/state',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiMindsetSubmitRoute = ApiMindsetSubmitRouteImport.update({
+  id: '/api/mindset/submit',
+  path: '/api/mindset/submit',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiScreeningDecisionRoute = ApiScreeningDecisionRouteImport.update({
   id: '/api/screening/decision',
   path: '/api/screening/decision',
@@ -360,6 +396,7 @@ export interface FileRoutesByFullPath {
   '/services': typeof ServicesRoute
   '/web-development': typeof WebDevelopmentRoute
   '/api/contact': typeof ApiContactRoute
+  '/assessment/mindset': typeof AssessmentMindsetRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/careers/apply': typeof CareersApplyRoute
   '/careers/assessment': typeof CareersAssessmentRoute
@@ -391,6 +428,11 @@ export interface FileRoutesByFullPath {
   '/api/landing/fishing-seattle': typeof ApiLandingFishingSeattleRoute
   '/api/landing/google-ads-management': typeof ApiLandingGoogleAdsManagementRoute
   '/api/landing/hvac-plumbing-marketing': typeof ApiLandingHvacPlumbingMarketingRoute
+  '/api/mindset/advance': typeof ApiMindsetAdvanceRoute
+  '/api/mindset/begin': typeof ApiMindsetBeginRoute
+  '/api/mindset/save': typeof ApiMindsetSaveRoute
+  '/api/mindset/state': typeof ApiMindsetStateRoute
+  '/api/mindset/submit': typeof ApiMindsetSubmitRoute
   '/api/screening/decision': typeof ApiScreeningDecisionRoute
   '/api/screening/start': typeof ApiScreeningStartRoute
   '/api/screening/submit': typeof ApiScreeningSubmitRoute
@@ -414,6 +456,7 @@ export interface FileRoutesByTo {
   '/services': typeof ServicesRoute
   '/web-development': typeof WebDevelopmentRoute
   '/api/contact': typeof ApiContactRoute
+  '/assessment/mindset': typeof AssessmentMindsetRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/careers/apply': typeof CareersApplyRoute
   '/careers/assessment': typeof CareersAssessmentRoute
@@ -445,6 +488,11 @@ export interface FileRoutesByTo {
   '/api/landing/fishing-seattle': typeof ApiLandingFishingSeattleRoute
   '/api/landing/google-ads-management': typeof ApiLandingGoogleAdsManagementRoute
   '/api/landing/hvac-plumbing-marketing': typeof ApiLandingHvacPlumbingMarketingRoute
+  '/api/mindset/advance': typeof ApiMindsetAdvanceRoute
+  '/api/mindset/begin': typeof ApiMindsetBeginRoute
+  '/api/mindset/save': typeof ApiMindsetSaveRoute
+  '/api/mindset/state': typeof ApiMindsetStateRoute
+  '/api/mindset/submit': typeof ApiMindsetSubmitRoute
   '/api/screening/decision': typeof ApiScreeningDecisionRoute
   '/api/screening/start': typeof ApiScreeningStartRoute
   '/api/screening/submit': typeof ApiScreeningSubmitRoute
@@ -471,6 +519,7 @@ export interface FileRoutesById {
   '/services': typeof ServicesRoute
   '/web-development': typeof WebDevelopmentRoute
   '/api/contact': typeof ApiContactRoute
+  '/assessment/mindset': typeof AssessmentMindsetRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/careers/apply': typeof CareersApplyRoute
   '/careers/assessment': typeof CareersAssessmentRoute
@@ -502,6 +551,11 @@ export interface FileRoutesById {
   '/api/landing/fishing-seattle': typeof ApiLandingFishingSeattleRoute
   '/api/landing/google-ads-management': typeof ApiLandingGoogleAdsManagementRoute
   '/api/landing/hvac-plumbing-marketing': typeof ApiLandingHvacPlumbingMarketingRoute
+  '/api/mindset/advance': typeof ApiMindsetAdvanceRoute
+  '/api/mindset/begin': typeof ApiMindsetBeginRoute
+  '/api/mindset/save': typeof ApiMindsetSaveRoute
+  '/api/mindset/state': typeof ApiMindsetStateRoute
+  '/api/mindset/submit': typeof ApiMindsetSubmitRoute
   '/api/screening/decision': typeof ApiScreeningDecisionRoute
   '/api/screening/start': typeof ApiScreeningStartRoute
   '/api/screening/submit': typeof ApiScreeningSubmitRoute
@@ -529,6 +583,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/web-development'
     | '/api/contact'
+    | '/assessment/mindset'
     | '/careers/$slug'
     | '/careers/apply'
     | '/careers/assessment'
@@ -560,6 +615,11 @@ export interface FileRouteTypes {
     | '/api/landing/fishing-seattle'
     | '/api/landing/google-ads-management'
     | '/api/landing/hvac-plumbing-marketing'
+    | '/api/mindset/advance'
+    | '/api/mindset/begin'
+    | '/api/mindset/save'
+    | '/api/mindset/state'
+    | '/api/mindset/submit'
     | '/api/screening/decision'
     | '/api/screening/start'
     | '/api/screening/submit'
@@ -583,6 +643,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/web-development'
     | '/api/contact'
+    | '/assessment/mindset'
     | '/careers/$slug'
     | '/careers/apply'
     | '/careers/assessment'
@@ -614,6 +675,11 @@ export interface FileRouteTypes {
     | '/api/landing/fishing-seattle'
     | '/api/landing/google-ads-management'
     | '/api/landing/hvac-plumbing-marketing'
+    | '/api/mindset/advance'
+    | '/api/mindset/begin'
+    | '/api/mindset/save'
+    | '/api/mindset/state'
+    | '/api/mindset/submit'
     | '/api/screening/decision'
     | '/api/screening/start'
     | '/api/screening/submit'
@@ -639,6 +705,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/web-development'
     | '/api/contact'
+    | '/assessment/mindset'
     | '/careers/$slug'
     | '/careers/apply'
     | '/careers/assessment'
@@ -670,6 +737,11 @@ export interface FileRouteTypes {
     | '/api/landing/fishing-seattle'
     | '/api/landing/google-ads-management'
     | '/api/landing/hvac-plumbing-marketing'
+    | '/api/mindset/advance'
+    | '/api/mindset/begin'
+    | '/api/mindset/save'
+    | '/api/mindset/state'
+    | '/api/mindset/submit'
     | '/api/screening/decision'
     | '/api/screening/start'
     | '/api/screening/submit'
@@ -696,6 +768,7 @@ export interface RootRouteChildren {
   ServicesRoute: typeof ServicesRoute
   WebDevelopmentRoute: typeof WebDevelopmentRoute
   ApiContactRoute: typeof ApiContactRoute
+  AssessmentMindsetRoute: typeof AssessmentMindsetRoute
   LocationsKentWaRoute: typeof LocationsKentWaRoute
   PoliciesPrivacyRoute: typeof PoliciesPrivacyRoute
   PoliciesRefundsRoute: typeof PoliciesRefundsRoute
@@ -720,6 +793,11 @@ export interface RootRouteChildren {
   ApiLandingFishingSeattleRoute: typeof ApiLandingFishingSeattleRoute
   ApiLandingGoogleAdsManagementRoute: typeof ApiLandingGoogleAdsManagementRoute
   ApiLandingHvacPlumbingMarketingRoute: typeof ApiLandingHvacPlumbingMarketingRoute
+  ApiMindsetAdvanceRoute: typeof ApiMindsetAdvanceRoute
+  ApiMindsetBeginRoute: typeof ApiMindsetBeginRoute
+  ApiMindsetSaveRoute: typeof ApiMindsetSaveRoute
+  ApiMindsetStateRoute: typeof ApiMindsetStateRoute
+  ApiMindsetSubmitRoute: typeof ApiMindsetSubmitRoute
   ApiScreeningDecisionRoute: typeof ApiScreeningDecisionRoute
   ApiScreeningStartRoute: typeof ApiScreeningStartRoute
   ApiScreeningSubmitRoute: typeof ApiScreeningSubmitRoute
@@ -853,6 +931,13 @@ declare module '@tanstack/react-router' {
       path: '/api/contact'
       fullPath: '/api/contact'
       preLoaderRoute: typeof ApiContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/assessment/mindset': {
+      id: '/assessment/mindset'
+      path: '/assessment/mindset'
+      fullPath: '/assessment/mindset'
+      preLoaderRoute: typeof AssessmentMindsetRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/careers/': {
@@ -1072,6 +1157,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiLandingHvacPlumbingMarketingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/mindset/advance': {
+      id: '/api/mindset/advance'
+      path: '/api/mindset/advance'
+      fullPath: '/api/mindset/advance'
+      preLoaderRoute: typeof ApiMindsetAdvanceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/mindset/begin': {
+      id: '/api/mindset/begin'
+      path: '/api/mindset/begin'
+      fullPath: '/api/mindset/begin'
+      preLoaderRoute: typeof ApiMindsetBeginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/mindset/save': {
+      id: '/api/mindset/save'
+      path: '/api/mindset/save'
+      fullPath: '/api/mindset/save'
+      preLoaderRoute: typeof ApiMindsetSaveRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/mindset/state': {
+      id: '/api/mindset/state'
+      path: '/api/mindset/state'
+      fullPath: '/api/mindset/state'
+      preLoaderRoute: typeof ApiMindsetStateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/mindset/submit': {
+      id: '/api/mindset/submit'
+      path: '/api/mindset/submit'
+      fullPath: '/api/mindset/submit'
+      preLoaderRoute: typeof ApiMindsetSubmitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/screening/decision': {
       id: '/api/screening/decision'
       path: '/api/screening/decision'
@@ -1161,6 +1281,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesRoute: ServicesRoute,
   WebDevelopmentRoute: WebDevelopmentRoute,
   ApiContactRoute: ApiContactRoute,
+  AssessmentMindsetRoute: AssessmentMindsetRoute,
   LocationsKentWaRoute: LocationsKentWaRoute,
   PoliciesPrivacyRoute: PoliciesPrivacyRoute,
   PoliciesRefundsRoute: PoliciesRefundsRoute,
@@ -1185,6 +1306,11 @@ const rootRouteChildren: RootRouteChildren = {
   ApiLandingFishingSeattleRoute: ApiLandingFishingSeattleRoute,
   ApiLandingGoogleAdsManagementRoute: ApiLandingGoogleAdsManagementRoute,
   ApiLandingHvacPlumbingMarketingRoute: ApiLandingHvacPlumbingMarketingRoute,
+  ApiMindsetAdvanceRoute: ApiMindsetAdvanceRoute,
+  ApiMindsetBeginRoute: ApiMindsetBeginRoute,
+  ApiMindsetSaveRoute: ApiMindsetSaveRoute,
+  ApiMindsetStateRoute: ApiMindsetStateRoute,
+  ApiMindsetSubmitRoute: ApiMindsetSubmitRoute,
   ApiScreeningDecisionRoute: ApiScreeningDecisionRoute,
   ApiScreeningStartRoute: ApiScreeningStartRoute,
   ApiScreeningSubmitRoute: ApiScreeningSubmitRoute,
