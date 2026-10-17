@@ -1,127 +1,115 @@
 import type { AuthoredMindsetQuestion } from "@/lib/mindset/questions/shared";
 
-// Section 1 - Agreement statements, answered on a five point scale. Twenty
-// statements, two per trait category.
+// Section 1 - Agreement statements, answered on a five point slider.
 //
-// Every category carries one statement where agreeing is the strong signal
-// and one where agreeing is the weak one. That is deliberate: a candidate
-// who slides everything to "Strongly agree" without reading scores around
-// the middle rather than perfectly, so straight-lining shows up as a flat
-// middling result instead of a great one. It also keeps the scale honest
-// for people who genuinely do agree with most of it.
+// Written to be read once, at speed, by someone whose English may be their
+// second language: short sentences, everyday words, no idioms, one idea per
+// statement. The `hint` under each one restates the situation concretely,
+// because a candidate who has to re-read a question is spending their clock
+// on comprehension rather than on an honest answer.
 //
-// AGREE_GOOD / AGREE_BAD are the two weight runs, mapped against
-// LIKERT_LABELS (Strongly disagree first, Strongly agree last).
+// Mixed direction on purpose. Six statements score well when you agree,
+// seven when you disagree, so sliding everything to "Strongly agree"
+// without reading lands near the middle instead of near full marks.
+// Straight-lining therefore shows up as a flat, average result.
 
 /** Agreeing is the strong fit signal. */
 const AGREE_GOOD = [0, 1, 2, 3, 4];
 /** Reverse scored: agreeing is the weak fit signal. */
 const AGREE_BAD = [4, 3, 2, 1, 0];
 
-function statement(category: string, question: string, weights: number[]): AuthoredMindsetQuestion {
-  return { mechanic: "likert", category, question, options: [], weights };
+function statement(
+  category: string,
+  question: string,
+  hint: string,
+  weights: number[],
+): AuthoredMindsetQuestion {
+  return { mechanic: "likert", category, question, hint, options: [], weights };
 }
 
 export const LIKERT_QUESTIONS: AuthoredMindsetQuestion[] = [
   statement(
     "money_vs_mission",
-    "A bigger paycheck matters more to me than what I actually work on.",
+    "A bigger salary matters more to me than the kind of work I do.",
+    "Example: a boring job that pays more, or an interesting one that pays less.",
     AGREE_BAD,
-  ),
-  statement(
-    "money_vs_mission",
-    "I would pick work I find genuinely interesting over an easier job that paid the same.",
-    AGREE_GOOD,
   ),
 
   statement(
     "ownership_followthrough",
-    "If I say I will finish something by a certain time, I finish it, even when nobody is checking.",
+    "If I promise to finish something by a certain time, I finish it, even when nobody checks.",
+    "Nobody is watching and nobody would know. Do you still finish it?",
     AGREE_GOOD,
   ),
   statement(
     "ownership_followthrough",
-    "When a task turns out to be boring, I tend to lose momentum on it.",
+    "When a task becomes boring, I slow down and lose interest.",
+    "Think about what actually happens to you halfway through dull work.",
     AGREE_BAD,
   ),
 
-  statement(
-    "openness_other_roles",
-    "I would take a different role than the one I applied for if it was a genuine way in.",
-    AGREE_GOOD,
-  ),
-  statement(
-    "openness_other_roles",
-    "I would rather wait for the exact job title I want than start somewhere close to it.",
-    AGREE_BAD,
-  ),
-
-  statement("relocation_delhi", "I am ready to relocate to Delhi for the right role.", AGREE_GOOD),
   statement(
     "relocation_delhi",
-    "Moving to another city for a job is something I would avoid.",
+    "I am ready to move to Delhi for the right job.",
+    "This job is based in Delhi.",
+    AGREE_GOOD,
+  ),
+  statement(
+    "relocation_delhi",
+    "I would avoid moving to another city for a job.",
+    "Leaving your current city, family and friends for work.",
+    AGREE_BAD,
+  ),
+
+  statement(
+    "openness_other_roles",
+    "I would take a different role from the one I applied for, if it was a real way to get started.",
+    "Example: starting in testing or support instead of coding.",
+    AGREE_GOOD,
+  ),
+  statement(
+    "openness_other_roles",
+    "I would rather wait for the exact job title I want than start in a similar role.",
+    "Would you say no to a close-enough job to hold out for the perfect one?",
     AGREE_BAD,
   ),
 
   statement(
     "curiosity_self_learning",
-    "I regularly learn technical things on my own, without being told to.",
+    "I often learn new technical things on my own, without being asked.",
+    "Tutorials, side projects, or reading documentation in your own time.",
     AGREE_GOOD,
   ),
-  statement(
-    "curiosity_self_learning",
-    "When something unfamiliar comes up, I would rather have it explained to me than work it out myself.",
-    AGREE_BAD,
-  ),
-
-  statement(
-    "failure_feedback",
-    "When my work is criticised, I want to understand exactly why before I change it.",
-    AGREE_GOOD,
-  ),
-  statement("failure_feedback", "Blunt feedback on my work puts me off for a while.", AGREE_BAD),
 
   statement(
     "deadline_procrastination",
-    "When I am running behind, I say so early rather than hoping to quietly catch up.",
+    "When I am running late on work, I tell someone early instead of quietly hoping to catch up.",
+    "You know on Tuesday that Friday is at risk. Do you say so on Tuesday?",
     AGREE_GOOD,
   ),
   statement(
     "deadline_procrastination",
     "Work left over at the end of the day can usually wait until I feel like doing it.",
-    AGREE_BAD,
-  ),
-
-  statement(
-    "team_vs_solo",
-    "I ask for help once I have genuinely tried, rather than staying stuck on my own.",
-    AGREE_GOOD,
-  ),
-  statement(
-    "team_vs_solo",
-    "I would rather work alone than have to coordinate with other people.",
-    AGREE_BAD,
-  ),
-
-  statement(
-    "long_term_commitment",
-    "I am looking for somewhere to build a career, not just the next job.",
-    AGREE_GOOD,
-  ),
-  statement(
-    "long_term_commitment",
-    "I would leave a job quickly if a slightly better offer appeared.",
+    "It is 6pm and something is unfinished. Does it wait?",
     AGREE_BAD,
   ),
 
   statement(
     "honesty_self_awareness",
     "I say when I do not know something, straight away.",
+    "In a meeting, someone asks you something you genuinely do not know.",
     AGREE_GOOD,
   ),
   statement(
-    "honesty_self_awareness",
-    "If I made a mistake that nobody would ever notice, I would keep it to myself.",
+    "long_term_commitment",
+    "I would leave a job quickly if I got a slightly better offer.",
+    "A small pay rise somewhere else, three months in. Do you go?",
+    AGREE_BAD,
+  ),
+  statement(
+    "team_vs_solo",
+    "I would rather work alone than work closely with other people.",
+    "Your honest preference, not what sounds good in an interview.",
     AGREE_BAD,
   ),
 ];

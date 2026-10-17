@@ -141,8 +141,11 @@ export function getMindsetStore(): MindsetStore {
   // candidate's exam vanishes partway through and the row that should have
   // been emailed and scored never existed. Worse, it looks fine until
   // someone is 30 questions deep. Fail loudly at the first call instead.
-  // `VERCEL` is set on every Vercel deployment, including previews.
-  if (process.env.VERCEL) {
+  // VERCEL_ENV is "production" or "preview" on a real deployment and
+  // "development" under local `vercel dev`, which is the one case where the
+  // in-memory store is the point rather than a hazard.
+  const deployed = process.env.VERCEL_ENV === "production" || process.env.VERCEL_ENV === "preview";
+  if (deployed) {
     throw new Error(
       "[mindset-store] SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are not set on this " +
         "deployment. Refusing to run the assessment on the in-memory store, which loses " +

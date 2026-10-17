@@ -561,7 +561,7 @@ function QuestionRunner({
   }, [onAdvance]);
 
   // Keyboard control, the way real exam software works: 1 to 5 on the
-  // agreement scale, A to D on a scenario, Enter to move on. Arrow keys
+  // agreement scale, A to D on any choice question, Enter to move on. Arrow keys
   // nudge along the scale, which is what anyone who has used a slider
   // expects. Skipped entirely on written questions, where every one of
   // those keys belongs to the textarea.

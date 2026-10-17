@@ -190,8 +190,11 @@ export function getGadsStore(): GadsStore {
     // in-memory store loses a candidate's exam between requests because each
     // one can hit a different instance, and seedDevRows() would publish the
     // fixed DEV_TOKEN/AKASH_DEV_TOKEN links as live, working exams that
-    // anyone could guess. `VERCEL` is set on every Vercel deployment.
-    if (process.env.VERCEL) {
+    // anyone could guess. VERCEL_ENV is "production"/"preview" on a real
+    // deployment and "development" under local `vercel dev`.
+    const deployed =
+      process.env.VERCEL_ENV === "production" || process.env.VERCEL_ENV === "preview";
+    if (deployed) {
       throw new Error(
         "[gads-store] SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are not set on this " +
           "deployment. Refusing to fall back to the in-memory store, which would lose exam " +

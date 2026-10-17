@@ -9,7 +9,7 @@
 // key, since a personality/situational screener scores fit signals, not
 // correctness. See src/lib/mindset/scoring.ts.
 
-export type MindsetMechanic = "likert" | "situational" | "written";
+export type MindsetMechanic = "likert" | "mcq" | "situational" | "written";
 
 /** One clock for the whole paper, 15 minutes, and no per-question timers.
  * The candidate controls their own pace; the only deadline is this one.
@@ -18,11 +18,14 @@ export type MindsetMechanic = "likert" | "situational" | "written";
  * is deliberately tight rather than cruel. */
 export const MINDSET_EXAM_DURATION_SECONDS = 15 * 60;
 
-/** Exact composition of the one fixed sitting. */
+/** Exact composition of the one fixed sitting. Sections run fastest first:
+ * 15 quick agreement statements, then 10 direct questions, then 10 longer
+ * situations. At a realistic pace that is around 10 minutes of the 15. */
 export const MINDSET_QUESTION_COUNTS: Record<MindsetMechanic, number> = {
-  likert: 20,
-  situational: 12,
-  written: 3,
+  likert: 13,
+  mcq: 10,
+  situational: 10,
+  written: 2,
 };
 
 export const MINDSET_TOTAL_QUESTIONS = Object.values(MINDSET_QUESTION_COUNTS).reduce(
@@ -52,6 +55,12 @@ export interface MindsetQuestion {
    * "written". */
   category: string;
   question: string;
+  /** One short line under the question, in plainer words than the question
+   * itself: a concrete example, or the situation restated. Candidates are
+   * answering against a clock in what is often their second language, so a
+   * question they have to read twice costs them real time. Not secret, it
+   * goes to the browser with the question. */
+  hint: string;
   /** Zero-based option list. Empty for "likert" (the scale supplies its own
    * labels) and for "written". */
   options: string[];
@@ -70,6 +79,7 @@ export interface MindsetCandidateQuestion {
   mechanic: MindsetMechanic;
   category: string;
   question: string;
+  hint: string;
   options: string[];
 }
 
@@ -79,6 +89,7 @@ export function sanitizeMindsetQuestion(q: MindsetQuestion): MindsetCandidateQue
     mechanic: q.mechanic,
     category: q.category,
     question: q.question,
+    hint: q.hint,
     options: q.options,
   };
 }

@@ -16,14 +16,16 @@ import {
 
 const SECTION_NAMES: Record<MindsetCandidateQuestion["mechanic"], string> = {
   likert: "How much do you agree?",
-  situational: "Situational Judgment",
-  written: "Open Response",
+  mcq: "About you",
+  situational: "Situations",
+  written: "In your own words",
 };
 
 const SECTION_NUMBERS: Record<MindsetCandidateQuestion["mechanic"], string> = {
   likert: "Section 1",
-  situational: "Section 2",
-  written: "Section 3",
+  mcq: "Section 2",
+  situational: "Section 3",
+  written: "Section 4",
 };
 
 export const OPTION_LETTERS = ["A", "B", "C", "D"] as const;
@@ -67,9 +69,16 @@ export function QuestionPanel({ question, index, total, remainingSeconds }: Ques
             <span className="mt-3.5 block h-[2px] w-full bg-primary/70" />
           </div>
 
-          <p className="max-w-[32ch] text-balance font-display text-[1.6rem] font-semibold leading-[1.26] tracking-[-0.018em] text-foreground xl:text-[2.05rem]">
-            {question.question}
-          </p>
+          <div className="min-w-0">
+            <p className="max-w-[32ch] text-balance font-display text-[1.6rem] font-semibold leading-[1.26] tracking-[-0.018em] text-foreground xl:text-[2.05rem]">
+              {question.question}
+            </p>
+            {question.hint && (
+              <p className="mt-4 max-w-[40ch] border-l-2 border-primary/40 pl-3.5 text-sm leading-relaxed text-muted-foreground">
+                {question.hint}
+              </p>
+            )}
+          </div>
         </div>
       </div>
 

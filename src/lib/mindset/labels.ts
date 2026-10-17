@@ -29,17 +29,12 @@ export const CATEGORY_LABELS: Record<string, string> = {
   // Open response prompts. One category each, because the prompts shuffle
   // and a spreadsheet column cannot identify an answer by position.
   written_free_time: "Free time",
-  written_pending_work: "Pending work",
   written_role_fit: "Open to another role",
 };
 
 /** The open response prompts, in the order their columns appear in the
  * sheet. Same contract as CATEGORY_COLUMN_ORDER: append, never reorder. */
-export const WRITTEN_COLUMN_ORDER: readonly string[] = [
-  "written_free_time",
-  "written_pending_work",
-  "written_role_fit",
-];
+export const WRITTEN_COLUMN_ORDER: readonly string[] = ["written_free_time", "written_role_fit"];
 
 export function categoryLabel(category: string): string {
   return CATEGORY_LABELS[category] ?? category;

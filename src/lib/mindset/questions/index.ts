@@ -7,6 +7,7 @@ import {
 } from "@/lib/mindset/types";
 import type { AuthoredMindsetQuestion } from "@/lib/mindset/questions/shared";
 import { LIKERT_QUESTIONS } from "@/lib/mindset/questions/likert";
+import { MCQ_QUESTIONS } from "@/lib/mindset/questions/mcq";
 import { SITUATIONAL_QUESTIONS } from "@/lib/mindset/questions/situational";
 import { WRITTEN_QUESTIONS } from "@/lib/mindset/questions/written";
 
@@ -22,6 +23,7 @@ import { WRITTEN_QUESTIONS } from "@/lib/mindset/questions/written";
 
 const SECTIONS: AuthoredMindsetQuestion[][] = [
   LIKERT_QUESTIONS,
+  MCQ_QUESTIONS,
   SITUATIONAL_QUESTIONS,
   WRITTEN_QUESTIONS,
 ];
@@ -80,6 +82,9 @@ function validate() {
   }
 
   for (const q of all) {
+    if (!q.hint || q.hint.trim().length === 0) {
+      throw new Error(`mindset-questions: "${q.question.slice(0, 40)}..." is missing its hint`);
+    }
     if (q.weights.some((w) => w < 0 || !Number.isFinite(w))) {
       throw new Error(`mindset-questions: "${q.question.slice(0, 40)}..." has an invalid weight`);
     }
@@ -96,12 +101,13 @@ function shuffle<T>(items: T[]): T[] {
   return arr;
 }
 
-/** Shuffles a question's option order and remaps weights to follow. Likert
- * questions are returned untouched: their scale must stay in order. */
+/** Shuffles the option order of a choice question and remaps its weights to
+ * follow. Likert and written questions are returned untouched: the agreement
+ * scale must stay in order, and written questions have no options. */
 function shuffleOptions(
   q: AuthoredMindsetQuestion,
 ): Pick<AuthoredMindsetQuestion, "options" | "weights"> {
-  if (q.mechanic !== "situational" || q.options.length === 0) {
+  if ((q.mechanic !== "situational" && q.mechanic !== "mcq") || q.options.length === 0) {
     return { options: q.options, weights: q.weights };
   }
   const order = shuffle(q.options.map((_, i) => i));
