@@ -74,6 +74,7 @@ const PAGES = [
 /** Route files deliberately left out of the sitemap, with the reason. */
 const EXCLUDED = {
   "__root.tsx": "app shell, not a page",
+  "admin.assessments.tsx": "internal recruiter tool, password gated, noindex",
   "our-work.$slug.tsx": "expanded per case study below",
   "careers.tsx": "redirects to /not-hiring while hiring is paused",
   "careers.index.tsx": "behind the /careers redirect",

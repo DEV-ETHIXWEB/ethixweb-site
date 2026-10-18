@@ -3,6 +3,7 @@ import { hashSessionToken } from "@/lib/assessment/session";
 import { scoreGadsAssessment, recommendGads } from "@/lib/gads/scoring";
 import { sendGadsCandidateConfirmation, sendGadsRecruiterReport } from "@/lib/gads/report";
 import {
+  GADS_MAX_RESUMES,
   GADS_QUESTION_GRACE_SECONDS,
   GADS_TIME_LIMITS,
   isUnlimitedTestEmail,
@@ -112,6 +113,61 @@ export async function resetGadsRowForRetest(
       submitted_at: null,
     },
   );
+}
+
+/** The blank slate a row returns to, shared by the test-email retest path
+ * and the admin reset. Keeps the two from drifting apart and leaving stale
+ * scores or recordings attached to a fresh attempt. */
+const GADS_RESET_PATCH: Partial<GadsAssessmentRow> = {
+  status: "pending",
+  questions: null,
+  answers: {},
+  draft_answer: null,
+  current_index: 0,
+  current_question_started_at: null,
+  resume_count: 0,
+  violations: [],
+  mic_activity: [],
+  camera_snapshots: [],
+  recording_urls: [],
+  scores: null,
+  per_question: null,
+  overall_percent: null,
+  recommendation: null,
+  suspicious_activity_score: null,
+  time_taken_seconds: null,
+  submit_reason: null,
+  candidate_confirmation_sent_at: null,
+  recruiter_report_sent_at: null,
+  started_at: null,
+  expires_at: null,
+  submitted_at: null,
+};
+
+/** Counts one reopen of an already in-progress run and reports whether the
+ * candidate has any left. Never throws and never blocks the resume itself -
+ * if the write fails the candidate still gets back into their exam, because
+ * losing their run to a bookkeeping error would be far worse than an
+ * undercounted reopen. */
+export async function registerGadsResume(
+  row: GadsAssessmentRow,
+): Promise<{ resumeCount: number; limitReached: boolean }> {
+  const next = (row.resume_count ?? 0) + 1;
+  try {
+    await getGadsStore().updateIf(row.id, { status: "in_progress" }, { resume_count: next });
+  } catch (err) {
+    console.error("[gads] resume_count update failed:", err);
+  }
+  return { resumeCount: next, limitReached: next > GADS_MAX_RESUMES };
+}
+
+/** Admin override: puts a row back to pending so the same candidate can sit
+ * the exam again on the same link, name and email. Unlike
+ * resetGadsRowForRetest this is not limited to the test address and works
+ * from any status, so the caller MUST have checked the admin password
+ * first - see /api/gads/admin. */
+export async function adminResetGadsRow(row: GadsAssessmentRow): Promise<GadsAssessmentRow | null> {
+  return getGadsStore().updateIf(row.id, {}, { ...GADS_RESET_PATCH });
 }
 
 function isAnswerEmpty(value: GadsAnswerValue | null | undefined): boolean {

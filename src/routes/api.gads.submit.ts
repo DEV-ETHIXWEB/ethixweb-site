@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { z } from "zod";
-import { clientIp } from "@/lib/rate-limit";
-import { guardRequest } from "@/lib/api-guard";
+import { guardRequestByToken } from "@/lib/api-guard";
 import { finalizeGadsAssessment, loadGadsAssessment } from "@/lib/gads/service";
 
 // Terminal finalize: called after the last question's advance response
@@ -25,18 +24,19 @@ export const Route = createFileRoute("/api/gads/submit")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const guard = await guardRequest(
-          request,
-          `gads-submit:${clientIp(request)}`,
-          10,
-          10 * 60 * 1000,
-        );
-        if (guard) return guard;
-
         const parsed = bodySchema.safeParse(await request.json().catch(() => null));
         if (!parsed.success) {
           return Response.json({ ok: false, error: "Invalid request" }, { status: 400 });
         }
+
+        const guard = await guardRequestByToken(
+          request,
+          "gads-submit",
+          parsed.data.token,
+          10,
+          10 * 60 * 1000,
+        );
+        if (guard) return guard;
 
         const row = await loadGadsAssessment(parsed.data.token);
         if (!row) {

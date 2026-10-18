@@ -54,7 +54,11 @@ async function postJson(url: string, body: unknown): Promise<PostResult> {
     });
     const data = await res.json().catch(() => null);
     if (data === null) return { ok: false, data: null, transient: true };
-    return { ok: res.ok, data, transient: !res.ok && res.status >= 500 };
+    // 429 is transient on purpose. It means "not now", not "never", so
+    // backing off and retrying is right - giving up would silently drop the
+    // answer the candidate just committed. 5xx is the same story.
+    const transient = !res.ok && (res.status === 429 || res.status >= 500);
+    return { ok: res.ok, data, transient };
   } catch {
     return { ok: false, data: null, transient: true };
   }
@@ -117,6 +121,16 @@ export function ExamRunner({
   const [overallWarning, setOverallWarning] = useState<number | null>(null);
   const [reconnecting, setReconnecting] = useState(false);
   const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
+  // Bumped whenever an advance attempt finishes without the index actually
+  // moving. It is part of the question card's key, so the card remounts with
+  // a fresh "already fired" guard. Without this the card stays mounted with
+  // firedRef stuck true, its timer already cleared, and the Next button
+  // silently does nothing - the candidate is trapped on that question.
+  const [resyncNonce, setResyncNonce] = useState(0);
+  // Seconds the server says are left on the current question after a
+  // resync. Null until one happens, then it overrides the card's own
+  // default so un-sticking never silently grants a fresh full timer.
+  const resyncSecondsRef = useRef<number | null>(null);
 
   const firstQuestionSecondsRef = useRef(
     initialRemainingQuestionSeconds ??
@@ -292,6 +306,28 @@ export function ExamRunner({
   // pick - postJsonResilient keeps retrying until the server actually
   // confirms the commit. Only a definitive business response (stale index,
   // row no longer in progress) short-circuits the retry loop.
+  // Pulls the authoritative position and this question's real remaining
+  // time, then forces the card to remount. Used whenever an advance leaves
+  // us on the same question, which would otherwise strand the candidate.
+  const resyncFromServer = useCallback(async () => {
+    try {
+      const res = await fetch("/api/gads/state", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token, resync: true }),
+      });
+      const data = await res.json().catch(() => null);
+      if (data?.ok && data.status === "in_progress") {
+        resyncSecondsRef.current =
+          typeof data.remainingQuestionSeconds === "number" ? data.remainingQuestionSeconds : null;
+        if (typeof data.currentIndex === "number") setCurrentIndex(data.currentIndex);
+      }
+    } catch {
+      // Offline: still remount below so the card is usable again.
+    }
+    setResyncNonce((n) => n + 1);
+  }, [token]);
+
   const advancingRef = useRef(false);
   const doAdvance = useCallback(
     async (questionIndex: number, value: GadsAnswerValue | null) => {
@@ -308,7 +344,16 @@ export function ExamRunner({
 
       if (!result.ok || !result.data?.ok) {
         const resyncIndex = result.data?.currentIndex;
-        if (typeof resyncIndex === "number") setCurrentIndex(resyncIndex);
+        if (typeof resyncIndex === "number" && resyncIndex !== questionIndex) {
+          resyncSecondsRef.current = null;
+          setCurrentIndex(resyncIndex);
+        } else {
+          // Either the server gave us no index, or it gave back the one we are
+          // already on. Setting the same index is a no-op React skips, so the
+          // card would stay mounted with its fired guard stuck and its timer
+          // already cleared. Ask the server what the truth is and remount.
+          await resyncFromServer();
+        }
         advancingRef.current = false;
         return;
       }
@@ -316,10 +361,17 @@ export function ExamRunner({
         void doSubmit("manual");
         return;
       }
-      setCurrentIndex(result.data.currentIndex as number);
+      const nextIndex = result.data.currentIndex as number;
+      if (nextIndex === questionIndex) {
+        // Accepted but not moved on: same wedge as above.
+        await resyncFromServer();
+      } else {
+        resyncSecondsRef.current = null;
+        setCurrentIndex(nextIndex);
+      }
       advancingRef.current = false;
     },
-    [token, phase, doSubmit],
+    [token, phase, doSubmit, resyncFromServer],
   );
 
   // --- Voluntary early submit ---------------------------------------------
@@ -398,15 +450,18 @@ export function ExamRunner({
 
       <div className="flex min-h-0 flex-1 items-start justify-center overflow-y-auto">
         <div className="w-full max-w-3xl px-4 py-6 sm:px-8 sm:py-10">
+          <QuestionStrip total={questions.length} currentIndex={currentIndex} />
           <GadsQuestionRunner
-            key={question.id}
+            key={`${question.id}:${resyncNonce}`}
             question={question}
             index={currentIndex}
             total={questions.length}
             secondsForThisQuestion={
-              currentIndex === initialIndex
-                ? firstQuestionSecondsRef.current
-                : GADS_TIME_LIMITS[question.mechanic]
+              resyncSecondsRef.current !== null
+                ? resyncSecondsRef.current
+                : currentIndex === initialIndex
+                  ? firstQuestionSecondsRef.current
+                  : GADS_TIME_LIMITS[question.mechanic]
             }
             initialValue={currentIndex === initialIndex ? initialDraftAnswer : null}
             isLast={isLast}
@@ -554,6 +609,48 @@ function TimeWarningOverlay({ minutes, onDismiss }: { minutes: number; onDismiss
         <Clock className="h-4 w-4" />
         {minutes} minute{minutes === 1 ? "" : "s"} remaining
       </div>
+    </div>
+  );
+}
+
+/** All 40 questions at a glance: what is done, where you are, what is left.
+ * Read-only on purpose. The exam is a forced forward sequence - answers are
+ * committed when you advance past a question and the per-question timer is
+ * stamped server-side - so letting someone jump would both reopen committed
+ * answers and let them read ahead. This is here so nobody has to guess
+ * whether the exam is progressing. */
+function QuestionStrip({ total, currentIndex }: { total: number; currentIndex: number }) {
+  return (
+    <div className="mb-5">
+      <div className="mb-2 flex items-baseline justify-between">
+        <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+          Progress
+        </p>
+        <p className="text-xs font-semibold text-muted-foreground">
+          {currentIndex + 1} of {total}
+        </p>
+      </div>
+      <ol className="flex flex-wrap gap-1.5">
+        {Array.from({ length: total }, (_, i) => {
+          const done = i < currentIndex;
+          const current = i === currentIndex;
+          return (
+            <li
+              key={i}
+              aria-current={current ? "step" : undefined}
+              className={`flex h-6 w-6 items-center justify-center rounded-md border text-[11px] font-bold tabular-nums transition-colors ${
+                current
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : done
+                    ? "border-primary/40 bg-primary/15 text-primary-text"
+                    : "border-border text-muted-foreground/50"
+              }`}
+            >
+              {i + 1}
+            </li>
+          );
+        })}
+      </ol>
     </div>
   );
 }

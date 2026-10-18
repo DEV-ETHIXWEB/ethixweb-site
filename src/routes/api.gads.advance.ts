@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { z } from "zod";
-import { clientIp } from "@/lib/rate-limit";
-import { guardRequest } from "@/lib/api-guard";
+import { guardRequestByToken } from "@/lib/api-guard";
 import { advanceGadsQuestion, loadGadsAssessment } from "@/lib/gads/service";
 import { GADS_TOTAL_QUESTIONS } from "@/lib/gads/types";
 
@@ -36,18 +35,19 @@ export const Route = createFileRoute("/api/gads/advance")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const guard = await guardRequest(
-          request,
-          `gads-advance:${clientIp(request)}`,
-          200,
-          10 * 60 * 1000,
-        );
-        if (guard) return guard;
-
         const parsed = bodySchema.safeParse(await request.json().catch(() => null));
         if (!parsed.success) {
           return Response.json({ ok: false, error: "Invalid request" }, { status: 400 });
         }
+
+        const guard = await guardRequestByToken(
+          request,
+          "gads-advance",
+          parsed.data.token,
+          150,
+          10 * 60 * 1000,
+        );
+        if (guard) return guard;
         const body = parsed.data;
 
         const row = await loadGadsAssessment(body.token);

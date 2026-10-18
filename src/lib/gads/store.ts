@@ -11,6 +11,9 @@ import type { GadsAssessmentRow } from "@/lib/gads/types";
 
 export interface GadsStore {
   findByTokenHash(hash: string): Promise<GadsAssessmentRow | null>;
+  /** Admin lookup. Email is the stable handle a recruiter actually has;
+   * the token only ever lives in the candidate's link. */
+  findByEmail(email: string): Promise<GadsAssessmentRow | null>;
   getById(id: string): Promise<GadsAssessmentRow | null>;
   insert(row: Partial<GadsAssessmentRow>): Promise<GadsAssessmentRow>;
   /** Applies `patch` only if every key in `where` matches the row's current
@@ -55,6 +58,20 @@ const supabaseStore: GadsStore = {
     if (error) throw error;
     return data as GadsAssessmentRow;
   },
+  async findByEmail(email) {
+    const { data, error } = await getSupabase()
+      .from(TABLE)
+      .select("*")
+      .ilike("candidate_email", email)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle<GadsAssessmentRow>();
+    if (error) {
+      console.error("[gads-store] findByEmail error:", error);
+      return null;
+    }
+    return data;
+  },
   async updateIf(id, where, patch) {
     let query = getSupabase().from(TABLE).update(patch).eq("id", id);
     for (const [key, value] of Object.entries(where)) {
@@ -85,6 +102,7 @@ const ROW_DEFAULTS = {
   answers: {},
   draft_answer: null,
   current_index: 0,
+  resume_count: 0,
   current_question_started_at: null,
   violations: [],
   mic_activity: [],
@@ -116,6 +134,13 @@ const inMemoryStore: GadsStore = {
   async findByTokenHash(hash) {
     for (const row of memoryRows.values()) {
       if (row.session_token_hash === hash) return row;
+    }
+    return null;
+  },
+  async findByEmail(email) {
+    const wanted = email.trim().toLowerCase();
+    for (const row of memoryRows.values()) {
+      if (row.candidate_email.trim().toLowerCase() === wanted) return row;
     }
     return null;
   },

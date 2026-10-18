@@ -22,7 +22,8 @@ export const Route = createFileRoute("/assessment/google-ads/$token")({
   component: GadsAssessmentPage,
 });
 
-type Phase = "loading" | "gate" | "permission" | "exam" | "done" | "expired" | "error";
+type Phase =
+  "loading" | "gate" | "permission" | "exam" | "done" | "expired" | "resumeLimit" | "error";
 
 interface ExamStartData {
   questions: GadsCandidateQuestion[];
@@ -39,6 +40,8 @@ function GadsAssessmentPage() {
   const [phase, setPhase] = useState<Phase>("loading");
   const [examData, setExamData] = useState<ExamStartData | null>(null);
   const [gateError, setGateError] = useState<string | null>(null);
+  // Null until the server tells us, so a first-time start shows no banner.
+  const [resumesLeft, setResumesLeft] = useState<number | null>(null);
   const media = useMediaRecording();
 
   const fetchState = useCallback(async () => {
@@ -61,6 +64,11 @@ function GadsAssessmentPage() {
         setPhase("gate");
         return;
       }
+      if (data.status === "resume_limit") {
+        setResumesLeft(0);
+        setPhase("resumeLimit");
+        return;
+      }
       if (data.status === "in_progress") {
         setExamData({
           questions: data.questions,
@@ -71,6 +79,7 @@ function GadsAssessmentPage() {
           expiresAt: data.expiresAt,
           serverNow: data.serverNow,
         });
+        setResumesLeft(typeof data.resumesLeft === "number" ? data.resumesLeft : null);
         setPhase("permission");
         return;
       }
@@ -144,6 +153,20 @@ function GadsAssessmentPage() {
     );
   }
 
+  if (phase === "resumeLimit") {
+    return (
+      <CenteredMessage>
+        <ShieldAlert className="h-8 w-8 text-error-text" />
+        <h1 className="mt-4 font-display text-xl font-bold">Reopen limit reached</h1>
+        <p className="mt-2 max-w-sm text-sm text-muted-foreground">
+          This assessment has already been reopened the maximum number of times, so it cannot be
+          opened again. Everything you answered has been saved. Please contact EthixWeb if you were
+          cut off by a problem on our side and we will take a look.
+        </p>
+      </CenteredMessage>
+    );
+  }
+
   if (phase === "error") {
     return (
       <CenteredMessage>
@@ -175,7 +198,21 @@ function GadsAssessmentPage() {
   }
 
   if (phase === "permission") {
-    return <PermissionGate media={media} onReady={() => setPhase("exam")} />;
+    return (
+      <>
+        {resumesLeft !== null && (
+          <div className="fixed inset-x-0 top-0 z-[95] flex justify-center px-4 pt-4">
+            <p className="rounded-full border border-border bg-card px-5 py-2.5 text-center text-sm font-semibold text-muted-foreground shadow-lg">
+              Welcome back. Your answers were saved and you will pick up where you left off.{" "}
+              {resumesLeft > 0
+                ? `You can reopen this ${resumesLeft} more time${resumesLeft === 1 ? "" : "s"}.`
+                : "This is your last reopen."}
+            </p>
+          </div>
+        )}
+        <PermissionGate media={media} onReady={() => setPhase("exam")} />
+      </>
+    );
   }
 
   if (phase === "exam" && examData) {

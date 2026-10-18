@@ -26,6 +26,7 @@ import { Route as NotHiringRouteImport } from './routes/not-hiring'
 import { Route as OurWorkRouteImport } from './routes/our-work'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as WebDevelopmentRouteImport } from './routes/web-development'
+import { Route as AdminAssessmentsRouteImport } from './routes/admin.assessments'
 import { Route as ApiContactRouteImport } from './routes/api.contact'
 import { Route as AssessmentMindsetRouteImport } from './routes/assessment.mindset'
 import { Route as CareersIndexRouteImport } from './routes/careers.index'
@@ -47,6 +48,7 @@ import { Route as ApiAssessmentStateRouteImport } from './routes/api.assessment.
 import { Route as ApiAssessmentSubmitRouteImport } from './routes/api.assessment.submit'
 import { Route as ApiCareersApplyRouteImport } from './routes/api.careers.apply'
 import { Route as ApiCareersUploadRouteImport } from './routes/api.careers.upload'
+import { Route as ApiGadsAdminRouteImport } from './routes/api.gads.admin'
 import { Route as ApiGadsAdvanceRouteImport } from './routes/api.gads.advance'
 import { Route as ApiGadsBeginRouteImport } from './routes/api.gads.begin'
 import { Route as ApiGadsMediaUploadRouteImport } from './routes/api.gads.media-upload'
@@ -155,6 +157,11 @@ const WebDevelopmentRoute = WebDevelopmentRouteImport.update({
   path: '/web-development',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminAssessmentsRoute = AdminAssessmentsRouteImport.update({
+  id: '/admin/assessments',
+  path: '/admin/assessments',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiContactRoute = ApiContactRouteImport.update({
   id: '/api/contact',
   path: '/api/contact',
@@ -259,6 +266,11 @@ const ApiCareersApplyRoute = ApiCareersApplyRouteImport.update({
 const ApiCareersUploadRoute = ApiCareersUploadRouteImport.update({
   id: '/api/careers/upload',
   path: '/api/careers/upload',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiGadsAdminRoute = ApiGadsAdminRouteImport.update({
+  id: '/api/gads/admin',
+  path: '/api/gads/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiGadsAdvanceRoute = ApiGadsAdvanceRouteImport.update({
@@ -395,6 +407,7 @@ export interface FileRoutesByFullPath {
   '/our-work': typeof OurWorkRouteWithChildren
   '/services': typeof ServicesRoute
   '/web-development': typeof WebDevelopmentRoute
+  '/admin/assessments': typeof AdminAssessmentsRoute
   '/api/contact': typeof ApiContactRoute
   '/assessment/mindset': typeof AssessmentMindsetRoute
   '/careers/$slug': typeof CareersSlugRoute
@@ -416,6 +429,7 @@ export interface FileRoutesByFullPath {
   '/api/assessment/submit': typeof ApiAssessmentSubmitRoute
   '/api/careers/apply': typeof ApiCareersApplyRoute
   '/api/careers/upload': typeof ApiCareersUploadRoute
+  '/api/gads/admin': typeof ApiGadsAdminRoute
   '/api/gads/advance': typeof ApiGadsAdvanceRoute
   '/api/gads/begin': typeof ApiGadsBeginRoute
   '/api/gads/media-upload': typeof ApiGadsMediaUploadRoute
@@ -455,6 +469,7 @@ export interface FileRoutesByTo {
   '/not-hiring': typeof NotHiringRoute
   '/services': typeof ServicesRoute
   '/web-development': typeof WebDevelopmentRoute
+  '/admin/assessments': typeof AdminAssessmentsRoute
   '/api/contact': typeof ApiContactRoute
   '/assessment/mindset': typeof AssessmentMindsetRoute
   '/careers/$slug': typeof CareersSlugRoute
@@ -476,6 +491,7 @@ export interface FileRoutesByTo {
   '/api/assessment/submit': typeof ApiAssessmentSubmitRoute
   '/api/careers/apply': typeof ApiCareersApplyRoute
   '/api/careers/upload': typeof ApiCareersUploadRoute
+  '/api/gads/admin': typeof ApiGadsAdminRoute
   '/api/gads/advance': typeof ApiGadsAdvanceRoute
   '/api/gads/begin': typeof ApiGadsBeginRoute
   '/api/gads/media-upload': typeof ApiGadsMediaUploadRoute
@@ -518,6 +534,7 @@ export interface FileRoutesById {
   '/our-work': typeof OurWorkRouteWithChildren
   '/services': typeof ServicesRoute
   '/web-development': typeof WebDevelopmentRoute
+  '/admin/assessments': typeof AdminAssessmentsRoute
   '/api/contact': typeof ApiContactRoute
   '/assessment/mindset': typeof AssessmentMindsetRoute
   '/careers/$slug': typeof CareersSlugRoute
@@ -539,6 +556,7 @@ export interface FileRoutesById {
   '/api/assessment/submit': typeof ApiAssessmentSubmitRoute
   '/api/careers/apply': typeof ApiCareersApplyRoute
   '/api/careers/upload': typeof ApiCareersUploadRoute
+  '/api/gads/admin': typeof ApiGadsAdminRoute
   '/api/gads/advance': typeof ApiGadsAdvanceRoute
   '/api/gads/begin': typeof ApiGadsBeginRoute
   '/api/gads/media-upload': typeof ApiGadsMediaUploadRoute
@@ -582,6 +600,7 @@ export interface FileRouteTypes {
     | '/our-work'
     | '/services'
     | '/web-development'
+    | '/admin/assessments'
     | '/api/contact'
     | '/assessment/mindset'
     | '/careers/$slug'
@@ -603,6 +622,7 @@ export interface FileRouteTypes {
     | '/api/assessment/submit'
     | '/api/careers/apply'
     | '/api/careers/upload'
+    | '/api/gads/admin'
     | '/api/gads/advance'
     | '/api/gads/begin'
     | '/api/gads/media-upload'
@@ -642,6 +662,7 @@ export interface FileRouteTypes {
     | '/not-hiring'
     | '/services'
     | '/web-development'
+    | '/admin/assessments'
     | '/api/contact'
     | '/assessment/mindset'
     | '/careers/$slug'
@@ -663,6 +684,7 @@ export interface FileRouteTypes {
     | '/api/assessment/submit'
     | '/api/careers/apply'
     | '/api/careers/upload'
+    | '/api/gads/admin'
     | '/api/gads/advance'
     | '/api/gads/begin'
     | '/api/gads/media-upload'
@@ -704,6 +726,7 @@ export interface FileRouteTypes {
     | '/our-work'
     | '/services'
     | '/web-development'
+    | '/admin/assessments'
     | '/api/contact'
     | '/assessment/mindset'
     | '/careers/$slug'
@@ -725,6 +748,7 @@ export interface FileRouteTypes {
     | '/api/assessment/submit'
     | '/api/careers/apply'
     | '/api/careers/upload'
+    | '/api/gads/admin'
     | '/api/gads/advance'
     | '/api/gads/begin'
     | '/api/gads/media-upload'
@@ -767,6 +791,7 @@ export interface RootRouteChildren {
   OurWorkRoute: typeof OurWorkRouteWithChildren
   ServicesRoute: typeof ServicesRoute
   WebDevelopmentRoute: typeof WebDevelopmentRoute
+  AdminAssessmentsRoute: typeof AdminAssessmentsRoute
   ApiContactRoute: typeof ApiContactRoute
   AssessmentMindsetRoute: typeof AssessmentMindsetRoute
   LocationsKentWaRoute: typeof LocationsKentWaRoute
@@ -781,6 +806,7 @@ export interface RootRouteChildren {
   ApiAssessmentSubmitRoute: typeof ApiAssessmentSubmitRoute
   ApiCareersApplyRoute: typeof ApiCareersApplyRoute
   ApiCareersUploadRoute: typeof ApiCareersUploadRoute
+  ApiGadsAdminRoute: typeof ApiGadsAdminRoute
   ApiGadsAdvanceRoute: typeof ApiGadsAdvanceRoute
   ApiGadsBeginRoute: typeof ApiGadsBeginRoute
   ApiGadsMediaUploadRoute: typeof ApiGadsMediaUploadRoute
@@ -924,6 +950,13 @@ declare module '@tanstack/react-router' {
       path: '/web-development'
       fullPath: '/web-development'
       preLoaderRoute: typeof WebDevelopmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/assessments': {
+      id: '/admin/assessments'
+      path: '/admin/assessments'
+      fullPath: '/admin/assessments'
+      preLoaderRoute: typeof AdminAssessmentsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/contact': {
@@ -1071,6 +1104,13 @@ declare module '@tanstack/react-router' {
       path: '/api/careers/upload'
       fullPath: '/api/careers/upload'
       preLoaderRoute: typeof ApiCareersUploadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/gads/admin': {
+      id: '/api/gads/admin'
+      path: '/api/gads/admin'
+      fullPath: '/api/gads/admin'
+      preLoaderRoute: typeof ApiGadsAdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/gads/advance': {
@@ -1280,6 +1320,7 @@ const rootRouteChildren: RootRouteChildren = {
   OurWorkRoute: OurWorkRouteWithChildren,
   ServicesRoute: ServicesRoute,
   WebDevelopmentRoute: WebDevelopmentRoute,
+  AdminAssessmentsRoute: AdminAssessmentsRoute,
   ApiContactRoute: ApiContactRoute,
   AssessmentMindsetRoute: AssessmentMindsetRoute,
   LocationsKentWaRoute: LocationsKentWaRoute,
@@ -1294,6 +1335,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiAssessmentSubmitRoute: ApiAssessmentSubmitRoute,
   ApiCareersApplyRoute: ApiCareersApplyRoute,
   ApiCareersUploadRoute: ApiCareersUploadRoute,
+  ApiGadsAdminRoute: ApiGadsAdminRoute,
   ApiGadsAdvanceRoute: ApiGadsAdvanceRoute,
   ApiGadsBeginRoute: ApiGadsBeginRoute,
   ApiGadsMediaUploadRoute: ApiGadsMediaUploadRoute,

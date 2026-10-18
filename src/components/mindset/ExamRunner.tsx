@@ -53,7 +53,10 @@ async function postJson(url: string, body: unknown): Promise<PostResult> {
     });
     const data = await res.json().catch(() => null);
     if (data === null) return { ok: false, data: null, transient: true };
-    return { ok: res.ok, data, transient: !res.ok && res.status >= 500 };
+    // 429 is transient on purpose: it means "not now", not "never", so
+    // backing off and retrying beats silently dropping the answer.
+    const transient = !res.ok && (res.status === 429 || res.status >= 500);
+    return { ok: res.ok, data, transient };
   } catch {
     return { ok: false, data: null, transient: true };
   }
@@ -96,6 +99,11 @@ export function ExamRunner({
   onSubmitted,
 }: ExamRunnerProps) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
+  // Part of the question card's key. Bumped whenever an advance finishes
+  // without the index moving, so the card remounts with a fresh fired
+  // guard. Without it the card stays mounted with firedRef stuck true and
+  // the Next button silently does nothing for the rest of the exam.
+  const [resyncNonce, setResyncNonce] = useState(0);
   const [phase, setPhase] = useState<"exam" | "submitting">("exam");
   const [warning, setWarning] = useState<{ count: number; label: string } | null>(null);
   const [overallWarning, setOverallWarning] = useState<number | null>(null);
@@ -199,6 +207,26 @@ export function ExamRunner({
     return () => window.removeEventListener("beforeunload", onBeforeUnload);
   }, [phase]);
 
+  // Asks the server where the candidate actually is, then forces the card
+  // to remount. Used whenever an advance leaves us on the same question,
+  // which would otherwise strand them there.
+  const resyncFromServer = useCallback(async () => {
+    try {
+      const res = await fetch("/api/mindset/state", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token }),
+      });
+      const data = await res.json().catch(() => null);
+      if (data?.ok && data.status === "in_progress" && typeof data.currentIndex === "number") {
+        setCurrentIndex(data.currentIndex);
+      }
+    } catch {
+      // Offline: still remount below so the card is usable again.
+    }
+    setResyncNonce((n) => n + 1);
+  }, [token]);
+
   const advancingRef = useRef(false);
   const doAdvance = useCallback(
     async (questionIndex: number, value: MindsetAnswerValue | null) => {
@@ -215,7 +243,14 @@ export function ExamRunner({
 
       if (!result.ok || !result.data?.ok) {
         const resyncIndex = result.data?.currentIndex;
-        if (typeof resyncIndex === "number") setCurrentIndex(resyncIndex);
+        if (typeof resyncIndex === "number" && resyncIndex !== questionIndex) {
+          setCurrentIndex(resyncIndex);
+        } else {
+          // Same index, or none given: setting the index we already hold is a
+          // no-op React skips, so the card would never remount and the
+          // candidate would be stuck here. Resync and force it.
+          await resyncFromServer();
+        }
         advancingRef.current = false;
         return;
       }
@@ -223,10 +258,15 @@ export function ExamRunner({
         void doSubmit("manual");
         return;
       }
-      setCurrentIndex(result.data.currentIndex as number);
+      const nextIndex = result.data.currentIndex as number;
+      if (nextIndex === questionIndex) {
+        await resyncFromServer();
+      } else {
+        setCurrentIndex(nextIndex);
+      }
       advancingRef.current = false;
     },
-    [token, phase, doSubmit],
+    [token, phase, doSubmit, resyncFromServer],
   );
 
   const handleSubmitNow = useCallback(async () => {
@@ -331,7 +371,7 @@ export function ExamRunner({
 
       <div className="grid min-h-0 flex-1 grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.02fr)]">
         <QuestionRunner
-          key={question.id}
+          key={`${question.id}:${resyncNonce}`}
           question={question}
           index={currentIndex}
           total={questions.length}

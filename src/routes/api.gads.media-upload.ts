@@ -23,10 +23,16 @@ export const Route = createFileRoute("/api/gads/media-upload")({
   server: {
     handlers: {
       POST: async ({ request }) => {
+        // Stays IP-keyed: the candidate's token is buried in the Vercel Blob
+        // handshake payload, not a plain field. Raised well above the old 60
+        // because a cohort sitting the exam from one campus network shares
+        // this bucket, and 60 snapshots per ten minutes covered barely one
+        // candidate. A rejected snapshot never blocks the exam (the upload
+        // error is caught and logged) - it just costs proctoring evidence.
         const guard = await guardRequest(
           request,
           `gads-media:${clientIp(request)}`,
-          60,
+          600,
           10 * 60 * 1000,
         );
         if (guard) return guard;

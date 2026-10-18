@@ -150,6 +150,13 @@ export const GADS_MAJOR_VIOLATIONS: ReadonlySet<GadsViolationType> = new Set([
 
 export const GADS_MAX_MAJOR_VIOLATIONS = 3;
 
+/** How many times a candidate may reopen a run that is already in progress.
+ * Closing the tab has never auto-submitted (beforeunload only prompts), so
+ * this is not a rescue from submission - it is the budget for getting back
+ * in after a crash, a flat battery or a browser that wedged. Each fresh load
+ * of an in_progress run spends one. */
+export const GADS_MAX_RESUMES = 3;
+
 export interface GadsViolation {
   type: GadsViolationType;
   /** ISO timestamp, client clock - indicative, not forensic. */
@@ -237,6 +244,7 @@ export interface GadsAssessmentRow {
   answers: GadsAnswerMap;
   draft_answer: GadsAnswerValue | null;
   current_index: number;
+  resume_count: number;
   current_question_started_at: string | null;
   violations: GadsViolation[];
   mic_activity: GadsMicSample[];
