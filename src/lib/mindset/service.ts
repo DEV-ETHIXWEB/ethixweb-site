@@ -84,6 +84,9 @@ export async function beginMindsetAssessment(input: BeginInput): Promise<BeginRe
   const prior = await getMindsetStore().findByEmail(email, DEDUP_LOOKBACK);
 
   for (const row of prior) {
+    // Set aside by a recruiter: keep the record, but stop it blocking a
+    // fresh sitting. See /admin/assessments and migration 0009.
+    if (row.voided_at) continue;
     if (row.status === "submitted" || row.status === "scored" || row.status === "expired") {
       return { ok: false, reason: "already_completed" };
     }

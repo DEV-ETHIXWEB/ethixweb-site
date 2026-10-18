@@ -214,4 +214,7 @@ export interface MindsetAssessmentRow {
   started_at: string;
   expires_at: string;
   submitted_at: string | null;
+  /** Set by a recruiter to set this attempt aside so the candidate may sit
+   * the paper again. The row itself is left untouched. */
+  voided_at: string | null;
 }

@@ -15,6 +15,8 @@ export interface GadsStore {
    * the token only ever lives in the candidate's link. */
   findByEmail(email: string): Promise<GadsAssessmentRow | null>;
   getById(id: string): Promise<GadsAssessmentRow | null>;
+  /** Every assessment, newest first. Admin only. */
+  listAll(limit: number): Promise<GadsAssessmentRow[]>;
   insert(row: Partial<GadsAssessmentRow>): Promise<GadsAssessmentRow>;
   /** Applies `patch` only if every key in `where` matches the row's current
    * value (the same optimistic-concurrency guard a SQL `WHERE` clause
@@ -71,6 +73,18 @@ const supabaseStore: GadsStore = {
       return null;
     }
     return data;
+  },
+  async listAll(limit) {
+    const { data, error } = await getSupabase()
+      .from(TABLE)
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(limit);
+    if (error) {
+      console.error("[gads-store] listAll error:", error);
+      return [];
+    }
+    return (data ?? []) as GadsAssessmentRow[];
   },
   async updateIf(id, where, patch) {
     let query = getSupabase().from(TABLE).update(patch).eq("id", id);
@@ -146,6 +160,11 @@ const inMemoryStore: GadsStore = {
   },
   async getById(id) {
     return memoryRows.get(id) ?? null;
+  },
+  async listAll(limit) {
+    return [...memoryRows.values()]
+      .sort((a, b) => (a.created_at < b.created_at ? 1 : -1))
+      .slice(0, limit);
   },
   async insert(row) {
     const id = row.id ?? randomUUID();

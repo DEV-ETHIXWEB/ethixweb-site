@@ -41,6 +41,7 @@ import { Route as PoliciesPrivacyRouteImport } from './routes/policies.privacy'
 import { Route as PoliciesRefundsRouteImport } from './routes/policies.refunds'
 import { Route as PoliciesTermsRouteImport } from './routes/policies.terms'
 import { Route as QrSlugRouteImport } from './routes/qr.$slug'
+import { Route as ApiAdminAssessmentsRouteImport } from './routes/api.admin.assessments'
 import { Route as ApiAssessmentRecordingUploadRouteImport } from './routes/api.assessment.recording-upload'
 import { Route as ApiAssessmentSaveRouteImport } from './routes/api.assessment.save'
 import { Route as ApiAssessmentStartRouteImport } from './routes/api.assessment.start'
@@ -48,7 +49,6 @@ import { Route as ApiAssessmentStateRouteImport } from './routes/api.assessment.
 import { Route as ApiAssessmentSubmitRouteImport } from './routes/api.assessment.submit'
 import { Route as ApiCareersApplyRouteImport } from './routes/api.careers.apply'
 import { Route as ApiCareersUploadRouteImport } from './routes/api.careers.upload'
-import { Route as ApiGadsAdminRouteImport } from './routes/api.gads.admin'
 import { Route as ApiGadsAdvanceRouteImport } from './routes/api.gads.advance'
 import { Route as ApiGadsBeginRouteImport } from './routes/api.gads.begin'
 import { Route as ApiGadsMediaUploadRouteImport } from './routes/api.gads.media-upload'
@@ -232,6 +232,11 @@ const QrSlugRoute = QrSlugRouteImport.update({
   path: '/qr/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAdminAssessmentsRoute = ApiAdminAssessmentsRouteImport.update({
+  id: '/api/admin/assessments',
+  path: '/api/admin/assessments',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAssessmentRecordingUploadRoute =
   ApiAssessmentRecordingUploadRouteImport.update({
     id: '/api/assessment/recording-upload',
@@ -266,11 +271,6 @@ const ApiCareersApplyRoute = ApiCareersApplyRouteImport.update({
 const ApiCareersUploadRoute = ApiCareersUploadRouteImport.update({
   id: '/api/careers/upload',
   path: '/api/careers/upload',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiGadsAdminRoute = ApiGadsAdminRouteImport.update({
-  id: '/api/gads/admin',
-  path: '/api/gads/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiGadsAdvanceRoute = ApiGadsAdvanceRouteImport.update({
@@ -422,6 +422,7 @@ export interface FileRoutesByFullPath {
   '/qr/$slug': typeof QrSlugRoute
   '/careers/': typeof CareersIndexRoute
   '/our-work/': typeof OurWorkIndexRoute
+  '/api/admin/assessments': typeof ApiAdminAssessmentsRoute
   '/api/assessment/recording-upload': typeof ApiAssessmentRecordingUploadRoute
   '/api/assessment/save': typeof ApiAssessmentSaveRoute
   '/api/assessment/start': typeof ApiAssessmentStartRoute
@@ -429,7 +430,6 @@ export interface FileRoutesByFullPath {
   '/api/assessment/submit': typeof ApiAssessmentSubmitRoute
   '/api/careers/apply': typeof ApiCareersApplyRoute
   '/api/careers/upload': typeof ApiCareersUploadRoute
-  '/api/gads/admin': typeof ApiGadsAdminRoute
   '/api/gads/advance': typeof ApiGadsAdvanceRoute
   '/api/gads/begin': typeof ApiGadsBeginRoute
   '/api/gads/media-upload': typeof ApiGadsMediaUploadRoute
@@ -484,6 +484,7 @@ export interface FileRoutesByTo {
   '/qr/$slug': typeof QrSlugRoute
   '/careers': typeof CareersIndexRoute
   '/our-work': typeof OurWorkIndexRoute
+  '/api/admin/assessments': typeof ApiAdminAssessmentsRoute
   '/api/assessment/recording-upload': typeof ApiAssessmentRecordingUploadRoute
   '/api/assessment/save': typeof ApiAssessmentSaveRoute
   '/api/assessment/start': typeof ApiAssessmentStartRoute
@@ -491,7 +492,6 @@ export interface FileRoutesByTo {
   '/api/assessment/submit': typeof ApiAssessmentSubmitRoute
   '/api/careers/apply': typeof ApiCareersApplyRoute
   '/api/careers/upload': typeof ApiCareersUploadRoute
-  '/api/gads/admin': typeof ApiGadsAdminRoute
   '/api/gads/advance': typeof ApiGadsAdvanceRoute
   '/api/gads/begin': typeof ApiGadsBeginRoute
   '/api/gads/media-upload': typeof ApiGadsMediaUploadRoute
@@ -549,6 +549,7 @@ export interface FileRoutesById {
   '/qr/$slug': typeof QrSlugRoute
   '/careers/': typeof CareersIndexRoute
   '/our-work/': typeof OurWorkIndexRoute
+  '/api/admin/assessments': typeof ApiAdminAssessmentsRoute
   '/api/assessment/recording-upload': typeof ApiAssessmentRecordingUploadRoute
   '/api/assessment/save': typeof ApiAssessmentSaveRoute
   '/api/assessment/start': typeof ApiAssessmentStartRoute
@@ -556,7 +557,6 @@ export interface FileRoutesById {
   '/api/assessment/submit': typeof ApiAssessmentSubmitRoute
   '/api/careers/apply': typeof ApiCareersApplyRoute
   '/api/careers/upload': typeof ApiCareersUploadRoute
-  '/api/gads/admin': typeof ApiGadsAdminRoute
   '/api/gads/advance': typeof ApiGadsAdvanceRoute
   '/api/gads/begin': typeof ApiGadsBeginRoute
   '/api/gads/media-upload': typeof ApiGadsMediaUploadRoute
@@ -615,6 +615,7 @@ export interface FileRouteTypes {
     | '/qr/$slug'
     | '/careers/'
     | '/our-work/'
+    | '/api/admin/assessments'
     | '/api/assessment/recording-upload'
     | '/api/assessment/save'
     | '/api/assessment/start'
@@ -622,7 +623,6 @@ export interface FileRouteTypes {
     | '/api/assessment/submit'
     | '/api/careers/apply'
     | '/api/careers/upload'
-    | '/api/gads/admin'
     | '/api/gads/advance'
     | '/api/gads/begin'
     | '/api/gads/media-upload'
@@ -677,6 +677,7 @@ export interface FileRouteTypes {
     | '/qr/$slug'
     | '/careers'
     | '/our-work'
+    | '/api/admin/assessments'
     | '/api/assessment/recording-upload'
     | '/api/assessment/save'
     | '/api/assessment/start'
@@ -684,7 +685,6 @@ export interface FileRouteTypes {
     | '/api/assessment/submit'
     | '/api/careers/apply'
     | '/api/careers/upload'
-    | '/api/gads/admin'
     | '/api/gads/advance'
     | '/api/gads/begin'
     | '/api/gads/media-upload'
@@ -741,6 +741,7 @@ export interface FileRouteTypes {
     | '/qr/$slug'
     | '/careers/'
     | '/our-work/'
+    | '/api/admin/assessments'
     | '/api/assessment/recording-upload'
     | '/api/assessment/save'
     | '/api/assessment/start'
@@ -748,7 +749,6 @@ export interface FileRouteTypes {
     | '/api/assessment/submit'
     | '/api/careers/apply'
     | '/api/careers/upload'
-    | '/api/gads/admin'
     | '/api/gads/advance'
     | '/api/gads/begin'
     | '/api/gads/media-upload'
@@ -799,6 +799,7 @@ export interface RootRouteChildren {
   PoliciesRefundsRoute: typeof PoliciesRefundsRoute
   PoliciesTermsRoute: typeof PoliciesTermsRoute
   QrSlugRoute: typeof QrSlugRoute
+  ApiAdminAssessmentsRoute: typeof ApiAdminAssessmentsRoute
   ApiAssessmentRecordingUploadRoute: typeof ApiAssessmentRecordingUploadRoute
   ApiAssessmentSaveRoute: typeof ApiAssessmentSaveRoute
   ApiAssessmentStartRoute: typeof ApiAssessmentStartRoute
@@ -806,7 +807,6 @@ export interface RootRouteChildren {
   ApiAssessmentSubmitRoute: typeof ApiAssessmentSubmitRoute
   ApiCareersApplyRoute: typeof ApiCareersApplyRoute
   ApiCareersUploadRoute: typeof ApiCareersUploadRoute
-  ApiGadsAdminRoute: typeof ApiGadsAdminRoute
   ApiGadsAdvanceRoute: typeof ApiGadsAdvanceRoute
   ApiGadsBeginRoute: typeof ApiGadsBeginRoute
   ApiGadsMediaUploadRoute: typeof ApiGadsMediaUploadRoute
@@ -1057,6 +1057,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QrSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/admin/assessments': {
+      id: '/api/admin/assessments'
+      path: '/api/admin/assessments'
+      fullPath: '/api/admin/assessments'
+      preLoaderRoute: typeof ApiAdminAssessmentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/assessment/recording-upload': {
       id: '/api/assessment/recording-upload'
       path: '/api/assessment/recording-upload'
@@ -1104,13 +1111,6 @@ declare module '@tanstack/react-router' {
       path: '/api/careers/upload'
       fullPath: '/api/careers/upload'
       preLoaderRoute: typeof ApiCareersUploadRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/gads/admin': {
-      id: '/api/gads/admin'
-      path: '/api/gads/admin'
-      fullPath: '/api/gads/admin'
-      preLoaderRoute: typeof ApiGadsAdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/gads/advance': {
@@ -1328,6 +1328,7 @@ const rootRouteChildren: RootRouteChildren = {
   PoliciesRefundsRoute: PoliciesRefundsRoute,
   PoliciesTermsRoute: PoliciesTermsRoute,
   QrSlugRoute: QrSlugRoute,
+  ApiAdminAssessmentsRoute: ApiAdminAssessmentsRoute,
   ApiAssessmentRecordingUploadRoute: ApiAssessmentRecordingUploadRoute,
   ApiAssessmentSaveRoute: ApiAssessmentSaveRoute,
   ApiAssessmentStartRoute: ApiAssessmentStartRoute,
@@ -1335,7 +1336,6 @@ const rootRouteChildren: RootRouteChildren = {
   ApiAssessmentSubmitRoute: ApiAssessmentSubmitRoute,
   ApiCareersApplyRoute: ApiCareersApplyRoute,
   ApiCareersUploadRoute: ApiCareersUploadRoute,
-  ApiGadsAdminRoute: ApiGadsAdminRoute,
   ApiGadsAdvanceRoute: ApiGadsAdvanceRoute,
   ApiGadsBeginRoute: ApiGadsBeginRoute,
   ApiGadsMediaUploadRoute: ApiGadsMediaUploadRoute,

@@ -1,13 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { ShieldAlert, RotateCcw, Search, Loader2, CheckCircle2 } from "lucide-react";
+import { useMemo, useState } from "react";
+import { ShieldAlert, RotateCcw, Loader2, Search, Ban, Undo2 } from "lucide-react";
 import { formLabelClass, formInputClass } from "@/lib/form-styles";
 
-// Internal tool for giving a candidate another run at the Google Ads
-// assessment. The password is checked server-side in /api/gads/admin against
-// GADS_ADMIN_PASSWORD; nothing here validates it locally, so reading this
-// page's source tells an attacker nothing. Kept out of the sitemap and
-// marked noindex: it is not secret, but it has no business in search.
+// Internal recruiter tool: everyone who has sat either assessment, and the
+// controls to give someone another go. The password is checked server-side
+// in /api/admin/assessments against GADS_ADMIN_PASSWORD - nothing here
+// validates it locally, so reading this page's source reveals nothing.
+// Kept out of the sitemap and marked noindex.
 
 export const Route = createFileRoute("/admin/assessments")({
   head: () => ({
@@ -19,76 +19,102 @@ export const Route = createFileRoute("/admin/assessments")({
   component: AssessmentAdminPage,
 });
 
-interface Summary {
-  candidateName: string;
-  candidateEmail: string;
+interface MindsetRow {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  college: string;
+  status: string;
+  currentIndex: number;
+  percent: number | null;
+  startedAt: string | null;
+  submittedAt: string | null;
+  voidedAt: string | null;
+}
+
+interface GadsRow {
+  id: string;
+  name: string;
+  email: string;
   status: string;
   currentIndex: number;
   resumeCount: number;
-  maxResumes: number;
+  percent: number | null;
   startedAt: string | null;
   submittedAt: string | null;
-  overallPercent: number | null;
+}
+
+interface Payload {
+  mindset: { total: number; rows: MindsetRow[] };
+  gads: { total: number; maxResumes: number; rows: GadsRow[] };
 }
 
 function AssessmentAdminPage() {
   const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [busy, setBusy] = useState<null | "lookup" | "reset">(null);
+  const [data, setData] = useState<Payload | null>(null);
+  const [tab, setTab] = useState<"mindset" | "gads">("mindset");
+  const [filter, setFilter] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [notice, setNotice] = useState<string | null>(null);
-  const [summary, setSummary] = useState<Summary | null>(null);
-  const [confirmReset, setConfirmReset] = useState(false);
+  const [busy, setBusy] = useState<string | null>(null);
 
-  async function call(action: "lookup" | "reset") {
-    setBusy(action);
+  async function call(action: "list" | "reset" | "void", id?: string) {
+    setBusy(id ?? action);
     setError(null);
-    if (action === "lookup") setNotice(null);
     try {
-      const res = await fetch("/api/gads/admin", {
+      const res = await fetch("/api/admin/assessments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password, action, email: email.trim() }),
+        body: JSON.stringify({ password, action, id }),
       });
-      const data = await res.json().catch(() => null);
-      if (!data?.ok) {
-        setError(data?.error || "Request failed.");
-        if (action === "lookup") setSummary(null);
+      const json = await res.json().catch(() => null);
+      if (!json?.ok) {
+        setError(json?.error || "Request failed.");
         return;
       }
-      setSummary(data.assessment as Summary);
-      if (action === "reset") {
-        setNotice(
-          `${(data.assessment as Summary).candidateName} can take the assessment again on the same link.`,
-        );
-      }
+      setData({ mindset: json.mindset, gads: json.gads });
     } catch {
       setError("Could not reach the server. Check your connection and try again.");
     } finally {
       setBusy(null);
-      setConfirmReset(false);
     }
   }
 
-  const canSubmit = password.length > 0 && email.trim().length > 0 && busy === null;
+  const q = filter.trim().toLowerCase();
+  const mindset = useMemo(
+    () =>
+      (data?.mindset.rows ?? []).filter(
+        (r) =>
+          !q ||
+          r.email.toLowerCase().includes(q) ||
+          r.name.toLowerCase().includes(q) ||
+          (r.college ?? "").toLowerCase().includes(q),
+      ),
+    [data, q],
+  );
+  const gads = useMemo(
+    () =>
+      (data?.gads.rows ?? []).filter(
+        (r) => !q || r.email.toLowerCase().includes(q) || r.name.toLowerCase().includes(q),
+      ),
+    [data, q],
+  );
 
-  return (
-    <main className="flex min-h-dvh items-start justify-center bg-background px-4 py-12 text-foreground sm:py-20">
-      <div className="w-full max-w-lg">
-        <h1 className="font-display text-2xl font-bold">Assessment admin</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Look up a Google Ads assessment by the candidate&apos;s email, and reset it so they can
-          sit it again on the same link.
-        </p>
-
+  if (!data) {
+    return (
+      <main className="flex min-h-dvh items-center justify-center bg-background px-4 text-foreground">
         <form
-          className="mt-8 space-y-4"
+          className="w-full max-w-sm"
           onSubmit={(e) => {
             e.preventDefault();
-            if (canSubmit) void call("lookup");
+            if (password) void call("list");
           }}
         >
-          <div>
+          <h1 className="font-display text-2xl font-bold">Assessment admin</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Everyone who has sat the mindset or Google Ads assessment.
+          </p>
+          <div className="mt-6">
             <label className={formLabelClass} htmlFor="admin-password">
               Admin password
             </label>
@@ -101,126 +127,223 @@ function AssessmentAdminPage() {
               className={formInputClass}
             />
           </div>
-          <div>
-            <label className={formLabelClass} htmlFor="admin-email">
-              Candidate email
-            </label>
-            <input
-              id="admin-email"
-              type="email"
-              placeholder="candidate@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className={formInputClass}
-            />
-          </div>
-
           <button
             type="submit"
-            disabled={!canSubmit}
-            className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-primary-foreground transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
+            disabled={!password || busy !== null}
+            className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-primary-foreground transition hover:bg-primary/90 disabled:opacity-60"
           >
-            {busy === "lookup" ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <Search className="h-4 w-4" />
-            )}
-            Look up
+            {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+            Sign in
           </button>
+          {error && (
+            <p role="alert" className="mt-4 flex items-start gap-2 text-sm text-error-text">
+              <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0" />
+              {error}
+            </p>
+          )}
         </form>
+      </main>
+    );
+  }
+
+  const rows = tab === "mindset" ? mindset : gads;
+
+  return (
+    <main className="min-h-dvh bg-background px-4 py-10 text-foreground sm:px-8">
+      <div className="mx-auto max-w-7xl">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h1 className="font-display text-2xl font-bold">Assessment admin</h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {data.mindset.rows.length} mindset · {data.gads.rows.length} Google Ads
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex rounded-full border border-border p-1">
+              {(["mindset", "gads"] as const).map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  onClick={() => setTab(t)}
+                  className={`rounded-full px-4 py-1.5 text-xs font-bold transition ${
+                    tab === t
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {t === "mindset" ? "Mindset" : "Google Ads"}
+                </button>
+              ))}
+            </div>
+            <div className="relative">
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <input
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
+                placeholder="Filter by name, email, college"
+                aria-label="Filter candidates"
+                className="w-64 rounded-full border border-border bg-input/60 py-2 pl-9 pr-4 text-sm text-foreground placeholder:text-muted-foreground/60 focus:border-primary focus:outline-none"
+              />
+            </div>
+            <button
+              type="button"
+              onClick={() => void call("list")}
+              disabled={busy !== null}
+              className="rounded-full border border-border px-4 py-2 text-xs font-bold text-muted-foreground transition hover:text-foreground disabled:opacity-60"
+            >
+              Refresh
+            </button>
+          </div>
+        </div>
 
         {error && (
-          <p role="alert" className="mt-6 flex items-start gap-2 text-sm text-error-text">
+          <p role="alert" className="mt-5 flex items-start gap-2 text-sm text-error-text">
             <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0" />
             {error}
           </p>
         )}
 
-        {notice && (
-          <p className="mt-6 flex items-start gap-2 rounded-xl border border-border bg-card p-4 text-sm font-semibold text-foreground">
-            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-            {notice}
-          </p>
-        )}
-
-        {summary && (
-          <div className="mt-6 rounded-2xl border border-border bg-card p-5">
-            <p className="text-base font-bold">{summary.candidateName}</p>
-            <p className="text-sm text-muted-foreground">{summary.candidateEmail}</p>
-
-            <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
-              <Row label="Status" value={summary.status} />
-              <Row label="Question" value={`${summary.currentIndex + 1} of 40`} />
-              <Row label="Reopens used" value={`${summary.resumeCount} of ${summary.maxResumes}`} />
-              <Row
-                label="Score"
-                value={
-                  summary.overallPercent === null ? "Not scored" : `${summary.overallPercent}%`
-                }
-              />
-              <Row label="Started" value={formatWhen(summary.startedAt)} />
-              <Row label="Submitted" value={formatWhen(summary.submittedAt)} />
-            </dl>
-
-            <div className="mt-5 border-t border-border pt-5">
-              {confirmReset ? (
-                <div>
-                  <p className="text-sm text-foreground">
-                    This wipes their answers, score, recordings and reopen count, and puts the link
-                    back to the start. It cannot be undone.
-                  </p>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    <button
-                      type="button"
-                      disabled={busy !== null}
-                      onClick={() => void call("reset")}
-                      className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-sm font-bold text-primary-foreground transition hover:bg-primary/90 disabled:opacity-60"
-                    >
-                      {busy === "reset" ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                      ) : (
-                        <RotateCcw className="h-4 w-4" />
-                      )}
-                      Yes, reset it
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setConfirmReset(false)}
-                      className="rounded-full border border-border px-5 py-2 text-sm font-bold text-muted-foreground transition hover:text-foreground"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => setConfirmReset(true)}
-                  className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-2 text-sm font-bold text-foreground transition hover:border-primary/50"
-                >
-                  <RotateCcw className="h-4 w-4" />
-                  Reset this assessment
-                </button>
+        <div className="mt-6 overflow-x-auto rounded-2xl border border-border">
+          <table className="w-full min-w-[60rem] text-left text-sm">
+            <thead className="bg-card text-xs uppercase tracking-widest text-muted-foreground">
+              <tr>
+                <Th>Candidate</Th>
+                {tab === "mindset" && <Th>College</Th>}
+                <Th>Status</Th>
+                <Th>Progress</Th>
+                <Th>Score</Th>
+                <Th>Started</Th>
+                <Th>Submitted</Th>
+                <Th>Action</Th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.length === 0 && (
+                <tr>
+                  <td colSpan={8} className="px-4 py-10 text-center text-muted-foreground">
+                    {q ? "Nobody matches that filter." : "Nobody has sat this assessment yet."}
+                  </td>
+                </tr>
               )}
-            </div>
-          </div>
-        )}
+
+              {tab === "mindset" &&
+                mindset.map((r) => (
+                  <tr key={r.id} className="border-t border-border align-top">
+                    <Td>
+                      <p className="font-semibold text-foreground">{r.name}</p>
+                      <p className="text-xs text-muted-foreground">{r.email}</p>
+                      <p className="text-xs text-muted-foreground">{r.phone}</p>
+                    </Td>
+                    <Td>{r.college}</Td>
+                    <Td>
+                      <StatusPill status={r.voidedAt ? "voided" : r.status} />
+                    </Td>
+                    <Td>
+                      {r.currentIndex + 1} / {data.mindset.total}
+                    </Td>
+                    <Td>{r.percent === null ? "-" : `${r.percent}%`}</Td>
+                    <Td>{when(r.startedAt)}</Td>
+                    <Td>{when(r.submittedAt)}</Td>
+                    <Td>
+                      <button
+                        type="button"
+                        onClick={() => void call("void", r.id)}
+                        disabled={busy !== null}
+                        className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs font-bold transition hover:border-primary/50 disabled:opacity-60"
+                      >
+                        {busy === r.id ? (
+                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        ) : r.voidedAt ? (
+                          <Undo2 className="h-3.5 w-3.5" />
+                        ) : (
+                          <Ban className="h-3.5 w-3.5" />
+                        )}
+                        {r.voidedAt ? "Undo void" : "Allow retake"}
+                      </button>
+                    </Td>
+                  </tr>
+                ))}
+
+              {tab === "gads" &&
+                gads.map((r) => (
+                  <tr key={r.id} className="border-t border-border align-top">
+                    <Td>
+                      <p className="font-semibold text-foreground">{r.name}</p>
+                      <p className="text-xs text-muted-foreground">{r.email}</p>
+                    </Td>
+                    <Td>
+                      <StatusPill status={r.status} />
+                    </Td>
+                    <Td>
+                      {r.currentIndex + 1} / {data.gads.total}
+                      <span className="block text-xs text-muted-foreground">
+                        {r.resumeCount}/{data.gads.maxResumes} reopens
+                      </span>
+                    </Td>
+                    <Td>{r.percent === null ? "-" : `${r.percent}%`}</Td>
+                    <Td>{when(r.startedAt)}</Td>
+                    <Td>{when(r.submittedAt)}</Td>
+                    <Td>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (confirm(`Reset ${r.name}'s assessment? This cannot be undone.`))
+                            void call("reset", r.id);
+                        }}
+                        disabled={busy !== null}
+                        className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs font-bold transition hover:border-primary/50 disabled:opacity-60"
+                      >
+                        {busy === r.id ? (
+                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        ) : (
+                          <RotateCcw className="h-3.5 w-3.5" />
+                        )}
+                        Reset
+                      </button>
+                    </Td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
+
+        <p className="mt-4 max-w-3xl text-xs leading-relaxed text-muted-foreground">
+          {tab === "mindset"
+            ? "A mindset attempt is one-shot, so a candidate whose exam broke is locked out. Allow retake sets that attempt aside, keeping the record intact, and lets them register again at /assessment/mindset. It is reversible."
+            : "Reset wipes the answers, score, recordings and reopen count, and puts the candidate back to the start of the same invite link. It cannot be undone."}
+        </p>
       </div>
     </main>
   );
 }
 
-function Row({ label, value }: { label: string; value: string }) {
+function Th({ children }: { children: React.ReactNode }) {
+  return <th className="whitespace-nowrap px-4 py-3 font-bold">{children}</th>;
+}
+function Td({ children }: { children: React.ReactNode }) {
+  return <td className="px-4 py-3 text-muted-foreground">{children}</td>;
+}
+
+function StatusPill({ status }: { status: string }) {
+  const tone =
+    status === "voided"
+      ? "border-amber-500/40 bg-amber-500/10 text-amber-300"
+      : status === "scored" || status === "submitted"
+        ? "border-primary/40 bg-primary/10 text-primary-text"
+        : status === "in_progress"
+          ? "border-border bg-foreground/5 text-foreground"
+          : "border-border text-muted-foreground";
   return (
-    <div>
-      <dt className="text-xs uppercase tracking-widest text-muted-foreground">{label}</dt>
-      <dd className="mt-0.5 font-semibold text-foreground">{value}</dd>
-    </div>
+    <span
+      className={`inline-block whitespace-nowrap rounded-full border px-2.5 py-1 text-xs font-bold ${tone}`}
+    >
+      {status.replace(/_/g, " ")}
+    </span>
   );
 }
 
-function formatWhen(value: string | null): string {
-  if (!value) return "Not yet";
+function when(value: string | null): string {
+  if (!value) return "-";
   const d = new Date(value);
-  return Number.isNaN(d.getTime()) ? "Unknown" : d.toLocaleString();
+  return Number.isNaN(d.getTime()) ? "-" : d.toLocaleString();
 }

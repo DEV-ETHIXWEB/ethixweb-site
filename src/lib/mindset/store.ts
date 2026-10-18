@@ -15,6 +15,9 @@ export interface MindsetStore {
   /** Most recent rows for this email, newest first - used by /api/mindset/begin
    * to enforce "one attempt ever". */
   findByEmail(email: string, limit: number): Promise<MindsetAssessmentRow[]>;
+  /** Every attempt, newest first. Admin only - the recruiter view lists
+   * everyone who has sat the paper. */
+  listAll(limit: number): Promise<MindsetAssessmentRow[]>;
   insert(row: Partial<MindsetAssessmentRow>): Promise<MindsetAssessmentRow>;
   /** Applies `patch` only if every key in `where` matches the row's current
    * value - returns the updated row, or null if the guard failed. */
@@ -65,6 +68,18 @@ const supabaseStore: MindsetStore = {
     }
     return (data ?? []) as MindsetAssessmentRow[];
   },
+  async listAll(limit) {
+    const { data, error } = await getSupabase()
+      .from(TABLE)
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(limit);
+    if (error) {
+      console.error("[mindset-store] listAll error:", error);
+      return [];
+    }
+    return (data ?? []) as MindsetAssessmentRow[];
+  },
   async insert(row) {
     const { data, error } = await getSupabase().from(TABLE).insert(row).select("*").single();
     if (error) throw error;
@@ -111,6 +126,11 @@ const inMemoryStore: MindsetStore = {
     return [...memoryRows.values()]
       .filter((r) => r.candidate_email === email)
       .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+      .slice(0, limit);
+  },
+  async listAll(limit) {
+    return [...memoryRows.values()]
+      .sort((a, b) => (a.created_at < b.created_at ? 1 : -1))
       .slice(0, limit);
   },
   async insert(row) {
