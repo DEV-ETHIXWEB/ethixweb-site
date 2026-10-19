@@ -2189,25 +2189,6 @@ html {
   transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.promo-rule {
-  position: absolute;
-  left: -12%;
-  right: -12%;
-  height: 1px;
-  pointer-events: none;
-}
-/* The heavier rule sits just above the numeral's cap height and the lighter
-   one below its baseline, so the type crosses both. Type breaking a rule is
-   the oldest trick in editorial layout and the reason this reads as drawn. */
-.promo-rule-top {
-  top: 34%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
-}
-.promo-rule-bottom {
-  top: 66%;
-  background: linear-gradient(90deg, transparent, rgba(224, 85, 90, 0.9), transparent);
-}
-
 .promo-date-type {
   transform: translate(calc(var(--px) * -7px), calc(var(--py) * -7px));
   transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);

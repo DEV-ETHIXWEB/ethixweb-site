@@ -14,10 +14,11 @@ import spiderweb from "@/assets/spiderweb.svg";
  * house style of a template.
  *
  * This is typographic instead. The numeral IS the artwork, at a size no
- * template picks; the rule crossing behind it and the numeral breaking the
- * baseline are ordinary editorial moves that read as drawn rather than
- * assembled; and the web finally does structural work, converging on the
- * date rather than sitting behind it as texture.
+ * template picks, and the web finally does structural work by converging on
+ * the date rather than sitting behind it as texture. The web's own strands
+ * carry the horizontal reading; a pair of drawn rules across the numeral was
+ * tried here and cut, because against the web they read as stray lines
+ * rather than structure.
  */
 export function PromoDate({
   day,
@@ -87,11 +88,6 @@ export function PromoDate({
         decoding="async"
         className="promo-date-web pointer-events-none absolute top-1/2 left-1/2 h-[150%] w-[150%] max-w-none"
       />
-
-      {/* Rules the numeral sits across. Two weights, so the composition has a
-          hierarchy rather than a symmetrical frame. */}
-      <div className="promo-rule promo-rule-top" />
-      <div className="promo-rule promo-rule-bottom" />
 
       <div className="promo-date-type relative flex flex-col items-center">
         <span className="promo-numeral font-display">{day}</span>
