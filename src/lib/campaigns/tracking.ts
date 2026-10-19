@@ -17,8 +17,7 @@ export type CampaignTrackEvent =
   | "campaign_form_start"
   | "campaign_form_step"
   | "campaign_form_submit"
-  | "campaign_phone_click"
-  | "campaign_booking_click";
+  | "campaign_phone_click";
 
 export interface CampaignMeta {
   industry: string;
