@@ -2,6 +2,12 @@ import { clientIp } from "./rate-limit";
 
 const VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
+/** Ceiling on the siteverify round trip. Cloudflare answers in well under a
+ * second normally; past this the submission is failed rather than left to
+ * hang. A `verify_error` is treated as a rejection by callers, so this stays
+ * fail-closed. */
+const VERIFY_TIMEOUT_MS = 8000;
+
 // VERCEL_ENV is set by Vercel's build/runtime and is not client-influenced;
 // NODE_ENV covers non-Vercel environments. Anything that isn't explicitly
 // "development" or "preview" is treated as production - fail closed by
@@ -42,6 +48,13 @@ export async function verifyTurnstile(token: unknown, request: Request): Promise
     return { ok: false, reason: "missing_token" };
   }
 
+  // Bounded, like the ClickUp call in lib/clickup.ts. Without a timeout a
+  // slow or hung siteverify left the whole submission hanging until the
+  // serverless function itself timed out, and the visitor just watched a
+  // "Sending..." button - on the lead forms, which is the worst place for it.
+  const abort = new AbortController();
+  const timer = setTimeout(() => abort.abort(), VERIFY_TIMEOUT_MS);
+
   try {
     const res = await fetch(VERIFY_URL, {
       method: "POST",
@@ -51,11 +64,14 @@ export async function verifyTurnstile(token: unknown, request: Request): Promise
         response: token,
         remoteip: clientIp(request),
       }),
+      signal: abort.signal,
     });
     const data = (await res.json().catch(() => null)) as { success?: boolean } | null;
     return data?.success === true ? { ok: true } : { ok: false, reason: "invalid_token" };
   } catch (err) {
     console.error("[turnstile] verification request failed:", err);
     return { ok: false, reason: "verify_error" };
+  } finally {
+    clearTimeout(timer);
   }
 }

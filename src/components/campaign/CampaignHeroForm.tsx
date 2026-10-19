@@ -5,7 +5,7 @@ import { isValidEmail, isValidPhone } from "@/lib/utils";
 import type { CampaignConfig } from "@/lib/campaigns/types";
 import type { CampaignMeta } from "@/lib/campaigns/tracking";
 import { trackCampaignEvent, captureAttribution } from "@/lib/campaigns/tracking";
-import { trackLeadFormConversion } from "@/lib/gtag";
+import { trackLeadFormConversion, type LeadSource } from "@/lib/gtag";
 
 type SubmitState = "idle" | "submitting" | "success" | "error";
 
@@ -13,6 +13,11 @@ interface FormData {
   businessType: string;
   goal: string;
   businessName: string;
+  /** Optional. The submit endpoint has always read, validated and rendered a
+   * `website` on the lead, but this form never had a field for it, so that
+   * whole path was dead and the team never saw the prospect's current site -
+   * the one thing /contact asks for and the pitch is built on. */
+  website: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -23,6 +28,7 @@ const EMPTY_FORM: FormData = {
   businessType: "",
   goal: "",
   businessName: "",
+  website: "",
   firstName: "",
   lastName: "",
   email: "",
@@ -115,6 +121,7 @@ export function CampaignHeroForm({ config, meta }: { config: CampaignConfig; met
           firstName: data.firstName,
           lastName: data.lastName,
           businessName: data.businessName,
+          website: data.website,
           email: data.email,
           phone: data.phone,
           businessType: data.businessType,
@@ -135,7 +142,10 @@ export function CampaignHeroForm({ config, meta }: { config: CampaignConfig; met
       }
       setState("success");
       trackCampaignEvent("campaign_form_submit", meta);
-      trackLeadFormConversion();
+      // config.id is the campaign slug ("hvac-plumbing-marketing", ...), which
+      // is exactly the LeadSource vocabulary - so the Ads report can tell
+      // these five forms apart instead of lumping them into one number.
+      trackLeadFormConversion(config.id as LeadSource);
     } catch {
       setErrorMsg("Something went wrong. Please try again.");
       setState("error");
@@ -241,6 +251,19 @@ export function CampaignHeroForm({ config, meta }: { config: CampaignConfig; met
             placeholder="Business name"
             value={data.businessName}
             onChange={(e) => setData((d) => ({ ...d, businessName: e.target.value }))}
+            className={fieldClass}
+          />
+
+          {/* Optional on purpose: this is paid traffic, and every required
+              field costs conversions. Plenty of these prospects have no site
+              yet, which is itself worth knowing. */}
+          <input
+            inputMode="url"
+            autoComplete="url"
+            maxLength={200}
+            placeholder="Current website (optional)"
+            value={data.website}
+            onChange={(e) => setData((d) => ({ ...d, website: e.target.value }))}
             className={fieldClass}
           />
 

@@ -5,7 +5,13 @@ import { recordContactSubmission, markNotificationSent, markClickUpTaskLinked } 
 import { createClickUpLeadTask } from "@/lib/clickup";
 import { guardRequest } from "@/lib/api-guard";
 import { verifyTurnstile } from "@/lib/turnstile";
-import { isValidEmail, isValidPhone } from "@/lib/utils";
+import {
+  FIELD_LIMITS,
+  cleanField,
+  isValidEmail,
+  isValidPhone,
+  normalizeWebsiteUrl,
+} from "@/lib/utils";
 
 // Shared POST handler for every campaign landing page's lead-submit endpoint
 // (src/routes/api.landing.*.ts). One implementation, driven by per-campaign
@@ -93,14 +99,22 @@ export function createCampaignLeadHandler(cfg: CampaignLeadHandlerConfig) {
       );
     }
 
-    const cleanFirst = typeof firstName === "string" ? firstName.trim() : "";
-    const cleanLast = typeof lastName === "string" ? lastName.trim() : "";
-    const cleanBusiness = typeof businessName === "string" ? businessName.trim() : "";
-    const cleanEmail = typeof email === "string" ? email.trim() : "";
-    const cleanPhone = typeof phone === "string" ? phone.trim() : "";
-    const cleanWebsite = typeof website === "string" ? website.trim() : "";
-    const cleanBusinessType = typeof businessType === "string" ? businessType.trim() : "";
-    const cleanGoal = typeof goal === "string" ? goal.trim() : "";
+    // Capped and stripped of control characters. Nothing bounded these
+    // before, and they reach a Resend subject line, so a raw CR/LF in e.g.
+    // businessName was a mail-header-injection shape as well as a size issue.
+    const cleanFirst = cleanField(firstName, FIELD_LIMITS.name);
+    const cleanLast = cleanField(lastName, FIELD_LIMITS.name);
+    const cleanBusiness = cleanField(businessName, FIELD_LIMITS.company);
+    const cleanEmail = cleanField(email, FIELD_LIMITS.email);
+    const cleanPhone = cleanField(phone, FIELD_LIMITS.phone);
+    const cleanBusinessType = cleanField(businessType, FIELD_LIMITS.shortChoice);
+    const cleanGoal = cleanField(goal, FIELD_LIMITS.shortChoice);
+
+    // Run through the same normalizer /api/contact uses rather than passing
+    // the raw string along: it rejects non-http(s) schemes and strips
+    // embedded credentials before this ends up as a link in the team's
+    // inbox. Optional here, so an unparseable value is simply dropped.
+    const cleanWebsite = normalizeWebsiteUrl(cleanField(website, FIELD_LIMITS.website)) ?? "";
 
     const cleanName = [cleanFirst, cleanLast].filter(Boolean).join(" ");
 
@@ -155,10 +169,14 @@ export function createCampaignLeadHandler(cfg: CampaignLeadHandlerConfig) {
       name: cleanName,
       email: cleanEmail,
       phone: cleanPhone,
+      website: cleanWebsite || undefined,
       company: cleanBusiness,
       service: cfg.sourceLabel,
       timeline: cleanGoal || null,
-      hearAbout: cfg.sourceLabel,
+      // `service` already carries the campaign label; repeating it here put
+      // the same string on the task twice, as "Service interested in" and
+      // "How they heard about us". The campaign IS how they found us, so
+      // say that once and leave the other line off.
       message: projectDetails,
     });
     await markClickUpTaskLinked(leadId, clickUpTaskId);
@@ -169,6 +187,12 @@ export function createCampaignLeadHandler(cfg: CampaignLeadHandlerConfig) {
       return Response.json({ ok: false, error: "Email service not configured" }, { status: 500 });
     }
 
+    // The href has to be something a dialler accepts, so the formatting
+    // people type ("+1 (555) 123-4567") is kept for display but stripped for
+    // the link. /api/contact already did this; this route was putting the
+    // raw string straight into tel:, where the spaces and brackets break it.
+    const dialable = cleanPhone.replace(/[^\d+]/g, "");
+
     const summaryRows = [
       emailRow("Name", escapeHtml(cleanName)),
       cleanBusiness && emailRow("Business", escapeHtml(cleanBusiness)),
@@ -176,7 +200,7 @@ export function createCampaignLeadHandler(cfg: CampaignLeadHandlerConfig) {
       goalLabel && emailRow("Primary goal", escapeHtml(goalLabel)),
       cleanWebsite && emailRow("Current website", escapeHtml(cleanWebsite)),
       cleanPhone &&
-        emailRow("Phone", `<a href="tel:${escapeHtml(cleanPhone)}">${escapeHtml(cleanPhone)}</a>`),
+        emailRow("Phone", `<a href="tel:${escapeHtml(dialable)}">${escapeHtml(cleanPhone)}</a>`),
       emailRow("Email", `<a href="mailto:${escapeHtml(cleanEmail)}">${escapeHtml(cleanEmail)}</a>`),
     ]
       .filter(Boolean)

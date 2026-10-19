@@ -215,7 +215,7 @@ function ContactBody() {
         throw new Error(data?.error || "Request failed");
       }
       setSent(true);
-      trackLeadFormConversion();
+      trackLeadFormConversion("contact");
     } catch (err) {
       setSubmitError(
         err instanceof Error

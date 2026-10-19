@@ -44,11 +44,18 @@ export const NOTICE_PERIOD_LABELS: Record<string, string> = {
 };
 
 export function escapeHtml(value: string) {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
+  return (
+    value
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      // Every attribute in these templates is double-quoted today, so this is
+      // belt and braces - but an escape that covers only the quote style the
+      // current markup happens to use is one single-quoted attribute away from
+      // being a hole.
+      .replace(/'/g, "&#39;")
+  );
 }
 
 /** A single label/value row inside an email summary table. */

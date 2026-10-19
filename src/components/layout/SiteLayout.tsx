@@ -3,6 +3,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
+import { ConsentBanner } from "@/components/layout/ConsentBanner";
 import { useClickSound } from "@/hooks/useClickSound";
 
 function Inner({ children }: { children: ReactNode }) {
@@ -24,6 +25,7 @@ function Inner({ children }: { children: ReactNode }) {
         </main>
         <Footer />
       </div>
+      <ConsentBanner />
     </div>
   );
 }

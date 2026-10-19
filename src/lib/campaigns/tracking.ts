@@ -1,7 +1,15 @@
 // Tracking + attribution abstraction shared by every campaign landing page.
-// Pushes to window.dataLayer using the standard GTM convention - a safe
-// no-op today since no GTM container is loaded in __root.tsx yet, and will
-// start flowing the moment one is added with zero changes here.
+//
+// This used to only push to window.dataLayer "ready for a GTM container" -
+// but no GTM container is loaded, so every page view, CTA click and phone
+// click on the paid landing pages was written to an array nothing read. The
+// funnel telemetry for the pages we actually buy traffic for was silently
+// going nowhere.
+//
+// Events are now also sent through gtag, which IS loaded (once the visitor
+// accepts advertising cookies - see lib/consent.ts), so they show up in
+// Google Ads and GA4. The dataLayer push is kept so a GTM container added
+// later still receives everything with no changes here.
 
 export type CampaignTrackEvent =
   | "campaign_page_view"
@@ -21,7 +29,8 @@ export interface CampaignMeta {
 
 declare global {
   interface Window {
-    dataLayer?: Record<string, unknown>[];
+    // Holds two shapes: gtag.js command arrays and GTM event objects.
+    dataLayer?: unknown[];
   }
 }
 
@@ -31,8 +40,15 @@ export function trackCampaignEvent(
   extra?: Record<string, unknown>,
 ) {
   if (typeof window === "undefined") return;
+  const params = { ...meta, ...extra };
+
+  // For a GTM container, if one is ever added.
   window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({ event, ...meta, ...extra });
+  window.dataLayer.push({ event, ...params });
+
+  // For Google Ads / GA4, which is what is actually loaded. No-ops until the
+  // visitor has accepted advertising cookies.
+  window.gtag?.("event", event, params);
 }
 
 // ── Attribution (UTM / Google Ads click ids) ────────────────────────────

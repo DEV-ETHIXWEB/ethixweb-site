@@ -7,7 +7,7 @@ import { recordContactSubmission, markNotificationSent, markClickUpTaskLinked } 
 import { createClickUpLeadTask } from "@/lib/clickup";
 import { guardRequest } from "@/lib/api-guard";
 import { verifyTurnstile } from "@/lib/turnstile";
-import { isValidPhone, normalizeWebsiteUrl } from "@/lib/utils";
+import { FIELD_LIMITS, cleanField, isValidPhone, normalizeWebsiteUrl } from "@/lib/utils";
 
 const TO_EMAIL = "info@ethixweb.com";
 
@@ -52,9 +52,12 @@ export const Route = createFileRoute("/api/contact")({
           );
         }
 
-        const cleanName = typeof name === "string" ? name.trim() : "";
-        const cleanPhone = typeof phone === "string" ? phone.trim() : "";
-        const rawWebsite = typeof website === "string" ? website.trim() : "";
+        // Capped and stripped of control characters before anything else
+        // touches them: these land in Postgres, a ClickUp task and an email
+        // subject, and nothing upstream bounded their size.
+        const cleanName = cleanField(name, FIELD_LIMITS.name);
+        const cleanPhone = cleanField(phone, FIELD_LIMITS.phone);
+        const rawWebsite = cleanField(website, FIELD_LIMITS.website);
 
         if (!cleanName || !cleanPhone || !rawWebsite) {
           return Response.json(

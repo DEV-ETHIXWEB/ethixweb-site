@@ -168,19 +168,11 @@ export const Route = createRootRoute({
         crossOrigin: "anonymous",
       },
     ],
-    scripts: [
-      {
-        src: "https://www.googletagmanager.com/gtag/js?id=AW-18387669255",
-        async: true,
-      },
-      {
-        children:
-          "window.dataLayer = window.dataLayer || [];" +
-          "function gtag(){dataLayer.push(arguments);}" +
-          "gtag('js', new Date());" +
-          "gtag('config', 'AW-18387669255');",
-      },
-    ],
+    // No analytics or advertising tag here on purpose. Google Ads gtag.js
+    // used to load from this head on every page, which set an advertising
+    // cookie before the visitor had been asked. It is now injected by
+    // ConsentBanner (see lib/consent.ts) only after an explicit accept,
+    // which is what the privacy policy says we do.
   }),
   shellComponent: RootShell,
   component: RootComponent,
