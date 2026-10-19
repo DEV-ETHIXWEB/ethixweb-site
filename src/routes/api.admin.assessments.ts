@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { z } from "zod";
-import { timingSafeEqual } from "node:crypto";
+import { createHash, timingSafeEqual } from "node:crypto";
 import { clientIp } from "@/lib/rate-limit";
 import { guardRequest } from "@/lib/api-guard";
 import { adminResetGadsRow } from "@/lib/gads/service";
@@ -37,9 +37,13 @@ const bodySchema = z.object({
 function passwordMatches(supplied: string): boolean {
   const expected = process.env.GADS_ADMIN_PASSWORD;
   if (!expected) return false;
-  const a = Buffer.from(supplied);
-  const b = Buffer.from(expected);
-  if (a.length !== b.length) return false;
+  // Compare fixed-width digests rather than the raw strings. timingSafeEqual
+  // needs equal lengths, so the usual `a.length !== b.length` guard in front
+  // of it answers "is the password N characters long?" before any comparison
+  // happens. Hashing first makes both sides 32 bytes whatever was supplied,
+  // so length tells an attacker nothing.
+  const a = createHash("sha256").update(supplied).digest();
+  const b = createHash("sha256").update(expected).digest();
   return timingSafeEqual(a, b);
 }
 
@@ -48,11 +52,15 @@ export const Route = createFileRoute("/api/admin/assessments")({
     handlers: {
       POST: async ({ request }) => {
         // Tight limit: this is a password endpoint, so brute force is the
-        // threat that matters, not throughput.
+        // threat that matters, not throughput. 40 per ten minutes was ~5,700
+        // guesses a day against a human-chosen password; the page itself
+        // only needs a handful of calls per session (one to sign in, one per
+        // reset or void), so a much lower ceiling costs the recruiter
+        // nothing and removes most of the headroom.
         const guard = await guardRequest(
           request,
           `admin-assessments:${clientIp(request)}`,
-          40,
+          12,
           10 * 60 * 1000,
         );
         if (guard) return guard;
@@ -71,6 +79,14 @@ export const Route = createFileRoute("/api/admin/assessments")({
           );
         }
         if (!passwordMatches(password)) {
+          // Only successful resets and voids were ever logged, so a run of
+          // failed guesses against this endpoint left no trace at all -
+          // nothing to notice, and nothing to go back to afterwards. The
+          // password itself is never logged, only that an attempt failed and
+          // where it came from.
+          console.warn(
+            `[admin] failed password attempt from ${clientIp(request)} (action: ${action})`,
+          );
           return Response.json({ ok: false, error: "Incorrect password." }, { status: 403 });
         }
 
@@ -98,8 +114,15 @@ export const Route = createFileRoute("/api/admin/assessments")({
             return Response.json({ ok: false, error: "Attempt not found." }, { status: 404 });
           }
           // Toggle: voiding is reversible, so a mis-click costs nothing.
+          // Guarded on the value we read, so two recruiters clicking at once
+          // can't have the second silently undo the first - the loser gets
+          // "Update failed. Try again." and sees the refreshed state.
           const voidedAt = row.voided_at ? null : new Date().toISOString();
-          const updated = await getMindsetStore().updateIf(row.id, {}, { voided_at: voidedAt });
+          const updated = await getMindsetStore().updateIf(
+            row.id,
+            { voided_at: row.voided_at ?? null },
+            { voided_at: voidedAt },
+          );
           if (!updated) {
             return Response.json(
               { ok: false, error: "Update failed. Try again." },

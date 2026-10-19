@@ -24,9 +24,11 @@ import {
 const MINDSET_EXAM_GRACE_SECONDS = 30;
 
 /** How many recent attempts to look at for an email for the "one attempt
- * ever" check - generous enough that a retried/duplicate insert can never
+ * ever" check. findByEmail already excludes voided rows, so every row this
+ * returns is one that could block - which is what makes a small number safe.
+ * Generous enough on top of that that a retried/duplicate insert can never
  * hide an existing terminal row. */
-const DEDUP_LOOKBACK = 5;
+const DEDUP_LOOKBACK = 10;
 
 export async function findMindsetByToken(token: string): Promise<MindsetAssessmentRow | null> {
   const hash = hashSessionToken(token);

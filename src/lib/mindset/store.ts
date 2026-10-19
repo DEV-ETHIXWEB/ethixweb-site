@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { normalizeEmailIdentity } from "@/lib/utils";
 import { getSupabase } from "@/lib/supabase";
 import type { MindsetAssessmentRow } from "@/lib/mindset/types";
 
@@ -56,13 +57,39 @@ const supabaseStore: MindsetStore = {
     return data;
   },
   async findByEmail(email, limit) {
-    const { data, error } = await getSupabase()
-      .from(TABLE)
-      .select("*")
-      .eq("candidate_email", email)
-      .order("created_at", { ascending: false })
-      .limit(limit);
+    // Matches on the normalized identity (see migration 0010) so a "+tag" or
+    // a Gmail dot cannot buy a second sitting. Voided attempts have been set
+    // aside by a recruiter and never block a retry, so excluding them here is
+    // what makes the small `limit` safe: otherwise a handful of voided rows
+    // could push the one terminal row that SHOULD block out of the window.
+    const query = (column: string, value: string) =>
+      getSupabase()
+        .from(TABLE)
+        .select("*")
+        .eq(column, value)
+        .is("voided_at", null)
+        .order("created_at", { ascending: false })
+        .limit(limit);
+
+    const identity = normalizeEmailIdentity(email);
+    const { data, error } = await query("candidate_email_identity", identity);
+
     if (error) {
+      // 42703 is "undefined_column": the deploy got here before migration
+      // 0010 was applied. Fall back to the exact address rather than failing
+      // the check open and letting everyone straight in.
+      if (error.code === "42703") {
+        console.error(
+          "[mindset-store] candidate_email_identity is missing - apply migration 0010. " +
+            "Falling back to exact-email dedup, which a +tag can evade.",
+        );
+        const fallback = await query("candidate_email", email.trim().toLowerCase());
+        if (fallback.error) {
+          console.error("[mindset-store] findByEmail fallback error:", fallback.error);
+          return [];
+        }
+        return (fallback.data ?? []) as MindsetAssessmentRow[];
+      }
       console.error("[mindset-store] findByEmail error:", error);
       return [];
     }
@@ -88,7 +115,11 @@ const supabaseStore: MindsetStore = {
   async updateIf(id, where, patch) {
     let query = getSupabase().from(TABLE).update(patch).eq("id", id);
     for (const [key, value] of Object.entries(where)) {
-      query = query.eq(key, value as never);
+      // `.eq(col, null)` compiles to `col=eq.null`, which matches no row in
+      // SQL - NULL is not equal to anything, including itself. A guard on a
+      // nullable column (voided_at) therefore has to use `is`, or the update
+      // silently never applies.
+      query = value === null ? query.is(key, null) : query.eq(key, value as never);
     }
     const { data, error } = await query.select("*").maybeSingle<MindsetAssessmentRow>();
     if (error) {
@@ -123,8 +154,9 @@ const inMemoryStore: MindsetStore = {
     return memoryRows.get(id) ?? null;
   },
   async findByEmail(email, limit) {
+    const identity = normalizeEmailIdentity(email);
     return [...memoryRows.values()]
-      .filter((r) => r.candidate_email === email)
+      .filter((r) => normalizeEmailIdentity(r.candidate_email) === identity && !r.voided_at)
       .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
       .slice(0, limit);
   },

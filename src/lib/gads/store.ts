@@ -89,7 +89,11 @@ const supabaseStore: GadsStore = {
   async updateIf(id, where, patch) {
     let query = getSupabase().from(TABLE).update(patch).eq("id", id);
     for (const [key, value] of Object.entries(where)) {
-      query = query.eq(key, value as never);
+      // `.eq(col, null)` compiles to `col=eq.null`, which matches no row -
+      // NULL is not equal to anything in SQL. A guard on a nullable column
+      // has to use `is` or the update silently never applies. No caller
+      // passes a null guard here today; this keeps it from being a trap.
+      query = value === null ? query.is(key, null) : query.eq(key, value as never);
     }
     const { data, error } = await query.select("*").maybeSingle<GadsAssessmentRow>();
     if (error) {

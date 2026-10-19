@@ -1,5 +1,9 @@
 import { CheckSquare, Square, Circle, CircleDot, ListChecks } from "lucide-react";
-import type { GadsAnswerValue, GadsCandidateQuestion } from "@/lib/gads/types";
+import {
+  GADS_WRITTEN_WORD_TARGET,
+  type GadsAnswerValue,
+  type GadsCandidateQuestion,
+} from "@/lib/gads/types";
 import { wordCount } from "@/lib/assessment/scoring";
 import { playGadsClick } from "@/lib/gads/sound";
 
@@ -11,7 +15,6 @@ export const MECHANIC_LABELS: Record<GadsCandidateQuestion["mechanic"], string> 
 };
 
 const LETTERS = "ABCDEFGH";
-const WRITTEN_WORD_TARGET = { min: 50, max: 150 };
 
 interface GadsQuestionCardProps {
   question: GadsCandidateQuestion;
@@ -133,7 +136,10 @@ export function GadsQuestionCard({
 
 function WrittenInput({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   const words = wordCount(value);
-  const { min, max } = WRITTEN_WORD_TARGET;
+  // The same target the scorer grades against. This file used to keep its own
+  // copy of {min: 50, max: 150}, so the band shown to the candidate and the
+  // band lengthFactor() scores them on were free to drift apart.
+  const { min, max } = GADS_WRITTEN_WORD_TARGET;
   const status =
     words === 0
       ? { text: `${min}-${max} words expected`, cls: "text-muted-foreground" }

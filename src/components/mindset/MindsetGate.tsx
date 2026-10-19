@@ -5,7 +5,9 @@ import { isValidEmail, isValidPhone } from "@/lib/utils";
 import {
   MINDSET_EXAM_DURATION_SECONDS,
   MINDSET_QUESTION_COUNTS,
+  MINDSET_SECTION_ORDER,
   MINDSET_TOTAL_QUESTIONS,
+  type MindsetMechanic,
 } from "@/lib/mindset/types";
 
 // Check-in. Same two-surface split as the exam itself, so the candidate
@@ -14,26 +16,25 @@ import {
 // structure table is generated from the real constants, never retyped, so
 // the briefing cannot drift from what the exam actually does.
 
-const SECTIONS = [
-  {
-    label: "Section 1",
-    name: "Agreement statements",
-    how: "Slide the scale",
-    count: MINDSET_QUESTION_COUNTS.likert,
-  },
-  {
-    label: "Section 2",
-    name: "Situational judgment",
-    how: "Pick one option",
-    count: MINDSET_QUESTION_COUNTS.situational,
-  },
-  {
-    label: "Section 3",
-    name: "Open response",
-    how: "Type your answer",
-    count: MINDSET_QUESTION_COUNTS.written,
-  },
-] as const;
+/** How each section is described to the candidate. Typed against
+ * MindsetMechanic, so a new mechanic cannot be added to the exam without
+ * also being given a row here - the compiler refuses otherwise. */
+const SECTION_COPY: Record<MindsetMechanic, { name: string; how: string }> = {
+  likert: { name: "Agreement statements", how: "Slide the scale" },
+  mcq: { name: "Direct questions", how: "Pick one option" },
+  situational: { name: "Situational judgment", how: "Pick one option" },
+  written: { name: "Open response", how: "Type your answer" },
+};
+
+// Built from the exam's own section order rather than a hand-written list.
+// The hand-written one had drifted: it omitted the mcq section, so it
+// described 25 questions on a page that also printed the real total of 35.
+const SECTIONS = MINDSET_SECTION_ORDER.map((mechanic, i) => ({
+  label: `Section ${i + 1}`,
+  name: SECTION_COPY[mechanic].name,
+  how: SECTION_COPY[mechanic].how,
+  count: MINDSET_QUESTION_COUNTS[mechanic],
+}));
 
 interface MindsetGateProps {
   onSubmit: (details: {

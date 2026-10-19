@@ -64,8 +64,9 @@ export const GADS_EXAM_DURATION_SECONDS = GADS_TIMER_CEILING_SECONDS + GADS_OVER
  * extra thinking time. Mirrors EXAM_GRACE_SECONDS in assessment-types.ts. */
 export const GADS_QUESTION_GRACE_SECONDS = 5;
 
-/** How long an unstarted invite link stays valid before /begin refuses it,
- * independent of the exam's own countdown once started. */
+/** Minutes remaining on the overall clock at which the candidate gets a
+ * visible warning. (The doc comment here used to describe invite-link
+ * expiry, which belongs to a constant that no longer exists.) */
 export const GADS_OVERALL_WARNING_MINUTES = [10, 5, 1] as const;
 
 export const GADS_WRITTEN_WORD_TARGET = { min: 50, max: 150 } as const;

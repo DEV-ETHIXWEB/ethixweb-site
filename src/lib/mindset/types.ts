@@ -13,14 +13,23 @@ export type MindsetMechanic = "likert" | "mcq" | "situational" | "written";
 
 /** One clock for the whole paper, 15 minutes, and no per-question timers.
  * The candidate controls their own pace; the only deadline is this one.
- * Realistic completion is around 12 minutes (see MindsetGate's structure
- * table for the per-section budget that number comes from), so the window
- * is deliberately tight rather than cruel. */
+ * Realistic completion is around 12 minutes, so the window is deliberately
+ * tight rather than cruel. */
 export const MINDSET_EXAM_DURATION_SECONDS = 15 * 60;
 
+/** The order the four sections are served in. buildMindsetExam() assembles
+ * the paper from this, and MindsetGate's briefing table renders from it, so
+ * the two cannot disagree about what the candidate is about to sit.
+ *
+ * They did disagree: the briefing listed three sections and left `mcq` out
+ * entirely, so it accounted for 25 questions on a page that also printed
+ * "35 questions". Anything that walks this list gets every section or fails
+ * to compile. */
+export const MINDSET_SECTION_ORDER = ["likert", "mcq", "situational", "written"] as const;
+
 /** Exact composition of the one fixed sitting. Sections run fastest first:
- * 15 quick agreement statements, then 10 direct questions, then 10 longer
- * situations. At a realistic pace that is around 10 minutes of the 15. */
+ * quick agreement statements, then direct questions, then longer situations,
+ * then the written answers. */
 export const MINDSET_QUESTION_COUNTS: Record<MindsetMechanic, number> = {
   likert: 13,
   mcq: 10,

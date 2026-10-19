@@ -68,6 +68,42 @@ export function cleanMultiline(value: unknown, max: number): string {
   );
 }
 
+/**
+ * Collapses the cheap ways one person presents as several.
+ *
+ * The mindset assessment promises "one attempt ever per email", but the
+ * email is self-declared and never verified, and the paper is a fixed
+ * question bank rather than a pool - so "me+1@gmail.com", "me+2@gmail.com"
+ * and "m.e@gmail.com" bought unlimited sittings of a paper the candidate had
+ * already read. Deduping on this identity instead of the raw address closes
+ * the easy evasions without demanding a verification round trip.
+ *
+ * It does not pretend to be exhaustive: a different mailbox is still a
+ * different person as far as this can tell. Verification is the real answer;
+ * this removes the one-click version of the problem.
+ */
+export function normalizeEmailIdentity(email: string): string {
+  const trimmed = email.trim().toLowerCase();
+  const at = trimmed.lastIndexOf("@");
+  if (at <= 0) return trimmed;
+
+  let local = trimmed.slice(0, at);
+  const domain = trimmed.slice(at + 1);
+
+  // Sub-addressing: everything from the first "+" is a per-use tag, not part
+  // of the mailbox. Honoured by Gmail, Outlook, Fastmail, Proton and others.
+  const plus = local.indexOf("+");
+  if (plus >= 0) local = local.slice(0, plus);
+
+  // Gmail alone ignores dots in the local part.
+  if (domain === "gmail.com" || domain === "googlemail.com") {
+    local = local.replace(/\./g, "");
+    return `${local}@gmail.com`;
+  }
+
+  return `${local}@${domain}`;
+}
+
 /** Phone is a required field on every lead form, so this only rejects entries
  * that can't be a real number: it counts digits and ignores the formatting
  * people actually type (+, spaces, dashes, brackets, a leading 00). 7 digits is

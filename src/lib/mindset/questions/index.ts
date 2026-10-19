@@ -2,7 +2,9 @@ import { randomInt } from "node:crypto";
 import {
   LIKERT_POINTS,
   MINDSET_QUESTION_COUNTS,
+  MINDSET_SECTION_ORDER,
   MINDSET_TOTAL_QUESTIONS,
+  type MindsetMechanic,
   type MindsetQuestion,
 } from "@/lib/mindset/types";
 import type { AuthoredMindsetQuestion } from "@/lib/mindset/questions/shared";
@@ -11,22 +13,28 @@ import { MCQ_QUESTIONS } from "@/lib/mindset/questions/mcq";
 import { SITUATIONAL_QUESTIONS } from "@/lib/mindset/questions/situational";
 import { WRITTEN_QUESTIONS } from "@/lib/mindset/questions/written";
 
-// The one fixed 35-question sitting. Not a reusable pool: every one of
-// these is used on every attempt, since there is only ever one attempt per
-// candidate. The three sections stay in a fixed order so the paper reads
-// the way it was briefed (fast statements, then scenarios, then writing).
-// Only the order WITHIN a section, and a situational question's own option
-// order, is shuffled per attempt.
+// The one fixed sitting. Not a reusable pool: every one of these is used on
+// every attempt, since there is only ever one attempt per candidate. The
+// four sections stay in a fixed order so the paper reads the way it was
+// briefed (fast statements, then direct questions, then scenarios, then
+// writing). Only the order WITHIN a section, and a situational question's
+// own option order, is shuffled per attempt.
 //
 // Likert options are never shuffled: the agreement scale has to run from
 // disagree to agree every time or the slider would be unreadable.
 
-const SECTIONS: AuthoredMindsetQuestion[][] = [
-  LIKERT_QUESTIONS,
-  MCQ_QUESTIONS,
-  SITUATIONAL_QUESTIONS,
-  WRITTEN_QUESTIONS,
-];
+const QUESTIONS_BY_MECHANIC: Record<MindsetMechanic, AuthoredMindsetQuestion[]> = {
+  likert: LIKERT_QUESTIONS,
+  mcq: MCQ_QUESTIONS,
+  situational: SITUATIONAL_QUESTIONS,
+  written: WRITTEN_QUESTIONS,
+};
+
+// Driven by the shared order so the paper and the candidate's briefing table
+// in MindsetGate are assembled from the same list and cannot disagree.
+const SECTIONS: AuthoredMindsetQuestion[][] = MINDSET_SECTION_ORDER.map(
+  (mechanic) => QUESTIONS_BY_MECHANIC[mechanic],
+);
 
 // Self-check at module load, not request time - the data is static, so a
 // structural mistake should fail the build/boot, not a candidate's exam.
