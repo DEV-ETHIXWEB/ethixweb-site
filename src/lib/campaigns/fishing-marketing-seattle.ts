@@ -38,9 +38,9 @@ export const fishingMarketingSeattle: CampaignConfig = {
   },
 
   seo: {
-    title: "Seattle Fishing Charter Marketing | Websites, AI & Google Ads | Ethixweb",
+    title: "Seattle Charter Marketing | Websites & Google Ads | Ethixweb",
     description:
-      "Ethixweb builds the website, AI lead assistant and Google Ads system that helps Seattle and Puget Sound fishing charters and marine businesses turn more searches into bookings. Get found online and generate more leads.",
+      "The website, AI lead assistant and Google Ads system that helps Seattle and Puget Sound fishing charters turn more searches into bookings.",
     ogTitle: "Fishing Charter Marketing in Seattle | Ethixweb",
     ogDescription:
       "Website + AI + Google Ads for Seattle-area fishing charters and marine businesses. Never miss a booking inquiry while you're on the water.",

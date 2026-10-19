@@ -30,9 +30,9 @@ export const fishingMarineMarketing: CampaignConfig = {
     "Fishing charters, fishing guides, marine businesses, boat dealers, tackle/e-commerce brands and outdoor recreation businesses",
 
   seo: {
-    title: "Fishing & Marine Marketing | Websites, AI & Google Ads | Ethixweb",
+    title: "Fishing & Marine Marketing | Websites & Google Ads | Ethixweb",
     description:
-      "Ethixweb builds the website, AI lead assistant and Google Ads system that helps fishing charters, guides and marine businesses turn more searches into bookings. Get found online and generate more leads.",
+      "Ethixweb builds the website, AI lead assistant and Google Ads system that helps fishing charters, guides and marine businesses turn more searches into bookings.",
     ogTitle: "Fishing & Marine Marketing | Ethixweb",
     ogDescription:
       "Website + AI + Google Ads for fishing and marine businesses. More bookings, better customer experience, less time chasing inquiries.",

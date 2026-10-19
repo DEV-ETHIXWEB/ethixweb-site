@@ -27,7 +27,7 @@ import {
 export const Route = createFileRoute("/graphic-design")({
   head: () => ({
     meta: [
-      { title: "Graphic Design & Branding - Build a Powerful Brand Identity | Ethixweb" },
+      { title: "Graphic Design & Branding - Build a Brand Identity | Ethixweb" },
       {
         name: "description",
         content:

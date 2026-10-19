@@ -37,9 +37,9 @@ export const hvacPlumbingMarketing: CampaignConfig = {
     "Plumbing companies, HVAC companies and home-service contractors looking for a marketing agency, a new website, or Google Ads/Local Services Ads management",
 
   seo: {
-    title: "Plumbing & HVAC Marketing Agency | Websites, SEO & Google Ads | Ethixweb",
+    title: "Plumbing & HVAC Marketing Agency | SEO & Google Ads | Ethixweb",
     description:
-      "Ethixweb builds the website, Google Ads and AI lead capture system that turns search demand into qualified calls and booked jobs for plumbing and HVAC companies. Get found online and generate more leads.",
+      "Ethixweb builds the website, Google Ads and AI lead capture system that turns search demand into qualified calls and booked jobs for plumbing and HVAC companies.",
     ogTitle: "Plumbing & HVAC Marketing Agency | Ethixweb",
     ogDescription:
       "More qualified calls. More booked jobs. Less wasted ad spend. Websites, SEO, Google Ads and AI lead capture built for plumbing and HVAC companies.",

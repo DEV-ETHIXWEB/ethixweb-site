@@ -195,7 +195,11 @@ export function CampaignHeroForm({ config, meta }: { config: CampaignConfig; met
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-3.5">
           <div className="grid grid-cols-2 gap-3">
+            <label className="sr-only" htmlFor="lead-first-name">
+              First name
+            </label>
             <input
+              id="lead-first-name"
               required
               autoComplete="given-name"
               maxLength={80}
@@ -207,7 +211,11 @@ export function CampaignHeroForm({ config, meta }: { config: CampaignConfig; met
               }}
               className={fieldClass}
             />
+            <label className="sr-only" htmlFor="lead-last-name">
+              Last name
+            </label>
             <input
+              id="lead-last-name"
               required
               autoComplete="family-name"
               maxLength={80}
@@ -219,7 +227,11 @@ export function CampaignHeroForm({ config, meta }: { config: CampaignConfig; met
           </div>
 
           <div>
+            <label className="sr-only" htmlFor="lead-email">
+              Email address
+            </label>
             <input
+              id="lead-email"
               type="email"
               required
               autoComplete="email"
@@ -239,7 +251,11 @@ export function CampaignHeroForm({ config, meta }: { config: CampaignConfig; met
             )}
           </div>
 
+          <label className="sr-only" htmlFor="lead-phone">
+            Phone number
+          </label>
           <input
+            id="lead-phone"
             type="tel"
             required
             autoComplete="tel"
@@ -250,7 +266,11 @@ export function CampaignHeroForm({ config, meta }: { config: CampaignConfig; met
             className={fieldClass}
           />
 
+          <label className="sr-only" htmlFor="lead-business-name">
+            Business name
+          </label>
           <input
+            id="lead-business-name"
             autoComplete="organization"
             maxLength={120}
             placeholder="Business name"
@@ -262,7 +282,11 @@ export function CampaignHeroForm({ config, meta }: { config: CampaignConfig; met
           {/* Optional on purpose: this is paid traffic, and every required
               field costs conversions. Plenty of these prospects have no site
               yet, which is itself worth knowing. */}
+          <label className="sr-only" htmlFor="lead-website">
+            Current website (optional)
+          </label>
           <input
+            id="lead-website"
             inputMode="url"
             autoComplete="url"
             maxLength={200}

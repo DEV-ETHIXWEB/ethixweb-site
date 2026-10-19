@@ -36,9 +36,9 @@ export const googleAdsManagement: CampaignConfig = {
     "Seattle-area business owners and local service businesses searching for Google Ads management, Local Services Ads setup, PPC management, or a Seattle digital marketing agency",
 
   seo: {
-    title: "Google Ads Management Agency Seattle | PPC & Local Services Ads | Ethixweb",
+    title: "Google Ads Management Seattle | PPC & LSA | Ethixweb",
     description:
-      "Ethixweb runs Google Ads and Local Services Ads campaigns built around measurable leads, not vanity clicks: keyword strategy, conversion tracking, landing pages and ongoing optimization. Get found online and generate more leads.",
+      "Google Ads and Local Services Ads campaigns built around measurable leads, not vanity clicks: keyword strategy, conversion tracking and ongoing optimization.",
     ogTitle: "Google Ads Management Agency | Ethixweb",
     ogDescription:
       "Turn search intent into measurable leads. Campaign structure, tracking and landing pages built to convert, not just spend.",

@@ -23,7 +23,7 @@ import {
 export const Route = createFileRoute("/web-development")({
   head: () => ({
     meta: [
-      { title: "Website Design - Expert Web Design for Home Service Businesses | Ethixweb" },
+      { title: "Website Design for Home Service Businesses | Ethixweb" },
       {
         name: "description",
         content:
