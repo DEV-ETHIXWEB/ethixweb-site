@@ -1,21 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ArrowUpRight, Sun, Moon, Ban, Volume2, VolumeX } from "lucide-react";
+import { Menu, X, ArrowUpRight, Sun, Moon, Volume2, VolumeX } from "lucide-react";
 import { Logo } from "@/components/layout/Logo";
 import { TimezoneWidget } from "@/components/layout/TimezoneWidget";
 import { useTheme } from "@/components/layout/ThemeProvider";
 import { isClickSoundMuted, setClickSoundMuted } from "@/hooks/useClickSound";
-
-const LIVE_PATHS = new Set([
-  "/",
-  "/about",
-  "/industries",
-  "/services",
-  "/our-work",
-  "/blog",
-  "/contact",
-]);
 
 export const links = [
   { to: "/", label: "Home" },
@@ -86,8 +76,6 @@ function ThemeToggle() {
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [comingSoon, setComingSoon] = useState<string | null>(null);
-  const comingSoonTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -136,19 +124,6 @@ export function Navbar() {
     return () => desktop.removeEventListener("change", onChange);
   }, [open]);
 
-  useEffect(
-    () => () => {
-      if (comingSoonTimer.current) clearTimeout(comingSoonTimer.current);
-    },
-    [],
-  );
-
-  const announceComingSoon = (label: string) => {
-    if (comingSoonTimer.current) clearTimeout(comingSoonTimer.current);
-    setComingSoon(label);
-    comingSoonTimer.current = setTimeout(() => setComingSoon(null), 2200);
-  };
-
   return (
     <header className="fixed top-0 inset-x-0 z-50 px-4 pt-4">
       <div
@@ -159,32 +134,19 @@ export function Navbar() {
         <div className="flex items-center justify-between gap-4 px-5 py-2.5 lg:px-6">
           <Logo />
           <nav className="hidden lg:flex items-center gap-0.5">
-            {links.map((l) =>
-              LIVE_PATHS.has(l.to) ? (
-                <Link
-                  key={l.to}
-                  to={l.to}
-                  // The active treatment (bolder label + glowing underline) is
-                  // pure CSS off the `data-status="active"` attribute the router
-                  // sets here - see `.nav-label` in styles.css.
-                  className="flex h-9 items-center px-3.5 text-sm text-muted-foreground/80 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded-lg aria-[current=page]:text-foreground"
-                  activeOptions={{ exact: l.to === "/" }}
-                >
-                  <span className="nav-label">{l.label}</span>
-                </Link>
-              ) : (
-                <button
-                  key={l.to}
-                  type="button"
-                  onClick={() => announceComingSoon(l.label)}
-                  className="group relative flex h-9 items-center px-3.5 select-none"
-                >
-                  <span className="text-sm text-muted-foreground/65 transition-colors group-hover:text-muted-foreground/80">
-                    {l.label}
-                  </span>
-                </button>
-              ),
-            )}
+            {links.map((l) => (
+              <Link
+                key={l.to}
+                to={l.to}
+                // The active treatment (bolder label + glowing underline) is
+                // pure CSS off the `data-status="active"` attribute the router
+                // sets here - see `.nav-label` in styles.css.
+                className="flex h-9 items-center px-3.5 text-sm text-muted-foreground/80 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded-lg aria-[current=page]:text-foreground"
+                activeOptions={{ exact: l.to === "/" }}
+              >
+                <span className="nav-label">{l.label}</span>
+              </Link>
+            ))}
           </nav>
           <div className="hidden lg:flex items-center gap-3">
             <TimezoneWidget />
@@ -226,28 +188,17 @@ export function Navbar() {
             >
               <div className="flex flex-col gap-1 p-4">
                 <nav aria-label="Mobile" className="flex flex-col gap-1">
-                  {links.map((l) =>
-                    LIVE_PATHS.has(l.to) ? (
-                      <Link
-                        key={l.to}
-                        to={l.to}
-                        onClick={() => setOpen(false)}
-                        activeOptions={{ exact: l.to === "/" }}
-                        className="px-4 py-3 rounded-lg hover:bg-foreground/5 text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
-                      >
-                        <span className="nav-label">{l.label}</span>
-                      </Link>
-                    ) : (
-                      <button
-                        key={l.to}
-                        type="button"
-                        onClick={() => announceComingSoon(l.label)}
-                        className="flex items-center px-4 py-3 rounded-lg select-none text-left transition-colors hover:bg-foreground/5"
-                      >
-                        <span className="text-sm text-muted-foreground/65">{l.label}</span>
-                      </button>
-                    ),
-                  )}
+                  {links.map((l) => (
+                    <Link
+                      key={l.to}
+                      to={l.to}
+                      onClick={() => setOpen(false)}
+                      activeOptions={{ exact: l.to === "/" }}
+                      className="px-4 py-3 rounded-lg hover:bg-foreground/5 text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+                    >
+                      <span className="nav-label">{l.label}</span>
+                    </Link>
+                  ))}
                 </nav>
                 <Link
                   to="/contact"
@@ -257,27 +208,6 @@ export function Navbar() {
                   Start a project <ArrowUpRight className="h-4 w-4" />
                 </Link>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-
-      <div
-        className="pointer-events-none fixed inset-x-0 top-20 z-60 flex justify-center px-4"
-        role="status"
-        aria-live="polite"
-      >
-        <AnimatePresence>
-          {comingSoon && (
-            <motion.div
-              initial={{ opacity: 0, y: -8, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -8, scale: 0.96 }}
-              transition={{ duration: 0.22, ease: "easeOut" }}
-              className="glass-strong flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium text-foreground shadow-elegant"
-            >
-              <Ban className="h-4 w-4 shrink-0 text-primary/70" />
-              {comingSoon} is coming soon
             </motion.div>
           )}
         </AnimatePresence>

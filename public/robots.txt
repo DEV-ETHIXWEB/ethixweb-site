@@ -1,5 +1,16 @@
 User-agent: *
 Allow: /
+
+# API endpoints are not pages.
 Disallow: /api/
+
+# Private surfaces. Each of these also carries a noindex meta tag, but a
+# crawler has to fetch and render the page to see that - these lines keep
+# them out of the crawl in the first place. The assessment paths are
+# single-use invite links sent to one candidate.
+Disallow: /admin/
+Disallow: /assessment/
+Disallow: /careers/
+Disallow: /not-hiring
 
 Sitemap: https://www.ethixweb.com/sitemap_index.xml

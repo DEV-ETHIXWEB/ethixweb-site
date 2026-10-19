@@ -53,8 +53,8 @@ function PrivacyPolicy() {
             <Section title="1. Who We Are">
               <p>
                 Ethixweb operates through two related companies: Ethixweb USA LLC, registered in
-                Wyoming, United States, and Ethixweb India Private Limited, based in New Delhi,
-                India. In this policy, "Ethixweb", "we", and "us" refer to both.
+                Wyoming, United States, and Ethixweb India Private Limited, registered in India. In
+                this policy, "Ethixweb", "we", and "us" refer to both.
               </p>
               <p>
                 Ethixweb USA LLC works directly with our clients, and our team at Ethixweb India

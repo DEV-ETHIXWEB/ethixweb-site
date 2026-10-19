@@ -2,6 +2,7 @@ import {
   Accessibility,
   BarChart3,
   Bot,
+  BookOpen,
   Boxes,
   Brain,
   Clapperboard,
@@ -9,6 +10,7 @@ import {
   Eye,
   Globe2,
   Headset,
+  Images,
   LayoutDashboard,
   LayoutTemplate,
   LifeBuoy,
@@ -17,8 +19,11 @@ import {
   Megaphone,
   MessageSquare,
   MousePointerClick,
+  Palette,
+  PenTool,
   PhoneCall,
   Plug,
+  Printer,
   RefreshCw,
   Rocket,
   ScanEye,
@@ -143,6 +148,38 @@ export const SERVICE_CATALOG: ServiceCategory[] = [
         icon: Workflow,
         title: "CRM Integration",
         description: "Leads flow straight into the system you already use.",
+      },
+    ],
+  },
+  {
+    icon: Palette,
+    title: "Design",
+    teaser: "Logo, brand identity, collateral, and the guidelines that keep it consistent.",
+    // /graphic-design is a full page and is in the sitemap, but it was in no
+    // category here, so nothing on the site linked to it - reachable only by
+    // typing the URL, while /services structured data advertised it as a
+    // service we offer.
+    to: "/graphic-design",
+    items: [
+      {
+        icon: PenTool,
+        title: "Logo & Brand Identity",
+        description: "A distinctive mark and the system that surrounds it.",
+      },
+      {
+        icon: Printer,
+        title: "Marketing Collateral",
+        description: "Print and digital pieces that look like one brand.",
+      },
+      {
+        icon: Images,
+        title: "Social Graphics",
+        description: "Templates and posts built for each platform.",
+      },
+      {
+        icon: BookOpen,
+        title: "Brand Guidelines",
+        description: "Rules anyone can follow, so it stays consistent.",
       },
     ],
   },

@@ -5,21 +5,9 @@ import { Mail, Clock, Building2 } from "lucide-react";
 import { SignalTrace } from "@/components/layout/SignalTrace";
 import spiderweb from "@/assets/spiderweb.svg";
 
-const LIVE_PATHS = new Set([
-  "/",
-  "/about",
-  "/industries",
-  "/services",
-  "/our-work",
-  "/blog",
-  "/contact",
-  "/policies/refunds",
-  "/policies/terms",
-  "/policies/privacy",
-]);
-
 const COMPANY_LINKS: [string, string][] = [
   ["About", "/about"],
+  ["Services", "/services"],
   ["Industries", "/industries"],
   ["Our Work", "/our-work"],
   ["Blog", "/blog"],
@@ -115,9 +103,11 @@ export function Footer() {
                 <a
                   key={label}
                   href={href}
-                  target={href.startsWith("http") ? "_blank" : undefined}
-                  rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  aria-label={label}
+                  // Every entry is an external profile, so the conditional
+                  // that used to wrap these was always true.
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Ethixweb on ${label}`}
                   className="flex h-10 w-10 items-center justify-center rounded-full glass text-foreground transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 hover:bg-[linear-gradient(135deg,#d13a40,#8a181c)]! hover:border-[#c0272d]! hover:text-white! hover:shadow-[0_6px_18px_rgba(192,39,45,0.35)]!"
                 >
                   <Icon className="h-4.5 w-4.5" />
@@ -183,6 +173,9 @@ export function Footer() {
   );
 }
 
+// Every link listed above is a live route, so the old LIVE_PATHS set and the
+// "Coming soon" branch it guarded could never be reached. Dropped rather than
+// left as a dead path that looks like it still does something.
 function FooterCol({ title, links }: { title: string; links: [string, string][] }) {
   return (
     <div>
@@ -190,22 +183,12 @@ function FooterCol({ title, links }: { title: string; links: [string, string][] 
       <ul className="space-y-2.5">
         {links.map(([label, to]) => (
           <li key={to}>
-            {LIVE_PATHS.has(to) ? (
-              <Link
-                to={to}
-                className="text-sm text-foreground/80 hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded"
-              >
-                {label}
-              </Link>
-            ) : (
-              <span
-                title="Coming soon"
-                aria-disabled="true"
-                className="inline-flex cursor-not-allowed select-none"
-              >
-                <span className="text-sm text-foreground/65">{label}</span>
-              </span>
-            )}
+            <Link
+              to={to}
+              className="text-sm text-foreground/80 hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded"
+            >
+              {label}
+            </Link>
           </li>
         ))}
       </ul>

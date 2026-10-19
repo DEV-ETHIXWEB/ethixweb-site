@@ -822,7 +822,12 @@ export const Route = createFileRoute("/hackathon")({
         content: "Explore Ethixweb's social channels, find the hidden code, unlock registration.",
       },
       { name: "twitter:image", content: OG_IMAGE },
-      { name: "robots", content: "index, follow" },
+      // noindex while the event details are placeholders. Theme, date,
+      // deadline and prizes all still read "to be announced", and the
+      // registration link points back at /contact - not a page worth having
+      // in an index under the Ethixweb name. Flip to "index, follow" once
+      // hackathon-config.ts holds the real details.
+      { name: "robots", content: "noindex, follow" },
     ],
     links: [{ rel: "canonical", href: siteUrl("/hackathon") }],
     scripts: [

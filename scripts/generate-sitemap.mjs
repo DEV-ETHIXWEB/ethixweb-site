@@ -18,6 +18,7 @@ import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 
 const SITE = "https://www.ethixweb.com";
 const OUT = "public/sitemap.xml";
+const INDEX_OUT = "public/sitemap_index.xml";
 const ROUTES_DIR = "src/routes";
 const CASE_STUDIES_DIR = "src/data/case-studies";
 
@@ -50,7 +51,6 @@ const PAGES = [
     "landing.fishing-marketing.seattle",
   ),
   { path: "/industries", files: ["src/routes/industries.tsx"], priority: "0.7" },
-  { path: "/blog", files: ["src/routes/blog.tsx"], priority: "0.7" },
   {
     path: "/policies/privacy",
     files: ["src/routes/policies.privacy.tsx"],
@@ -86,7 +86,8 @@ const EXCLUDED = {
   "assessment.google-ads.$token.tsx": "private single-use exam link, noindex",
   "assessment.mindset.tsx": "candidate exam, one attempt per person, noindex",
   "qr.$slug.ts": "QR redirect endpoint",
-  "hackathon.tsx": "temporary event page",
+  "hackathon.tsx": "temporary event page, noindex while details are placeholders",
+  "blog.tsx": "noindex until the first real post ships - every card is a preview",
 };
 
 function campaignPage(path, configName, routeName = configName) {
@@ -194,3 +195,23 @@ const xml =
 
 writeFileSync(OUT, xml);
 console.log(`[sitemap] wrote ${entries.length} URLs to ${OUT}`);
+
+// ── sitemap_index.xml ──────────────────────────────────────────────────────
+// robots.txt points crawlers at the index, not at sitemap.xml directly, and
+// the index was a hand-written file with no <lastmod> - so it never signalled
+// that the sitemap behind it had changed. Generated alongside, carrying the
+// newest page date.
+const newestLastmod =
+  entries
+    .map((e) => e.lastmod)
+    .sort()
+    .at(-1) ?? today;
+writeFileSync(
+  INDEX_OUT,
+  `<?xml version="1.0" encoding="UTF-8"?>\n` +
+    `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+    `  <sitemap>\n    <loc>${SITE}/sitemap.xml</loc>\n` +
+    `    <lastmod>${newestLastmod}</lastmod>\n  </sitemap>\n` +
+    `</sitemapindex>\n`,
+);
+console.log(`[sitemap] wrote ${INDEX_OUT} (lastmod ${newestLastmod})`);

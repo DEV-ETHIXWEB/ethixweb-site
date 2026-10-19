@@ -37,7 +37,13 @@ export const Route = createFileRoute("/blog")({
         content: "Essays on design, AI and growth from the Ethixweb team.",
       },
       { name: "twitter:image", content: OG_IMAGE },
-      { name: "robots", content: "index, follow" },
+      // noindex until real posts exist. Every card on this page is an
+      // "in the works" preview with no article behind it, so to a crawler
+      // this is a blog index listing six articles that 404 conceptually -
+      // thin content, and it drags on the rest of the site. Flip back to
+      // "index, follow" (and re-add the page to PAGES in
+      // scripts/generate-sitemap.mjs) the day the first post ships.
+      { name: "robots", content: "noindex, follow" },
     ],
     links: [{ rel: "canonical", href: siteUrl("/blog") }],
     scripts: [
