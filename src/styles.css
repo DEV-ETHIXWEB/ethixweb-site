@@ -2129,3 +2129,194 @@ html {
     animation: none;
   }
 }
+
+/* ── Black Friday band (components/promo/) ───────────────────────────────
+   A fixed dark surface in BOTH themes - black is the point of Black Friday -
+   which is why every piece of text in the band is pinned to a light value
+   rather than using the theme-aware foreground tokens. Those resolve to
+   near-black in light mode and the headline disappears. */
+.promo-band {
+  background:
+    radial-gradient(ellipse 52% 60% at 76% 50%, rgba(138, 24, 28, 0.26), transparent 66%),
+    radial-gradient(ellipse 40% 50% at 6% 10%, rgba(192, 39, 45, 0.12), transparent 62%),
+    linear-gradient(180deg, #08090b 0%, #0a0a0d 50%, #08090b 100%);
+}
+
+/* A whisper of film grain. Flat gradients are the giveaway of a generated
+   page; real surfaces have noise. Cheap: one repeating SVG, no image file. */
+.promo-band-grain {
+  opacity: 0.4;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+}
+
+/* Hairlines across the top and bottom of the band, fading at both ends so
+   they read as drawn rules rather than a box. */
+.promo-band::before,
+.promo-band::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(192, 39, 45, 0.5), transparent);
+  pointer-events: none;
+}
+.promo-band::before {
+  top: 0;
+}
+.promo-band::after {
+  bottom: 0;
+}
+
+/* ── The date ─────────────────────────────────────────────────────────── */
+.promo-date {
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  --px: 0;
+  --py: 0;
+}
+
+.promo-date-web {
+  /* Centred on the artwork's own hub (55.3%/45.7%), not its bounding box,
+     then parallaxed. Single transform: Tailwind v4's translate utilities are
+     a separate property and would compose with this rather than replace it. */
+  transform: translate(calc(-50% - 5.3% + var(--px) * 14px), calc(-50% + 4.3% + var(--py) * 14px));
+  opacity: 0.5;
+  filter: drop-shadow(0 0 12px rgba(229, 29, 37, 0.5));
+  -webkit-mask-image: radial-gradient(circle at 55.3% 45.7%, black 30%, transparent 82%);
+  mask-image: radial-gradient(circle at 55.3% 45.7%, black 30%, transparent 82%);
+  transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.promo-rule {
+  position: absolute;
+  left: -12%;
+  right: -12%;
+  height: 1px;
+  pointer-events: none;
+}
+/* The heavier rule sits just above the numeral's cap height and the lighter
+   one below its baseline, so the type crosses both. Type breaking a rule is
+   the oldest trick in editorial layout and the reason this reads as drawn. */
+.promo-rule-top {
+  top: 34%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+}
+.promo-rule-bottom {
+  top: 66%;
+  background: linear-gradient(90deg, transparent, rgba(224, 85, 90, 0.9), transparent);
+}
+
+.promo-date-type {
+  transform: translate(calc(var(--px) * -7px), calc(var(--py) * -7px));
+  transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.promo-numeral {
+  font-size: clamp(8rem, 17vw, 14rem);
+  font-weight: 800;
+  line-height: 0.78;
+  letter-spacing: -0.055em;
+  /* Lit from above rather than flat white, with the glow carried by the
+     text itself so it sits in the same light as the web behind it. */
+  background: linear-gradient(176deg, #ffffff 2%, #ffe2e3 28%, #ef7076 68%, #c0272d 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 10px 42px rgba(192, 39, 45, 0.55));
+}
+
+.promo-month {
+  margin-top: 0.95rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.52em;
+  /* Letterspacing adds a trailing gap; pulling it back re-centres the word. */
+  text-indent: 0.52em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+/* The campaign window set down the right edge. A deliberate piece of craft,
+   and the kind of thing a layout generator does not reach for. */
+.promo-vertical {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%) rotate(180deg);
+  writing-mode: vertical-rl;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+}
+
+/* ── CTA: a drawn underline that fills on hover, not a pill ───────────── */
+.promo-cta {
+  position: relative;
+  padding-bottom: 0.4rem;
+}
+.promo-cta::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(90deg, #c0272d, #e0555a);
+  transform-origin: left;
+  transform: scaleX(1);
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.promo-cta:hover::after {
+  transform-origin: right;
+  transform: scaleX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .promo-date-web,
+  .promo-date-type,
+  .promo-cta::after {
+    transition: none;
+  }
+}
+
+@media (max-width: 1023px) {
+  /* Stacked, the square date block leaves a crater of empty space. */
+  .promo-date {
+    aspect-ratio: 3 / 2;
+  }
+  .promo-vertical {
+    display: none;
+  }
+}
+
+/* "Friday" at display size: the same lit treatment as the date numeral, so
+   the two halves of the band share one light source. */
+.promo-friday {
+  background: linear-gradient(174deg, #ffffff 0%, #ffd9db 34%, #e0555a 74%, #c0272d 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 6px 30px rgba(192, 39, 45, 0.45));
+}
+
+/* The wordmark under the date: wide tracking rather than a huge cap height,
+   so it reads as large and composed instead of shouting over the numeral. */
+.promo-wordmark {
+  margin-top: 1.15rem;
+  font-size: clamp(1.25rem, 3vw, 2.15rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.055em;
+  text-indent: 0.055em;
+  white-space: nowrap;
+  background: linear-gradient(172deg, #ffffff 0%, #ffd9db 42%, #e0555a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 4px 22px rgba(192, 39, 45, 0.4));
+}

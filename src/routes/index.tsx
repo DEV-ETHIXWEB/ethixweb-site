@@ -20,6 +20,7 @@ import { SiteLayout } from "@/components/layout/SiteLayout";
 import { Reveal } from "@/components/shared/Reveal";
 import { RotatingText } from "@/components/shared/RotatingText";
 import { Testimonials } from "@/components/shared/Testimonials";
+import { BlackFridayPromo } from "@/components/promo/BlackFridayPromo";
 import { PipelineDiagram } from "@/components/home/PipelineDiagram";
 import { Container } from "@/components/shared/Container";
 import { GlowBlob } from "@/components/shared/GlowBlob";
@@ -157,6 +158,10 @@ function Home() {
       <div className="relative -mt-24 bg-gradient-hero">
         <Hero />
         <SignalStrip />
+        {/* Seasonal, and self-retiring: renders only inside its campaign
+            window, so there is no stale sale band to remember to remove.
+            See lib/promo.ts. */}
+        <BlackFridayPromo />
         <Services />
         <ServiceCatalogTeaser />
         <Suspense fallback={null}>
