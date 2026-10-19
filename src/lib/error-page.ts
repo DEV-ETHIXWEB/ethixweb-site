@@ -30,10 +30,18 @@ export function renderErrorPage(): string {
       <h1>This page didn't load</h1>
       <p>Something went wrong on our end. You can try refreshing or head back home.</p>
       <div class="actions">
-        <button class="primary" onclick="location.reload()">Try again</button>
+        <button class="primary" id="retry">Try again</button>
         <a class="secondary" href="/">Go home</a>
       </div>
     </div>
+    <!-- A listener rather than an onclick attribute: inline event handlers
+         are the one thing that forces 'unsafe-inline' into script-src (as
+         opposed to script-src-elem), and this page was the last user of one. -->
+    <script>
+      document.getElementById("retry").addEventListener("click", function () {
+        location.reload();
+      });
+    </script>
   </body>
 </html>`;
 }

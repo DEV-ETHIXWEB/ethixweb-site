@@ -10,6 +10,7 @@ import {
   loadGadsAssessment,
 } from "@/lib/gads/service";
 import { type GadsAssessmentRow } from "@/lib/gads/types";
+import { mergeProctoringEvents, micSampleKey, violationKey } from "@/lib/proctoring-merge";
 import { gadsAnswerValueSchema, gadsQuestionIndexSchema, gadsTokenSchema } from "@/lib/gads/wire";
 
 // Batched, debounced flush - the client accumulates violations/mic-activity
@@ -49,17 +50,6 @@ const micSampleSchema = z.object({
   level: z.number().min(0).max(1),
   active: z.boolean(),
 });
-
-/** Identity of a recorded event, used to merge a re-sent batch without
- * duplicating it. The client clock supplies `at`, which is good enough to
- * tell two events apart - it only has to be stable across re-sends. */
-function violationKey(v: { type: string; at: string; detail?: string }): string {
-  return `${v.type}|${v.at}|${v.detail ?? ""}`;
-}
-
-function micSampleKey(s: { at: string; level: number; active: boolean }): string {
-  return `${s.at}|${s.level}|${s.active}`;
-}
 
 const SNAPSHOT_URL_RE =
   /^https:\/\/[a-z0-9-]+\.public\.blob\.vercel-storage\.com\/gads-snapshots\//i;
@@ -130,18 +120,22 @@ export const Route = createFileRoute("/api/gads/save")({
         // duplicate, an incremental batch accumulates, and nothing a client
         // sends can shrink what is already recorded.
         if (body.violations !== undefined) {
-          const seen = new Set(row.violations.map(violationKey));
-          const added = body.violations.filter((v) => !seen.has(violationKey(v)));
-          if (added.length > 0) {
-            update.violations = [...row.violations, ...added].slice(-GADS_MAX_VIOLATIONS);
-          }
+          const merged = mergeProctoringEvents(
+            row.violations,
+            body.violations,
+            violationKey,
+            GADS_MAX_VIOLATIONS,
+          );
+          if (merged) update.violations = merged;
         }
-        if (body.micActivity !== undefined && body.micActivity.length > 0) {
-          const seen = new Set(row.mic_activity.map(micSampleKey));
-          const added = body.micActivity.filter((s) => !seen.has(micSampleKey(s)));
-          if (added.length > 0) {
-            update.mic_activity = [...row.mic_activity, ...added].slice(-GADS_MAX_MIC_SAMPLES);
-          }
+        if (body.micActivity !== undefined) {
+          const merged = mergeProctoringEvents(
+            row.mic_activity,
+            body.micActivity,
+            micSampleKey,
+            GADS_MAX_MIC_SAMPLES,
+          );
+          if (merged) update.mic_activity = merged;
         }
         if (
           body.cameraSnapshotUrl &&

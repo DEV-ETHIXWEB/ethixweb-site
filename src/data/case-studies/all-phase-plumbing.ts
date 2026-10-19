@@ -101,7 +101,7 @@ export const ALL_PHASE_PLUMBING: CaseStudyDetail = {
     // Background-removed cutout (cream backdrop stripped to transparency and
     // cropped to the devices) so it sits cleanly on the dark page.
     src: `${IMG}/devices-mockup-cutout.webp`,
-    srcSet: `${IMG}/devices-mockup-cutout-640w.webp 640w, ${IMG}/devices-mockup-cutout-1024w.webp 1024w, ${IMG}/devices-mockup-cutout-1600w.webp 1600w, ${IMG}/devices-mockup-cutout.webp 4922w`,
+    srcSet: `${IMG}/devices-mockup-cutout-640w.webp 640w, ${IMG}/devices-mockup-cutout-1024w.webp 1024w, ${IMG}/devices-mockup-cutout-1600w.webp 1600w, ${IMG}/devices-mockup-cutout-2048w.webp 2048w, ${IMG}/devices-mockup-cutout-2560w.webp 2560w, ${IMG}/devices-mockup-cutout.webp 4922w`,
     alt: "The rebuilt All Phase Plumbing site shown on a laptop, tablet and phone",
     width: 4922,
     height: 2631,
@@ -187,7 +187,7 @@ export const ALL_PHASE_PLUMBING: CaseStudyDetail = {
           checklist: [
             "Header states the outcome: fast, honest plumbing in Tukwila",
             "Trust signals (ratings, licenses) sit right under the headline",
-            "Sticky header includes the ‘Book Now’ CTA so it's always accessible",
+            "Sticky header includes the Book Now CTA so it's always accessible",
           ],
         },
       },

@@ -178,7 +178,12 @@ export function CampaignHeroForm({ config, meta }: { config: CampaignConfig; met
         className="absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_0%,rgba(255,255,255,0.05),transparent_70%)]"
       />
       <div className="relative">
-        <p className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-primary-text">
+        {/* This panel is a fixed dark maroon in both themes, so it cannot use
+            the theme-aware --primary-text token: in light mode that resolves
+            to #c0272d, which against #3a1216 is about 2:1 contrast and fails
+            WCAG AA outright. Pinned to the light-red value the dark theme
+            uses, which is what this panel always needs. */}
+        <p className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#e0555a]">
           {config.offer.eyebrow}
         </p>
         <h2 className="mt-2 font-display text-2xl font-bold leading-tight text-white sm:text-3xl">

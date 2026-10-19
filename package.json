@@ -8,6 +8,7 @@
     "build": "node scripts/generate-sitemap.mjs && vite build",
     "sitemap": "node scripts/generate-sitemap.mjs",
     "og-image": "node scripts/generate-og-image.mjs",
+    "purge-media": "node scripts/purge-expired-media.mjs",
     "build:dev": "vite build --mode development",
     "typecheck": "tsc --noEmit",
     "preview": "vite preview",

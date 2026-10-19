@@ -29,7 +29,7 @@ export const GARYS_PIPELINE: CaseStudyDetail = {
   websiteUrl: "https://garyspipelining.com",
   heroImage: {
     src: `${IMG}/hero.webp`,
-    srcSet: `${IMG}/hero-640w.webp 640w, ${IMG}/hero-1024w.webp 1024w, ${IMG}/hero-1600w.webp 1600w, ${IMG}/hero.webp 3470w`,
+    srcSet: `${IMG}/hero-640w.webp 640w, ${IMG}/hero-1024w.webp 1024w, ${IMG}/hero-1600w.webp 1600w, ${IMG}/hero-2048w.webp 2048w, ${IMG}/hero-2560w.webp 2560w, ${IMG}/hero.webp 3470w`,
     alt: "Gary's Pipelining's new site shown on a phone, held up against a red gradient background",
     width: 3470,
     height: 2650,
@@ -99,7 +99,7 @@ export const GARYS_PIPELINE: CaseStudyDetail = {
 
   showcaseImage: {
     src: `${IMG}/showcase-devices.webp`,
-    srcSet: `${IMG}/showcase-devices-640w.webp 640w, ${IMG}/showcase-devices-1024w.webp 1024w, ${IMG}/showcase-devices-1600w.webp 1600w, ${IMG}/showcase-devices.webp 5600w`,
+    srcSet: `${IMG}/showcase-devices-640w.webp 640w, ${IMG}/showcase-devices-1024w.webp 1024w, ${IMG}/showcase-devices-1600w.webp 1600w, ${IMG}/showcase-devices-2048w.webp 2048w, ${IMG}/showcase-devices-2560w.webp 2560w, ${IMG}/showcase-devices.webp 5600w`,
     alt: "The rebuilt Gary's Pipelining site shown on a phone, laptop and tablet",
     width: 5600,
     height: 2830,
@@ -146,7 +146,7 @@ export const GARYS_PIPELINE: CaseStudyDetail = {
       {
         image: {
           src: `${IMG}/spotlight-enquiry-flow.webp`,
-          srcSet: `${IMG}/spotlight-enquiry-flow-640w.webp 640w, ${IMG}/spotlight-enquiry-flow-1024w.webp 1024w, ${IMG}/spotlight-enquiry-flow-1600w.webp 1600w, ${IMG}/spotlight-enquiry-flow.webp 2580w`,
+          srcSet: `${IMG}/spotlight-enquiry-flow-640w.webp 640w, ${IMG}/spotlight-enquiry-flow-1024w.webp 1024w, ${IMG}/spotlight-enquiry-flow-1600w.webp 1600w, ${IMG}/spotlight-enquiry-flow-2048w.webp 2048w, ${IMG}/spotlight-enquiry-flow-2560w.webp 2560w, ${IMG}/spotlight-enquiry-flow.webp 2580w`,
           alt: "The homeowner contact panel next to the free-estimate request form",
           width: 2580,
           height: 1290,
@@ -168,7 +168,7 @@ export const GARYS_PIPELINE: CaseStudyDetail = {
       {
         image: {
           src: `${IMG}/spotlight-chat-assistant.webp`,
-          srcSet: `${IMG}/spotlight-chat-assistant-640w.webp 640w, ${IMG}/spotlight-chat-assistant-1024w.webp 1024w, ${IMG}/spotlight-chat-assistant-1600w.webp 1600w, ${IMG}/spotlight-chat-assistant.webp 2500w`,
+          srcSet: `${IMG}/spotlight-chat-assistant-640w.webp 640w, ${IMG}/spotlight-chat-assistant-1024w.webp 1024w, ${IMG}/spotlight-chat-assistant-1600w.webp 1600w, ${IMG}/spotlight-chat-assistant-2048w.webp 2048w, ${IMG}/spotlight-chat-assistant.webp 2500w`,
           alt: "A hand holding a phone showing the new site's homepage, with the chat assistant icon visible",
           width: 2500,
           height: 1250,

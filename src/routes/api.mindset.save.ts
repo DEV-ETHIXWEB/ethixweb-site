@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { z } from "zod";
+import { mergeProctoringEvents, violationKey } from "@/lib/proctoring-merge";
 import { clientIp } from "@/lib/rate-limit";
 import { guardRequest } from "@/lib/api-guard";
 import { getMindsetStore } from "@/lib/mindset/store";
@@ -30,12 +31,6 @@ const violationSchema = z.object({
   at: z.string().max(40),
   detail: z.string().max(200).optional(),
 });
-
-/** Identity of a recorded violation, used to merge a re-sent cumulative
- * batch without duplicating it. */
-function violationKey(v: { type: string; at: string; detail?: string }): string {
-  return `${v.type}|${v.at}|${v.detail ?? ""}`;
-}
 
 const bodySchema = z.object({
   token: z
@@ -105,11 +100,13 @@ export const Route = createFileRoute("/api/mindset/save")({
         // re-send can't duplicate and nothing a client sends can shrink the
         // record. Mirrors api.gads.save.ts.
         if (body.violations !== undefined) {
-          const seen = new Set(row.violations.map(violationKey));
-          const added = body.violations.filter((v) => !seen.has(violationKey(v)));
-          if (added.length > 0) {
-            update.violations = [...row.violations, ...added].slice(-MINDSET_MAX_VIOLATIONS);
-          }
+          const merged = mergeProctoringEvents(
+            row.violations,
+            body.violations,
+            violationKey,
+            MINDSET_MAX_VIOLATIONS,
+          );
+          if (merged) update.violations = merged;
         }
 
         if (Object.keys(update).length > 0) {

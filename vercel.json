@@ -1,20 +1,56 @@
 {
   "trailingSlash": false,
   "redirects": [
-    { "source": "/portfolio", "destination": "/our-work", "permanent": true },
-    { "source": "/portfolio/:slug", "destination": "/our-work/:slug", "permanent": true },
-    { "source": "/home{/}?", "destination": "/", "permanent": true },
-    { "source": "/about-us{/}?", "destination": "/about", "permanent": true },
-    { "source": "/contact-us{/}?", "destination": "/contact", "permanent": true },
-    { "source": "/seo{/}?", "destination": "/services", "permanent": true },
-    { "source": "/website-design{/}?", "destination": "/web-development", "permanent": true },
-    { "source": "/social-media-marketing{/}?", "destination": "/marketing", "permanent": true },
+    {
+      "source": "/portfolio",
+      "destination": "/our-work",
+      "permanent": true
+    },
+    {
+      "source": "/portfolio/:slug",
+      "destination": "/our-work/:slug",
+      "permanent": true
+    },
+    {
+      "source": "/home{/}?",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/about-us{/}?",
+      "destination": "/about",
+      "permanent": true
+    },
+    {
+      "source": "/contact-us{/}?",
+      "destination": "/contact",
+      "permanent": true
+    },
+    {
+      "source": "/seo{/}?",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/website-design{/}?",
+      "destination": "/web-development",
+      "permanent": true
+    },
+    {
+      "source": "/social-media-marketing{/}?",
+      "destination": "/marketing",
+      "permanent": true
+    },
     {
       "source": "/graphic-design-branding{/}?",
       "destination": "/graphic-design",
       "permanent": true
     },
-    { "source": "/pay-per-click{/}?", "destination": "/google-ads-management", "permanent": true },
+    {
+      "source": "/pay-per-click{/}?",
+      "destination": "/google-ads-management",
+      "permanent": true
+    },
     {
       "source": "/local-services-ads{/}?",
       "destination": "/google-ads-management",
@@ -25,11 +61,31 @@
       "destination": "/hvac-plumbing-marketing",
       "permanent": true
     },
-    { "source": "/hvac{/}?", "destination": "/hvac-plumbing-marketing", "permanent": true },
-    { "source": "/plumbing{/}?", "destination": "/hvac-plumbing-marketing", "permanent": true },
-    { "source": "/electric{/}?", "destination": "/industries", "permanent": true },
-    { "source": "/retail{/}?", "destination": "/industries", "permanent": true },
-    { "source": "/kent-wa{/}?", "destination": "/locations/kent-wa", "permanent": true },
+    {
+      "source": "/hvac{/}?",
+      "destination": "/hvac-plumbing-marketing",
+      "permanent": true
+    },
+    {
+      "source": "/plumbing{/}?",
+      "destination": "/hvac-plumbing-marketing",
+      "permanent": true
+    },
+    {
+      "source": "/electric{/}?",
+      "destination": "/industries",
+      "permanent": true
+    },
+    {
+      "source": "/retail{/}?",
+      "destination": "/industries",
+      "permanent": true
+    },
+    {
+      "source": "/kent-wa{/}?",
+      "destination": "/locations/kent-wa",
+      "permanent": true
+    },
     {
       "source": "/how-kent-wa-contractors-can-use-local-seo-to-book-more-jobs{/}?",
       "destination": "/locations/kent-wa",
@@ -45,8 +101,16 @@
       "destination": "/locations/kent-wa",
       "permanent": true
     },
-    { "source": "/privacy-policy{/}?", "destination": "/policies/privacy", "permanent": true },
-    { "source": "/terms-and-conditions{/}?", "destination": "/policies/terms", "permanent": true },
+    {
+      "source": "/privacy-policy{/}?",
+      "destination": "/policies/privacy",
+      "permanent": true
+    },
+    {
+      "source": "/terms-and-conditions{/}?",
+      "destination": "/policies/terms",
+      "permanent": true
+    },
     {
       "source": "/cancellation-and-refunds{/}?",
       "destination": "/policies/refunds",
@@ -57,48 +121,107 @@
     {
       "source": "/",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "X-XSS-Protection", "value": "1; mode=block" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "0"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        },
         {
           "key": "Strict-Transport-Security",
           "value": "max-age=63072000; includeSubDomains; preload"
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://www.googletagmanager.com https://googleads.g.doubleclick.net; script-src-elem 'self' 'unsafe-inline' https://challenges.cloudflare.com https://www.googletagmanager.com https://googleads.g.doubleclick.net; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://www.googletagmanager.com https://www.google.com https://www.google.co.in https://googleads.g.doubleclick.net https://www.googleadservices.com; connect-src 'self' https://vercel.com https://*.public.blob.vercel-storage.com https://challenges.cloudflare.com https://www.googletagmanager.com https://www.google.com https://www.google.co.in https://googleads.g.doubleclick.net https://www.googleadservices.com https://ad.doubleclick.net; frame-src 'self' https://challenges.cloudflare.com https://googleads.g.doubleclick.net; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+          "value": "default-src 'self'; script-src 'self' https://challenges.cloudflare.com https://www.googletagmanager.com https://googleads.g.doubleclick.net; script-src-elem 'self' 'unsafe-inline' https://challenges.cloudflare.com https://www.googletagmanager.com https://googleads.g.doubleclick.net; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://www.googletagmanager.com https://www.google.com https://www.google.co.in https://googleads.g.doubleclick.net https://www.googleadservices.com; connect-src 'self' https://*.public.blob.vercel-storage.com https://challenges.cloudflare.com https://www.googletagmanager.com https://www.google.com https://www.google.co.in https://googleads.g.doubleclick.net https://www.googleadservices.com https://ad.doubleclick.net; frame-src 'self' https://challenges.cloudflare.com https://googleads.g.doubleclick.net; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
         }
       ]
     },
     {
       "source": "/:path*",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "X-XSS-Protection", "value": "1; mode=block" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "0"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        },
         {
           "key": "Strict-Transport-Security",
           "value": "max-age=63072000; includeSubDomains; preload"
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://www.googletagmanager.com https://googleads.g.doubleclick.net; script-src-elem 'self' 'unsafe-inline' https://challenges.cloudflare.com https://www.googletagmanager.com https://googleads.g.doubleclick.net; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://www.googletagmanager.com https://www.google.com https://www.google.co.in https://googleads.g.doubleclick.net https://www.googleadservices.com; connect-src 'self' https://vercel.com https://*.public.blob.vercel-storage.com https://challenges.cloudflare.com https://www.googletagmanager.com https://www.google.com https://www.google.co.in https://googleads.g.doubleclick.net https://www.googleadservices.com https://ad.doubleclick.net; frame-src 'self' https://challenges.cloudflare.com https://googleads.g.doubleclick.net; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+          "value": "default-src 'self'; script-src 'self' https://challenges.cloudflare.com https://www.googletagmanager.com https://googleads.g.doubleclick.net; script-src-elem 'self' 'unsafe-inline' https://challenges.cloudflare.com https://www.googletagmanager.com https://googleads.g.doubleclick.net; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://www.googletagmanager.com https://www.google.com https://www.google.co.in https://googleads.g.doubleclick.net https://www.googleadservices.com; connect-src 'self' https://*.public.blob.vercel-storage.com https://challenges.cloudflare.com https://www.googletagmanager.com https://www.google.com https://www.google.co.in https://googleads.g.doubleclick.net https://www.googleadservices.com https://ad.doubleclick.net; frame-src 'self' https://challenges.cloudflare.com https://googleads.g.doubleclick.net; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/fonts/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, stale-while-revalidate=86400"
         }
       ]
     },
     {
       "source": "/(.+)\\.(webp|png|jpg|jpeg|svg|ico|woff2|woff|ttf|mp3)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
+        }
+      ]
     },
     {
       "source": "/vcard/(.+)\\.vcf",
       "headers": [
-        { "key": "Content-Type", "value": "text/vcard; charset=utf-8" },
-        { "key": "Content-Disposition", "value": "inline" }
+        {
+          "key": "Content-Type",
+          "value": "text/vcard; charset=utf-8"
+        },
+        {
+          "key": "Content-Disposition",
+          "value": "inline"
+        }
       ]
     },
     {
@@ -122,7 +245,10 @@
     {
       "source": "/emblem-3d.html",
       "headers": [
-        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
         {
           "key": "Content-Security-Policy",
           "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self' https://vercel.com https://*.public.blob.vercel-storage.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"

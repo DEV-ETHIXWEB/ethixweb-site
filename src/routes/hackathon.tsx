@@ -749,10 +749,16 @@ function HackathonPage() {
                   <p className="mx-auto mt-3 max-w-sm text-sm text-muted-foreground sm:text-base">
                     Prizes: {hackathonConfig.prizes}
                   </p>
+                  {/* registrationUrl still points at our own /contact until a
+                      real registration form exists, and opening the site's own
+                      page in a new tab with noopener - as though it were
+                      somebody else's - is just wrong. Only treat it as
+                      external once it actually is. */}
                   <a
                     href={hackathonConfig.registrationUrl}
-                    target="_blank"
-                    rel="noreferrer noopener"
+                    {...(isExternal(hackathonConfig.registrationUrl)
+                      ? { target: "_blank", rel: "noreferrer noopener" }
+                      : {})}
                     className="btn-primary mt-7 inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 font-bold"
                   >
                     Register now
@@ -795,6 +801,17 @@ function HackathonPage() {
       )}
     </SiteLayout>
   );
+}
+
+/** True when the URL leaves this site. Used so an internal destination is
+ * not given target="_blank" + noopener as though it belonged to someone
+ * else. */
+function isExternal(url: string): boolean {
+  try {
+    return new URL(url, SITE_URL).origin !== new URL(SITE_URL).origin;
+  } catch {
+    return false;
+  }
 }
 
 export const Route = createFileRoute("/hackathon")({

@@ -14,7 +14,12 @@ import sharp from "sharp";
 import { readdir } from "node:fs/promises";
 import path from "node:path";
 
-const WIDTHS = [640, 1024, 1600];
+// 2048 and 2560 matter more than they look: the srcSet used to jump from
+// 1600w straight to the source, and several sources are enormous
+// (showcase-devices.webp is 5600w / 576KB, devices-mockup-cutout.webp is
+// 4922w). A 2x laptop asking for a 1200px-wide slot needs ~2400px, so the
+// browser skipped past 1600 and pulled the full-resolution original.
+const WIDTHS = [640, 1024, 1600, 2048, 2560];
 
 const CASE_STUDY_DIRS = [
   "public/images/case-studies/all-phase-plumbing",

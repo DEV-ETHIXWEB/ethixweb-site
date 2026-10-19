@@ -22,8 +22,8 @@ export const hackathonConfig = {
     instagram: { handle: "@ethix.web", url: "https://www.instagram.com/ethix.web/" },
     linkedin: { handle: "Ethixweb", url: "https://www.linkedin.com/company/ethixweb/" },
     facebook: { handle: "Ethixweb", url: "https://www.facebook.com/ethixweb" },
-    // Confirmed by decoding the designer-provided QR in
-    // a:\HACKATHON FOLDER\Ethixweb-QR-Kit\ethixweb-x-qr-*.png.
+    // Confirmed by decoding the designer-provided QR kit. (The path this
+    // comment used to cite was a local drive nobody else can open.)
     x: { handle: "@ETHIXWEB", url: "https://x.com/ETHIXWEB" },
   },
 } as const;
