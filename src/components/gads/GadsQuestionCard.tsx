@@ -6,6 +6,7 @@ import {
 } from "@/lib/gads/types";
 import { wordCount } from "@/lib/assessment/scoring";
 import { playGadsClick } from "@/lib/gads/sound";
+import { handleRadioGroupKeys } from "@/lib/radio-group-keys";
 
 export const MECHANIC_LABELS: Record<GadsCandidateQuestion["mechanic"], string> = {
   single: "Single Correct",
@@ -61,6 +62,10 @@ export function GadsQuestionCard({
           role={isMulti ? "group" : "radiogroup"}
           aria-label={`Options for question ${index + 1}`}
           className="mt-6 space-y-3"
+          // A radiogroup owes keyboard users arrow-key navigation: Tab moves
+          // between groups, arrows move within one. Without it the options
+          // claimed to be radios but behaved like a list of separate buttons.
+          onKeyDown={isMulti ? undefined : handleRadioGroupKeys}
         >
           {question.options.map((option, i) => {
             const selected = isMulti ? Array.isArray(value) && value.includes(i) : value === i;
@@ -70,6 +75,10 @@ export function GadsQuestionCard({
                 type="button"
                 role={isMulti ? "checkbox" : "radio"}
                 aria-checked={selected}
+                // Roving tabindex, as a radiogroup expects: the group is one
+                // tab stop, landing on the selected option (or the first,
+                // when nothing is chosen yet).
+                tabIndex={isMulti ? undefined : selected || (value === null && i === 0) ? 0 : -1}
                 onClick={() => {
                   playGadsClick();
                   if (isMulti) {

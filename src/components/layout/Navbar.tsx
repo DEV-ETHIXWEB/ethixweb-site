@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ArrowUpRight, Sun, Moon, Ban } from "lucide-react";
+import { Menu, X, ArrowUpRight, Sun, Moon, Ban, Volume2, VolumeX } from "lucide-react";
 import { Logo } from "@/components/layout/Logo";
 import { TimezoneWidget } from "@/components/layout/TimezoneWidget";
 import { useTheme } from "@/components/layout/ThemeProvider";
+import { isClickSoundMuted, setClickSoundMuted } from "@/hooks/useClickSound";
 
 const LIVE_PATHS = new Set([
   "/",
@@ -24,6 +25,38 @@ export const links = [
   { to: "/our-work", label: "Our Work" },
   { to: "/blog", label: "Blog" },
 ];
+
+/** Lets a visitor silence the site-wide click sound, which previously had no
+ * off switch at all. Mounted after hydration only, since the stored choice
+ * lives in localStorage and the server cannot know it. */
+function SoundToggle() {
+  const [mounted, setMounted] = useState(false);
+  const [muted, setMuted] = useState(false);
+
+  useEffect(() => {
+    setMuted(isClickSoundMuted());
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  return (
+    <motion.button
+      onClick={() => {
+        const next = !muted;
+        setMuted(next);
+        setClickSoundMuted(next);
+      }}
+      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+      whileTap={{ scale: 0.9 }}
+      aria-pressed={muted}
+      aria-label={muted ? "Turn click sound on" : "Turn click sound off"}
+      title={muted ? "Click sound off" : "Click sound on"}
+    >
+      {muted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+    </motion.button>
+  );
+}
 
 function ThemeToggle() {
   const { theme, toggle } = useTheme();
@@ -55,6 +88,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [comingSoon, setComingSoon] = useState<string | null>(null);
   const comingSoonTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -66,10 +100,40 @@ export function Navbar() {
   useEffect(() => {
     if (!open) return;
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") {
+        setOpen(false);
+        // Send focus back to the control that opened the panel, rather than
+        // leaving it on an element that has just been unmounted.
+        menuButtonRef.current?.focus();
+      }
     };
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
+  }, [open]);
+
+  // The page behind the open panel used to stay scrollable, so a touch drag
+  // over the overlay scrolled the content underneath it.
+  useEffect(() => {
+    if (!open) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [open]);
+
+  // Opening the panel on a phone and then widening the viewport (rotation, a
+  // desktop resize) left `open` true: the panel itself is lg:hidden so it
+  // vanished, but the bar kept its opened-state glass treatment and the
+  // button kept reporting aria-expanded="true" for a panel nobody could see.
+  useEffect(() => {
+    if (!open) return;
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    const onChange = () => {
+      if (desktop.matches) setOpen(false);
+    };
+    desktop.addEventListener("change", onChange);
+    return () => desktop.removeEventListener("change", onChange);
   }, [open]);
 
   useEffect(
@@ -124,6 +188,7 @@ export function Navbar() {
           </nav>
           <div className="hidden lg:flex items-center gap-3">
             <TimezoneWidget />
+            <SoundToggle />
             <ThemeToggle />
             <Link
               to="/contact"
@@ -134,11 +199,15 @@ export function Navbar() {
             </Link>
           </div>
           <div className="lg:hidden flex items-center gap-2">
+            <SoundToggle />
             <ThemeToggle />
             <button
+              ref={menuButtonRef}
               className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
               onClick={() => setOpen((v) => !v)}
-              aria-label="Menu"
+              // Was always "Menu", so a screen reader announced the same
+              // thing whether the panel was about to open or close.
+              aria-label={open ? "Close menu" : "Open menu"}
               aria-expanded={open}
               aria-controls="mobile-nav-menu"
             >

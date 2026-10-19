@@ -1,6 +1,7 @@
 import { CheckSquare, Square, Circle, CircleDot, ListChecks } from "lucide-react";
 import type { AnswerValue, CandidateQuestion } from "@/lib/assessment/types";
 import { wordCount } from "@/lib/assessment/scoring";
+import { handleRadioGroupKeys } from "@/lib/radio-group-keys";
 
 export const TYPE_LABELS: Record<CandidateQuestion["type"], string> = {
   single: "Multiple Choice",
@@ -79,6 +80,7 @@ export function QuestionCard({ question, index, total, value, onChange }: Questi
           role={isMulti ? "group" : "radiogroup"}
           aria-label={`Options for question ${index + 1}`}
           className="mt-6 space-y-3"
+          onKeyDown={isMulti ? undefined : handleRadioGroupKeys}
         >
           {question.options.map((option, i) => {
             const selected = isMulti ? Array.isArray(value) && value.includes(i) : value === i;
@@ -88,6 +90,7 @@ export function QuestionCard({ question, index, total, value, onChange }: Questi
                 type="button"
                 role={isMulti ? "checkbox" : "radio"}
                 aria-checked={selected}
+                tabIndex={isMulti ? undefined : selected || (value == null && i === 0) ? 0 : -1}
                 onClick={() => {
                   if (isMulti) {
                     const current = Array.isArray(value) ? value : [];

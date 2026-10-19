@@ -1,5 +1,6 @@
 import { useCallback, useRef } from "react";
 import { wordCount } from "@/lib/assessment/scoring";
+import { handleRadioGroupKeys } from "@/lib/radio-group-keys";
 import { playGadsClick } from "@/lib/gads/sound";
 import {
   LIKERT_LABELS,
@@ -182,6 +183,7 @@ export function AnswerPanel({ question, value, onChange, isLast, onAdvance }: An
           role="radiogroup"
           aria-label="Answer options"
           className="flex flex-1 flex-col justify-center gap-3 py-8 xl:gap-3.5"
+          onKeyDown={handleRadioGroupKeys}
         >
           {question.options.map((option, i) => {
             const selected = value === i;
@@ -191,6 +193,7 @@ export function AnswerPanel({ question, value, onChange, isLast, onAdvance }: An
                 type="button"
                 role="radio"
                 aria-checked={selected}
+                tabIndex={selected || (value == null && i === 0) ? 0 : -1}
                 onClick={() => {
                   playGadsClick();
                   onChange(i);
@@ -304,7 +307,7 @@ function AgreementScale({
             />
           )}
 
-          <div role="radiogroup" aria-label="Level of agreement">
+          <div role="radiogroup" aria-label="Level of agreement" onKeyDown={handleRadioGroupKeys}>
             {LIKERT_LABELS.map((label, i) => {
               const selected = value === i;
               const atPct = (i / lastStop) * 100;
@@ -315,6 +318,7 @@ function AgreementScale({
                   role="radio"
                   aria-checked={selected}
                   aria-label={label}
+                  tabIndex={selected || (value == null && i === 0) ? 0 : -1}
                   onClick={() => {
                     if (value === i) return;
                     lastIndexRef.current = i;
