@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { ArrowUpRight, CheckCircle2, Loader2 } from "lucide-react";
-import { Turnstile } from "@/components/shared/Turnstile";
+import { Turnstile, type TurnstileHandle } from "@/components/shared/Turnstile";
 import { isValidEmail, isValidPhone } from "@/lib/utils";
 import type { CampaignConfig } from "@/lib/campaigns/types";
 import type { CampaignMeta } from "@/lib/campaigns/tracking";
@@ -43,6 +43,11 @@ export function CampaignHeroForm({ config, meta }: { config: CampaignConfig; met
   const [state, setState] = useState<SubmitState>("idle");
   const [errorMsg, setErrorMsg] = useState("");
   const [token, setToken] = useState("");
+  // Set when the widget can't be reached at all, so the visitor gets a reason
+  // instead of a form that refuses to submit. These are the paid-traffic
+  // pages - a silent dead end here is a lead we paid for and then lost.
+  const [turnstileBlocked, setTurnstileBlocked] = useState("");
+  const turnstile = useRef<TurnstileHandle | null>(null);
   const [emailTouched, setEmailTouched] = useState(false);
   const hasTrackedStart = useRef(false);
   const isSubmitting = useRef(false);
@@ -54,6 +59,13 @@ export function CampaignHeroForm({ config, meta }: { config: CampaignConfig; met
     if (hasTrackedStart.current) return;
     hasTrackedStart.current = true;
     trackCampaignEvent("campaign_form_start", meta);
+  };
+
+  /** Drops the spent token and asks Turnstile for a fresh one, so the next
+   * attempt carries a token the server will actually accept. */
+  const resetVerification = () => {
+    setToken("");
+    turnstile.current?.reset();
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -115,6 +127,10 @@ export function CampaignHeroForm({ config, meta }: { config: CampaignConfig; met
       if (!res.ok || !json?.ok) {
         setErrorMsg(json?.error || "Something went wrong. Please try again.");
         setState("error");
+        // The token we just sent is spent either way - Cloudflare only honours
+        // it once. Keeping it meant every retry replayed a consumed token and
+        // came back 403 "Verification failed", forever, with no way out.
+        resetVerification();
         return;
       }
       setState("success");
@@ -123,6 +139,7 @@ export function CampaignHeroForm({ config, meta }: { config: CampaignConfig; met
     } catch {
       setErrorMsg("Something went wrong. Please try again.");
       setState("error");
+      resetVerification();
     } finally {
       isSubmitting.current = false;
     }
@@ -259,8 +276,23 @@ export function CampaignHeroForm({ config, meta }: { config: CampaignConfig; met
           </select>
 
           <div className="flex justify-center pt-1">
-            <Turnstile onVerify={setToken} onExpire={() => setToken("")} theme="dark" />
+            <Turnstile
+              handleRef={turnstile}
+              onVerify={(t) => {
+                setToken(t);
+                setTurnstileBlocked("");
+              }}
+              onExpire={() => setToken("")}
+              onUnavailable={setTurnstileBlocked}
+              theme="dark"
+            />
           </div>
+
+          {turnstileBlocked && (
+            <p role="alert" className="text-center text-sm font-semibold text-amber-200">
+              {turnstileBlocked}
+            </p>
+          )}
 
           {state === "error" && (
             <p role="alert" className="text-center text-sm font-semibold text-amber-200">

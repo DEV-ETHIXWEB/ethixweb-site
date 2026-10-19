@@ -4,6 +4,7 @@ import { PageHero } from "@/components/shared/PageHero";
 import { Reveal } from "@/components/shared/Reveal";
 import { Container } from "@/components/shared/Container";
 import { ArrowUpRight } from "lucide-react";
+import { OG_IMAGE, siteUrl } from "@/lib/site";
 
 export const Route = createFileRoute("/not-hiring")({
   head: () => ({
@@ -21,8 +22,8 @@ export const Route = createFileRoute("/not-hiring")({
           "Ethixweb is not currently hiring. Check back in the future for new opportunities.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://www.ethixweb.com/ethixweb.png" },
-      { property: "og:url", content: "https://www.ethixweb.com/not-hiring" },
+      { property: "og:image", content: OG_IMAGE },
+      { property: "og:url", content: siteUrl("/not-hiring") },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Careers | Ethixweb - No Current Openings" },
       {
@@ -30,10 +31,10 @@ export const Route = createFileRoute("/not-hiring")({
         content:
           "Ethixweb is not currently hiring. Check back in the future for new opportunities.",
       },
-      { name: "twitter:image", content: "https://www.ethixweb.com/ethixweb.png" },
+      { name: "twitter:image", content: OG_IMAGE },
       { name: "robots", content: "noindex, follow" },
     ],
-    links: [{ rel: "canonical", href: "https://www.ethixweb.com/not-hiring" }],
+    links: [{ rel: "canonical", href: siteUrl("/not-hiring") }],
   }),
   component: NotHiring,
 });

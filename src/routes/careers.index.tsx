@@ -11,6 +11,7 @@ import { MarqueeBand } from "@/components/shared/MarqueeBand";
 import { RotatingText } from "@/components/shared/RotatingText";
 import { JobCard } from "@/components/careers/JobCard";
 import { JOBS, HIRING_PROCESS } from "@/lib/careers-data";
+import { LOGO_IMAGE, OG_IMAGE, SITE_URL, siteUrl } from "@/lib/site";
 import {
   ArrowUpRight,
   Globe2,
@@ -38,8 +39,8 @@ export const Route = createFileRoute("/careers/")({
       { property: "og:title", content: "Careers at Ethixweb" },
       { property: "og:description", content: "Open roles at a remote first, senior led team." },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://www.ethixweb.com/ethixweb.png" },
-      { property: "og:url", content: "https://www.ethixweb.com/careers" },
+      { property: "og:image", content: OG_IMAGE },
+      { property: "og:url", content: siteUrl("/careers") },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Careers at Ethixweb" },
       {
@@ -47,10 +48,10 @@ export const Route = createFileRoute("/careers/")({
         content:
           "Join Ethixweb, a small, remote first team building websites, AI automation, SEO and software for US businesses.",
       },
-      { name: "twitter:image", content: "https://www.ethixweb.com/ethixweb.png" },
+      { name: "twitter:image", content: OG_IMAGE },
       { name: "robots", content: "index, follow" },
     ],
-    links: [{ rel: "canonical", href: "https://www.ethixweb.com/careers" }],
+    links: [{ rel: "canonical", href: siteUrl("/careers") }],
     scripts: [
       {
         type: "application/ld+json",
@@ -61,7 +62,7 @@ export const Route = createFileRoute("/careers/")({
           itemListElement: JOBS.map((job, i) => ({
             "@type": "ListItem",
             position: i + 1,
-            url: `https://www.ethixweb.com/careers/${job.slug}`,
+            url: siteUrl(`/careers/${job.slug}`),
             item: {
               "@type": "JobPosting",
               title: job.title,
@@ -71,8 +72,8 @@ export const Route = createFileRoute("/careers/")({
               hiringOrganization: {
                 "@type": "Organization",
                 name: "Ethixweb",
-                sameAs: "https://www.ethixweb.com",
-                logo: "https://www.ethixweb.com/ethixweb.png",
+                sameAs: SITE_URL,
+                logo: LOGO_IMAGE,
               },
               jobLocationType: "TELECOMMUTE",
               applicantLocationRequirements: { "@type": "Country", name: "India" },

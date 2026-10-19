@@ -1,13 +1,12 @@
 import { jsonLdStringify } from "@/lib/json-ld";
 import type { CampaignConfig } from "./types";
-
-const SITE_URL = "https://www.ethixweb.com";
+import { OG_IMAGE, OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH, SITE_URL, siteUrl } from "@/lib/site";
 
 /** Builds the full TanStack Start `head()` return value from a campaign
  * config, so every campaign route gets consistent, correct meta/OG/Twitter/
  * canonical/JSON-LD tags without re-writing them per page. */
 export function buildCampaignHead(config: CampaignConfig) {
-  const canonical = `${SITE_URL}${config.seo.path}`;
+  const canonical = siteUrl(config.seo.path);
 
   return {
     meta: [
@@ -16,12 +15,14 @@ export function buildCampaignHead(config: CampaignConfig) {
       { property: "og:title", content: config.seo.ogTitle },
       { property: "og:description", content: config.seo.ogDescription },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: `${SITE_URL}/ethixweb.png` },
+      { property: "og:image", content: OG_IMAGE },
+      { property: "og:image:width", content: OG_IMAGE_WIDTH },
+      { property: "og:image:height", content: OG_IMAGE_HEIGHT },
       { property: "og:url", content: canonical },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: config.seo.title },
       { name: "twitter:description", content: config.seo.ogDescription },
-      { name: "twitter:image", content: `${SITE_URL}/ethixweb.png` },
+      { name: "twitter:image", content: OG_IMAGE },
       { name: "robots", content: "index, follow" },
     ],
     links: [{ rel: "canonical", href: canonical }],

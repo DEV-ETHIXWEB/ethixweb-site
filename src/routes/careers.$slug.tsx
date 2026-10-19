@@ -8,6 +8,7 @@ import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
 import { Container } from "@/components/shared/Container";
 import { GlowBlob } from "@/components/shared/GlowBlob";
 import { JOBS, HIRING_PROCESS, getJob, type Job } from "@/lib/careers-data";
+import { LOGO_IMAGE, OG_IMAGE, SITE_URL, siteUrl } from "@/lib/site";
 import {
   ArrowUpRight,
   MapPin,
@@ -38,15 +39,15 @@ export const Route = createFileRoute("/careers/$slug")({
         { property: "og:title", content: `${job.title} - Ethixweb` },
         { property: "og:description", content: job.summary },
         { property: "og:type", content: "website" },
-        { property: "og:image", content: "https://www.ethixweb.com/ethixweb.png" },
-        { property: "og:url", content: `https://www.ethixweb.com/careers/${job.slug}` },
+        { property: "og:image", content: OG_IMAGE },
+        { property: "og:url", content: siteUrl(`/careers/${job.slug}`) },
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:title", content: `${job.title} - Ethixweb` },
         { name: "twitter:description", content: job.summary },
-        { name: "twitter:image", content: "https://www.ethixweb.com/ethixweb.png" },
+        { name: "twitter:image", content: OG_IMAGE },
         { name: "robots", content: "index, follow" },
       ],
-      links: [{ rel: "canonical", href: `https://www.ethixweb.com/careers/${job.slug}` }],
+      links: [{ rel: "canonical", href: siteUrl(`/careers/${job.slug}`) }],
       scripts: [
         {
           type: "application/ld+json",
@@ -64,8 +65,8 @@ export const Route = createFileRoute("/careers/$slug")({
             hiringOrganization: {
               "@type": "Organization",
               name: "Ethixweb",
-              sameAs: "https://www.ethixweb.com",
-              logo: "https://www.ethixweb.com/ethixweb.png",
+              sameAs: SITE_URL,
+              logo: LOGO_IMAGE,
             },
             jobLocationType: "TELECOMMUTE",
             applicantLocationRequirements: { "@type": "Country", name: "India" },

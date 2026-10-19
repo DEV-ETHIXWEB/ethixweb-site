@@ -24,6 +24,7 @@ import { GlowBlob } from "@/components/shared/GlowBlob";
 import { hackathonConfig } from "@/lib/hackathon-config";
 import { jsonLdStringify } from "@/lib/json-ld";
 import { cn } from "@/lib/utils";
+import { OG_IMAGE, SITE_URL, siteUrl } from "@/lib/site";
 
 // X (formerly Twitter)'s wordmark isn't in lucide-react - a minimal inline
 // glyph matching the other platform icons' stroke weight.
@@ -36,7 +37,7 @@ function XIcon({ className }: { className?: string }) {
 }
 
 const STORAGE_KEY = "hackathon-unlock-proof";
-const HACKATHON_URL = "https://www.ethixweb.com/hackathon";
+const HACKATHON_URL = siteUrl("/hackathon");
 const QR_SRC = "/qr/hackathon.png";
 
 const SOCIALS = [
@@ -812,18 +813,18 @@ export const Route = createFileRoute("/hackathon")({
         content: "Explore Ethixweb's social channels, find the hidden code, unlock registration.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://www.ethixweb.com/ethixweb.png" },
-      { property: "og:url", content: "https://www.ethixweb.com/hackathon" },
+      { property: "og:image", content: OG_IMAGE },
+      { property: "og:url", content: siteUrl("/hackathon") },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Ethixweb Hackathon | Code. Find. Unlock." },
       {
         name: "twitter:description",
         content: "Explore Ethixweb's social channels, find the hidden code, unlock registration.",
       },
-      { name: "twitter:image", content: "https://www.ethixweb.com/ethixweb.png" },
+      { name: "twitter:image", content: OG_IMAGE },
       { name: "robots", content: "index, follow" },
     ],
-    links: [{ rel: "canonical", href: "https://www.ethixweb.com/hackathon" }],
+    links: [{ rel: "canonical", href: siteUrl("/hackathon") }],
     scripts: [
       {
         type: "application/ld+json",
@@ -833,11 +834,11 @@ export const Route = createFileRoute("/hackathon")({
           name: hackathonConfig.hackathonName,
           description:
             "A code is hidden across Ethixweb's social channels. Find it, enter it, and unlock registration for the Ethixweb Hackathon.",
-          url: "https://www.ethixweb.com/hackathon",
+          url: siteUrl("/hackathon"),
           organizer: {
             "@type": "Organization",
             name: "Ethixweb",
-            url: "https://www.ethixweb.com",
+            url: SITE_URL,
           },
         }),
       },

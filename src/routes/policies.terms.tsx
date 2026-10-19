@@ -1,11 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { jsonLdStringify } from "@/lib/json-ld";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { PageHero } from "@/components/shared/PageHero";
+import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
 import { Reveal } from "@/components/shared/Reveal";
 import { Container } from "@/components/shared/Container";
 import { PolicySection as Section } from "@/components/policies/PolicySection";
 import { ArrowUpRight } from "lucide-react";
+import { OG_IMAGE, siteUrl } from "@/lib/site";
 
 export const Route = createFileRoute("/policies/terms")({
   head: () => ({
@@ -21,42 +22,18 @@ export const Route = createFileRoute("/policies/terms")({
         content: "Terms and conditions governing use of Ethixweb services.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://www.ethixweb.com/ethixweb.png" },
-      { property: "og:url", content: "https://www.ethixweb.com/policies/terms" },
+      { property: "og:image", content: OG_IMAGE },
+      { property: "og:url", content: siteUrl("/policies/terms") },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Terms & Conditions - Ethixweb" },
       {
         name: "twitter:description",
         content: "Terms and conditions governing use of Ethixweb services.",
       },
-      { name: "twitter:image", content: "https://www.ethixweb.com/ethixweb.png" },
+      { name: "twitter:image", content: OG_IMAGE },
       { name: "robots", content: "index, follow" },
     ],
-    links: [{ rel: "canonical", href: "https://www.ethixweb.com/policies/terms" }],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: jsonLdStringify({
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          itemListElement: [
-            { "@type": "ListItem", position: 1, name: "Home", item: "https://www.ethixweb.com/" },
-            {
-              "@type": "ListItem",
-              position: 2,
-              name: "Policies",
-              item: "https://www.ethixweb.com/policies",
-            },
-            {
-              "@type": "ListItem",
-              position: 3,
-              name: "Terms & Conditions",
-              item: "https://www.ethixweb.com/policies/terms",
-            },
-          ],
-        }),
-      },
-    ],
+    links: [{ rel: "canonical", href: siteUrl("/policies/terms") }],
   }),
   component: TermsPolicy,
 });
@@ -67,6 +44,9 @@ function TermsPolicy() {
       <PageHero eyebrow="Policies" title="Terms & Conditions">
         Last updated: January 2025
       </PageHero>
+      <Container>
+        <Breadcrumbs items={[{ label: "Terms & Conditions" }]} />
+      </Container>
       <section className="py-20">
         <Container className="grid gap-5 lg:grid-cols-2">
           <Reveal className="lg:col-span-2">

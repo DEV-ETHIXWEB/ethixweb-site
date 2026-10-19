@@ -4,6 +4,8 @@
 // code itself lives server-only in HACKATHON_UNLOCK_CODE (see .env.example)
 // and is never imported into this file or any client component.
 
+import { siteUrl } from "@/lib/site";
+
 export const hackathonConfig = {
   hackathonName: "Ethixweb Hackathon",
   theme: "Theme to be announced",
@@ -12,7 +14,7 @@ export const hackathonConfig = {
   prizes: "Prizes to be announced",
 
   // TODO: replace with the live registration form URL before launch.
-  registrationUrl: "https://www.ethixweb.com/contact",
+  registrationUrl: siteUrl("/contact"),
   // TODO: replace with the real WhatsApp community invite link before launch.
   whatsappUrl: "",
 

@@ -28,6 +28,7 @@ import { SystemShift } from "@/components/home/SystemShift";
 import { WebSpotlight } from "@/components/shared/WebSpotlight";
 import { trackWebSpotlight } from "@/lib/web-spotlight";
 import { SERVICE_CATALOG, SERVICE_CATALOG_TOTAL } from "@/lib/services-catalog";
+import { LOGO_IMAGE, OG_IMAGE, SITE_URL, siteUrl } from "@/lib/site";
 
 const GlobalNetwork = lazy(() =>
   import("@/components/home/GlobalNetwork").then((m) => ({ default: m.GlobalNetwork })),
@@ -49,8 +50,8 @@ export const Route = createFileRoute("/")({
           "AI automation, websites, web applications, CRM integrations, SEO, ads, maintenance, and digital operations.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://www.ethixweb.com/ethixweb.png" },
-      { property: "og:url", content: "https://www.ethixweb.com/" },
+      { property: "og:image", content: OG_IMAGE },
+      { property: "og:url", content: siteUrl("/") },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Ethixweb - We run the tech. You run the business." },
       {
@@ -58,10 +59,10 @@ export const Route = createFileRoute("/")({
         content:
           "We manage your digital operation, from AI booking agents and CRM integrations to websites, SEO and ads.",
       },
-      { name: "twitter:image", content: "https://www.ethixweb.com/ethixweb.png" },
+      { name: "twitter:image", content: OG_IMAGE },
       { name: "robots", content: "index, follow" },
     ],
-    links: [{ rel: "canonical", href: "https://www.ethixweb.com/" }],
+    links: [{ rel: "canonical", href: siteUrl("/") }],
     scripts: [
       {
         type: "application/ld+json",
@@ -69,8 +70,8 @@ export const Route = createFileRoute("/")({
           "@context": "https://schema.org",
           "@type": "ProfessionalService",
           name: "Ethixweb",
-          url: "https://www.ethixweb.com",
-          logo: "https://www.ethixweb.com/ethixweb.png",
+          url: SITE_URL,
+          logo: LOGO_IMAGE,
           description: "AI automation, websites, CRM integrations, SEO, and digital operations.",
           email: "info@ethixweb.com",
           openingHours: "Mo-Fr 09:00-17:00",

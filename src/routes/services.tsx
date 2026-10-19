@@ -12,6 +12,7 @@ import { EditorialHeader } from "@/components/shared/EditorialHeader";
 import { EngagementRhythm } from "@/components/shared/EngagementRhythm";
 import { SERVICE_CATALOG, SERVICE_CATALOG_TOTAL } from "@/lib/services-catalog";
 import { ArrowUpRight, ChevronDown, Telescope, Map, Hammer, TrendingUp } from "lucide-react";
+import { OG_IMAGE, siteUrl } from "@/lib/site";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -28,8 +29,8 @@ export const Route = createFileRoute("/services")({
         content: "Marketing services for plumbing, HVAC and electrical contractors.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://www.ethixweb.com/ethixweb.png" },
-      { property: "og:url", content: "https://www.ethixweb.com/services" },
+      { property: "og:image", content: OG_IMAGE },
+      { property: "og:url", content: siteUrl("/services") },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Ethixweb Services" },
       {
@@ -37,10 +38,10 @@ export const Route = createFileRoute("/services")({
         content:
           "Websites, Google Ads, Local Services Ads, SEO, conversion tracking and lead gen for US home service businesses.",
       },
-      { name: "twitter:image", content: "https://www.ethixweb.com/ethixweb.png" },
+      { name: "twitter:image", content: OG_IMAGE },
       { name: "robots", content: "index, follow" },
     ],
-    links: [{ rel: "canonical", href: "https://www.ethixweb.com/services" }],
+    links: [{ rel: "canonical", href: siteUrl("/services") }],
     scripts: [
       {
         type: "application/ld+json",
@@ -48,7 +49,7 @@ export const Route = createFileRoute("/services")({
           "@context": "https://schema.org",
           "@type": "ItemList",
           name: "Ethixweb Services",
-          url: "https://www.ethixweb.com/services",
+          url: siteUrl("/services"),
           description:
             "Websites, Google Ads, Local Services Ads, SEO, conversion tracking and lead gen for US home service businesses.",
           itemListElement: [
@@ -56,25 +57,25 @@ export const Route = createFileRoute("/services")({
               "@type": "ListItem",
               position: 1,
               name: "Website Design & Development",
-              url: "https://www.ethixweb.com/web-development",
+              url: siteUrl("/web-development"),
             },
             {
               "@type": "ListItem",
               position: 2,
               name: "AI & Workflow Automation",
-              url: "https://www.ethixweb.com/ai-automation",
+              url: siteUrl("/ai-automation"),
             },
             {
               "@type": "ListItem",
               position: 3,
               name: "Social Media Marketing",
-              url: "https://www.ethixweb.com/marketing",
+              url: siteUrl("/marketing"),
             },
             {
               "@type": "ListItem",
               position: 4,
               name: "Graphic Design & Branding",
-              url: "https://www.ethixweb.com/graphic-design",
+              url: siteUrl("/graphic-design"),
             },
           ],
         }),

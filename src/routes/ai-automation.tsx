@@ -7,6 +7,7 @@ import { Container } from "@/components/shared/Container";
 import { CardGrid } from "@/components/shared/CardGrid";
 import { CTASection } from "@/components/shared/CTASection";
 import { Bot, Workflow, Brain, MessageSquare, Cable, Gauge } from "lucide-react";
+import { OG_IMAGE, SITE_URL, siteUrl } from "@/lib/site";
 
 export const Route = createFileRoute("/ai-automation")({
   head: () => ({
@@ -19,18 +20,18 @@ export const Route = createFileRoute("/ai-automation")({
       { property: "og:title", content: "AI & Automation Solutions" },
       { property: "og:description", content: "Production-ready AI systems for modern businesses." },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://www.ethixweb.com/ethixweb.png" },
-      { property: "og:url", content: "https://www.ethixweb.com/ai-automation" },
+      { property: "og:image", content: OG_IMAGE },
+      { property: "og:url", content: siteUrl("/ai-automation") },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "AI & Automation - Ethixweb" },
       {
         name: "twitter:description",
         content: "Custom AI agents, internal copilots and end to end workflow automation.",
       },
-      { name: "twitter:image", content: "https://www.ethixweb.com/ethixweb.png" },
+      { name: "twitter:image", content: OG_IMAGE },
       { name: "robots", content: "index, follow" },
     ],
-    links: [{ rel: "canonical", href: "https://www.ethixweb.com/ai-automation" }],
+    links: [{ rel: "canonical", href: siteUrl("/ai-automation") }],
   }),
   component: Page,
 });
@@ -62,10 +63,10 @@ const SERVICE_SCHEMA = jsonLdStringify({
   "@context": "https://schema.org",
   "@type": "Service",
   name: "AI & Workflow Automation",
-  provider: { "@type": "Organization", name: "Ethixweb", url: "https://www.ethixweb.com" },
+  provider: { "@type": "Organization", name: "Ethixweb", url: SITE_URL },
   description:
     "Custom AI agents, internal copilots and end to end workflow automation for modern businesses.",
-  url: "https://www.ethixweb.com/ai-automation",
+  url: siteUrl("/ai-automation"),
   areaServed: { "@type": "Country", name: "United States" },
   serviceType: "AI Automation and Integration",
 });

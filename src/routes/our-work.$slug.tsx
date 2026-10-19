@@ -1,6 +1,6 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { jsonLdStringify } from "@/lib/json-ld";
-import { SITE_URL } from "@/lib/site";
+import { SITE_URL, siteUrl } from "@/lib/site";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { CaseStudyHero } from "@/components/case-study/CaseStudyHero";
 import { IntroCardsSection } from "@/components/case-study/IntroCardsSection";
@@ -39,15 +39,23 @@ export const Route = createFileRoute("/our-work/$slug")({
         { property: "og:title", content: title },
         { property: "og:description", content: study.summary },
         { property: "og:type", content: "article" },
-        { property: "og:image", content: `https://www.ethixweb.com${study.heroImage.src}` },
-        { property: "og:url", content: `https://www.ethixweb.com/our-work/${study.slug}` },
+        { property: "og:image", content: siteUrl(study.heroImage.src) },
+        // These override the site-wide 1200x630 declared in __root.tsx, which
+        // describes the default og-image.png card. This page ships the case
+        // study's own hero instead, so it has to declare that image's real
+        // size - otherwise the markup claims dimensions the file doesn't have
+        // and crawlers lay the preview out wrong.
+        { property: "og:image:width", content: String(study.heroImage.width) },
+        { property: "og:image:height", content: String(study.heroImage.height) },
+        { property: "og:image:alt", content: study.heroImage.alt },
+        { property: "og:url", content: siteUrl(`/our-work/${study.slug}`) },
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:title", content: title },
         { name: "twitter:description", content: study.summary },
-        { name: "twitter:image", content: `https://www.ethixweb.com${study.heroImage.src}` },
+        { name: "twitter:image", content: siteUrl(study.heroImage.src) },
         { name: "robots", content: "index, follow" },
       ],
-      links: [{ rel: "canonical", href: `https://www.ethixweb.com/our-work/${study.slug}` }],
+      links: [{ rel: "canonical", href: siteUrl(`/our-work/${study.slug}`) }],
       scripts: [
         {
           type: "application/ld+json",
@@ -57,12 +65,12 @@ export const Route = createFileRoute("/our-work/$slug")({
             name: title,
             description: study.summary,
             about: study.client.name,
-            image: `https://www.ethixweb.com${study.heroImage.src}`,
-            url: `https://www.ethixweb.com/our-work/${study.slug}`,
+            image: siteUrl(study.heroImage.src),
+            url: siteUrl(`/our-work/${study.slug}`),
             author: {
               "@type": "Organization",
               name: "Ethixweb",
-              sameAs: "https://www.ethixweb.com",
+              sameAs: SITE_URL,
             },
           }),
         },
@@ -75,7 +83,7 @@ export const Route = createFileRoute("/our-work/$slug")({
             "@type": "BreadcrumbList",
             itemListElement: [
               { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-              { "@type": "ListItem", position: 2, name: "Our Work", item: `${SITE_URL}/our-work` },
+              { "@type": "ListItem", position: 2, name: "Our Work", item: siteUrl("/our-work") },
               { "@type": "ListItem", position: 3, name: study.client.name },
             ],
           }),

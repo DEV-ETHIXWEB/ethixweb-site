@@ -9,6 +9,7 @@ import { Container } from "@/components/shared/Container";
 import { GlowBlob } from "@/components/shared/GlowBlob";
 import { WebSpotlight } from "@/components/shared/WebSpotlight";
 import { trackWebSpotlight } from "@/lib/web-spotlight";
+import { LOGO_IMAGE, OG_IMAGE, SITE_URL, siteUrl } from "@/lib/site";
 import {
   Target,
   Heart,
@@ -37,18 +38,18 @@ export const Route = createFileRoute("/about")({
         content: "Our story, how we work and why home service contractors trust us.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://www.ethixweb.com/ethixweb.png" },
-      { property: "og:url", content: "https://www.ethixweb.com/about" },
+      { property: "og:image", content: OG_IMAGE },
+      { property: "og:url", content: siteUrl("/about") },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "About Ethixweb" },
       {
         name: "twitter:description",
         content: "Our story, how we work and why home service contractors trust us.",
       },
-      { name: "twitter:image", content: "https://www.ethixweb.com/ethixweb.png" },
+      { name: "twitter:image", content: OG_IMAGE },
       { name: "robots", content: "index, follow" },
     ],
-    links: [{ rel: "canonical", href: "https://www.ethixweb.com/about" }],
+    links: [{ rel: "canonical", href: siteUrl("/about") }],
     scripts: [
       {
         type: "application/ld+json",
@@ -56,15 +57,15 @@ export const Route = createFileRoute("/about")({
           "@context": "https://schema.org",
           "@type": "AboutPage",
           name: "About Ethixweb",
-          url: "https://www.ethixweb.com/about",
+          url: siteUrl("/about"),
           description:
             "Ethixweb is a small, senior team helping US home service contractors grow with marketing that moves revenue.",
           mainEntity: {
             "@type": "Organization",
             name: "Ethixweb",
-            url: "https://www.ethixweb.com",
-            logo: "https://www.ethixweb.com/ethixweb.png",
-            email: "akash@ethixweb.com",
+            url: SITE_URL,
+            logo: LOGO_IMAGE,
+            email: "info@ethixweb.com",
             foundingDate: "2020",
             address: {
               "@type": "PostalAddress",

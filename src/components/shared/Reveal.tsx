@@ -14,6 +14,10 @@ function getObserver() {
   if (sharedObserver) return sharedObserver;
   sharedObserver = new IntersectionObserver(
     (entries, obs) => {
+      // Any callback at all proves the observer works - including one where
+      // nothing is intersecting yet, which is the normal first call for
+      // elements below the fold.
+      markObserverWorking();
       for (const entry of entries) {
         if (!entry.isIntersecting) continue;
         entry.target.setAttribute("data-revealed", "");
@@ -28,13 +32,36 @@ function getObserver() {
 
 /** Safety net for the whole page instead of one timer per instance: if an
  * observer never fires (older iOS Safari has known rootMargin bugs), reveal
- * everything at once. `.reveal-fallback` is handled in styles.css. */
-let fallbackArmed = false;
+ * everything at once. `.reveal-fallback` is handled in styles.css.
+ *
+ * This used to fire unconditionally 1.4s after the first Reveal mounted, and
+ * nothing ever removed the class - so on every page load the entire document
+ * was forced visible after 1.4 seconds and the scroll reveal this component
+ * exists for never ran for anything below the fold. The timer now only
+ * trips when the observer has produced no callback at all, which is the one
+ * situation it was written for; a working observer marks the document ready
+ * and cancels it. */
+let fallbackTimer: ReturnType<typeof setTimeout> | null = null;
+let observerFired = false;
+
+function markObserverWorking() {
+  observerFired = true;
+  if (typeof document !== "undefined") {
+    // Tells the independent in-head fallback in __root.tsx to stand down.
+    document.documentElement.setAttribute("data-reveal-ready", "");
+  }
+  if (fallbackTimer) {
+    clearTimeout(fallbackTimer);
+    fallbackTimer = null;
+  }
+}
 
 function armFallback() {
-  if (fallbackArmed || typeof document === "undefined") return;
-  fallbackArmed = true;
-  setTimeout(() => document.documentElement.classList.add("reveal-fallback"), 1400);
+  if (fallbackTimer || observerFired || typeof document === "undefined") return;
+  fallbackTimer = setTimeout(() => {
+    fallbackTimer = null;
+    if (!observerFired) document.documentElement.classList.add("reveal-fallback");
+  }, 1400);
 }
 
 export function Reveal({

@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { jsonLdStringify } from "@/lib/json-ld";
 import { ChevronRight, Home } from "lucide-react";
-import { SITE_URL } from "@/lib/site";
+import { siteUrl } from "@/lib/site";
 
 export interface BreadcrumbItem {
   label: string;
@@ -16,7 +16,7 @@ export function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
       "@type": "ListItem",
       position: i + 1,
       name: item.label,
-      item: item.to ? `${SITE_URL}${item.to}` : undefined,
+      item: item.to ? siteUrl(item.to) : undefined,
     })),
   };
 

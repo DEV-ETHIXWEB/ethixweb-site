@@ -12,6 +12,7 @@ import { CaseStudyCard } from "@/components/portfolio/CaseStudyCard";
 import { HeroCarousel, type HeroCarouselSlide } from "@/components/portfolio/HeroCarousel";
 import { Testimonials } from "@/components/shared/Testimonials";
 import { CASE_STUDIES, SERVICE_FILTERS } from "@/lib/portfolio-data";
+import { OG_IMAGE, siteUrl } from "@/lib/site";
 
 // Hero carousel: a fixed set of four shipped-site screenshots, in this order.
 // Pulled from the listing data (already has the after-screenshot + headline
@@ -43,8 +44,8 @@ export const Route = createFileRoute("/our-work/")({
       { property: "og:title", content: "Our Work - Ethixweb Case Studies" },
       { property: "og:description", content: "Selected client work and measurable results." },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://www.ethixweb.com/ethixweb.png" },
-      { property: "og:url", content: "https://www.ethixweb.com/our-work" },
+      { property: "og:image", content: OG_IMAGE },
+      { property: "og:url", content: siteUrl("/our-work") },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Our Work - Ethixweb Case Studies" },
       {
@@ -52,10 +53,10 @@ export const Route = createFileRoute("/our-work/")({
         content:
           "Real case studies from Ethixweb: websites, SEO and paid media that generated thousands of qualified leads.",
       },
-      { name: "twitter:image", content: "https://www.ethixweb.com/ethixweb.png" },
+      { name: "twitter:image", content: OG_IMAGE },
       { name: "robots", content: "index, follow" },
     ],
-    links: [{ rel: "canonical", href: "https://www.ethixweb.com/our-work" }],
+    links: [{ rel: "canonical", href: siteUrl("/our-work") }],
     scripts: [
       {
         type: "application/ld+json",
@@ -63,7 +64,7 @@ export const Route = createFileRoute("/our-work/")({
           "@context": "https://schema.org",
           "@type": "ItemList",
           name: "Ethixweb Our Work",
-          url: "https://www.ethixweb.com/our-work",
+          url: siteUrl("/our-work"),
           description:
             "Real case studies from Ethixweb: websites, SEO and paid media that generated thousands of qualified leads.",
           itemListElement: CASE_STUDIES.map((s, i) => ({

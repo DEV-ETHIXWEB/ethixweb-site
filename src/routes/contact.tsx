@@ -8,11 +8,12 @@ import { Reveal } from "@/components/shared/Reveal";
 import { Container } from "@/components/shared/Container";
 import { GlowBlob } from "@/components/shared/GlowBlob";
 import { useTheme } from "@/components/layout/ThemeProvider";
-import { Turnstile } from "@/components/shared/Turnstile";
+import { Turnstile, type TurnstileHandle } from "@/components/shared/Turnstile";
 import { formLabelClass, formInputClass } from "@/lib/form-styles";
 import { trackLeadFormConversion } from "@/lib/gtag";
 import { isValidPhone, normalizeWebsiteUrl } from "@/lib/utils";
-import { Mail, MapPin, ArrowUpRight, Check, Building2 } from "lucide-react";
+import { Mail, Clock, ArrowUpRight, Check, Building2 } from "lucide-react";
+import { OG_IMAGE, SITE_URL, siteUrl } from "@/lib/site";
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 
@@ -56,8 +57,8 @@ export const Route = createFileRoute("/contact")({
       { property: "og:title", content: "Contact Ethixweb" },
       { property: "og:description", content: "Start a project with our team." },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://www.ethixweb.com/ethixweb.png" },
-      { property: "og:url", content: "https://www.ethixweb.com/contact" },
+      { property: "og:image", content: OG_IMAGE },
+      { property: "og:url", content: siteUrl("/contact") },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Contact Ethixweb" },
       {
@@ -65,10 +66,10 @@ export const Route = createFileRoute("/contact")({
         content:
           "Share your name, phone number and website, and we'll call you within one business day.",
       },
-      { name: "twitter:image", content: "https://www.ethixweb.com/ethixweb.png" },
+      { name: "twitter:image", content: OG_IMAGE },
       { name: "robots", content: "index, follow" },
     ],
-    links: [{ rel: "canonical", href: "https://www.ethixweb.com/contact" }],
+    links: [{ rel: "canonical", href: siteUrl("/contact") }],
     scripts: [
       {
         type: "application/ld+json",
@@ -76,14 +77,14 @@ export const Route = createFileRoute("/contact")({
           "@context": "https://schema.org",
           "@type": "ContactPage",
           name: "Contact Ethixweb",
-          url: "https://www.ethixweb.com/contact",
+          url: siteUrl("/contact"),
           description:
             "Share your name, phone number and website, and we'll call you within one business day.",
           mainEntity: {
             "@type": "Organization",
             name: "Ethixweb",
-            email: "akash@ethixweb.com",
-            url: "https://www.ethixweb.com",
+            email: "info@ethixweb.com",
+            url: SITE_URL,
             address: {
               "@type": "PostalAddress",
               addressLocality: "Kent",
@@ -147,16 +148,23 @@ function ContactBody() {
   }, [reduceMotion]);
 
   const [sent, setSent] = useState(false);
+  const successRef = useRef<HTMLDivElement>(null);
 
+  // Move focus to the confirmation once it replaces the form. Without this a
+  // screen-reader or keyboard user was left on a submit button that no longer
+  // exists, with no announcement that anything had happened.
   useEffect(() => {
-    if (new URLSearchParams(window.location.search).get("preview") === "success") {
-      setSent(true);
-    }
-  }, []);
+    if (sent) successRef.current?.focus();
+  }, [sent]);
 
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  // Set when the widget can't be reached at all. Without this the submit
+  // button just sat disabled forever with nothing on screen explaining why,
+  // so anyone running a privacy blocker silently failed to reach us.
+  const [turnstileBlocked, setTurnstileBlocked] = useState<string | null>(null);
+  const turnstile = useRef<TurnstileHandle | null>(null);
   const turnstileRequired = Boolean(import.meta.env.VITE_TURNSTILE_SITE_KEY);
 
   // The three details that qualify a lead. Everything else about the project
@@ -214,9 +222,12 @@ function ContactBody() {
           ? err.message
           : "Something went wrong. Please email info@ethixweb.com directly.",
       );
-      // Turnstile tokens are single-use - clear it so the widget can be
-      // reset/re-verified before the user retries.
+      // Turnstile tokens are single-use. Clearing our copy is only half the
+      // job: the widget still showed a green tick, so the button went
+      // permanently disabled and the visitor had no way to retry. Reset the
+      // widget too, so it issues a fresh token and re-enables the button.
       setTurnstileToken(null);
+      turnstile.current?.reset();
     } finally {
       setSubmitting(false);
     }
@@ -354,7 +365,7 @@ function ContactBody() {
                     {[
                       { i: Mail, v: "info@ethixweb.com" },
                       { i: Building2, v: "Ethixweb USA LLC · Wyoming, US" },
-                      { i: MapPin, v: "Mon-Fri · 9 AM - 5 PM" },
+                      { i: Clock, v: "Mon-Fri · 9 AM - 5 PM PT" },
                     ].map(({ i: I, v }) => (
                       <div
                         key={v}
@@ -389,6 +400,7 @@ function ContactBody() {
                           name="name"
                           autoComplete="name"
                           placeholder="Jane Smith"
+                          maxLength={120}
                           value={form.name}
                           onChange={(v) => setField("name", v)}
                         />
@@ -399,6 +411,7 @@ function ContactBody() {
                           inputMode="tel"
                           autoComplete="tel"
                           placeholder="+1 555 123 4567"
+                          maxLength={30}
                           value={form.phone}
                           onChange={(v) => setField("phone", v)}
                         />
@@ -408,6 +421,7 @@ function ContactBody() {
                           inputMode="url"
                           autoComplete="url"
                           placeholder="yourbusiness.com"
+                          maxLength={200}
                           value={form.website}
                           onChange={(v) => setField("website", v)}
                         />
@@ -417,10 +431,20 @@ function ContactBody() {
                         </p>
                         {turnstileRequired && (
                           <Turnstile
+                            handleRef={turnstile}
                             theme={isDark ? "dark" : "light"}
-                            onVerify={setTurnstileToken}
+                            onVerify={(t) => {
+                              setTurnstileToken(t);
+                              setTurnstileBlocked(null);
+                            }}
                             onExpire={() => setTurnstileToken(null)}
+                            onUnavailable={setTurnstileBlocked}
                           />
+                        )}
+                        {turnstileBlocked && (
+                          <p role="alert" className="text-sm text-error-text">
+                            {turnstileBlocked}
+                          </p>
                         )}
                         {submitError && (
                           <p id="submit-error" role="alert" className="text-sm text-error-text">
@@ -451,10 +475,14 @@ function ContactBody() {
                 ) : (
                   /* Success */
                   <motion.div
+                    ref={successRef}
+                    tabIndex={-1}
+                    role="status"
+                    aria-live="polite"
                     initial={{ opacity: 0, scale: 0.94 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.45, ease: "easeOut" }}
-                    className="relative z-10 flex flex-1 flex-col items-center justify-center gap-4 px-6 py-10 text-center sm:min-h-100 sm:px-10"
+                    className="relative z-10 flex flex-1 flex-col items-center justify-center gap-4 px-6 py-10 text-center focus:outline-none sm:min-h-100 sm:px-10"
                   >
                     {/* ambient glow centered behind mascot */}
                     <div className="pointer-events-none absolute bottom-0 left-1/2 -z-10 h-56 w-56 -translate-x-1/2 rounded-full bg-primary/15 blur-[90px] sm:h-64 sm:w-64 lg:h-72 lg:w-72" />
@@ -622,6 +650,7 @@ function Field({
   inputMode,
   autoComplete,
   placeholder,
+  maxLength,
   value,
   onChange,
 }: {
@@ -631,21 +660,26 @@ function Field({
   inputMode?: "tel" | "url";
   autoComplete?: string;
   placeholder?: string;
+  /** Mirrors the server-side cap in /api/contact, so the limit is reached in
+   * the field rather than discovered on submit. */
+  maxLength?: number;
   value: string;
   onChange: (value: string) => void;
 }) {
+  const id = `contact-${name}`;
   return (
     <div>
-      <label className={formLabelClass} htmlFor={name}>
+      <label className={formLabelClass} htmlFor={id}>
         {label}
       </label>
       <input
-        id={name}
+        id={id}
         name={name}
         type={type}
         inputMode={inputMode}
         autoComplete={autoComplete}
         placeholder={placeholder}
+        maxLength={maxLength}
         required
         value={value}
         onChange={(e) => onChange(e.target.value)}

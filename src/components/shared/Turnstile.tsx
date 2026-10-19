@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef } from "react";
+import { useEffect, useId, useImperativeHandle, useRef, type RefObject } from "react";
 
 // Cloudflare Turnstile - invisible/low-friction bot check used to gate the
 // public lead-capture forms (contact, careers apply). Loads the official
@@ -47,27 +47,74 @@ function loadTurnstileScript(): Promise<void> {
   return scriptPromise;
 }
 
+/** How long to wait for Cloudflare's script before telling the visitor the
+ * check could not load. Generous enough for a slow connection, short enough
+ * that nobody sits in front of a form that will never submit. */
+const SCRIPT_TIMEOUT_MS = 12_000;
+
+export interface TurnstileHandle {
+  /** Discards the consumed token and asks the widget for a fresh one.
+   * Turnstile tokens are single-use, so a form MUST call this after a failed
+   * submit - otherwise a retry replays a token Cloudflare has already spent
+   * and the server rejects it every time. */
+  reset: () => void;
+}
+
 export function Turnstile({
   onVerify,
   onExpire,
+  onUnavailable,
   theme = "auto",
+  handleRef,
 }: {
   onVerify: (token: string) => void;
   onExpire?: () => void;
+  /** Called when the widget cannot be reached at all (blocked script,
+   * offline, Cloudflare outage) so the form can explain itself instead of
+   * leaving a permanently disabled button with no reason given. */
+  onUnavailable?: (reason: string) => void;
   theme?: "light" | "dark" | "auto";
+  handleRef?: RefObject<TurnstileHandle | null>;
 }) {
   const containerId = `turnstile-${useId().replace(/:/g, "")}`;
   const widgetId = useRef<string | undefined>(undefined);
   const onVerifyRef = useRef(onVerify);
   const onExpireRef = useRef(onExpire);
+  const onUnavailableRef = useRef(onUnavailable);
   onVerifyRef.current = onVerify;
   onExpireRef.current = onExpire;
+  onUnavailableRef.current = onUnavailable;
 
   const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
+
+  // Exposed to the parent form so it can reset the widget between attempts.
+  // Stable across renders, and a no-op before the widget has rendered.
+  useImperativeHandle(
+    handleRef,
+    () => ({
+      reset: () => {
+        if (widgetId.current && window.turnstile) {
+          window.turnstile.reset(widgetId.current);
+        }
+      },
+    }),
+    [],
+  );
 
   useEffect(() => {
     if (!siteKey) return;
     let cancelled = false;
+
+    // The script can also simply never resolve (a blocker that swallows the
+    // request without firing onerror), so the timeout - not just .catch() -
+    // is what guarantees the visitor hears about it.
+    const timeout = setTimeout(() => {
+      if (!cancelled && !widgetId.current) {
+        onUnavailableRef.current?.(
+          "The human-verification check could not load. Disable any ad or privacy blocker for this page, or email info@ethixweb.com and we'll take your details directly.",
+        );
+      }
+    }, SCRIPT_TIMEOUT_MS);
 
     loadTurnstileScript()
       .then(() => {
@@ -83,13 +130,15 @@ export function Turnstile({
         });
       })
       .catch(() => {
-        // Best-effort: if the script can't load (network/ad-block), the
-        // submit button stays disabled since no token is ever produced -
-        // fails closed rather than silently letting bots through.
+        if (cancelled) return;
+        onUnavailableRef.current?.(
+          "The human-verification check could not load. Disable any ad or privacy blocker for this page, or email info@ethixweb.com and we'll take your details directly.",
+        );
       });
 
     return () => {
       cancelled = true;
+      clearTimeout(timeout);
       if (widgetId.current && window.turnstile) {
         window.turnstile.remove(widgetId.current);
         widgetId.current = undefined;

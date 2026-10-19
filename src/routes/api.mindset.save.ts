@@ -31,6 +31,12 @@ const violationSchema = z.object({
   detail: z.string().max(200).optional(),
 });
 
+/** Identity of a recorded violation, used to merge a re-sent cumulative
+ * batch without duplicating it. */
+function violationKey(v: { type: string; at: string; detail?: string }): string {
+  return `${v.type}|${v.at}|${v.detail ?? ""}`;
+}
+
 const bodySchema = z.object({
   token: z
     .string()
@@ -93,8 +99,17 @@ export const Route = createFileRoute("/api/mindset/save")({
         if (body.forQuestionIndex !== undefined && body.forQuestionIndex === row.current_index) {
           update.draft_answer = body.draftAnswer ?? null;
         }
+        // Append-only: the client sends its whole cumulative list, so
+        // assigning it straight through let a request carrying `[]` erase
+        // every violation already on the row. Merging on identity means a
+        // re-send can't duplicate and nothing a client sends can shrink the
+        // record. Mirrors api.gads.save.ts.
         if (body.violations !== undefined) {
-          update.violations = body.violations.slice(-MINDSET_MAX_VIOLATIONS);
+          const seen = new Set(row.violations.map(violationKey));
+          const added = body.violations.filter((v) => !seen.has(violationKey(v)));
+          if (added.length > 0) {
+            update.violations = [...row.violations, ...added].slice(-MINDSET_MAX_VIOLATIONS);
+          }
         }
 
         if (Object.keys(update).length > 0) {

@@ -7,6 +7,7 @@ import { Container } from "@/components/shared/Container";
 import { CTASection } from "@/components/shared/CTASection";
 import { WebSpotlight } from "@/components/shared/WebSpotlight";
 import { trackWebSpotlight } from "@/lib/web-spotlight";
+import { OG_IMAGE, SITE_URL, siteUrl } from "@/lib/site";
 import {
   Megaphone,
   BarChart3,
@@ -33,8 +34,8 @@ export const Route = createFileRoute("/marketing")({
         content: "Engage, grow and convert effectively with data driven social media strategy.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://www.ethixweb.com/ethixweb.png" },
-      { property: "og:url", content: "https://www.ethixweb.com/marketing" },
+      { property: "og:image", content: OG_IMAGE },
+      { property: "og:url", content: siteUrl("/marketing") },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Social Media Marketing - Ethixweb" },
       {
@@ -42,10 +43,10 @@ export const Route = createFileRoute("/marketing")({
         content:
           "Elevate your brand with expert social media marketing: content, engagement tracking, paid campaigns and flexible plans built for home service businesses.",
       },
-      { name: "twitter:image", content: "https://www.ethixweb.com/ethixweb.png" },
+      { name: "twitter:image", content: OG_IMAGE },
       { name: "robots", content: "index, follow" },
     ],
-    links: [{ rel: "canonical", href: "https://www.ethixweb.com/marketing" }],
+    links: [{ rel: "canonical", href: siteUrl("/marketing") }],
   }),
   component: Page,
 });
@@ -99,10 +100,10 @@ const SERVICE_SCHEMA = jsonLdStringify({
   "@context": "https://schema.org",
   "@type": "Service",
   name: "Social Media Marketing",
-  provider: { "@type": "Organization", name: "Ethixweb", url: "https://www.ethixweb.com" },
+  provider: { "@type": "Organization", name: "Ethixweb", url: SITE_URL },
   description:
     "Content creation, engagement tracking, paid campaigns and social media strategy for home service businesses.",
-  url: "https://www.ethixweb.com/marketing",
+  url: siteUrl("/marketing"),
   areaServed: { "@type": "Country", name: "United States" },
   serviceType: "Social Media Marketing",
 });

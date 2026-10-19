@@ -18,6 +18,7 @@ import { RotatingText } from "@/components/shared/RotatingText";
 import { WebSpotlight } from "@/components/shared/WebSpotlight";
 import { trackWebSpotlight } from "@/lib/web-spotlight";
 import { ArrowUpRight, Check, Clock, PenLine } from "lucide-react";
+import { LOGO_IMAGE, OG_IMAGE, SITE_URL, siteUrl } from "@/lib/site";
 
 export const Route = createFileRoute("/blog")({
   head: () => ({
@@ -27,18 +28,18 @@ export const Route = createFileRoute("/blog")({
       { property: "og:title", content: "Ethixweb Blog" },
       { property: "og:description", content: "Insights on design, AI and growth." },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://www.ethixweb.com/ethixweb.png" },
-      { property: "og:url", content: "https://www.ethixweb.com/blog" },
+      { property: "og:image", content: OG_IMAGE },
+      { property: "og:url", content: siteUrl("/blog") },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Ethixweb Blog" },
       {
         name: "twitter:description",
         content: "Essays on design, AI and growth from the Ethixweb team.",
       },
-      { name: "twitter:image", content: "https://www.ethixweb.com/ethixweb.png" },
+      { name: "twitter:image", content: OG_IMAGE },
       { name: "robots", content: "index, follow" },
     ],
-    links: [{ rel: "canonical", href: "https://www.ethixweb.com/blog" }],
+    links: [{ rel: "canonical", href: siteUrl("/blog") }],
     scripts: [
       {
         type: "application/ld+json",
@@ -46,13 +47,13 @@ export const Route = createFileRoute("/blog")({
           "@context": "https://schema.org",
           "@type": "Blog",
           name: "Ethixweb Blog",
-          url: "https://www.ethixweb.com/blog",
+          url: siteUrl("/blog"),
           description: "Essays on design, AI and growth from the Ethixweb team.",
           publisher: {
             "@type": "Organization",
             name: "Ethixweb",
-            url: "https://www.ethixweb.com",
-            logo: "https://www.ethixweb.com/ethixweb.png",
+            url: SITE_URL,
+            logo: LOGO_IMAGE,
           },
           inLanguage: "en-US",
         }),

@@ -4,6 +4,7 @@ import { z } from "zod";
 import { guardRequestByToken } from "@/lib/api-guard";
 import { advanceGadsQuestion, loadGadsAssessment } from "@/lib/gads/service";
 import { GADS_TOTAL_QUESTIONS } from "@/lib/gads/types";
+import { gadsAnswerValueSchema, gadsQuestionIndexSchema, gadsTokenSchema } from "@/lib/gads/wire";
 
 // The forced-advance state machine step: commits the answer for
 // `questionIndex` and moves current_index forward by one. Elapsed time and
@@ -12,23 +13,10 @@ import { GADS_TOTAL_QUESTIONS } from "@/lib/gads/types";
 // earlier call, the timer path, or a race) is a 409 the client resyncs
 // from - never an overwrite. See advanceGadsQuestion in gads-service.ts.
 
-const answerValueSchema = z.union([
-  z.number().int().min(0).max(9),
-  z.array(z.number().int().min(0).max(9)).max(6),
-  z.string().max(4000),
-]);
-
 const bodySchema = z.object({
-  token: z
-    .string()
-    .length(64)
-    .regex(/^[0-9a-f]{64}$/),
-  questionIndex: z
-    .number()
-    .int()
-    .min(0)
-    .max(GADS_TOTAL_QUESTIONS - 1),
-  value: answerValueSchema.nullable().optional(),
+  token: gadsTokenSchema,
+  questionIndex: gadsQuestionIndexSchema,
+  value: gadsAnswerValueSchema.nullable().optional(),
 });
 
 export const Route = createFileRoute("/api/gads/advance")({

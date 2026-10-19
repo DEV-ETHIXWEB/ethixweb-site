@@ -135,8 +135,16 @@ function scoreQuestion(
   }
 
   if (q.mechanic === "multiple") {
-    const picked = Array.isArray(value) ? value : null;
-    if (!picked || picked.length === 0) return { earned: 0, max, outcome: "unanswered" };
+    // Score the SET of picked options, not the raw array. A hand-crafted
+    // request can repeat one index ([1,1,1,1,1,1]) or name an option the
+    // question doesn't have; counting those raw let `hits` exceed
+    // correct.size, so `ratio` went above 1 and a 3-point question paid 6.
+    // Deduplicating and dropping out-of-range indices caps ratio at 1, so
+    // `earned` can never exceed `max`.
+    const rawPicked = Array.isArray(value) ? value : null;
+    if (!rawPicked || rawPicked.length === 0) return { earned: 0, max, outcome: "unanswered" };
+    const picked = [...new Set(rawPicked)].filter((i) => i >= 0 && i < q.options.length);
+    if (picked.length === 0) return { earned: 0, max, outcome: "unanswered" };
     const correct = new Set(q.correctAnswers);
     const hits = picked.filter((i) => correct.has(i)).length;
     const misses = picked.length - hits;

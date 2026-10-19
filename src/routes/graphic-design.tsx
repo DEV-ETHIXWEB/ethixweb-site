@@ -7,6 +7,7 @@ import { Container } from "@/components/shared/Container";
 import { GlowBlob } from "@/components/shared/GlowBlob";
 import { WebSpotlight } from "@/components/shared/WebSpotlight";
 import { trackWebSpotlight } from "@/lib/web-spotlight";
+import { OG_IMAGE, SITE_URL, siteUrl } from "@/lib/site";
 import {
   Palette,
   Megaphone,
@@ -35,8 +36,8 @@ export const Route = createFileRoute("/graphic-design")({
       { property: "og:title", content: "Graphic Design & Branding - Ethixweb" },
       { property: "og:description", content: "Create a powerful brand identity that stands out." },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://www.ethixweb.com/ethixweb.png" },
-      { property: "og:url", content: "https://www.ethixweb.com/graphic-design" },
+      { property: "og:image", content: OG_IMAGE },
+      { property: "og:url", content: siteUrl("/graphic-design") },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Graphic Design & Branding - Ethixweb" },
       {
@@ -44,10 +45,10 @@ export const Route = createFileRoute("/graphic-design")({
         content:
           "Logo design, brand identity, marketing collateral, social graphics and UI/UX: bespoke branding that builds trust and drives engagement.",
       },
-      { name: "twitter:image", content: "https://www.ethixweb.com/ethixweb.png" },
+      { name: "twitter:image", content: OG_IMAGE },
       { name: "robots", content: "index, follow" },
     ],
-    links: [{ rel: "canonical", href: "https://www.ethixweb.com/graphic-design" }],
+    links: [{ rel: "canonical", href: siteUrl("/graphic-design") }],
   }),
   component: Page,
 });
@@ -126,10 +127,10 @@ const SERVICE_SCHEMA = jsonLdStringify({
   "@context": "https://schema.org",
   "@type": "Service",
   name: "Graphic Design & Branding",
-  provider: { "@type": "Organization", name: "Ethixweb", url: "https://www.ethixweb.com" },
+  provider: { "@type": "Organization", name: "Ethixweb", url: SITE_URL },
   description:
     "Logo design, brand identity, marketing collateral, social graphics and UI/UX for modern businesses.",
-  url: "https://www.ethixweb.com/graphic-design",
+  url: siteUrl("/graphic-design"),
   areaServed: { "@type": "Country", name: "United States" },
   serviceType: "Graphic Design and Branding",
 });

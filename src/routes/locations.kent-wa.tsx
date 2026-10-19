@@ -2,10 +2,12 @@ import { createFileRoute } from "@tanstack/react-router";
 import { jsonLdStringify } from "@/lib/json-ld";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { PageHero } from "@/components/shared/PageHero";
+import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
 import { Reveal } from "@/components/shared/Reveal";
 import { Container } from "@/components/shared/Container";
 import { CardGrid } from "@/components/shared/CardGrid";
 import { CTASection } from "@/components/shared/CTASection";
+import { LOGO_IMAGE, OG_IMAGE, SITE_URL, siteUrl } from "@/lib/site";
 import {
   Check,
   MapPin,
@@ -33,42 +35,19 @@ export const Route = createFileRoute("/locations/kent-wa")({
           "Modern, mobile friendly websites that help Kent WA businesses attract more customers.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://www.ethixweb.com/ethixweb.png" },
-      { property: "og:url", content: "https://www.ethixweb.com/locations/kent-wa" },
+      { property: "og:image", content: OG_IMAGE },
+      { property: "og:url", content: siteUrl("/locations/kent-wa") },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Web Design Services in Kent, WA - Ethixweb" },
       {
         name: "twitter:description",
         content: "Professional web design, SEO and digital marketing for Kent WA businesses.",
       },
-      { name: "twitter:image", content: "https://www.ethixweb.com/ethixweb.png" },
+      { name: "twitter:image", content: OG_IMAGE },
       { name: "robots", content: "index, follow" },
     ],
-    links: [{ rel: "canonical", href: "https://www.ethixweb.com/locations/kent-wa" }],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: jsonLdStringify({
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          itemListElement: [
-            { "@type": "ListItem", position: 1, name: "Home", item: "https://www.ethixweb.com/" },
-            {
-              "@type": "ListItem",
-              position: 2,
-              name: "Locations",
-              item: "https://www.ethixweb.com/locations",
-            },
-            {
-              "@type": "ListItem",
-              position: 3,
-              name: "Kent, WA",
-              item: "https://www.ethixweb.com/locations/kent-wa",
-            },
-          ],
-        }),
-      },
-    ],
+    links: [{ rel: "canonical", href: siteUrl("/locations/kent-wa") }],
+    scripts: [],
   }),
   component: Page,
 });
@@ -125,12 +104,12 @@ const LOCAL_BUSINESS_SCHEMA = jsonLdStringify({
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   name: "Ethixweb",
-  url: "https://www.ethixweb.com",
-  logo: "https://www.ethixweb.com/ethixweb.png",
-  image: "https://www.ethixweb.com/ethixweb.png",
+  url: SITE_URL,
+  logo: LOGO_IMAGE,
+  image: LOGO_IMAGE,
   description:
     "Professional web design, SEO and digital marketing for Kent WA home service businesses, restaurants, contractors and local shops.",
-  email: "akash@ethixweb.com",
+  email: "info@ethixweb.com",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Kent",
@@ -168,6 +147,9 @@ function Page() {
         Modern, mobile friendly websites that help Kent WA businesses attract more customers and
         grow faster.
       </PageHero>
+      <Container>
+        <Breadcrumbs items={[{ label: "Kent, WA" }]} />
+      </Container>
 
       <section className="py-16">
         <Container className="glass-strong rounded-[2rem] p-8 sm:p-10 lg:p-14">

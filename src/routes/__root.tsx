@@ -11,6 +11,7 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import { LOGO_IMAGE, OG_IMAGE, SITE_URL } from "@/lib/site";
 
 function NotFoundComponent() {
   return (
@@ -147,13 +148,13 @@ export const Route = createRootRoute({
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Ethixweb" },
       { property: "og:locale", content: "en_US" },
-      { property: "og:image", content: "https://www.ethixweb.com/ethixweb.png" },
+      { property: "og:image", content: OG_IMAGE },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
       { property: "og:image:alt", content: "Ethixweb - Premium Technology Partner" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@ethixweb" },
-      { name: "twitter:image", content: "https://www.ethixweb.com/ethixweb.png" },
+      { name: "twitter:image", content: OG_IMAGE },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -191,11 +192,11 @@ const SCHEMA_ORG_ORGANIZATION = jsonLdStringify({
   "@context": "https://schema.org",
   "@type": "Organization",
   name: "Ethixweb",
-  url: "https://www.ethixweb.com",
-  logo: "https://www.ethixweb.com/ethixweb.png",
+  url: SITE_URL,
+  logo: LOGO_IMAGE,
   description:
     "Digital operations, AI automation, websites, software, CRM integrations, SEO, ads, and fast support for US focused teams.",
-  email: "akash@ethixweb.com",
+  email: "info@ethixweb.com",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Kent",
@@ -208,7 +209,7 @@ const SCHEMA_ORG_WEBSITE = jsonLdStringify({
   "@context": "https://schema.org",
   "@type": "WebSite",
   name: "Ethixweb",
-  url: "https://www.ethixweb.com",
+  url: SITE_URL,
   description: "Premium technology partner for US home service businesses.",
 });
 
@@ -225,24 +226,41 @@ function RootShell({ children }: { children: ReactNode }) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: SCHEMA_ORG_WEBSITE }}
         />
-        {/* [data-reveal] elements (~200/page) start at opacity:0 in pure CSS,
-            before any JS runs, and only become visible once React hydrates
-            and Reveal's IntersectionObserver fires - or its own 1.4s
-            fallback timer, which itself only starts counting once React has
-            hydrated far enough to run that component's useEffect. On a slow
-            or heavily throttled device, the entire page can sit blank for
-            however long the framework bundle takes to download, parse, and
-            hydrate, with nothing to catch it. This second, independent
-            fallback runs from a tiny inline script in <head> - parsed and
-            executed before the framework bundle is even requested, with no
-            dependency on React ever mounting - as a hard ceiling on how
-            long the page can stay blank regardless of how slow or stuck JS
-            hydration is. Harmless no-op once the framework's own path wins
-            first, since adding the class twice is idempotent. */}
+        {/* Applies the stored theme before first paint. The server has to
+            render a fixed class on <html> (there is no request-time signal
+            for a preference kept in localStorage), so without this a visitor
+            who chose light mode saw a full dark page on every single
+            navigation until hydration swapped it. Runs synchronously in
+            <head>, ahead of any body content, so the correct theme is what
+            actually gets painted. ThemeProvider reads the same key and
+            starts from whatever this set, so the first React render agrees
+            with the DOM. */}
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "setTimeout(function(){document.documentElement.classList.add('reveal-fallback')},2000)",
+              "(function(){try{var t=localStorage.getItem('ethix-theme');" +
+              "if(t==='light'||t==='dark'){var r=document.documentElement;" +
+              "r.classList.remove('dark','light');r.classList.add(t);}}catch(e){}})()",
+          }}
+        />
+        {/* [data-reveal] elements (~200/page) start at opacity:0 in pure CSS,
+            before any JS runs, and only become visible once React hydrates
+            and Reveal's IntersectionObserver fires. On a slow or heavily
+            throttled device the page can sit blank for however long the
+            framework bundle takes to download, parse and hydrate, with
+            nothing to catch it. This independent fallback is parsed and
+            executed before the framework bundle is even requested.
+            It only fires if hydration never got far enough to mark the
+            document ready - Reveal sets data-reveal-ready as soon as its
+            observer is running, and an observer that is running does not
+            need rescuing. Previously this fired unconditionally, which
+            forced every element on the page visible two seconds after load
+            and silently disabled the scroll reveal it was meant to protect. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "setTimeout(function(){var r=document.documentElement;" +
+              "if(!r.hasAttribute('data-reveal-ready'))r.classList.add('reveal-fallback')},2000)",
           }}
         />
       </head>

@@ -15,6 +15,7 @@ import { Turnstile } from "@/components/shared/Turnstile";
 import { trackWebSpotlight } from "@/lib/web-spotlight";
 import { JOBS, getJob } from "@/lib/careers-data";
 import { formLabelClass, formInputClass } from "@/lib/form-styles";
+import { siteUrl } from "@/lib/site";
 import {
   Mail,
   MapPin,
@@ -75,7 +76,7 @@ export const Route = createFileRoute("/careers/apply")({
       { name: "description", content: "Apply for an open role at Ethixweb in a few quick steps." },
       { name: "robots", content: "noindex, follow" },
     ],
-    links: [{ rel: "canonical", href: "https://www.ethixweb.com/careers/apply" }],
+    links: [{ rel: "canonical", href: siteUrl("/careers/apply") }],
   }),
   component: ApplyPage,
 });

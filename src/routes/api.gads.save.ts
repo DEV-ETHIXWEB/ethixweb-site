@@ -9,7 +9,8 @@ import {
   GADS_MAX_VIOLATIONS,
   loadGadsAssessment,
 } from "@/lib/gads/service";
-import { GADS_TOTAL_QUESTIONS, type GadsAssessmentRow } from "@/lib/gads/types";
+import { type GadsAssessmentRow } from "@/lib/gads/types";
+import { gadsAnswerValueSchema, gadsQuestionIndexSchema, gadsTokenSchema } from "@/lib/gads/wire";
 
 // Batched, debounced flush - the client accumulates violations/mic-activity
 // in its own state (same convention as useExamGuard) and piggybacks the
@@ -18,12 +19,6 @@ import { GADS_TOTAL_QUESTIONS, type GadsAssessmentRow } from "@/lib/gads/types";
 // `forQuestionIndex` still matches the server's current_index - a stale
 // save arriving after an advance already moved the server on is silently
 // ignored rather than mis-attributed to the new question.
-
-const draftValueSchema = z.union([
-  z.number().int().min(0).max(9),
-  z.array(z.number().int().min(0).max(9)).max(6),
-  z.string().max(4000),
-]);
 
 const violationSchema = z.object({
   type: z.enum([
@@ -55,6 +50,17 @@ const micSampleSchema = z.object({
   active: z.boolean(),
 });
 
+/** Identity of a recorded event, used to merge a re-sent batch without
+ * duplicating it. The client clock supplies `at`, which is good enough to
+ * tell two events apart - it only has to be stable across re-sends. */
+function violationKey(v: { type: string; at: string; detail?: string }): string {
+  return `${v.type}|${v.at}|${v.detail ?? ""}`;
+}
+
+function micSampleKey(s: { at: string; level: number; active: boolean }): string {
+  return `${s.at}|${s.level}|${s.active}`;
+}
+
 const SNAPSHOT_URL_RE =
   /^https:\/\/[a-z0-9-]+\.public\.blob\.vercel-storage\.com\/gads-snapshots\//i;
 const RECORDING_URL_RE =
@@ -62,17 +68,9 @@ const RECORDING_URL_RE =
 const MAX_RECORDINGS = 5;
 
 const bodySchema = z.object({
-  token: z
-    .string()
-    .length(64)
-    .regex(/^[0-9a-f]{64}$/),
-  forQuestionIndex: z
-    .number()
-    .int()
-    .min(0)
-    .max(GADS_TOTAL_QUESTIONS - 1)
-    .optional(),
-  draftAnswer: draftValueSchema.nullable().optional(),
+  token: gadsTokenSchema,
+  forQuestionIndex: gadsQuestionIndexSchema.optional(),
+  draftAnswer: gadsAnswerValueSchema.nullable().optional(),
   violations: z.array(violationSchema).max(GADS_MAX_VIOLATIONS).optional(),
   micActivity: z.array(micSampleSchema).max(GADS_MAX_MIC_SAMPLES).optional(),
   cameraSnapshotUrl: z.string().url().regex(SNAPSHOT_URL_RE).optional(),
@@ -118,11 +116,32 @@ export const Route = createFileRoute("/api/gads/save")({
         if (body.forQuestionIndex !== undefined && body.forQuestionIndex === row.current_index) {
           update.draft_answer = body.draftAnswer ?? null;
         }
+        // Proctoring evidence is append-only. Both fields used to be assigned
+        // straight from the request, which broke in two different ways:
+        //
+        //  - violations: the client sends its whole cumulative list, so a
+        //    request carrying `[]` overwrote every violation already on the
+        //    row. A candidate could clear their own proctoring record.
+        //  - mic_activity: the client DRAINS its buffer (drainMicSamples), so
+        //    it sends only new samples - and replacing meant the row never
+        //    held more than the last batch. The history was being discarded.
+        //
+        // Merging keyed on identity fixes both: a cumulative re-send can't
+        // duplicate, an incremental batch accumulates, and nothing a client
+        // sends can shrink what is already recorded.
         if (body.violations !== undefined) {
-          update.violations = body.violations.slice(-GADS_MAX_VIOLATIONS);
+          const seen = new Set(row.violations.map(violationKey));
+          const added = body.violations.filter((v) => !seen.has(violationKey(v)));
+          if (added.length > 0) {
+            update.violations = [...row.violations, ...added].slice(-GADS_MAX_VIOLATIONS);
+          }
         }
-        if (body.micActivity !== undefined) {
-          update.mic_activity = body.micActivity.slice(-GADS_MAX_MIC_SAMPLES);
+        if (body.micActivity !== undefined && body.micActivity.length > 0) {
+          const seen = new Set(row.mic_activity.map(micSampleKey));
+          const added = body.micActivity.filter((s) => !seen.has(micSampleKey(s)));
+          if (added.length > 0) {
+            update.mic_activity = [...row.mic_activity, ...added].slice(-GADS_MAX_MIC_SAMPLES);
+          }
         }
         if (
           body.cameraSnapshotUrl &&

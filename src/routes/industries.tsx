@@ -9,6 +9,7 @@ import { MarqueeBand } from "@/components/shared/MarqueeBand";
 import { EditorialHeader } from "@/components/shared/EditorialHeader";
 import { WebSpotlight } from "@/components/shared/WebSpotlight";
 import { trackWebSpotlight } from "@/lib/web-spotlight";
+import { OG_IMAGE, SITE_URL, siteUrl } from "@/lib/site";
 import {
   Wrench,
   Anchor,
@@ -36,8 +37,8 @@ export const Route = createFileRoute("/industries")({
         content: "Industry specific websites, AI booking and CRM management.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://www.ethixweb.com/ethixweb.png" },
-      { property: "og:url", content: "https://www.ethixweb.com/industries" },
+      { property: "og:image", content: OG_IMAGE },
+      { property: "og:url", content: siteUrl("/industries") },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Industries - HVAC, Plumbing & Fishing" },
       {
@@ -45,10 +46,10 @@ export const Route = createFileRoute("/industries")({
         content:
           "Specialized tech and marketing systems for HVAC, plumbing and fishing charter operators.",
       },
-      { name: "twitter:image", content: "https://www.ethixweb.com/ethixweb.png" },
+      { name: "twitter:image", content: OG_IMAGE },
       { name: "robots", content: "index, follow" },
     ],
-    links: [{ rel: "canonical", href: "https://www.ethixweb.com/industries" }],
+    links: [{ rel: "canonical", href: siteUrl("/industries") }],
   }),
   component: Industries,
 });
@@ -113,10 +114,10 @@ const INDUSTRIES_SCHEMA = jsonLdStringify({
   "@context": "https://schema.org",
   "@type": "Service",
   name: "Industry-Specific Technology Systems",
-  provider: { "@type": "Organization", name: "Ethixweb", url: "https://www.ethixweb.com" },
+  provider: { "@type": "Organization", name: "Ethixweb", url: SITE_URL },
   description:
     "Specialized tech and marketing systems for HVAC, plumbing and fishing charter operators.",
-  url: "https://www.ethixweb.com/industries",
+  url: siteUrl("/industries"),
   areaServed: { "@type": "Country", name: "United States" },
   serviceType: "Industry-Specific Digital Operations",
 });
