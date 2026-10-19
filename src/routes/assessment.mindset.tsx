@@ -20,7 +20,7 @@ import type { MindsetAnswerValue, MindsetCandidateQuestion } from "@/lib/mindset
 export const Route = createFileRoute("/assessment/mindset")({
   head: () => ({
     meta: [
-      { title: "Mindset & Fit Assessment - EthixWeb" },
+      { title: "Mindset & Fit Assessment - Ethixweb" },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -163,7 +163,7 @@ function MindsetAssessmentPage() {
     return (
       <StatusScreen eyebrow="Submitted" title="Your exam is in" tone="success">
         <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
-          Your answers are recorded and with the EthixWeb hiring team. A confirmation is on its way
+          Your answers are recorded and with the Ethixweb hiring team. A confirmation is on its way
           to your email. You can close this window now.
         </p>
       </StatusScreen>

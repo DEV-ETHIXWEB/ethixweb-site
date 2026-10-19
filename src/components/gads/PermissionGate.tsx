@@ -61,7 +61,7 @@ export function PermissionGate({ media, onReady }: PermissionGateProps) {
           </p>
           <p className="mt-3 text-sm text-muted-foreground">
             Your camera and microphone are recorded for the duration of the assessment, reviewed
-            only by the EthixWeb hiring team. The exam cannot begin without both permissions
+            only by the Ethixweb hiring team. The exam cannot begin without both permissions
             granted.
           </p>
 

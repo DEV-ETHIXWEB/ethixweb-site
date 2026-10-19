@@ -53,7 +53,7 @@ export const Route = createFileRoute("/api/gads/begin")({
             {
               ok: false,
               error:
-                "This assessment link has expired. Please contact EthixWeb if you believe this is an error.",
+                "This assessment link has expired. Please contact Ethixweb if you believe this is an error.",
               status: "expired",
             },
             { status: 410 },

@@ -42,13 +42,13 @@ export async function sendMindsetCandidateConfirmation(
 
   const bodyHtml = `
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;color:#1a1a1a;">Hi ${escapeHtml(row.candidate_name)},</p>
-    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;color:#1a1a1a;">Thank you for taking the time to complete the EthixWeb screening assessment. We appreciate your interest in joining our team.</p>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;color:#1a1a1a;">Thank you for taking the time to complete the Ethixweb screening assessment. We appreciate your interest in joining our team.</p>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;color:#1a1a1a;">Your responses have been successfully submitted and are currently under review by our hiring team.</p>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;color:#1a1a1a;">If your submission meets the requirements for the next stage of our recruitment process, we will contact you with further details.</p>
     <p style="margin:0 0 14px;font-size:15px;line-height:1.6;color:#1a1a1a;">Thank you again for your time and effort.</p>
     <p style="margin:0;font-size:15px;line-height:1.6;color:#1a1a1a;">
       Kind regards,<br />
-      EthixWeb Hiring Team
+      Ethixweb Hiring Team
     </p>`;
 
   const resend = new Resend(apiKey);
@@ -56,10 +56,10 @@ export async function sendMindsetCandidateConfirmation(
     const { error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: row.candidate_email,
-      subject: "Assessment Submitted Successfully - EthixWeb",
+      subject: "Assessment Submitted Successfully - Ethixweb",
       html: emailShell({
         eyebrow: "Mindset & Fit Assessment",
-        footerText: "This is an automated confirmation from EthixWeb's recruitment platform.",
+        footerText: "This is an automated confirmation from Ethixweb's recruitment platform.",
         bodyHtml,
       }),
     });
@@ -179,7 +179,7 @@ export async function sendMindsetRecruiterReport(
       subject: `Mindset Assessment - ${row.candidate_name} (${scores.overallPercent}% fit score)`,
       html: emailShell({
         eyebrow: "Mindset & Fit Assessment - Recruiter Report",
-        footerText: "This is an automated recruiter report from EthixWeb's recruitment platform.",
+        footerText: "This is an automated recruiter report from Ethixweb's recruitment platform.",
         bodyHtml,
       }),
       ...(pdfBuffer

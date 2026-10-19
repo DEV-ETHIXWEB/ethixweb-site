@@ -409,7 +409,7 @@ export function ExamRunner({
       <header className="flex h-16 shrink-0 items-center justify-between gap-3 border-b border-border bg-card/60 px-4 backdrop-blur sm:px-6">
         <div className="min-w-0">
           <p className="truncate text-xs font-bold uppercase tracking-widest text-muted-foreground">
-            EthixWeb Assessment
+            Ethixweb Assessment
           </p>
           <p className="truncate text-sm font-semibold">Google Ads Assessment</p>
         </div>

@@ -17,7 +17,7 @@ import type { GadsAnswerMap, GadsAnswerValue, GadsCandidateQuestion } from "@/li
 
 export const Route = createFileRoute("/assessment/google-ads/$token")({
   head: () => ({
-    meta: [{ title: "Google Ads Assessment - EthixWeb" }, { name: "robots", content: "noindex" }],
+    meta: [{ title: "Google Ads Assessment - Ethixweb" }, { name: "robots", content: "noindex" }],
   }),
   component: GadsAssessmentPage,
 });
@@ -147,7 +147,7 @@ function GadsAssessmentPage() {
         <ShieldAlert className="h-8 w-8 text-muted-foreground" />
         <h1 className="mt-4 font-display text-xl font-bold">Link expired</h1>
         <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-          This assessment link has expired. Please contact EthixWeb if you believe this is an error.
+          This assessment link has expired. Please contact Ethixweb if you believe this is an error.
         </p>
       </CenteredMessage>
     );
@@ -160,7 +160,7 @@ function GadsAssessmentPage() {
         <h1 className="mt-4 font-display text-xl font-bold">Reopen limit reached</h1>
         <p className="mt-2 max-w-sm text-sm text-muted-foreground">
           This assessment has already been reopened the maximum number of times, so it cannot be
-          opened again. Everything you answered has been saved. Please contact EthixWeb if you were
+          opened again. Everything you answered has been saved. Please contact Ethixweb if you were
           cut off by a problem on our side and we will take a look.
         </p>
       </CenteredMessage>
@@ -173,7 +173,7 @@ function GadsAssessmentPage() {
         <ShieldAlert className="h-8 w-8 text-error-text" />
         <h1 className="mt-4 font-display text-xl font-bold">Something went wrong</h1>
         <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-          Please refresh this page. If the problem continues, contact EthixWeb.
+          Please refresh this page. If the problem continues, contact Ethixweb.
         </p>
       </CenteredMessage>
     );
