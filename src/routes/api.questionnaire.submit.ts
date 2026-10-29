@@ -3,7 +3,7 @@ import type {} from "@tanstack/react-start";
 import { z } from "zod";
 import { guardRequestByToken } from "@/lib/api-guard";
 import { hashInviteToken } from "@/lib/questionnaire/service";
-import { sendSubmissionEmail } from "@/lib/questionnaire/email";
+import { sendCandidateThankYou, sendSubmissionEmail } from "@/lib/questionnaire/email";
 import { FORM_VERSION } from "@/lib/questionnaire/questions";
 import { getQuestionnaireStore } from "@/lib/questionnaire/store";
 import { TOKEN_SCHEMA, validateSubmission } from "@/lib/questionnaire/types";
@@ -19,7 +19,8 @@ import { TOKEN_SCHEMA, validateSubmission } from "@/lib/questionnaire/types";
 // Once saved, the full submission is emailed to the hiring inbox
 // (QUESTIONNAIRE_REPORT_EMAIL, default info@ethixweb.com). The email is a
 // copy, not the record: if it fails, the submission still stands and the
-// failure lands in the audit trail.
+// failure lands in the audit trail. The candidate gets a thank-you email at
+// the same time, logged the same way.
 
 const bodySchema = z.object({ token: TOKEN_SCHEMA, answers: z.unknown() });
 
@@ -80,10 +81,19 @@ export const Route = createFileRoute("/api/questionnaire/submit")({
           const store = getQuestionnaireStore();
           const row = await store.findByTokenHash(hashInviteToken(parsed.data.token));
           if (row) {
-            const sent = await sendSubmissionEmail(row, checked.answers);
+            const [sent, thanked] = await Promise.all([
+              sendSubmissionEmail(row, checked.answers),
+              sendCandidateThankYou(row),
+            ]);
             await store.logEvent({
               candidate_id: row.id,
               action: sent ? "email_sent" : "email_failed",
+              actor: "system",
+              detail: null,
+            });
+            await store.logEvent({
+              candidate_id: row.id,
+              action: thanked ? "thank_you_sent" : "thank_you_failed",
               actor: "system",
               detail: null,
             });

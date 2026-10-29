@@ -1,10 +1,13 @@
 import { Resend } from "resend";
-import { FROM_EMAIL, emailRow, emailShell, escapeHtml } from "@/lib/email";
+import { FROM_EMAIL, REPLY_TO_INFO, emailRow, emailShell, escapeHtml } from "@/lib/email";
 import { QUESTIONS, SECTIONS, isAsked } from "./questions";
 import { readableAnswer } from "./service";
 import type { AnswerMap, QuestionnaireCandidateRow } from "./types";
 
-// Emails every accepted submission, in full, to the hiring inbox. The
+// Two emails per accepted submission: the full answers to the hiring inbox,
+// and a short thank-you to the candidate.
+//
+// The hiring copy goes, in full, to the hiring inbox. The
 // database row is the record of truth; this is the copy people actually
 // read. A failed send never undoes or blocks the submission. It's written
 // to the audit trail instead, so the admin dashboard shows which candidates'
@@ -82,6 +85,56 @@ export async function sendSubmissionEmail(
     return true;
   } catch (err) {
     console.error("[questionnaire-email] Resend threw:", err);
+    return false;
+  }
+}
+
+/** The candidate's copy: a short thank-you and what happens next. Their
+ * answers aren't repeated back, since the hiring team's email is the record
+ * and a reply thread should start from a clean message. */
+export async function sendCandidateThankYou(row: QuestionnaireCandidateRow): Promise<boolean> {
+  const apiKey = process.env.RESEND_API_KEY;
+  const to = row.candidate_email ?? row.invited_email;
+  if (!apiKey) {
+    console.warn("[questionnaire-email] RESEND_API_KEY is not set; thank-you email skipped");
+    return false;
+  }
+
+  const firstName = (row.candidate_name ?? row.invited_name).split(/\s+/)[0] ?? "";
+  const bodyHtml = `
+    <h2 style="margin:0 0 14px;font-size:20px;color:#1a1a1a;">Thank you${firstName ? `, ${escapeHtml(firstName)}` : ""}!</h2>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;color:#3c4043;">
+      Thanks for taking the time to fill in our candidate questionnaire. Your answers have been
+      submitted successfully and have reached our hiring team.
+    </p>
+    <p style="margin:0 0 14px;font-size:15px;line-height:1.6;color:#3c4043;">
+      We'll review them and get back to you about the next steps. If you have any questions in the
+      meantime, just reply to this email.
+    </p>
+    <p style="margin:24px 0 0;font-size:15px;line-height:1.6;color:#3c4043;">
+      Best regards,<br />The Ethixweb Hiring Team
+    </p>`;
+
+  try {
+    const { error } = await new Resend(apiKey).emails.send({
+      from: FROM_EMAIL,
+      to,
+      replyTo: REPLY_TO_INFO,
+      subject: "Thank you for completing the Ethixweb questionnaire",
+      html: emailShell({
+        eyebrow: "Candidate Questionnaire",
+        footerText:
+          "You're receiving this because you submitted Ethixweb's candidate questionnaire.",
+        bodyHtml,
+      }),
+    });
+    if (error) {
+      console.error("[questionnaire-email] thank-you Resend error:", error);
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error("[questionnaire-email] thank-you Resend threw:", err);
     return false;
   }
 }
