@@ -75,6 +75,8 @@ const PAGES = [
 const EXCLUDED = {
   "__root.tsx": "app shell, not a page",
   "admin.assessments.tsx": "internal recruiter tool, password gated, noindex",
+  "admin.questionnaire.tsx": "internal recruiter tool, password gated, noindex",
+  "questionnaire.tsx": "private per-candidate invitation link, noindex",
   "our-work.$slug.tsx": "expanded per case study below",
   "careers.tsx": "redirects to /not-hiring while hiring is paused",
   "careers.index.tsx": "behind the /careers redirect",

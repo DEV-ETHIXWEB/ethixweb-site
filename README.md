@@ -73,6 +73,18 @@ Defined in `.env` (never committed — see `.env.example` for the template):
 - `VITE_SITE_URL` — production domain, used for sitemap/canonical URLs/email templates
 - `BLOB_READ_WRITE_TOKEN` — Vercel Blob storage, used for careers/resume uploads
 
+## Candidate Questionnaire ("Let's Get to Know You")
+
+A 15-question candidate questionnaire (10 about the person, then the working terms and 5 about fit), sent as one private link per candidate.
+
+- **Candidate page:** `/questionnaire#<token>`. The token sits in the URL fragment, so it never reaches server logs or Referer headers.
+- **Admin:** `/admin/questionnaire`, signed in with `GADS_ADMIN_PASSWORD`. Create an invitation (name + email), copy the link (it is shown once; use "New link" to issue a replacement, which kills the old one), revoke or expire unused links, read answers, reopen a submission for correction (with a reason, kept in the audit trail), resend the email, and export CSV.
+- **Flow:** landing → candidate details (name, phone, email, college, optional LinkedIn; the email must match the invitation) → questions 1–10 → working terms → questions 11–15 → review → submit. Progress is saved to the server on every step, so a refresh or a different device resumes in place.
+- **One submission per candidate** is enforced in Postgres, not the browser: a partial unique index allows one live invitation per normalized email, another allows one live response per invitation, and `submit_questionnaire()` locks the row, inserts the response and marks it submitted in a single transaction. A failed insert leaves the invitation unused.
+- **Email:** every accepted submission is emailed in full to `QUESTIONNAIRE_REPORT_EMAIL` (default `info@ethixweb.com`) via Resend. A failed send never blocks the submission; it shows as `email failed` in the audit trail and can be resent from the dashboard.
+- **Setup:** run `supabase/migrations/0011_candidate_questionnaire.sql`, then set `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY` and `GADS_ADMIN_PASSWORD` (and optionally `QUESTIONNAIRE_REPORT_EMAIL`) in Vercel. Locally, without Supabase, it runs on an in-memory store that resets on restart; it refuses to do that on a Vercel deployment.
+- **Content:** questions and option text live in `src/lib/questionnaire/questions.ts`; the working-terms cards are in `src/components/questionnaire/WorkTerms.tsx`.
+
 ## Deployment Notes
 
 - Hosted on **Vercel**, auto-deploys from the `main` branch.

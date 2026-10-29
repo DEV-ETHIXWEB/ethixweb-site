@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { z } from "zod";
-import { createHash, timingSafeEqual } from "node:crypto";
 import { clientIp } from "@/lib/rate-limit";
 import { guardRequest } from "@/lib/api-guard";
+import { adminPasswordMatches, isAdminConfigured } from "@/lib/admin-auth";
 import { adminResetGadsRow } from "@/lib/gads/service";
 import { getGadsStore } from "@/lib/gads/store";
 import { GADS_MAX_RESUMES, GADS_TOTAL_QUESTIONS } from "@/lib/gads/types";
@@ -20,10 +20,11 @@ import { MINDSET_TOTAL_QUESTIONS } from "@/lib/mindset/types";
 // kept exactly as it is, it just stops counting as a prior attempt, and the
 // candidate registers again at /assessment/mindset.
 //
-// The password lives in GADS_ADMIN_PASSWORD and is compared only here. It is
-// never a constant in the repo and never reaches the browser. With the
-// variable unset every request is refused rather than falling back to a
-// default, so a misconfigured deploy cannot leave this open.
+// The password lives in GADS_ADMIN_PASSWORD and is compared only on the
+// server (src/lib/admin-auth.ts). It is never a constant in the repo and never
+// reaches the browser. With the variable unset every request is refused rather
+// than falling back to a default, so a misconfigured deploy cannot leave this
+// open.
 
 const MAX_ROWS = 300;
 
@@ -33,19 +34,6 @@ const bodySchema = z.object({
   /** Required by reset (gads) and void (mindset). */
   id: z.string().uuid().optional(),
 });
-
-function passwordMatches(supplied: string): boolean {
-  const expected = process.env.GADS_ADMIN_PASSWORD;
-  if (!expected) return false;
-  // Compare fixed-width digests rather than the raw strings. timingSafeEqual
-  // needs equal lengths, so the usual `a.length !== b.length` guard in front
-  // of it answers "is the password N characters long?" before any comparison
-  // happens. Hashing first makes both sides 32 bytes whatever was supplied,
-  // so length tells an attacker nothing.
-  const a = createHash("sha256").update(supplied).digest();
-  const b = createHash("sha256").update(expected).digest();
-  return timingSafeEqual(a, b);
-}
 
 export const Route = createFileRoute("/api/admin/assessments")({
   server: {
@@ -71,14 +59,14 @@ export const Route = createFileRoute("/api/admin/assessments")({
         }
         const { password, action, id } = parsed.data;
 
-        if (!process.env.GADS_ADMIN_PASSWORD) {
+        if (!isAdminConfigured()) {
           console.error("[api/admin/assessments] GADS_ADMIN_PASSWORD is not configured");
           return Response.json(
             { ok: false, error: "Admin access is not configured on this environment." },
             { status: 503 },
           );
         }
-        if (!passwordMatches(password)) {
+        if (!adminPasswordMatches(password)) {
           // Only successful resets and voids were ever logged, so a run of
           // failed guesses against this endpoint left no trace at all -
           // nothing to notice, and nothing to go back to afterwards. The

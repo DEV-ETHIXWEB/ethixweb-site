@@ -24,9 +24,11 @@ import { Route as IndustriesRouteImport } from './routes/industries'
 import { Route as MarketingRouteImport } from './routes/marketing'
 import { Route as NotHiringRouteImport } from './routes/not-hiring'
 import { Route as OurWorkRouteImport } from './routes/our-work'
+import { Route as QuestionnaireRouteImport } from './routes/questionnaire'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as WebDevelopmentRouteImport } from './routes/web-development'
 import { Route as AdminAssessmentsRouteImport } from './routes/admin.assessments'
+import { Route as AdminQuestionnaireRouteImport } from './routes/admin.questionnaire'
 import { Route as ApiContactRouteImport } from './routes/api.contact'
 import { Route as AssessmentMindsetRouteImport } from './routes/assessment.mindset'
 import { Route as CareersIndexRouteImport } from './routes/careers.index'
@@ -42,6 +44,7 @@ import { Route as PoliciesRefundsRouteImport } from './routes/policies.refunds'
 import { Route as PoliciesTermsRouteImport } from './routes/policies.terms'
 import { Route as QrSlugRouteImport } from './routes/qr.$slug'
 import { Route as ApiAdminAssessmentsRouteImport } from './routes/api.admin.assessments'
+import { Route as ApiAdminQuestionnaireRouteImport } from './routes/api.admin.questionnaire'
 import { Route as ApiAssessmentRecordingUploadRouteImport } from './routes/api.assessment.recording-upload'
 import { Route as ApiAssessmentSaveRouteImport } from './routes/api.assessment.save'
 import { Route as ApiAssessmentStartRouteImport } from './routes/api.assessment.start'
@@ -66,6 +69,10 @@ import { Route as ApiMindsetBeginRouteImport } from './routes/api.mindset.begin'
 import { Route as ApiMindsetSaveRouteImport } from './routes/api.mindset.save'
 import { Route as ApiMindsetStateRouteImport } from './routes/api.mindset.state'
 import { Route as ApiMindsetSubmitRouteImport } from './routes/api.mindset.submit'
+import { Route as ApiQuestionnaireProfileRouteImport } from './routes/api.questionnaire.profile'
+import { Route as ApiQuestionnaireSaveRouteImport } from './routes/api.questionnaire.save'
+import { Route as ApiQuestionnaireStateRouteImport } from './routes/api.questionnaire.state'
+import { Route as ApiQuestionnaireSubmitRouteImport } from './routes/api.questionnaire.submit'
 import { Route as ApiScreeningDecisionRouteImport } from './routes/api.screening.decision'
 import { Route as ApiScreeningStartRouteImport } from './routes/api.screening.start'
 import { Route as ApiScreeningSubmitRouteImport } from './routes/api.screening.submit'
@@ -147,6 +154,11 @@ const OurWorkRoute = OurWorkRouteImport.update({
   path: '/our-work',
   getParentRoute: () => rootRouteImport,
 } as any)
+const QuestionnaireRoute = QuestionnaireRouteImport.update({
+  id: '/questionnaire',
+  path: '/questionnaire',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
@@ -160,6 +172,11 @@ const WebDevelopmentRoute = WebDevelopmentRouteImport.update({
 const AdminAssessmentsRoute = AdminAssessmentsRouteImport.update({
   id: '/admin/assessments',
   path: '/admin/assessments',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminQuestionnaireRoute = AdminQuestionnaireRouteImport.update({
+  id: '/admin/questionnaire',
+  path: '/admin/questionnaire',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiContactRoute = ApiContactRouteImport.update({
@@ -235,6 +252,11 @@ const QrSlugRoute = QrSlugRouteImport.update({
 const ApiAdminAssessmentsRoute = ApiAdminAssessmentsRouteImport.update({
   id: '/api/admin/assessments',
   path: '/api/admin/assessments',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminQuestionnaireRoute = ApiAdminQuestionnaireRouteImport.update({
+  id: '/api/admin/questionnaire',
+  path: '/api/admin/questionnaire',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAssessmentRecordingUploadRoute =
@@ -361,6 +383,26 @@ const ApiMindsetSubmitRoute = ApiMindsetSubmitRouteImport.update({
   path: '/api/mindset/submit',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiQuestionnaireProfileRoute = ApiQuestionnaireProfileRouteImport.update({
+  id: '/api/questionnaire/profile',
+  path: '/api/questionnaire/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiQuestionnaireSaveRoute = ApiQuestionnaireSaveRouteImport.update({
+  id: '/api/questionnaire/save',
+  path: '/api/questionnaire/save',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiQuestionnaireStateRoute = ApiQuestionnaireStateRouteImport.update({
+  id: '/api/questionnaire/state',
+  path: '/api/questionnaire/state',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiQuestionnaireSubmitRoute = ApiQuestionnaireSubmitRouteImport.update({
+  id: '/api/questionnaire/submit',
+  path: '/api/questionnaire/submit',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiScreeningDecisionRoute = ApiScreeningDecisionRouteImport.update({
   id: '/api/screening/decision',
   path: '/api/screening/decision',
@@ -405,9 +447,11 @@ export interface FileRoutesByFullPath {
   '/marketing': typeof MarketingRoute
   '/not-hiring': typeof NotHiringRoute
   '/our-work': typeof OurWorkRouteWithChildren
+  '/questionnaire': typeof QuestionnaireRoute
   '/services': typeof ServicesRoute
   '/web-development': typeof WebDevelopmentRoute
   '/admin/assessments': typeof AdminAssessmentsRoute
+  '/admin/questionnaire': typeof AdminQuestionnaireRoute
   '/api/contact': typeof ApiContactRoute
   '/assessment/mindset': typeof AssessmentMindsetRoute
   '/careers/$slug': typeof CareersSlugRoute
@@ -423,6 +467,7 @@ export interface FileRoutesByFullPath {
   '/careers/': typeof CareersIndexRoute
   '/our-work/': typeof OurWorkIndexRoute
   '/api/admin/assessments': typeof ApiAdminAssessmentsRoute
+  '/api/admin/questionnaire': typeof ApiAdminQuestionnaireRoute
   '/api/assessment/recording-upload': typeof ApiAssessmentRecordingUploadRoute
   '/api/assessment/save': typeof ApiAssessmentSaveRoute
   '/api/assessment/start': typeof ApiAssessmentStartRoute
@@ -447,6 +492,10 @@ export interface FileRoutesByFullPath {
   '/api/mindset/save': typeof ApiMindsetSaveRoute
   '/api/mindset/state': typeof ApiMindsetStateRoute
   '/api/mindset/submit': typeof ApiMindsetSubmitRoute
+  '/api/questionnaire/profile': typeof ApiQuestionnaireProfileRoute
+  '/api/questionnaire/save': typeof ApiQuestionnaireSaveRoute
+  '/api/questionnaire/state': typeof ApiQuestionnaireStateRoute
+  '/api/questionnaire/submit': typeof ApiQuestionnaireSubmitRoute
   '/api/screening/decision': typeof ApiScreeningDecisionRoute
   '/api/screening/start': typeof ApiScreeningStartRoute
   '/api/screening/submit': typeof ApiScreeningSubmitRoute
@@ -467,9 +516,11 @@ export interface FileRoutesByTo {
   '/industries': typeof IndustriesRoute
   '/marketing': typeof MarketingRoute
   '/not-hiring': typeof NotHiringRoute
+  '/questionnaire': typeof QuestionnaireRoute
   '/services': typeof ServicesRoute
   '/web-development': typeof WebDevelopmentRoute
   '/admin/assessments': typeof AdminAssessmentsRoute
+  '/admin/questionnaire': typeof AdminQuestionnaireRoute
   '/api/contact': typeof ApiContactRoute
   '/assessment/mindset': typeof AssessmentMindsetRoute
   '/careers/$slug': typeof CareersSlugRoute
@@ -485,6 +536,7 @@ export interface FileRoutesByTo {
   '/careers': typeof CareersIndexRoute
   '/our-work': typeof OurWorkIndexRoute
   '/api/admin/assessments': typeof ApiAdminAssessmentsRoute
+  '/api/admin/questionnaire': typeof ApiAdminQuestionnaireRoute
   '/api/assessment/recording-upload': typeof ApiAssessmentRecordingUploadRoute
   '/api/assessment/save': typeof ApiAssessmentSaveRoute
   '/api/assessment/start': typeof ApiAssessmentStartRoute
@@ -509,6 +561,10 @@ export interface FileRoutesByTo {
   '/api/mindset/save': typeof ApiMindsetSaveRoute
   '/api/mindset/state': typeof ApiMindsetStateRoute
   '/api/mindset/submit': typeof ApiMindsetSubmitRoute
+  '/api/questionnaire/profile': typeof ApiQuestionnaireProfileRoute
+  '/api/questionnaire/save': typeof ApiQuestionnaireSaveRoute
+  '/api/questionnaire/state': typeof ApiQuestionnaireStateRoute
+  '/api/questionnaire/submit': typeof ApiQuestionnaireSubmitRoute
   '/api/screening/decision': typeof ApiScreeningDecisionRoute
   '/api/screening/start': typeof ApiScreeningStartRoute
   '/api/screening/submit': typeof ApiScreeningSubmitRoute
@@ -532,9 +588,11 @@ export interface FileRoutesById {
   '/marketing': typeof MarketingRoute
   '/not-hiring': typeof NotHiringRoute
   '/our-work': typeof OurWorkRouteWithChildren
+  '/questionnaire': typeof QuestionnaireRoute
   '/services': typeof ServicesRoute
   '/web-development': typeof WebDevelopmentRoute
   '/admin/assessments': typeof AdminAssessmentsRoute
+  '/admin/questionnaire': typeof AdminQuestionnaireRoute
   '/api/contact': typeof ApiContactRoute
   '/assessment/mindset': typeof AssessmentMindsetRoute
   '/careers/$slug': typeof CareersSlugRoute
@@ -550,6 +608,7 @@ export interface FileRoutesById {
   '/careers/': typeof CareersIndexRoute
   '/our-work/': typeof OurWorkIndexRoute
   '/api/admin/assessments': typeof ApiAdminAssessmentsRoute
+  '/api/admin/questionnaire': typeof ApiAdminQuestionnaireRoute
   '/api/assessment/recording-upload': typeof ApiAssessmentRecordingUploadRoute
   '/api/assessment/save': typeof ApiAssessmentSaveRoute
   '/api/assessment/start': typeof ApiAssessmentStartRoute
@@ -574,6 +633,10 @@ export interface FileRoutesById {
   '/api/mindset/save': typeof ApiMindsetSaveRoute
   '/api/mindset/state': typeof ApiMindsetStateRoute
   '/api/mindset/submit': typeof ApiMindsetSubmitRoute
+  '/api/questionnaire/profile': typeof ApiQuestionnaireProfileRoute
+  '/api/questionnaire/save': typeof ApiQuestionnaireSaveRoute
+  '/api/questionnaire/state': typeof ApiQuestionnaireStateRoute
+  '/api/questionnaire/submit': typeof ApiQuestionnaireSubmitRoute
   '/api/screening/decision': typeof ApiScreeningDecisionRoute
   '/api/screening/start': typeof ApiScreeningStartRoute
   '/api/screening/submit': typeof ApiScreeningSubmitRoute
@@ -598,9 +661,11 @@ export interface FileRouteTypes {
     | '/marketing'
     | '/not-hiring'
     | '/our-work'
+    | '/questionnaire'
     | '/services'
     | '/web-development'
     | '/admin/assessments'
+    | '/admin/questionnaire'
     | '/api/contact'
     | '/assessment/mindset'
     | '/careers/$slug'
@@ -616,6 +681,7 @@ export interface FileRouteTypes {
     | '/careers/'
     | '/our-work/'
     | '/api/admin/assessments'
+    | '/api/admin/questionnaire'
     | '/api/assessment/recording-upload'
     | '/api/assessment/save'
     | '/api/assessment/start'
@@ -640,6 +706,10 @@ export interface FileRouteTypes {
     | '/api/mindset/save'
     | '/api/mindset/state'
     | '/api/mindset/submit'
+    | '/api/questionnaire/profile'
+    | '/api/questionnaire/save'
+    | '/api/questionnaire/state'
+    | '/api/questionnaire/submit'
     | '/api/screening/decision'
     | '/api/screening/start'
     | '/api/screening/submit'
@@ -660,9 +730,11 @@ export interface FileRouteTypes {
     | '/industries'
     | '/marketing'
     | '/not-hiring'
+    | '/questionnaire'
     | '/services'
     | '/web-development'
     | '/admin/assessments'
+    | '/admin/questionnaire'
     | '/api/contact'
     | '/assessment/mindset'
     | '/careers/$slug'
@@ -678,6 +750,7 @@ export interface FileRouteTypes {
     | '/careers'
     | '/our-work'
     | '/api/admin/assessments'
+    | '/api/admin/questionnaire'
     | '/api/assessment/recording-upload'
     | '/api/assessment/save'
     | '/api/assessment/start'
@@ -702,6 +775,10 @@ export interface FileRouteTypes {
     | '/api/mindset/save'
     | '/api/mindset/state'
     | '/api/mindset/submit'
+    | '/api/questionnaire/profile'
+    | '/api/questionnaire/save'
+    | '/api/questionnaire/state'
+    | '/api/questionnaire/submit'
     | '/api/screening/decision'
     | '/api/screening/start'
     | '/api/screening/submit'
@@ -724,9 +801,11 @@ export interface FileRouteTypes {
     | '/marketing'
     | '/not-hiring'
     | '/our-work'
+    | '/questionnaire'
     | '/services'
     | '/web-development'
     | '/admin/assessments'
+    | '/admin/questionnaire'
     | '/api/contact'
     | '/assessment/mindset'
     | '/careers/$slug'
@@ -742,6 +821,7 @@ export interface FileRouteTypes {
     | '/careers/'
     | '/our-work/'
     | '/api/admin/assessments'
+    | '/api/admin/questionnaire'
     | '/api/assessment/recording-upload'
     | '/api/assessment/save'
     | '/api/assessment/start'
@@ -766,6 +846,10 @@ export interface FileRouteTypes {
     | '/api/mindset/save'
     | '/api/mindset/state'
     | '/api/mindset/submit'
+    | '/api/questionnaire/profile'
+    | '/api/questionnaire/save'
+    | '/api/questionnaire/state'
+    | '/api/questionnaire/submit'
     | '/api/screening/decision'
     | '/api/screening/start'
     | '/api/screening/submit'
@@ -789,9 +873,11 @@ export interface RootRouteChildren {
   MarketingRoute: typeof MarketingRoute
   NotHiringRoute: typeof NotHiringRoute
   OurWorkRoute: typeof OurWorkRouteWithChildren
+  QuestionnaireRoute: typeof QuestionnaireRoute
   ServicesRoute: typeof ServicesRoute
   WebDevelopmentRoute: typeof WebDevelopmentRoute
   AdminAssessmentsRoute: typeof AdminAssessmentsRoute
+  AdminQuestionnaireRoute: typeof AdminQuestionnaireRoute
   ApiContactRoute: typeof ApiContactRoute
   AssessmentMindsetRoute: typeof AssessmentMindsetRoute
   LocationsKentWaRoute: typeof LocationsKentWaRoute
@@ -800,6 +886,7 @@ export interface RootRouteChildren {
   PoliciesTermsRoute: typeof PoliciesTermsRoute
   QrSlugRoute: typeof QrSlugRoute
   ApiAdminAssessmentsRoute: typeof ApiAdminAssessmentsRoute
+  ApiAdminQuestionnaireRoute: typeof ApiAdminQuestionnaireRoute
   ApiAssessmentRecordingUploadRoute: typeof ApiAssessmentRecordingUploadRoute
   ApiAssessmentSaveRoute: typeof ApiAssessmentSaveRoute
   ApiAssessmentStartRoute: typeof ApiAssessmentStartRoute
@@ -824,6 +911,10 @@ export interface RootRouteChildren {
   ApiMindsetSaveRoute: typeof ApiMindsetSaveRoute
   ApiMindsetStateRoute: typeof ApiMindsetStateRoute
   ApiMindsetSubmitRoute: typeof ApiMindsetSubmitRoute
+  ApiQuestionnaireProfileRoute: typeof ApiQuestionnaireProfileRoute
+  ApiQuestionnaireSaveRoute: typeof ApiQuestionnaireSaveRoute
+  ApiQuestionnaireStateRoute: typeof ApiQuestionnaireStateRoute
+  ApiQuestionnaireSubmitRoute: typeof ApiQuestionnaireSubmitRoute
   ApiScreeningDecisionRoute: typeof ApiScreeningDecisionRoute
   ApiScreeningStartRoute: typeof ApiScreeningStartRoute
   ApiScreeningSubmitRoute: typeof ApiScreeningSubmitRoute
@@ -938,6 +1029,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OurWorkRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/questionnaire': {
+      id: '/questionnaire'
+      path: '/questionnaire'
+      fullPath: '/questionnaire'
+      preLoaderRoute: typeof QuestionnaireRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services': {
       id: '/services'
       path: '/services'
@@ -957,6 +1055,13 @@ declare module '@tanstack/react-router' {
       path: '/admin/assessments'
       fullPath: '/admin/assessments'
       preLoaderRoute: typeof AdminAssessmentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/questionnaire': {
+      id: '/admin/questionnaire'
+      path: '/admin/questionnaire'
+      fullPath: '/admin/questionnaire'
+      preLoaderRoute: typeof AdminQuestionnaireRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/contact': {
@@ -1062,6 +1167,13 @@ declare module '@tanstack/react-router' {
       path: '/api/admin/assessments'
       fullPath: '/api/admin/assessments'
       preLoaderRoute: typeof ApiAdminAssessmentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/questionnaire': {
+      id: '/api/admin/questionnaire'
+      path: '/api/admin/questionnaire'
+      fullPath: '/api/admin/questionnaire'
+      preLoaderRoute: typeof ApiAdminQuestionnaireRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/assessment/recording-upload': {
@@ -1232,6 +1344,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiMindsetSubmitRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/questionnaire/profile': {
+      id: '/api/questionnaire/profile'
+      path: '/api/questionnaire/profile'
+      fullPath: '/api/questionnaire/profile'
+      preLoaderRoute: typeof ApiQuestionnaireProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/questionnaire/save': {
+      id: '/api/questionnaire/save'
+      path: '/api/questionnaire/save'
+      fullPath: '/api/questionnaire/save'
+      preLoaderRoute: typeof ApiQuestionnaireSaveRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/questionnaire/state': {
+      id: '/api/questionnaire/state'
+      path: '/api/questionnaire/state'
+      fullPath: '/api/questionnaire/state'
+      preLoaderRoute: typeof ApiQuestionnaireStateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/questionnaire/submit': {
+      id: '/api/questionnaire/submit'
+      path: '/api/questionnaire/submit'
+      fullPath: '/api/questionnaire/submit'
+      preLoaderRoute: typeof ApiQuestionnaireSubmitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/screening/decision': {
       id: '/api/screening/decision'
       path: '/api/screening/decision'
@@ -1318,9 +1458,11 @@ const rootRouteChildren: RootRouteChildren = {
   MarketingRoute: MarketingRoute,
   NotHiringRoute: NotHiringRoute,
   OurWorkRoute: OurWorkRouteWithChildren,
+  QuestionnaireRoute: QuestionnaireRoute,
   ServicesRoute: ServicesRoute,
   WebDevelopmentRoute: WebDevelopmentRoute,
   AdminAssessmentsRoute: AdminAssessmentsRoute,
+  AdminQuestionnaireRoute: AdminQuestionnaireRoute,
   ApiContactRoute: ApiContactRoute,
   AssessmentMindsetRoute: AssessmentMindsetRoute,
   LocationsKentWaRoute: LocationsKentWaRoute,
@@ -1329,6 +1471,7 @@ const rootRouteChildren: RootRouteChildren = {
   PoliciesTermsRoute: PoliciesTermsRoute,
   QrSlugRoute: QrSlugRoute,
   ApiAdminAssessmentsRoute: ApiAdminAssessmentsRoute,
+  ApiAdminQuestionnaireRoute: ApiAdminQuestionnaireRoute,
   ApiAssessmentRecordingUploadRoute: ApiAssessmentRecordingUploadRoute,
   ApiAssessmentSaveRoute: ApiAssessmentSaveRoute,
   ApiAssessmentStartRoute: ApiAssessmentStartRoute,
@@ -1353,6 +1496,10 @@ const rootRouteChildren: RootRouteChildren = {
   ApiMindsetSaveRoute: ApiMindsetSaveRoute,
   ApiMindsetStateRoute: ApiMindsetStateRoute,
   ApiMindsetSubmitRoute: ApiMindsetSubmitRoute,
+  ApiQuestionnaireProfileRoute: ApiQuestionnaireProfileRoute,
+  ApiQuestionnaireSaveRoute: ApiQuestionnaireSaveRoute,
+  ApiQuestionnaireStateRoute: ApiQuestionnaireStateRoute,
+  ApiQuestionnaireSubmitRoute: ApiQuestionnaireSubmitRoute,
   ApiScreeningDecisionRoute: ApiScreeningDecisionRoute,
   ApiScreeningStartRoute: ApiScreeningStartRoute,
   ApiScreeningSubmitRoute: ApiScreeningSubmitRoute,
