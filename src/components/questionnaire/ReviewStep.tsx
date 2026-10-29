@@ -1,5 +1,5 @@
 import { ArrowLeft, PencilLine, Send } from "lucide-react";
-import { QUESTIONS, SECTIONS, optionLabel } from "@/lib/questionnaire/questions";
+import { QUESTIONS, SECTIONS, isAsked, optionLabel } from "@/lib/questionnaire/questions";
 import type { AnswerMap } from "@/lib/questionnaire/types";
 import type { ProfileForm } from "./ProfileStep";
 import { Eyebrow, GhostButton, PrimaryButton, focusRing } from "./ui";
@@ -57,12 +57,12 @@ export function ReviewStep({
               Section {section} · {SECTIONS[section].name}
             </h3>
             <ol className="mt-3 divide-y divide-border rounded-2xl border border-border bg-card">
-              {QUESTIONS.filter((q) => q.section === section).map((q) => {
+              {QUESTIONS.filter((q) => q.section === section && isAsked(q, answers)).map((q) => {
                 const a = answers[q.id];
                 return (
                   <li key={q.id} className="flex items-start gap-4 px-5 py-4">
                     <span className="w-5 shrink-0 pt-px text-sm font-medium text-muted-foreground tabular-nums">
-                      {q.number}
+                      {q.label}
                     </span>
                     <div className="min-w-0 flex-1">
                       <p className="text-sm leading-snug text-muted-foreground">{q.text}</p>
@@ -75,7 +75,7 @@ export function ReviewStep({
                       </p>
                     </div>
                     <EditButton
-                      label={`Change answer to question ${q.number}`}
+                      label={`Change answer to question ${q.label}`}
                       onClick={() => onEditQuestion(q.id)}
                     />
                   </li>

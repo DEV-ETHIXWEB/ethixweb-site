@@ -5,8 +5,9 @@
 // Option ids are stored in the database, not the labels. Reword a label
 // freely; never reuse an id for a different meaning. If the set of questions
 // or ids changes, bump FORM_VERSION so old responses stay readable.
+// Version 2 added q13_meet, the in-person meet follow-up to question 13.
 
-export const FORM_VERSION = 1;
+export const FORM_VERSION = 2;
 
 export type OptionId = "a" | "b" | "c" | "d" | "other";
 
@@ -16,8 +17,13 @@ export interface QuestionOption {
 }
 
 export interface Question {
-  id: `q${number}`;
+  id: string;
   number: number;
+  /** What the candidate and recruiters see: "13", or "13a" for a follow-up. */
+  label: string;
+  /** A follow-up: only asked, and only required, when the named question was
+   * answered with one of these choices. Checked on the server too. */
+  showIf?: { questionId: string; choices: OptionId[] };
   section: 1 | 2;
   text: string;
   /** Short name for admin tables and CSV headers. */
@@ -51,6 +57,7 @@ function q(
   return {
     id: `q${number}`,
     number,
+    label: String(number),
     section: number <= 10 ? 1 : 2,
     text,
     short,
@@ -222,6 +229,23 @@ export const QUESTIONS: Question[] = [
     ],
     "Share your thoughts on the compensation.",
   ),
+  {
+    ...q(
+      13,
+      "In-person meet 30–31 Oct",
+      "Since the compensation works for you: we're planning an offline, in-person meet in Delhi on 30–31 October. Would you be able to attend?",
+      [
+        "Yes, I can attend on both days.",
+        "Yes, but I can only attend one of the two days.",
+        "I'd like to attend, but I need the details first (time, venue, travel).",
+        "No, I can't make it on these dates.",
+      ],
+      "Tell us about your availability.",
+    ),
+    id: "q13_meet",
+    label: "13a",
+    showIf: { questionId: "q13", choices: ["a", "b"] },
+  },
   q(
     14,
     "Performance review",
@@ -248,7 +272,19 @@ export const QUESTIONS: Question[] = [
   ),
 ];
 
-export const TOTAL_QUESTIONS = QUESTIONS.length;
+/** The headline count ("15 questions"). Follow-ups ride along with the
+ * question they follow and don't add to it. */
+export const TOTAL_QUESTIONS = QUESTIONS.filter((q) => !q.showIf).length;
+
+/** Whether this question applies, given the answers so far. */
+export function isAsked(
+  question: Question,
+  answers: Partial<Record<string, { choice: OptionId }>>,
+): boolean {
+  if (!question.showIf) return true;
+  const choice = answers[question.showIf.questionId]?.choice;
+  return choice !== undefined && question.showIf.choices.includes(choice);
+}
 
 export function optionLabel(question: Question, choice: string | undefined): string {
   return question.options.find((o) => o.id === choice)?.label ?? "";

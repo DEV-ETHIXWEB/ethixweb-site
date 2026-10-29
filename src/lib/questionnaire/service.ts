@@ -114,7 +114,7 @@ export function responsesCsv(
     "College",
     "LinkedIn",
     "Submitted at",
-    ...QUESTIONS.flatMap((q) => [`Q${q.number} ${q.short}`, `Q${q.number} other`]),
+    ...QUESTIONS.flatMap((q) => [`Q${q.label} ${q.short}`, `Q${q.label} other`]),
   ];
   const lines = [header.map(csvCell).join(",")];
   for (const row of rows) {

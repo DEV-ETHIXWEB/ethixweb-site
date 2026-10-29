@@ -115,7 +115,9 @@ export function QuestionStep({
           Section {question.section} of 2 · {SECTIONS[question.section].name}
         </Eyebrow>
         <p className="mt-6 text-sm font-medium text-muted-foreground tabular-nums">
-          Question {question.number} of {TOTAL_QUESTIONS}
+          {question.showIf
+            ? `Follow-up to question ${question.showIf.questionId.slice(1)}`
+            : `Question ${question.label} of ${TOTAL_QUESTIONS}`}
         </p>
         <h2
           id={headingId}

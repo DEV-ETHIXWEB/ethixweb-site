@@ -17,7 +17,7 @@ import {
   readableAnswer,
   responsesCsv,
 } from "@/lib/questionnaire/service";
-import { QUESTIONS } from "@/lib/questionnaire/questions";
+import { QUESTIONS, isAsked } from "@/lib/questionnaire/questions";
 import { sendSubmissionEmail } from "@/lib/questionnaire/email";
 import { getQuestionnaireStore } from "@/lib/questionnaire/store";
 import { effectiveStatus, type QuestionnaireResponseRow } from "@/lib/questionnaire/types";
@@ -191,10 +191,12 @@ export const Route = createFileRoute("/api/admin/questionnaire")({
             answersAreDraft: !response,
             answers: QUESTIONS.map((q) => ({
               id: q.id,
-              number: q.number,
+              number: q.label,
               section: q.section,
               question: q.text,
-              answer: readableAnswer(answers, q.id),
+              answer: isAsked(q, answers)
+                ? readableAnswer(answers, q.id)
+                : "Not asked (only shown after a yes to question 13)",
             })),
             events,
           });

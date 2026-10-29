@@ -1,6 +1,6 @@
 import { Resend } from "resend";
 import { FROM_EMAIL, emailRow, emailShell, escapeHtml } from "@/lib/email";
-import { QUESTIONS, SECTIONS } from "./questions";
+import { QUESTIONS, SECTIONS, isAsked } from "./questions";
 import { readableAnswer } from "./service";
 import type { AnswerMap, QuestionnaireCandidateRow } from "./types";
 
@@ -37,12 +37,12 @@ export async function sendSubmissionEmail(
 
   const sections = ([1, 2] as const)
     .map((section) => {
-      const items = QUESTIONS.filter((q) => q.section === section)
+      const items = QUESTIONS.filter((q) => q.section === section && isAsked(q, answers))
         .map(
           (q) => `
           <tr>
             <td style="padding:12px 0;border-bottom:1px solid #f0f0f0;">
-              <div style="font-size:12px;color:#6b7076;margin-bottom:4px;"><strong>Q${q.number}.</strong> ${escapeHtml(q.text)}</div>
+              <div style="font-size:12px;color:#6b7076;margin-bottom:4px;"><strong>Q${q.label}.</strong> ${escapeHtml(q.text)}</div>
               <div style="font-size:15px;font-weight:600;color:#1a1a1a;white-space:pre-wrap;">${escapeHtml(readableAnswer(answers, q.id))}</div>
             </td>
           </tr>`,

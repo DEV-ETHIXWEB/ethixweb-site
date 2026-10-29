@@ -7,7 +7,7 @@ import {
   isValidPhone,
   normalizeWebsiteUrl,
 } from "@/lib/utils";
-import { OTHER_MAX_LENGTH, QUESTIONS, type OptionId } from "./questions";
+import { OTHER_MAX_LENGTH, QUESTIONS, isAsked, type OptionId } from "./questions";
 
 export type InviteStatus = "pending" | "opened" | "submitted" | "expired" | "revoked";
 
@@ -114,9 +114,12 @@ export function cleanAnswerMap(answers: AnswerMap): AnswerMap {
 }
 
 /**
- * Full submission check: every one of the 15 questions answered, and every
- * "other" carries text. Returns the cleaned map, or the first problem in
- * question order so the client can send the candidate straight to it.
+ * Full submission check: every question that applies is answered, and every
+ * "other" carries text. A follow-up that doesn't apply (q13_meet when the
+ * pay question wasn't a yes) is dropped rather than stored, so a stale
+ * answer from before the candidate changed their mind can't survive.
+ * Returns the cleaned map, or the first problem in question order so the
+ * client can send the candidate straight to it.
  */
 export function validateSubmission(
   raw: unknown,
@@ -131,15 +134,19 @@ export function validateSubmission(
   }
   const answers = cleanAnswerMap(parsed.data as AnswerMap);
   for (const q of QUESTIONS) {
+    if (!isAsked(q, answers)) {
+      delete answers[q.id];
+      continue;
+    }
     const value = answers[q.id];
     if (!value) {
-      return { ok: false, questionId: q.id, error: `Question ${q.number} needs an answer.` };
+      return { ok: false, questionId: q.id, error: `Question ${q.label} needs an answer.` };
     }
     if (value.choice === "other" && !value.other) {
       return {
         ok: false,
         questionId: q.id,
-        error: `Question ${q.number}: please tell us your answer in the text box.`,
+        error: `Question ${q.label}: please tell us your answer in the text box.`,
       };
     }
   }

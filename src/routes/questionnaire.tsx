@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { EASE_PREMIUM } from "@/lib/motion";
-import { QUESTIONS, TOTAL_QUESTIONS } from "@/lib/questionnaire/questions";
+import { QUESTIONS, TOTAL_QUESTIONS, isAsked } from "@/lib/questionnaire/questions";
 import type { AnswerMap, AnswerValue, DraftState } from "@/lib/questionnaire/types";
 import { Landing } from "@/components/questionnaire/Landing";
 import {
@@ -63,7 +63,18 @@ function stepIndexOf(questionId: string) {
 
 /** Questions fully behind the candidate at this step, for the progress bar. */
 function questionsBefore(index: number) {
-  return STEPS.slice(0, index).filter((s) => s.kind === "question").length;
+  return STEPS.slice(0, index).filter(
+    (s) => s.kind === "question" && !questionOf(s.questionId).showIf,
+  ).length;
+}
+
+function questionOf(id: string) {
+  return QUESTIONS.find((q) => q.id === id)!;
+}
+
+/** A follow-up step that doesn't apply to these answers is skipped over. */
+function stepApplies(step: Step, answers: AnswerMap) {
+  return step.kind !== "question" || isAsked(questionOf(step.questionId), answers);
 }
 
 type Phase = "status" | "landing" | "profile" | "flow" | "done";
@@ -182,21 +193,35 @@ function QuestionnairePage() {
   }
 
   function next() {
+    let to = index + 1;
+    while (to < REVIEW_INDEX && !stepApplies(STEPS[to], answers)) to++;
     if (returnToReview) {
-      setReturnToReview(false);
-      go(REVIEW_INDEX);
-      return;
+      // Editing from review normally goes straight back, unless the change
+      // just opened a follow-up (a "yes" on question 13) that still needs
+      // an answer.
+      const opened = STEPS[to];
+      const needsAnswer =
+        opened?.kind === "question" &&
+        questionOf(opened.questionId).showIf &&
+        !answerReady(answers[opened.questionId]);
+      if (!needsAnswer) {
+        setReturnToReview(false);
+        go(REVIEW_INDEX);
+        return;
+      }
     }
-    go(Math.min(index + 1, REVIEW_INDEX));
+    go(Math.min(to, REVIEW_INDEX));
   }
 
   function prev() {
-    if (index === 0) {
+    let to = index - 1;
+    while (to >= 0 && !stepApplies(STEPS[to], answers)) to--;
+    if (to < 0) {
       setDirection(-1);
       setPhase("profile");
       return;
     }
-    go(index - 1);
+    go(to);
   }
 
   function setAnswer(questionId: string, value: AnswerValue) {
@@ -239,7 +264,7 @@ function QuestionnairePage() {
 
   async function submit() {
     if (!token || submitting) return;
-    const missing = QUESTIONS.find((q) => !answerReady(answers[q.id]));
+    const missing = QUESTIONS.find((q) => isAsked(q, answers) && !answerReady(answers[q.id]));
     if (missing) {
       setQuestionError({ id: missing.id, error: "This one still needs an answer." });
       setDirection(-1);
@@ -292,7 +317,7 @@ function QuestionnairePage() {
   const done = step?.kind === "review" ? TOTAL_QUESTIONS : questionsBefore(index);
   const counter =
     step?.kind === "question"
-      ? `${QUESTIONS.find((q) => q.id === step.questionId)?.number ?? 0} of ${TOTAL_QUESTIONS}`
+      ? `${questionOf(step.questionId).label} of ${TOTAL_QUESTIONS}`
       : step?.kind === "terms"
         ? "Section 2"
         : "Review";

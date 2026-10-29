@@ -83,6 +83,7 @@ A 15-question candidate questionnaire (10 about the person, then the working ter
 - **One submission per candidate** is enforced in Postgres, not the browser: a partial unique index allows one live invitation per normalized email, another allows one live response per invitation, and `submit_questionnaire()` locks the row, inserts the response and marks it submitted in a single transaction. A failed insert leaves the invitation unused.
 - **Email:** every accepted submission is emailed in full to `QUESTIONNAIRE_REPORT_EMAIL` (default `info@ethixweb.com`) via Resend. A failed send never blocks the submission; it shows as `email failed` in the audit trail and can be resent from the dashboard.
 - **Setup:** run `supabase/migrations/0011_candidate_questionnaire.sql`, then set `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY` and `GADS_ADMIN_PASSWORD` (and optionally `QUESTIONNAIRE_REPORT_EMAIL`) in Vercel. Locally, without Supabase, it runs on an in-memory store that resets on restart; it refuses to do that on a Vercel deployment.
+- **Follow-ups:** a question with `showIf` is only asked (and only required) when an earlier answer matches. Question 13a, the Delhi in-person meet on 30–31 October, appears only after a yes (option A or B) to the compensation question; the server drops it otherwise.
 - **Content:** questions and option text live in `src/lib/questionnaire/questions.ts`; the working-terms cards are in `src/components/questionnaire/WorkTerms.tsx`.
 
 ## Deployment Notes
