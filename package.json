@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.111.0",
+    "@mlc-ai/web-llm": "^0.2.86",
     "@react-pdf/renderer": "^4.5.1",
     "@supabase/supabase-js": "^2.110.2",
     "@tailwindcss/vite": "^4.2.1",

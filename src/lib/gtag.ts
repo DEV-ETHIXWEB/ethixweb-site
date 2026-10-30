@@ -23,6 +23,7 @@ const CONVERSION_SEND_TO = "AW-18387669255/PMlICKyYluEcEIei9r9E";
  */
 export type LeadSource =
   | "contact"
+  | "chat"
   | "hvac-plumbing-marketing"
   | "google-ads-management"
   | "fishing-marine-marketing"

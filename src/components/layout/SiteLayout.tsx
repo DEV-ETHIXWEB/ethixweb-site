@@ -4,6 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
 import { ConsentBanner } from "@/components/layout/ConsentBanner";
+import { ChatWidget } from "@/components/chat/ChatWidget";
 import { useClickSound } from "@/hooks/useClickSound";
 
 function Inner({ children }: { children: ReactNode }) {
@@ -26,6 +27,7 @@ function Inner({ children }: { children: ReactNode }) {
         <Footer />
       </div>
       <ConsentBanner />
+      <ChatWidget />
     </div>
   );
 }
