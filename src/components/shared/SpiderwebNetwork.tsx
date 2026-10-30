@@ -3,11 +3,11 @@ import { motion } from "framer-motion";
 import { DollarSign, Layers3, Palette, PhoneCall, TrendingUp } from "lucide-react";
 import spiderweb from "@/assets/spiderweb.svg";
 import spiderwebLight from "@/assets/spiderweb-light.svg";
-// Displayed at ~39x40px here (the emblem's on-page box) - the -sm variant
-// (300px source, ~5x oversampled for that size) replaces the full 1200px
-// original, which PageSpeed Insights flagged as wasting ~35KiB per fetch
-// for a display size two orders of magnitude smaller than the source.
-import emblem from "@/assets/emblem-transparent-sm.webp";
+// A single frame of the real 3D model (the Three.js scene that used to spin
+// here live), captured at a three-quarter turn with a transparent background.
+// It keeps the depth and glass highlight of the live render at none of the
+// cost: 17KB, painted once. 365x420.
+import emblemHero from "@/assets/emblem-hero-3d.webp";
 import { usePauseOffscreen } from "@/hooks/usePauseOffscreen";
 
 /* ── Geometry ─────────────────────────────────────────────────────────────────
@@ -138,14 +138,6 @@ function useIsSmall() {
   );
 }
 
-/** The source art is already a rendered crimson glass E, so this is just a thin
- * polished-silver border plus a soft crimson bloom - no recolor needed. Painted
- * once: the emblem never moves, so the filter chain is never recomputed. */
-const EMBLEM_FACE_FILTER =
-  "drop-shadow(0.6px 0 0 #e7ebf2) drop-shadow(-0.6px 0 0 #e7ebf2) " +
-  "drop-shadow(0 0.6px 0 #e7ebf2) drop-shadow(0 -0.6px 0 #e7ebf2) " +
-  "drop-shadow(0 0 2px rgba(235,240,248,0.35)) " +
-  "drop-shadow(0 0 8px rgba(229,29,37,0.4)) drop-shadow(0 0 18px rgba(229,29,37,0.2))";
 /** The "E" at the spiderweb's hub. Deliberately still.
  *
  * It used to be a live Three.js scene in an iframe (public/emblem-3d.html,
@@ -157,10 +149,13 @@ const EMBLEM_FACE_FILTER =
  * on screen, and a long tail of bugs: white flashes, clipped edges, halos,
  * moire, and a flat grey render on phones.
  *
- * The emblem artwork is itself a 3D render with baked bevels and shading, so
- * a still image keeps the depth and the premium look at none of that cost:
- * one image, painted once, on every device. */
-function GlassEmblem() {
+ * It is now one frame of that same 3D model, captured at a three-quarter turn
+ * so the extrusion and glass highlight read: the depth and size of the live
+ * render, painted once, on every device. The letter is drawn at 1.35x the
+ * hub box, which is how large the live render appeared (its scene was
+ * oversized into the box to crop its halo); the flat artwork at 1x read as
+ * small and sticker-like by comparison. */
+function GlassEmblem({ theme }: { theme: string }) {
   return (
     <div
       className="pointer-events-none absolute aspect-[397/406] w-[5.6%] -translate-x-1/2 -translate-y-1/2 select-none"
@@ -170,22 +165,31 @@ function GlassEmblem() {
           gradient alone, no blur filter, so it costs nothing to composite. */}
       <div
         aria-hidden="true"
-        className="absolute -inset-[35%] rounded-full"
+        className="absolute -inset-[55%] rounded-full"
         style={{
           background:
             "radial-gradient(circle, rgba(229,29,37,0.2) 0%, rgba(229,29,37,0.08) 42%, transparent 70%)",
         }}
       />
       <img
-        src={emblem}
+        src={emblemHero}
         alt=""
         aria-hidden="true"
-        width={300}
-        height={312}
+        width={365}
+        height={420}
         draggable={false}
         decoding="async"
-        className="relative h-full w-full"
-        style={{ filter: EMBLEM_FACE_FILTER }}
+        className="absolute left-1/2 top-1/2 h-[135%] w-auto max-w-none -translate-x-1/2 -translate-y-1/2"
+        style={{
+          // A soft lift off the web and a faint crimson bloom, both static.
+          // Light mode gets a tighter crimson-tinted shadow instead: a black
+          // one turned into a grey smudge on the pale background, and the
+          // pale glass needs a little more saturation to hold its edges.
+          filter:
+            theme === "light"
+              ? "saturate(1.25) contrast(1.06) drop-shadow(0 5px 8px rgba(120,20,25,0.22))"
+              : "drop-shadow(0 8px 14px rgba(0,0,0,0.45)) drop-shadow(0 0 16px rgba(229,29,37,0.28))",
+        }}
       />
     </div>
   );
@@ -525,7 +529,7 @@ export function SpiderwebNetwork({
         </svg>
       </div>
 
-      <GlassEmblem />
+      <GlassEmblem theme={theme} />
 
       {showBadges &&
         BADGES.map((badge, i) => (
