@@ -563,6 +563,7 @@ const GlobeStage = forwardRef<GlobeStageHandle>(function GlobeStage(_props, ref)
 
     let raf = 0;
     let last = performance.now();
+    let lastDraw = 0;
     let overlayElapsed = 0;
 
     const loop = (now: number) => {
@@ -573,6 +574,18 @@ const GlobeStage = forwardRef<GlobeStageHandle>(function GlobeStage(_props, ref)
       // from ever reaching an idle/interactive state. The observer above calls
       // wakeRef to start it again.
       if (!visibleRef.current) return;
+      // The idle auto-spin is drawn at 30fps: at this rotation speed it looks
+      // the same as 60, and each frame is ~7,000 projected dots plus a React
+      // re-render of the city overlay, which saturated a throttled phone's
+      // main thread outright. A drag or a city focus gets every frame, since
+      // that is when the globe has to keep up with a hand. `last` only moves
+      // on drawn frames, so `dt` spans the skipped one and speed is unchanged.
+      const interactive = draggingRef.current || focusRef.current?.active;
+      if (!interactive && now - lastDraw < 1000 / 30 - 2) {
+        raf = requestAnimationFrame(loop);
+        return;
+      }
+      lastDraw = now;
       const dt = Math.min(64, now - last);
       last = now;
 
@@ -1030,60 +1043,34 @@ const GlobeStage = forwardRef<GlobeStageHandle>(function GlobeStage(_props, ref)
                 </circle>
               )}
 
-              {/* Outer pulse ring */}
+              {/* Outer ring, held at the pulse's resting size. The rings on
+                  every city used to pulse forever with SMIL <animate> on `r`,
+                  which is SVG geometry: two forced layouts a frame per ring,
+                  running even with the globe scrolled far off screen (120
+                  layouts a second measured at the top of the homepage). */}
               <circle
                 cx={pt.x}
                 cy={pt.y}
-                r={base}
+                r={base * 1.25}
                 fill="var(--primary)"
                 fillOpacity={isFocused ? 0.2 : 0.1}
-              >
-                {!reduceMotion && (
-                  <>
-                    <animate
-                      attributeName="r"
-                      values={`${base * 0.5};${base * 2.3};${base * 0.5}`}
-                      dur={hub ? "3.5s" : "5.2s"}
-                      repeatCount="indefinite"
-                    />
-                    <animate
-                      attributeName="opacity"
-                      values="0.55;0;0.55"
-                      dur={hub ? "3.5s" : "5.2s"}
-                      repeatCount="indefinite"
-                    />
-                  </>
-                )}
-              </circle>
+                opacity={0.4}
+              />
 
               {/* Hub: inner ring + ambient circles */}
               {hub && (
                 <>
+                  {/* Still, for the same reason as the outer ring; under a blur
+                      filter the pulse also re-rasterised the glow every frame. */}
                   <circle
                     cx={pt.x}
                     cy={pt.y}
-                    r={base * 0.6}
+                    r={base * 0.7}
                     fill="var(--primary)"
                     fillOpacity="0.22"
+                    opacity={0.35}
                     filter="url(#hub-glow)"
-                  >
-                    {!reduceMotion && (
-                      <>
-                        <animate
-                          attributeName="r"
-                          values={`${base * 0.3};${base * 1.1};${base * 0.3}`}
-                          dur="2.1s"
-                          repeatCount="indefinite"
-                        />
-                        <animate
-                          attributeName="opacity"
-                          values="0.5;0;0.5"
-                          dur="2.1s"
-                          repeatCount="indefinite"
-                        />
-                      </>
-                    )}
-                  </circle>
+                  />
                   <circle
                     cx={pt.x}
                     cy={pt.y}

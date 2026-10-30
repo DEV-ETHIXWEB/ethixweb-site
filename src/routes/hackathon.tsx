@@ -472,15 +472,16 @@ function HackathonPage() {
               <span className="rounded-full border border-primary/40 px-4 py-1.5 text-primary-text">
                 Unlock registration
               </span>
-              <motion.a
+              {/* CSS rather than a framer loop: framer drives `y` from
+                  JavaScript, a style write every frame for as long as the
+                  page was open. */}
+              <a
                 href="#mission"
                 aria-label="Scroll to start the hunt"
-                className="mt-5 flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-primary hover:text-primary-text"
-                animate={reduceMotion ? undefined : { y: [0, 5, 0] }}
-                transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+                className="animate-nudge-down mt-5 flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-primary hover:text-primary-text"
               >
                 <ChevronDown className="h-4 w-4" />
-              </motion.a>
+              </a>
             </div>
           </Reveal>
         </Container>

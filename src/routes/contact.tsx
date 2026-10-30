@@ -255,8 +255,13 @@ function ContactBody() {
               {/* ── Left panel ── */}
               <div
                 ref={webPanelRef}
-                onMouseEnter={() => setWebHover(true)}
-                onMouseLeave={() => setWebHover(false)}
+                // A real mouse only. On a touchscreen any tap over this panel
+                // (including the cookie banner's buttons, which sit on top of
+                // it) fires a synthetic mouseenter, and with no mouseleave to
+                // follow, the reveal stuck on for the rest of the visit with
+                // its animations running.
+                onPointerEnter={(e) => e.pointerType === "mouse" && setWebHover(true)}
+                onPointerLeave={(e) => e.pointerType === "mouse" && setWebHover(false)}
                 className="relative flex flex-col justify-between overflow-hidden bg-gradient-hero px-8 py-10 text-foreground sm:px-10 sm:py-12"
               >
                 {/* ambient glow */}
@@ -282,7 +287,17 @@ function ContactBody() {
                         "radial-gradient(circle 170px at var(--spot-x, 50%) var(--spot-y, 50%), black 0%, transparent 100%)",
                     }}
                   >
-                    <WebTexture isDark={isDark} bright animated className="h-full w-full" />
+                    {/* Animated only while revealed. The layer sits at opacity 0
+                        until the panel is hovered, but its SMIL pulses (with a
+                        drop-shadow on every travelling dot) used to run the
+                        whole time regardless: ~2,400 style recalculations a
+                        second on the contact page, for something invisible. */}
+                    <WebTexture
+                      isDark={isDark}
+                      bright
+                      animated={webHover}
+                      className="h-full w-full"
+                    />
                   </motion.div>
                 )}
                 {/* floating particle accents */}

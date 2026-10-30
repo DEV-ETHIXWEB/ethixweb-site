@@ -88,9 +88,17 @@ export function TimezoneWidget() {
   useEffect(() => {
     setMounted(true);
     setLocalTz(Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC");
-    setNow(new Date());
-    const id = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(id);
+    // Every time on display is hours and minutes, so tick on the minute rather
+    // than every second: a once-a-second re-render in the navbar of every page
+    // was sixty renders a minute to change the text once.
+    let timer: ReturnType<typeof setTimeout>;
+    const tick = () => {
+      const d = new Date();
+      setNow(d);
+      timer = setTimeout(tick, 60_000 - (d.getSeconds() * 1000 + d.getMilliseconds()) + 50);
+    };
+    tick();
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -175,7 +183,13 @@ export function TimezoneWidget() {
           />
         </span>
         <CodeBadge code="IN" />
-        <span className="font-medium tabular-nums text-foreground/90">{india}</span>
+        {/* Width reserved for the widest time ("10:48 AM", 52px at 12px). The
+            server renders "--:--" (28px) and the real time arrives after
+            hydration; without this the button grew on every page load and
+            nudged the whole desktop nav sideways. */}
+        <span className="inline-block min-w-[4.5em] font-medium tabular-nums text-foreground/90">
+          {india}
+        </span>
         <ChevronDown
           className={`h-3 w-3 text-muted-foreground/50 transition-transform ${open ? "rotate-180" : ""}`}
         />

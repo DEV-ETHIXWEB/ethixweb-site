@@ -17,18 +17,20 @@ export const links = [
 ];
 
 /** Lets a visitor silence the site-wide click sound, which previously had no
- * off switch at all. Mounted after hydration only, since the stored choice
- * lives in localStorage and the server cannot know it. */
+ * off switch at all.
+ *
+ * Rendered from the first paint in the default (sound on) state, and the
+ * stored choice is applied after hydration. It used to render nothing until
+ * mounted, since the server cannot read localStorage, and a 44px button
+ * appearing late in the right-hand group slid every desktop nav link 28px
+ * sideways on every page load. The icon swap for a muted visitor is the same
+ * size, so it moves nothing. */
 function SoundToggle() {
-  const [mounted, setMounted] = useState(false);
   const [muted, setMuted] = useState(false);
 
   useEffect(() => {
     setMuted(isClickSoundMuted());
-    setMounted(true);
   }, []);
-
-  if (!mounted) return null;
 
   return (
     <motion.button

@@ -1,16 +1,13 @@
-import { motion, useReducedMotion } from "framer-motion";
-
 /**
  * Full-bleed crimson ticker - the one deliberately loud element on a page.
  * Duplicated content + a -50% translate loop makes the scroll seamless; when
- * the user prefers reduced motion it just sits still. Shared across several
+ * the user prefers reduced motion it just sits still (the CSS class handles
+ * both, on the compositor; see .animate-marquee-half). Shared across several
  * marketing pages so the band feels like one site-level motif rather than
  * several similar one-offs. Defaults to the signature slight tilt; pass
  * `rotate={false}` for a perfectly horizontal band (used on Careers).
  */
 export function MarqueeBand({ items, rotate = true }: { items: string[]; rotate?: boolean }) {
-  const reduceMotion = useReducedMotion();
-
   const row = (key: string) => (
     <div key={key} className="flex shrink-0 items-center">
       {items.map((item) => (
@@ -28,14 +25,10 @@ export function MarqueeBand({ items, rotate = true }: { items: string[]; rotate?
   );
 
   const track = (
-    <motion.div
-      className="flex w-max"
-      animate={reduceMotion ? undefined : { x: ["0%", "-50%"] }}
-      transition={{ duration: 28, ease: "linear", repeat: Infinity }}
-    >
+    <div className="animate-marquee-half flex w-max">
       {row("a")}
       {row("b")}
-    </motion.div>
+    </div>
   );
 
   if (!rotate) {

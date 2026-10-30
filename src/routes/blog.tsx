@@ -298,17 +298,11 @@ function Blog() {
                 people doing the shipping, not a content team.
               </p>
             </Reveal>
-            {/* Glowing accent line with a traveling pulse */}
+            {/* Glowing accent line. Its pulse used to travel by animating
+                `left`, a layout property, every frame without end. */}
             <Reveal delay={0.22}>
               <div className="relative mt-9 h-px w-full max-w-md overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/50 via-primary/15 to-transparent" />
-                {!reduceMotion && (
-                  <motion.div
-                    className="absolute top-0 h-full w-1/3 bg-gradient-to-r from-transparent via-[#ff8a8f] to-transparent"
-                    animate={{ left: ["-33%", "100%"] }}
-                    transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
-                  />
-                )}
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/60 via-primary/20 to-transparent" />
               </div>
             </Reveal>
           </div>
@@ -347,14 +341,12 @@ function Blog() {
                   aria-hidden="true"
                   className="absolute inset-0 bg-[radial-gradient(70%_60%_at_15%_0%,rgba(157,27,32,0.35),transparent_70%)]"
                 />
-                <motion.span
+                <span
                   aria-hidden="true"
                   className="pointer-events-none absolute -right-4 bottom-0 select-none font-display text-[9rem] font-extrabold uppercase leading-none text-transparent [-webkit-text-stroke:1.5px_rgba(255,255,255,0.07)] sm:text-[12rem]"
-                  animate={reduceMotion ? undefined : { x: [0, -18, 0] }}
-                  transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
                 >
                   {featured.c}
-                </motion.span>
+                </span>
                 <div className="relative max-w-2xl">
                   <div className="flex flex-wrap items-center gap-3">
                     <span className="inline-flex items-center rounded-full border border-[#f2545b]/40 bg-[#f2545b]/10 px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-[#f2545b]">

@@ -241,19 +241,6 @@
           "value": "camera=(self), microphone=(self), fullscreen=(self), geolocation=()"
         }
       ]
-    },
-    {
-      "source": "/emblem-3d.html",
-      "headers": [
-        {
-          "key": "X-Frame-Options",
-          "value": "SAMEORIGIN"
-        },
-        {
-          "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self' https://vercel.com https://*.public.blob.vercel-storage.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
-        }
-      ]
     }
   ]
 }

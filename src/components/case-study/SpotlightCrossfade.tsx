@@ -63,11 +63,23 @@ export function SpotlightCrossfade({ items }: { items: SpotlightItem[] }) {
             </div>
           </div>
 
-          {/* Card below the window on mobile (only the active one, to avoid a
-              tall stack). */}
-          <div className="sm:hidden">
+          {/* Card below the window on mobile, crossfaded in place. Every card
+              sits in one grid cell, so the box is always as tall as the tallest
+              and never changes. It used to show only the active card via
+              hidden/block, and the cards differ in length: each auto-advance
+              resized the section by ~100px and jumped everything below it
+              (measured as a 0.12 layout shift on a phone, mid-read). */}
+          <div className="grid sm:hidden">
             {items.map((item, i) => (
-              <div key={i} className={i === active ? "block" : "hidden"}>
+              <div
+                key={i}
+                aria-hidden={i !== active}
+                inert={i !== active}
+                className={cn(
+                  "col-start-1 row-start-1 transition-opacity duration-700 ease-out",
+                  i === active ? "opacity-100" : "pointer-events-none opacity-0",
+                )}
+              >
                 <SpotlightCard item={item} />
               </div>
             ))}

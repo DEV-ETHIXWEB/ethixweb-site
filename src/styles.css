@@ -832,26 +832,32 @@ html.dark {
     overflow: hidden;
     border-radius: var(--radius-xl);
   }
+  /* The scan line is a 2px gradient drawn at the top of a full-height layer,
+     and the layer moves with transform. It used to animate `top` on a 2px
+     line, and top is layout: the page reflowed every frame for as long as
+     the QR card was on screen. A transform runs on the compositor; the
+     frame's overflow: hidden clips the layer as it travels out. */
   .qr-frame::after {
     content: "";
     position: absolute;
-    inset-inline: 0;
-    height: 2px;
+    inset: 0;
+    pointer-events: none;
     background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(233, 54, 63, 0.85),
-      rgba(255, 200, 202, 0.9),
-      rgba(233, 54, 63, 0.85),
-      transparent
-    );
-    top: 0;
+        90deg,
+        transparent,
+        rgba(233, 54, 63, 0.85),
+        rgba(255, 200, 202, 0.9),
+        rgba(233, 54, 63, 0.85),
+        transparent
+      )
+      top / 100% 2px no-repeat;
     filter: drop-shadow(0 0 6px rgba(220, 30, 40, 0.5));
     animation: qr-scan 3.2s cubic-bezier(var(--ease-premium)) infinite;
+    will-change: transform, opacity;
   }
   @keyframes qr-scan {
     0% {
-      top: 0;
+      transform: translateY(0);
       opacity: 0;
     }
     8% {
@@ -861,7 +867,7 @@ html.dark {
       opacity: 1;
     }
     100% {
-      top: 100%;
+      transform: translateY(100%);
       opacity: 0;
     }
   }
@@ -1460,38 +1466,6 @@ html.dark {
     animation: float 6s ease-in-out infinite;
     will-change: transform;
   }
-  /* Gentler drift for the glass emblem at the spiderweb's hub. Animates `translate`
-     (not `transform`) so it composes with the Tailwind centering translate on the same
-     element and the framer-motion tilt transform on its child. */
-  @keyframes emblem-float {
-    0%,
-    100% {
-      translate: -50% -50%;
-    }
-    50% {
-      translate: -50% calc(-50% - 5px);
-    }
-  }
-  .animate-emblem-float {
-    animation: emblem-float 7s ease-in-out infinite;
-  }
-  /* Continuous 360° horizontal turn (rotateY only - never rotateX, so it always
-     turns left/right and never tilts up/down). */
-  @keyframes emblem-spin {
-    from {
-      transform: rotateY(0deg);
-    }
-    to {
-      transform: rotateY(360deg);
-    }
-  }
-  .animate-emblem-spin {
-    animation: emblem-spin 12s linear infinite;
-    transform-style: preserve-3d;
-    transform-origin: 50% 50%;
-    will-change: transform;
-  }
-
   /* ── Hero spiderweb interactive overlay (SpiderwebNetwork) ── */
   .web-strand {
     stroke: rgba(220, 30, 40, 0.2);
@@ -1501,26 +1475,19 @@ html.dark {
     stroke: rgba(220, 30, 40, 0.16);
     stroke-width: 1.2;
   }
+  /* Still at rest. These 48 nodes used to pulse forever, and because they are
+     SVG children Chrome cannot hand that to the compositor: the whole web
+     repainted every frame the hero was on screen, which measured as the main
+     thread 46% busy on a phone while the page did nothing. They now only move
+     when the cursor sends energy down a spoke (.spoke-active below). */
   .web-node {
     fill: #ff6b70;
-    opacity: 0.4;
+    opacity: 0.5;
     transform-box: fill-box;
     transform-origin: center;
-    animation: web-node-pulse 3.2s ease-in-out infinite;
   }
   .web-static .web-node {
     animation: none;
-  }
-  @keyframes web-node-pulse {
-    0%,
-    100% {
-      opacity: 0.35;
-      transform: scale(1);
-    }
-    50% {
-      opacity: 0.85;
-      transform: scale(1.45);
-    }
   }
   /* Energy passing through a spoke: its nodes flash outward in sequence */
   .spoke-active .web-node {
@@ -1587,6 +1554,44 @@ html.dark {
     animation: marquee 15s linear infinite;
     will-change: transform;
   }
+  /* The ticker tracks (MarqueeBand, the Our Work client strip) render their
+     content twice, so the seamless loop point is -50%. These used to be
+     framer-motion `x` animations, which framer drives from JavaScript: a new
+     transform written to the DOM every frame, forever, measured as ~120 style
+     recalculations a second on any page with the band, idle or not. As a CSS
+     transform animation the compositor runs it with no main thread work. */
+  @keyframes marquee-half {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  /* A gentle "scroll down" nudge, on the compositor. */
+  @keyframes nudge-down {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(5px);
+    }
+  }
+  .animate-nudge-down {
+    animation: nudge-down 1.8s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-nudge-down {
+      animation: none;
+    }
+  }
+  .animate-marquee-half {
+    animation: marquee-half var(--marquee-duration, 28s) linear infinite;
+    will-change: transform;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-marquee-half {
+      animation: none;
+    }
+  }
   .animate-grain {
     animation: grain 8s steps(10) infinite;
   }
@@ -1614,14 +1619,15 @@ html.dark {
     height: 100%;
     overflow: visible;
   }
+  /* The footer trace is still. Its dashes used to flow (stroke-dashoffset)
+     and its nodes pulse, both on SVG children the compositor cannot take, so
+     the footer of every page repainted every frame while on screen: always on
+     short pages, and on long ones exactly when someone reached the links. */
   .signal-trace-line {
     stroke-dasharray: 6 10;
-    animation: signal-trace-flow 3.2s linear infinite;
   }
   .signal-trace-node {
-    transform-origin: center;
-    transform-box: fill-box;
-    animation: signal-node-pulse 2.6s ease-in-out infinite;
+    opacity: 0.75;
   }
   .constellation-hub {
     fill: var(--primary);
@@ -1665,7 +1671,6 @@ html.dark {
        render fully invisible in WebKit/Chromium (fill-color wins over color
        for paint). */
     -webkit-text-fill-color: #c0272d;
-    animation: tech-glow-pulse 6.5s ease-in-out infinite;
   }
   .tech-3d::after {
     content: attr(data-text);
@@ -1689,13 +1694,15 @@ html.dark {
     color: transparent;
     -webkit-text-fill-color: transparent;
     pointer-events: none;
-    animation: tech-circuit-sweep 4s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+    /* One sweep after load, then still. It used to loop forever alongside a
+       looping glow, and neither background-position nor filter can run on
+       the compositor, so the headline repainted every frame for as long as
+       anyone read it. Once reads as a deliberate shine; forever read as
+       restless. */
+    animation: tech-circuit-sweep 2.4s cubic-bezier(0.45, 0, 0.2, 1) 0.9s 1 both;
   }
-  /* Same glow-pulse + sweep-highlight treatment as .tech-3d, but without forcing
-     a solid text color - lets it layer over an existing gradient-clip-text span. */
-  .accent-shimmer {
-    animation: tech-glow-pulse 6.5s ease-in-out infinite;
-  }
+  /* Same one-time sweep highlight as .tech-3d, but without forcing a solid
+     text color - lets it layer over an existing gradient-clip-text span. */
   .accent-shimmer::after {
     content: attr(data-text);
     position: absolute;
@@ -1718,8 +1725,7 @@ html.dark {
     color: transparent;
     -webkit-text-fill-color: transparent;
     pointer-events: none;
-    animation: tech-circuit-sweep 4.6s cubic-bezier(0.45, 0, 0.2, 1) infinite;
-    animation-delay: 1.4s;
+    animation: tech-circuit-sweep 2.4s cubic-bezier(0.45, 0, 0.2, 1) 1.6s 1 both;
   }
   @keyframes tech-circuit-sweep {
     0% {
@@ -1730,16 +1736,6 @@ html.dark {
     }
     100% {
       background-position: -40% 0;
-    }
-  }
-  @keyframes tech-glow-pulse {
-    0%,
-    65%,
-    100% {
-      filter: drop-shadow(0 0 0px rgba(192, 39, 45, 0));
-    }
-    82% {
-      filter: drop-shadow(0 0 5px rgba(192, 39, 45, 0.5));
     }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -2089,11 +2085,6 @@ html {
   inherits: false;
   initial-value: 0deg;
 }
-@keyframes beam-spin {
-  to {
-    --beam-angle: 360deg;
-  }
-}
 .glow-border::before,
 .glow-border::after {
   content: "";
@@ -2114,7 +2105,11 @@ html {
     linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  animation: beam-spin 4s linear infinite;
+  /* Held at one angle rather than spun. Spinning meant animating a custom
+     property under a 6px blur (the ::after halo), which the browser can only
+     do by repainting both blurred layers every frame. Still, it reads as a
+     lit edge; spinning, it read as a loading indicator. */
+  --beam-angle: 200deg;
   pointer-events: none;
 }
 /* Blurred halo behind the sharp beam */

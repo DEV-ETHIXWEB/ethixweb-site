@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { motion, useAnimationFrame, useMotionValue, useReducedMotion } from "framer-motion";
+import { motion, useMotionValue, useReducedMotion } from "framer-motion";
 import { Star, ExternalLink } from "lucide-react";
 import { Reveal } from "@/components/shared/Reveal";
 import { useTheme } from "@/components/layout/ThemeProvider";
@@ -158,7 +158,7 @@ function InfiniteCarousel({ brand }: { brand: string }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const initialized = useRef(false);
   const dragging = useRef(false);
-  const visible = useRef(false);
+  const [inView, setInView] = useState(false);
   const trackWidth = useRef(0);
   const reduceMotion = useReducedMotion();
   const [expanded, setExpanded] = useState<number | null>(null);
@@ -175,10 +175,15 @@ function InfiniteCarousel({ brand }: { brand: string }) {
     if (!el) return;
     const ro = new ResizeObserver(() => {
       trackWidth.current = el.offsetWidth;
+      // Start half a track in, so there is content to the left to drag into.
+      if (!initialized.current && trackWidth.current > 0) {
+        x.set(-trackWidth.current / 2);
+        initialized.current = true;
+      }
     });
     ro.observe(el);
     return () => ro.disconnect();
-  }, []);
+  }, [x]);
 
   // Watch the static outer wrapper, not the track itself - the track is
   // constantly translated by the animation it's gating, so observing it
@@ -188,36 +193,44 @@ function InfiniteCarousel({ brand }: { brand: string }) {
   useEffect(() => {
     const el = wrapRef.current;
     if (!el) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        visible.current = entry.isIntersecting;
-      },
-      { rootMargin: "200px" },
-    );
+    const io = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), {
+      rootMargin: "200px",
+    });
     io.observe(el);
     return () => io.disconnect();
   }, []);
 
-  useAnimationFrame((_, delta) => {
-    const trackW = trackWidth.current;
-    const half = trackW / 2;
-    if (half <= 0) return;
-    if (!initialized.current) {
-      x.set(-half);
-      initialized.current = true;
-      return;
-    }
-    if (!visible.current) return;
-    // Hold still while a review is open, so it can actually be read.
-    if (!dragging.current && !reduceMotion && expandedRef.current === null) {
-      x.set(x.get() + 0.4 * delta * 0.06);
-    }
-    // Wrap so dragging (and autoplay) can roam freely while staying seamless -
-    // the track is duplicated, so shifting by exactly `half` is visually identical.
-    const v = x.get();
-    if (v > 0) x.set(v - half);
-    else if (v <= -trackW) x.set(v + half);
-  });
+  // The frame loop exists only while the carousel is on (or near) screen.
+  // It used to be a useAnimationFrame for the life of the page that returned
+  // early off-screen, but being registered at all kept framer's frame loop and
+  // a style pass running every frame on every page with reviews, even with
+  // the carousel scrolled far out of view.
+  useEffect(() => {
+    if (!inView) return;
+    let raf = 0;
+    let last = performance.now();
+    const loop = (now: number) => {
+      const delta = Math.min(64, now - last);
+      last = now;
+      const trackW = trackWidth.current;
+      const half = trackW / 2;
+      if (half > 0) {
+        // Hold still while a review is open, so it can actually be read.
+        if (!dragging.current && !reduceMotion && expandedRef.current === null) {
+          x.set(x.get() + 0.4 * delta * 0.06);
+        }
+        // Wrap so dragging (and autoplay) can roam freely while staying
+        // seamless - the track is duplicated, so shifting by exactly `half`
+        // is visually identical.
+        const v = x.get();
+        if (v > 0) x.set(v - half);
+        else if (v <= -trackW) x.set(v + half);
+      }
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(raf);
+  }, [inView, reduceMotion, x]);
 
   const duplicated = [...REVIEWS, ...REVIEWS, ...REVIEWS, ...REVIEWS];
 

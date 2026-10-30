@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { jsonLdStringify } from "@/lib/json-ld";
-import { motion, useReducedMotion } from "framer-motion";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { MarqueeBand } from "@/components/shared/MarqueeBand";
 import { EditorialHeader } from "@/components/shared/EditorialHeader";
@@ -153,7 +152,6 @@ const REASONS = [
 ];
 
 function About() {
-  const reduceMotion = useReducedMotion();
   return (
     <SiteLayout>
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
@@ -230,20 +228,16 @@ function About() {
             {/* Layered photo collage - photos are the same free-to-use set
                 used on the careers page (see that file's note); swap in real
                 team photos whenever they exist. */}
-            <motion.div
-              className="relative mx-auto mb-12 w-full max-w-md"
-              animate={{ y: reduceMotion ? 0 : [0, -8, 0] }}
-              transition={
-                reduceMotion
-                  ? { duration: 0 }
-                  : { duration: 7, repeat: Infinity, ease: "easeInOut" }
-              }
-            >
+            {/* Still. It used to bob forever on a JavaScript-driven loop,
+                rewriting its transform every frame while it was on screen. */}
+            <div className="relative mx-auto mb-12 w-full max-w-md">
               <div className="absolute -inset-6 rounded-full bg-primary/[0.12] blur-[90px]" />
               <div className="relative">
                 <div className="relative rotate-[1.5deg] overflow-hidden rounded-3xl shadow-lg ring-1 ring-white/10">
                   <img
                     src="/images/careers/real-client-impact.webp"
+                    width={1000}
+                    height={750}
                     alt="The team reviewing a client project together"
                     loading="lazy"
                     decoding="async"
@@ -254,6 +248,8 @@ function About() {
                 <div className="absolute -bottom-10 -left-4 w-44 -rotate-[5deg] overflow-hidden rounded-2xl shadow-lg ring-1 ring-white/15 sm:w-56">
                   <img
                     src="/images/careers/direct-collaboration.webp"
+                    width={1000}
+                    height={750}
                     alt="The team gathered around a table collaborating"
                     loading="lazy"
                     decoding="async"
@@ -269,7 +265,7 @@ function About() {
                   </p>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </Reveal>
           <Reveal delay={0.1}>
             <div className="max-w-xl">

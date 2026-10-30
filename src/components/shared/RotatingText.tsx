@@ -3,6 +3,7 @@ import {
   useCallback,
   useEffect,
   useImperativeHandle,
+  useRef,
   useState,
   type CSSProperties,
 } from "react";
@@ -109,26 +110,65 @@ export const RotatingText = forwardRef<RotatingTextHandle, RotatingTextProps>((p
   ]);
 
   const reduceMotion = useReducedMotion();
+
+  // Only rotate while on screen. Off screen, every tick still re-rendered and
+  // ran a spring animation nobody could see, which kept framer's frame loop
+  // busy for about a second out of every three or four.
+  const rootRef = useRef<HTMLSpanElement>(null);
+  const [onScreen, setOnScreen] = useState(false);
   useEffect(() => {
-    if (!auto || reduceMotion) return;
+    const el = rootRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => setOnScreen(entry.isIntersecting));
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!auto || reduceMotion || !onScreen) return;
     const intervalId = setInterval(next, rotationInterval);
     return () => clearInterval(intervalId);
-  }, [next, rotationInterval, auto, reduceMotion]);
+  }, [next, rotationInterval, auto, reduceMotion, onScreen]);
 
+  // The box is sized by every word at once, so it never changes size.
+  //
+  // Each word used to size the box on its own, and in "wait" mode there is a
+  // beat with no word at all while one leaves before the next arrives. In a
+  // headline that wraps (any phone), each rotation re-wrapped the line twice
+  // and moved everything below it: the blog hero measured a 0.22 layout shift
+  // every 3.2 seconds, more than double Google's "poor" line. Every word now
+  // sits invisible in one shared grid cell, the cell takes the widest, and the
+  // animated word plays inside that fixed box.
   return (
-    <span className={cn("text-rotate", mainClassName)} style={style}>
-      <AnimatePresence mode={animatePresenceMode} initial={animatePresenceInitial}>
-        <motion.span
-          key={currentTextIndex}
-          initial={initial}
-          animate={animate}
-          exit={exit}
-          transition={transition}
-          className={cn("text-rotate-element", elementLevelClassName)}
-        >
-          {texts[currentTextIndex]}
-        </motion.span>
-      </AnimatePresence>
+    <span ref={rootRef} className={cn("text-rotate", mainClassName)} style={style}>
+      <span className="inline-grid">
+        {texts.map((text) => (
+          <span
+            key={text}
+            aria-hidden="true"
+            className={cn(
+              "invisible col-start-1 row-start-1 whitespace-nowrap",
+              elementLevelClassName,
+            )}
+          >
+            {text}
+          </span>
+        ))}
+        <span className="col-start-1 row-start-1 whitespace-nowrap">
+          <AnimatePresence mode={animatePresenceMode} initial={animatePresenceInitial}>
+            <motion.span
+              key={currentTextIndex}
+              initial={initial}
+              animate={animate}
+              exit={exit}
+              transition={transition}
+              className={cn("text-rotate-element inline-block", elementLevelClassName)}
+            >
+              {texts[currentTextIndex]}
+            </motion.span>
+          </AnimatePresence>
+        </span>
+      </span>
     </span>
   );
 });

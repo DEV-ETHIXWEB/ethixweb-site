@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { jsonLdStringify } from "@/lib/json-ld";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { ArrowUpRight, Check } from "lucide-react";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { Reveal } from "@/components/shared/Reveal";
@@ -82,7 +82,6 @@ export const Route = createFileRoute("/our-work/")({
 
 function Portfolio() {
   const [filter, setFilter] = useState<string>("All");
-  const reduceMotion = useReducedMotion();
 
   const visible = useMemo(
     () =>
@@ -241,10 +240,9 @@ function Portfolio() {
           aria-hidden="true"
           className="relative mt-8 flex overflow-hidden [mask-image:linear-gradient(90deg,transparent,black_15%,black_85%,transparent)]"
         >
-          <motion.div
-            className="flex w-max items-center"
-            animate={reduceMotion ? undefined : { x: ["0%", "-50%"] }}
-            transition={{ duration: 32, ease: "linear", repeat: Infinity }}
+          <div
+            className="animate-marquee-half flex w-max items-center"
+            style={{ "--marquee-duration": "32s" } as React.CSSProperties}
           >
             {(["a", "b"] as const).map((row) => (
               <div key={row} className="flex shrink-0 items-center">
@@ -259,7 +257,7 @@ function Portfolio() {
                 ))}
               </div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 
