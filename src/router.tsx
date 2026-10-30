@@ -13,6 +13,11 @@ export const getRouter = () => {
     // the same in reverse. An explicit behavior on the router's scrollTo wins
     // over the CSS, so anchors still glide and page changes do not.
     scrollRestorationBehavior: "instant",
+    // Fetch a page's code on intent (hover, or touchstart on a phone) rather
+    // than on the click itself. Without it every page change on a phone
+    // waited on 3-4 chunk requests after the tap (~0.3s at mobile latency).
+    // The nav links go further and preload when they are on screen.
+    defaultPreload: "intent",
     defaultPreloadStaleTime: 0,
   });
 

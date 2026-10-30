@@ -1,67 +1,60 @@
 import { useEffect, useRef, type ReactNode } from "react";
 
-/** ONE IntersectionObserver shared by every Reveal on the page.
+/** Scroll-in reveal that never holds content back.
  *
- * This component is used ~200 times per page. Giving each instance its own
- * Framer Motion component + observer + timer cost seconds of main-thread work
- * on hydration (Lighthouse: 2.1s total blocking time, "avoid non-composited
- * animations"). The reveal is a plain opacity/transform fade, so it is now a
- * CSS transition - which the compositor runs off the main thread - driven by a
- * single observer that flips one attribute per element. */
+ * Content is visible by default, straight from the server HTML. Only a block
+ * that is still below the screen when the page boots is hidden, and it fades
+ * in as it approaches. Nothing the visitor can already see is ever hidden.
+ *
+ * It used to work the other way round: every Reveal (~200 a page) started at
+ * opacity 0 in CSS and waited for JavaScript to download, hydrate and fire an
+ * observer before it could appear. On a mid-range phone that left the hero
+ * without its intro, buttons and badge for ~1.2s after the page had painted
+ * (live site, 4G profile: first paint 1.9s, hero complete 3.2s), added a
+ * 0.45s fade to every page change, and made sections arrive empty while
+ * scrolling, because a block only started to fade once it was 80px inside
+ * the screen. Hiding below-the-fold blocks after boot happens where nobody is
+ * looking, so the scroll-in effect survives with none of that waiting.
+ *
+ * ONE IntersectionObserver is shared by every instance, and the fade itself
+ * is a CSS transition the compositor runs; see [data-reveal] in styles.css. */
 let sharedObserver: IntersectionObserver | null = null;
+
+/** Blocks the observer has already sorted into "on screen at mount" or
+ * "below, hidden until it approaches". The first callback for an element
+ * decides which; only the second kind needs a later callback. */
+const classified = new WeakSet<Element>();
 
 function getObserver() {
   if (sharedObserver) return sharedObserver;
   sharedObserver = new IntersectionObserver(
     (entries, obs) => {
-      // Any callback at all proves the observer works - including one where
-      // nothing is intersecting yet, which is the normal first call for
-      // elements below the fold.
-      markObserverWorking();
       for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        entry.target.setAttribute("data-revealed", "");
-        obs.unobserve(entry.target);
+        const el = entry.target;
+        if (!classified.has(el)) {
+          classified.add(el);
+          // On screen (or near it), or already scrolled past: leave it alone.
+          // Below the screen: hide it now, unseen, and reveal it on approach.
+          if (entry.isIntersecting || entry.boundingClientRect.top < 0) {
+            obs.unobserve(el);
+          } else {
+            el.setAttribute("data-reveal-pending", "");
+          }
+          continue;
+        }
+        if (entry.isIntersecting) {
+          el.removeAttribute("data-reveal-pending");
+          obs.unobserve(el);
+        }
       }
     },
-    // Mirrors the previous useInView({ margin: "-80px" }).
-    { rootMargin: "-80px" },
+    // Start the fade a little before the block reaches the screen, so on a
+    // phone it is already arriving as the thumb brings it into view rather
+    // than appearing late. This used to be -80px: the fade only began once
+    // the block was 80px inside the viewport.
+    { rootMargin: "0px 0px 12% 0px" },
   );
   return sharedObserver;
-}
-
-/** Safety net for the whole page instead of one timer per instance: if an
- * observer never fires (older iOS Safari has known rootMargin bugs), reveal
- * everything at once. `.reveal-fallback` is handled in styles.css.
- *
- * This used to fire unconditionally 1.4s after the first Reveal mounted, and
- * nothing ever removed the class - so on every page load the entire document
- * was forced visible after 1.4 seconds and the scroll reveal this component
- * exists for never ran for anything below the fold. The timer now only
- * trips when the observer has produced no callback at all, which is the one
- * situation it was written for; a working observer marks the document ready
- * and cancels it. */
-let fallbackTimer: ReturnType<typeof setTimeout> | null = null;
-let observerFired = false;
-
-function markObserverWorking() {
-  observerFired = true;
-  if (typeof document !== "undefined") {
-    // Tells the independent in-head fallback in __root.tsx to stand down.
-    document.documentElement.setAttribute("data-reveal-ready", "");
-  }
-  if (fallbackTimer) {
-    clearTimeout(fallbackTimer);
-    fallbackTimer = null;
-  }
-}
-
-function armFallback() {
-  if (fallbackTimer || observerFired || typeof document === "undefined") return;
-  fallbackTimer = setTimeout(() => {
-    fallbackTimer = null;
-    if (!observerFired) document.documentElement.classList.add("reveal-fallback");
-  }, 1400);
 }
 
 export function Reveal({
@@ -80,10 +73,12 @@ export function Reveal({
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    armFallback();
     const obs = getObserver();
     obs.observe(el);
-    return () => obs.unobserve(el);
+    return () => {
+      obs.unobserve(el);
+      classified.delete(el);
+    };
   }, []);
 
   const Tag = as;

@@ -164,7 +164,19 @@ function Home() {
         <BlackFridayPromo />
         <Services />
         <ServiceCatalogTeaser />
-        <Suspense fallback={null}>
+        {/* The placeholder holds the section's measured height (the smallest
+            in each breakpoint's range) while its code loads. With no
+            placeholder the section was 0px tall until then, and on a slow
+            phone it could pop in at ~1,800px and shove everything below it
+            down mid-scroll. */}
+        <Suspense
+          fallback={
+            <div
+              aria-hidden="true"
+              className="min-h-[1750px] sm:min-h-[2040px] md:min-h-[2140px] lg:min-h-[1460px] xl:min-h-[1525px]"
+            />
+          }
+        >
           <GlobalNetwork />
         </Suspense>
         <Testimonials />

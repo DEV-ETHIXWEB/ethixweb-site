@@ -235,26 +235,6 @@ function RootShell({ children }: { children: ReactNode }) {
               "r.classList.remove('dark','light');r.classList.add(t);}}catch(e){}})()",
           }}
         />
-        {/* [data-reveal] elements (~200/page) start at opacity:0 in pure CSS,
-            before any JS runs, and only become visible once React hydrates
-            and Reveal's IntersectionObserver fires. On a slow or heavily
-            throttled device the page can sit blank for however long the
-            framework bundle takes to download, parse and hydrate, with
-            nothing to catch it. This independent fallback is parsed and
-            executed before the framework bundle is even requested.
-            It only fires if hydration never got far enough to mark the
-            document ready - Reveal sets data-reveal-ready as soon as its
-            observer is running, and an observer that is running does not
-            need rescuing. Previously this fired unconditionally, which
-            forced every element on the page visible two seconds after load
-            and silently disabled the scroll reveal it was meant to protect. */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html:
-              "setTimeout(function(){var r=document.documentElement;" +
-              "if(!r.hasAttribute('data-reveal-ready'))r.classList.add('reveal-fallback')},2000)",
-          }}
-        />
       </head>
       <body>
         {children}

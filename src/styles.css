@@ -422,17 +422,18 @@ html.dark {
   }
 
   /* ── Reveal: scroll-in fade used ~200x per page (see Reveal.tsx).
-     Deliberately CSS, not JS: opacity/transform transitions are composited,
-     so the whole page's reveal work stays off the main thread. `data-revealed`
-     is set by one shared IntersectionObserver; `.reveal-fallback` on <html> is
-     the page-wide safety net if the observer never fires. ── */
+     Visible by default: the server HTML paints complete, with or without
+     JavaScript. Reveal.tsx marks only blocks still below the screen at boot
+     with data-reveal-pending, and removes it as they approach, which plays
+     the fade. Deliberately CSS: opacity/transform transitions are composited,
+     so the page's reveal work stays off the main thread. ── */
   [data-reveal] {
-    opacity: 0;
-    transform: translateY(16px);
     transition:
       opacity var(--duration-base) cubic-bezier(var(--ease-premium)),
       transform var(--duration-base) cubic-bezier(var(--ease-premium));
-    transition-delay: var(--reveal-delay, 0s);
+    /* Stagger capped: a card grid's per-item delay reached 0.5s on its last
+       items, which on a phone read as the section still loading. */
+    transition-delay: min(var(--reveal-delay, 0s), 0.2s);
     /* Safari-specific: once this transform transition finishes, Safari can
        leave a stale/incorrect paint of the CHILD content's background
        (gradients especially) instead of repainting it - any later trigger
@@ -447,20 +448,17 @@ html.dark {
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
   }
-  [data-reveal][data-revealed],
-  .reveal-fallback [data-reveal] {
-    opacity: 1;
-    transform: none;
-  }
-  /* No JS means no observer, so never leave content stuck at opacity 0. */
-  @media (scripting: none) {
-    [data-reveal] {
-      opacity: 1;
-      transform: none;
-    }
+  /* Hidden instantly (no transition) while below the screen, so the hide
+     itself costs nothing; removing the attribute restores the transition
+     above and fades the block in. */
+  [data-reveal][data-reveal-pending] {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: none;
   }
   @media (prefers-reduced-motion: reduce) {
-    [data-reveal] {
+    [data-reveal],
+    [data-reveal][data-reveal-pending] {
       opacity: 1;
       transform: none;
       transition: none;

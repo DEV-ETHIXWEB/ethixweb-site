@@ -140,6 +140,9 @@ export function Navbar() {
               <Link
                 key={l.to}
                 to={l.to}
+                // The six top-level pages are what people tap next; their code
+                // is small, so fetch it as soon as the link is on screen.
+                preload="viewport"
                 // The active treatment (bolder label + glowing underline) is
                 // pure CSS off the `data-status="active"` attribute the router
                 // sets here - see `.nav-label` in styles.css.
@@ -194,6 +197,7 @@ export function Navbar() {
                     <Link
                       key={l.to}
                       to={l.to}
+                      preload="viewport"
                       onClick={() => setOpen(false)}
                       activeOptions={{ exact: l.to === "/" }}
                       className="px-4 py-3 rounded-lg hover:bg-foreground/5 text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
