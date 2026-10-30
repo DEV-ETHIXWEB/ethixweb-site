@@ -4,9 +4,9 @@ import { DollarSign, Layers3, Palette, PhoneCall, TrendingUp } from "lucide-reac
 import spiderweb from "@/assets/spiderweb.svg";
 import spiderwebLight from "@/assets/spiderweb-light.svg";
 // A single frame of the real 3D model (the Three.js scene that used to spin
-// here live), captured at a three-quarter turn with a transparent background.
-// It keeps the depth and glass highlight of the live render at none of the
-// cost: 17KB, painted once. 365x420.
+// here live), captured straight on with a transparent background. It keeps the
+// glass material and highlight of the live render at none of the cost: 12KB,
+// painted once. 404x420.
 import emblemHero from "@/assets/emblem-hero-3d.webp";
 import { usePauseOffscreen } from "@/hooks/usePauseOffscreen";
 
@@ -149,9 +149,8 @@ function useIsSmall() {
  * on screen, and a long tail of bugs: white flashes, clipped edges, halos,
  * moire, and a flat grey render on phones.
  *
- * It is now one frame of that same 3D model, captured at a three-quarter turn
- * so the extrusion and glass highlight read: the depth and size of the live
- * render, painted once, on every device. The letter is drawn at 1.35x the
+ * It is now one frame of that same 3D model, captured straight on: the glass
+ * and size of the live render, painted once, on every device. The letter is drawn at 1.35x the
  * hub box, which is how large the live render appeared (its scene was
  * oversized into the box to crop its halo); the flat artwork at 1x read as
  * small and sticker-like by comparison. */
@@ -175,7 +174,7 @@ function GlassEmblem({ theme }: { theme: string }) {
         src={emblemHero}
         alt=""
         aria-hidden="true"
-        width={365}
+        width={404}
         height={420}
         draggable={false}
         decoding="async"
