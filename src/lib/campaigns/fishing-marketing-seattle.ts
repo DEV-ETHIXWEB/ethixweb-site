@@ -62,6 +62,7 @@ export const fishingMarketingSeattle: CampaignConfig = {
 
   hero: {
     eyebrow: "Seattle · Puget Sound",
+    eyebrowIcon: Fish,
     headline: "More Fishing Bookings. Without Missing the Next Customer.",
     subheadline:
       "Ethixweb builds the website, AI lead assistant and Google Ads system that helps Seattle and Puget Sound fishing charters, guides and marine businesses get found, capture inquiries and turn more searches into bookings.",

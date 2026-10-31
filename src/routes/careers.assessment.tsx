@@ -7,6 +7,7 @@ import {
   ArrowUpRight,
   Camera,
   Check,
+  ClipboardCheck,
   Clock,
   FileText,
   Loader2,
@@ -414,7 +415,11 @@ function AssessmentPage() {
 
   return (
     <SiteLayout>
-      <PageHero eyebrow="Candidate Assessment" title="The Ethixweb hiring assessment.">
+      <PageHero
+        icon={ClipboardCheck}
+        eyebrow="Candidate Assessment"
+        title="The Ethixweb hiring assessment."
+      >
         {TOTAL_QUESTIONS} questions, {EXAM_DURATION_MINUTES} minutes, generated uniquely for you
         from your resume and the role you applied for. Proctored, recorded, and reviewed by our
         hiring team.

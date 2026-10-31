@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/shared/Container";
+import { PageTag } from "@/components/shared/PageTag";
 import { GlowBlob } from "@/components/shared/GlowBlob";
 import { Reveal } from "@/components/shared/Reveal";
 import { CampaignHeroForm } from "@/components/campaign/CampaignHeroForm";
@@ -15,9 +16,7 @@ export function CampaignHero({ config, meta }: { config: CampaignConfig; meta: C
       <GlowBlob size="lg" color="primary" className="top-0 left-1/2 -translate-x-1/2" />
       <Container className="relative grid items-center gap-12 lg:grid-cols-[1.1fr_1fr]">
         <Reveal>
-          <p className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.3em] text-primary-text">
-            {config.hero.eyebrow}
-          </p>
+          <PageTag items={config.hero.eyebrow.split(" · ")} icon={config.hero.eyebrowIcon} />
           <h1 className="mt-5 font-display text-5xl font-bold leading-[1.1] text-gradient pb-1 sm:text-6xl lg:text-7xl">
             {config.hero.headline}
           </h1>

@@ -17,17 +17,18 @@ import { JOBS, getJob } from "@/lib/careers-data";
 import { formLabelClass, formInputClass } from "@/lib/form-styles";
 import { siteUrl } from "@/lib/site";
 import {
+  ArrowUpRight,
+  Briefcase,
+  Check,
+  Code2,
+  FileText,
+  Loader2,
   Mail,
   MapPin,
-  ArrowUpRight,
-  Check,
-  UploadCloud,
-  FileText,
-  X,
-  Loader2,
-  Code2,
   Search,
+  UploadCloud,
   Users,
+  X,
 } from "lucide-react";
 
 const ALLOWED_RESUME_TYPES = [
@@ -248,7 +249,11 @@ function ApplyPage() {
 
   return (
     <SiteLayout>
-      <PageHero eyebrow="Apply" title={preselected ? preselected.title : "Apply to Ethixweb"}>
+      <PageHero
+        icon={Briefcase}
+        eyebrow="Apply"
+        title={preselected ? preselected.title : "Apply to Ethixweb"}
+      >
         A few quick steps. We typically respond within a few business days.
       </PageHero>
 

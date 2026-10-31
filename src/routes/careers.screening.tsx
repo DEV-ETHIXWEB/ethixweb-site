@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, Check, Clock, Loader2 } from "lucide-react";
+import { ArrowUpRight, Check, ClipboardCheck, Clock, Loader2 } from "lucide-react";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { PageHero } from "@/components/shared/PageHero";
 import { Container } from "@/components/shared/Container";
@@ -124,7 +124,11 @@ function ScreeningPage() {
   if (!job) {
     return (
       <SiteLayout>
-        <PageHero eyebrow="Screening" title="This role isn't available right now.">
+        <PageHero
+          icon={ClipboardCheck}
+          eyebrow="Screening"
+          title="This role isn't available right now."
+        >
           The link you followed doesn&apos;t match an open position.
         </PageHero>
       </SiteLayout>
@@ -133,7 +137,11 @@ function ScreeningPage() {
 
   return (
     <SiteLayout>
-      <PageHero eyebrow={`Screening: ${job.title}`} title="A short test before the interview.">
+      <PageHero
+        icon={ClipboardCheck}
+        eyebrow={`Screening: ${job.title}`}
+        title="A short test before the interview."
+      >
         A handful of scenario questions specific to this role. It takes about 15-20 minutes, and
         every result gets reviewed by a person before any decision is made.
       </PageHero>

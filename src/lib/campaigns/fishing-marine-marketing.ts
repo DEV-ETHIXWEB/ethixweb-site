@@ -49,6 +49,7 @@ export const fishingMarineMarketing: CampaignConfig = {
 
   hero: {
     eyebrow: "Fishing & Marine",
+    eyebrowIcon: Fish,
     headline: "More Bookings. Better Customer Experience. Less Time Chasing Inquiries.",
     subheadline:
       "Ethixweb builds the website, AI lead assistant and Google Ads system that helps fishing charters, guides and marine businesses get found, answer inquiries and turn more searches into bookings, never missing the next customer while you're on the water.",

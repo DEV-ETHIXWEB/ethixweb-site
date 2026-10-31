@@ -2,13 +2,18 @@ import { ReactNode } from "react";
 import { Reveal } from "@/components/shared/Reveal";
 import { Container } from "@/components/shared/Container";
 import { GlowBlob } from "@/components/shared/GlowBlob";
+import { PageTag } from "@/components/shared/PageTag";
+import type { LucideIcon } from "lucide-react";
 
 export function PageHero({
   eyebrow,
+  icon,
   title,
   children,
 }: {
   eyebrow: ReactNode;
+  /** The mark in the page tag; omitted, the brand's flame and snowflake. */
+  icon?: LucideIcon;
   title: ReactNode;
   children?: ReactNode;
 }) {
@@ -18,7 +23,7 @@ export function PageHero({
       <GlowBlob size="lg" color="primary" className="top-0 left-1/2 -translate-x-1/2" />
       <Container size="medium" className="relative text-center">
         <Reveal>
-          <p className="text-xs uppercase tracking-[0.3em] text-primary-text">{eyebrow}</p>
+          <PageTag items={[eyebrow]} icon={icon} />
           <h1 className="mt-5 font-display text-7xl font-bold leading-[1.15] text-gradient pb-1">
             {title}
           </h1>

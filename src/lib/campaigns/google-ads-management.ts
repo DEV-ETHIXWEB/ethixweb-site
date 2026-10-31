@@ -55,6 +55,7 @@ export const googleAdsManagement: CampaignConfig = {
 
   hero: {
     eyebrow: "Google Ads Management",
+    eyebrowIcon: Megaphone,
     headline: "Turn Search Intent Into Measurable Leads.",
     subheadline:
       "Ethixweb builds and manages Google Ads and Local Services Ads campaigns around business outcomes, not vanity metrics: relevant keywords, fast landing pages, real conversion tracking and ongoing optimization.",

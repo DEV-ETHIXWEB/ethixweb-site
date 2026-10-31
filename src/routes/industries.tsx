@@ -11,16 +11,18 @@ import { WebSpotlight } from "@/components/shared/WebSpotlight";
 import { trackWebSpotlight } from "@/lib/web-spotlight";
 import { OG_IMAGE, SITE_URL, siteUrl } from "@/lib/site";
 import {
-  Wrench,
-  Anchor,
-  Bot,
-  ShieldCheck,
-  MapPin,
-  ShoppingBag,
-  Mail,
-  ArrowUpRight,
   AlertTriangle,
+  Anchor,
+  ArrowUpRight,
+  Bot,
+  HardHat,
+  Mail,
+  MapPin,
+  ShieldCheck,
+  ShoppingBag,
+  Wrench,
 } from "lucide-react";
+import { PageTag } from "@/components/shared/PageTag";
 
 export const Route = createFileRoute("/industries")({
   head: () => ({
@@ -143,10 +145,7 @@ function Industries() {
         <Container className="relative">
           <div className="max-w-3xl">
             <Reveal>
-              <div className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">
-                <span className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_18px_rgba(138,24,28,0.9)]" />
-                Industries
-              </div>
+              <PageTag items={["Industries"]} icon={HardHat} />
             </Reveal>
             <Reveal delay={0.08}>
               <h1 className="mt-7 max-w-3xl pb-1 text-[clamp(2.5rem,5.2vw,4.5rem)] font-extrabold leading-[1.06] text-gradient">

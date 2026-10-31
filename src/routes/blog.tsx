@@ -19,6 +19,7 @@ import { WebSpotlight } from "@/components/shared/WebSpotlight";
 import { trackWebSpotlight } from "@/lib/web-spotlight";
 import { ArrowUpRight, Check, Clock, PenLine } from "lucide-react";
 import { LOGO_IMAGE, OG_IMAGE, SITE_URL, siteUrl } from "@/lib/site";
+import { PageTag } from "@/components/shared/PageTag";
 
 export const Route = createFileRoute("/blog")({
   head: () => ({
@@ -272,10 +273,7 @@ function Blog() {
         <Container className="relative">
           <div className="max-w-3xl">
             <Reveal>
-              <div className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">
-                <span className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_18px_rgba(138,24,28,0.9)]" />
-                Journal - {POSTS.length} essays in the queue
-              </div>
+              <PageTag items={["Journal", `${POSTS.length} essays in the queue`]} icon={PenLine} />
             </Reveal>
             <Reveal delay={0.08}>
               <h1 className="mt-7 max-w-3xl pb-1 text-[clamp(2.5rem,5.2vw,4.5rem)] font-extrabold leading-[1.06] text-gradient">

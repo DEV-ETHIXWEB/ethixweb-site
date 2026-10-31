@@ -9,14 +9,15 @@ import { WebSpotlight } from "@/components/shared/WebSpotlight";
 import { trackWebSpotlight } from "@/lib/web-spotlight";
 import { OG_IMAGE, SITE_URL, siteUrl } from "@/lib/site";
 import {
-  Code2,
-  Smartphone,
-  Wrench,
-  Search,
-  Layers,
-  MousePointerClick,
   ArrowUpRight,
   CheckCircle2,
+  Code2,
+  Globe2,
+  Layers,
+  MousePointerClick,
+  Search,
+  Smartphone,
+  Wrench,
   Zap,
 } from "lucide-react";
 
@@ -134,6 +135,7 @@ function Page() {
     <SiteLayout>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: SERVICE_SCHEMA }} />
       <PageHero
+        icon={Globe2}
         eyebrow="Website Design"
         title="Transform Your Online Presence with Expert Website Design"
       >

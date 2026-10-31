@@ -134,7 +134,10 @@ export interface CampaignConfig {
   schema: CampaignSchema;
 
   hero: {
+    /** Segments after " · " render as separate parts of the page tag. */
     eyebrow: string;
+    /** The mark in the page tag; omitted, the brand's flame and snowflake. */
+    eyebrowIcon?: LucideIcon;
     headline: string;
     subheadline: string;
     primaryCta: string;

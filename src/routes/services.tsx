@@ -11,8 +11,17 @@ import { MarqueeBand } from "@/components/shared/MarqueeBand";
 import { EditorialHeader } from "@/components/shared/EditorialHeader";
 import { EngagementRhythm } from "@/components/shared/EngagementRhythm";
 import { SERVICE_CATALOG, SERVICE_CATALOG_TOTAL } from "@/lib/services-catalog";
-import { ArrowUpRight, ChevronDown, Telescope, Map, Hammer, TrendingUp } from "lucide-react";
+import {
+  ArrowUpRight,
+  ChevronDown,
+  Hammer,
+  Map,
+  Telescope,
+  TrendingUp,
+  Wrench,
+} from "lucide-react";
 import { OG_IMAGE, siteUrl } from "@/lib/site";
+import { PageTag } from "@/components/shared/PageTag";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -182,10 +191,7 @@ function Services() {
         <Container className="relative">
           <div className="max-w-3xl">
             <Reveal>
-              <div className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">
-                <span className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_18px_rgba(138,24,28,0.9)]" />
-                Services
-              </div>
+              <PageTag items={["Services"]} icon={Wrench} />
             </Reveal>
             <Reveal delay={0.08}>
               <h1 className="mt-7 max-w-3xl pb-1 text-[clamp(2.5rem,5.2vw,4.5rem)] font-extrabold leading-[1.06] text-gradient">

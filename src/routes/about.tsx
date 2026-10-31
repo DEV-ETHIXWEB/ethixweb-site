@@ -10,17 +10,19 @@ import { WebSpotlight } from "@/components/shared/WebSpotlight";
 import { trackWebSpotlight } from "@/lib/web-spotlight";
 import { LOGO_IMAGE, OG_IMAGE, SITE_URL, siteUrl } from "@/lib/site";
 import {
-  Target,
-  Heart,
-  Zap,
-  ArrowUpRight,
   ArrowRight,
+  ArrowUpRight,
+  CheckCircle2,
   Compass,
   Eye,
-  CheckCircle2,
-  XCircle,
+  Heart,
   Landmark,
+  Target,
+  Users,
+  XCircle,
+  Zap,
 } from "lucide-react";
+import { PageTag } from "@/components/shared/PageTag";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -166,10 +168,7 @@ function About() {
         <Container className="relative">
           <div className="max-w-3xl">
             <Reveal>
-              <div className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">
-                <span className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_18px_rgba(138,24,28,0.9)]" />
-                About
-              </div>
+              <PageTag items={["About"]} icon={Users} />
             </Reveal>
             <Reveal delay={0.08}>
               <h1 className="mt-7 max-w-3xl pb-1 text-[clamp(2.5rem,5.2vw,4.5rem)] font-extrabold leading-[1.06] text-gradient">

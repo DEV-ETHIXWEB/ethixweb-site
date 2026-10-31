@@ -5,7 +5,7 @@ import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
 import { Reveal } from "@/components/shared/Reveal";
 import { Container } from "@/components/shared/Container";
 import { PolicySection as Section } from "@/components/policies/PolicySection";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ShieldCheck } from "lucide-react";
 import { OG_IMAGE, siteUrl } from "@/lib/site";
 
 export const Route = createFileRoute("/policies/privacy")({
@@ -41,7 +41,7 @@ export const Route = createFileRoute("/policies/privacy")({
 function PrivacyPolicy() {
   return (
     <SiteLayout>
-      <PageHero eyebrow="Policies" title="Privacy Policy">
+      <PageHero icon={ShieldCheck} eyebrow="Policies" title="Privacy Policy">
         Last updated: October 2026
       </PageHero>
       <Container>

@@ -140,6 +140,7 @@ function Page() {
     <SiteLayout>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: SERVICE_SCHEMA }} />
       <PageHero
+        icon={Palette}
         eyebrow="Graphic Design & Branding"
         title="Create a Powerful Brand Identity That Stands Out"
       >

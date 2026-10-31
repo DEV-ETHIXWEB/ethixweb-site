@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { jsonLdStringify } from "@/lib/json-ld";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AnimatePresence } from "framer-motion";
-import { ArrowUpRight, Check } from "lucide-react";
+import { ArrowUpRight, Check, Hammer } from "lucide-react";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { Reveal } from "@/components/shared/Reveal";
 import { Container } from "@/components/shared/Container";
@@ -13,6 +13,7 @@ import { HeroCarousel, type HeroCarouselSlide } from "@/components/portfolio/Her
 import { Testimonials } from "@/components/shared/Testimonials";
 import { CASE_STUDIES, SERVICE_FILTERS } from "@/lib/portfolio-data";
 import { OG_IMAGE, siteUrl } from "@/lib/site";
+import { PageTag } from "@/components/shared/PageTag";
 
 // Hero carousel: a fixed set of four shipped-site screenshots, in this order.
 // Pulled from the listing data (already has the after-screenshot + headline
@@ -108,10 +109,7 @@ function Portfolio() {
           <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
             <div>
               <Reveal>
-                <div className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">
-                  <span className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_18px_rgba(138,24,28,0.9)]" />
-                  Our Work
-                </div>
+                <PageTag items={["Our work"]} icon={Hammer} />
               </Reveal>
               <Reveal delay={0.08}>
                 <h1 className="mt-7 pb-1 text-[clamp(2.5rem,4.8vw,4.2rem)] font-extrabold leading-[1.06] text-gradient">

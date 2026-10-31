@@ -14,18 +14,20 @@ import { JOBS, HIRING_PROCESS } from "@/lib/careers-data";
 import { LOGO_IMAGE, OG_IMAGE, SITE_URL, siteUrl } from "@/lib/site";
 import {
   ArrowUpRight,
-  Globe2,
-  Handshake,
-  Code2,
-  GraduationCap,
-  Rocket,
   Bot,
-  TrendingUp,
+  Briefcase,
+  Code2,
+  Flag,
+  Globe2,
+  GraduationCap,
+  Handshake,
+  Rocket,
   Target,
   Telescope,
-  Flag,
+  TrendingUp,
   Users,
 } from "lucide-react";
+import { PageTag } from "@/components/shared/PageTag";
 
 export const Route = createFileRoute("/careers/")({
   head: () => ({
@@ -351,10 +353,10 @@ function Careers() {
 
         <Container className="relative flex flex-col items-center text-center">
           <Reveal>
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_18px_rgba(138,24,28,0.9)]" />
-              We&apos;re hiring - {JOBS.length} open role{JOBS.length === 1 ? "" : "s"}
-            </div>
+            <PageTag
+              items={["We're hiring", `${JOBS.length} open role${JOBS.length === 1 ? "" : "s"}`]}
+              icon={Briefcase}
+            />
           </Reveal>
           <Reveal delay={0.08}>
             <h1 className="mt-7 max-w-4xl pb-1 text-[clamp(2.6rem,6vw,5.25rem)] font-extrabold leading-[1.03] text-gradient">

@@ -5,7 +5,7 @@ import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
 import { Reveal } from "@/components/shared/Reveal";
 import { Container } from "@/components/shared/Container";
 import { PolicySection as Section } from "@/components/policies/PolicySection";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, FileText } from "lucide-react";
 import { OG_IMAGE, siteUrl } from "@/lib/site";
 
 export const Route = createFileRoute("/policies/terms")({
@@ -41,7 +41,7 @@ export const Route = createFileRoute("/policies/terms")({
 function TermsPolicy() {
   return (
     <SiteLayout>
-      <PageHero eyebrow="Policies" title="Terms & Conditions">
+      <PageHero icon={FileText} eyebrow="Policies" title="Terms & Conditions">
         Last updated: January 2025
       </PageHero>
       <Container>

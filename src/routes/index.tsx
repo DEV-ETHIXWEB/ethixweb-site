@@ -5,14 +5,12 @@ import {
   ArrowUpRight,
   Bot,
   Cable,
-  Flame,
   Globe2,
   Layers3,
   LifeBuoy,
   Megaphone,
   Search,
   ShieldCheck,
-  Snowflake,
   Star,
   Workflow,
 } from "lucide-react";
@@ -32,6 +30,7 @@ import { trackWebSpotlight } from "@/lib/web-spotlight";
 import { SERVICE_CATALOG, SERVICE_CATALOG_TOTAL } from "@/lib/services-catalog";
 import { CASE_STUDIES } from "@/lib/portfolio-data";
 import { LOGO_IMAGE, OG_IMAGE, SITE_URL, siteUrl } from "@/lib/site";
+import { PageTag } from "@/components/shared/PageTag";
 
 const GlobalNetwork = lazy(() =>
   import("@/components/home/GlobalNetwork").then((m) => ({ default: m.GlobalNetwork })),
@@ -240,22 +239,7 @@ function Hero() {
       <Container className="relative grid items-center gap-14 pt-4 sm:pt-12 lg:grid-cols-[0.95fr_1.05fr]">
         <div className="relative z-10">
           <Reveal>
-            {/* A service tag rather than the stock glowing-dot pill: a solid
-                block with the heating-and-cooling marks every HVAC company
-                uses, joined to a ruled list of the trades we build for. */}
-            <div className="inline-flex items-stretch overflow-hidden rounded-md border border-primary/35 text-[11px] font-bold uppercase tracking-[0.16em]">
-              <span className="flex items-center gap-1 bg-primary px-2.5 py-1.5 text-primary-foreground">
-                <Flame className="h-3.5 w-3.5" aria-hidden="true" />
-                <Snowflake className="h-3.5 w-3.5" aria-hidden="true" />
-              </span>
-              <span className="flex items-center gap-2.5 bg-primary/[0.07] px-3 py-1.5 text-foreground/85">
-                HVAC
-                <span aria-hidden="true" className="h-3 w-px bg-primary/45" />
-                Plumbing
-                <span aria-hidden="true" className="h-3 w-px bg-primary/45" />
-                Home services
-              </span>
-            </div>
+            <PageTag items={["HVAC", "Plumbing", "Home services"]} />
           </Reveal>
           {/* Not wrapped in <Reveal>: this h1 is the page's LCP element, and
               Reveal's composited opacity/transform transition leaves a

@@ -75,7 +75,11 @@ function Page() {
   return (
     <SiteLayout>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: SERVICE_SCHEMA }} />
-      <PageHero eyebrow="AI & Automation" title="Software that thinks. Workflows that scale.">
+      <PageHero
+        icon={Bot}
+        eyebrow="AI & Automation"
+        title="Software that thinks. Workflows that scale."
+      >
         We build production-grade AI that quietly transforms how your business runs.
       </PageHero>
       <section className="py-20">

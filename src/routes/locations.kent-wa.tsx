@@ -136,14 +136,7 @@ function Page() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: LOCAL_BUSINESS_SCHEMA }}
       />
-      <PageHero
-        eyebrow={
-          <span className="inline-flex items-center gap-1.5">
-            <MapPin className="h-3.5 w-3.5" /> Kent, WA
-          </span>
-        }
-        title="Website Design Services in Kent, WA"
-      >
+      <PageHero icon={MapPin} eyebrow="Kent, WA" title="Website Design Services in Kent, WA">
         Modern, mobile friendly websites that help Kent WA businesses attract more customers and
         grow faster.
       </PageHero>

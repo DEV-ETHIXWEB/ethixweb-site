@@ -3,7 +3,7 @@ import { SiteLayout } from "@/components/layout/SiteLayout";
 import { PageHero } from "@/components/shared/PageHero";
 import { Reveal } from "@/components/shared/Reveal";
 import { Container } from "@/components/shared/Container";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Briefcase } from "lucide-react";
 import { OG_IMAGE, siteUrl } from "@/lib/site";
 
 export const Route = createFileRoute("/not-hiring")({
@@ -42,7 +42,7 @@ export const Route = createFileRoute("/not-hiring")({
 function NotHiring() {
   return (
     <SiteLayout>
-      <PageHero eyebrow="Careers" title="We're Not Hiring Right Now">
+      <PageHero icon={Briefcase} eyebrow="Careers" title="We're Not Hiring Right Now">
         Thank you for your interest in joining Ethixweb. We currently do not have any open
         positions. Please check back in the future for new opportunities.
       </PageHero>

@@ -113,6 +113,7 @@ function Page() {
     <SiteLayout>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: SERVICE_SCHEMA }} />
       <PageHero
+        icon={Megaphone}
         eyebrow="Social Media Marketing"
         title="Drive Engagement and Growth with Social Media"
       >

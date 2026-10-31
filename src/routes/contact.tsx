@@ -12,7 +12,7 @@ import { Turnstile, type TurnstileHandle } from "@/components/shared/Turnstile";
 import { formLabelClass, formInputClass } from "@/lib/form-styles";
 import { trackLeadFormConversion } from "@/lib/gtag";
 import { isValidPhone, normalizeWebsiteUrl } from "@/lib/utils";
-import { Mail, Clock, ArrowUpRight, Check, Building2 } from "lucide-react";
+import { ArrowUpRight, Building2, Check, Clock, Mail, PhoneCall } from "lucide-react";
 import { OG_IMAGE, SITE_URL, siteUrl } from "@/lib/site";
 
 // ── Data ─────────────────────────────────────────────────────────────────────
@@ -238,7 +238,7 @@ function ContactBody() {
 
   return (
     <>
-      <PageHero eyebrow="Contact" title="Let's get you more booked jobs.">
+      <PageHero icon={PhoneCall} eyebrow="Contact" title="Let's get you more booked jobs.">
         Three details is all we need to get started. We'll look at your website and call you within
         one business day.
       </PageHero>
