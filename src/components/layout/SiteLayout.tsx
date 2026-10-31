@@ -19,6 +19,15 @@ function Inner({ children }: { children: ReactNode }) {
       >
         Skip to content
       </a>
+      {/* Don't paint until the whole header has been parsed. The HTML
+          streams in, and Chrome sometimes painted the first frame with only
+          part of the navbar received: the right-hand controls were missing,
+          so the links sat ~86px off and jumped sideways a moment later. The
+          header is the first content in <body>, so this waits a few hundred
+          bytes at most. React lifts the <link> into <head>, so only pages
+          that render this layout (and so the #nav-end marker) carry it;
+          browsers without render-blocking support ignore it. */}
+      <link rel="expect" href="#nav-end" blocking="render" />
       <ScrollProgress />
       <div className="dust-field" />
       <div className="relative z-10">

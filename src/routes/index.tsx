@@ -67,7 +67,13 @@ export const Route = createFileRoute("/")({
       { name: "twitter:image", content: OG_IMAGE },
       { name: "robots", content: "index, follow" },
     ],
-    links: [{ rel: "canonical", href: siteUrl("/") }],
+    links: [
+      { rel: "canonical", href: siteUrl("/") },
+      // The hero is a two-column grid; a first frame painted from half of
+      // its HTML laid the text out in the wrong column for a moment. Wait
+      // for the whole hero (it is all in the first part of the page).
+      { rel: "expect", href: "#hero-end", blocking: "render" },
+    ],
     scripts: [
       {
         type: "application/ld+json",
@@ -172,6 +178,7 @@ function Home() {
           starts under the navbar. */}
       <div className="relative -mt-24 bg-gradient-hero">
         <Hero />
+        <span id="hero-end" hidden />
         <SignalStrip />
         {/* Seasonal, and self-retiring: renders only inside its campaign
             window, so there is no stale sale band to remember to remove.

@@ -218,6 +218,8 @@ export function Navbar() {
           )}
         </AnimatePresence>
       </div>
+      {/* Render-blocking marker, see the rel="expect" link in __root.tsx */}
+      <span id="nav-end" hidden />
     </header>
   );
 }
