@@ -33,9 +33,6 @@ import { SERVICE_CATALOG, SERVICE_CATALOG_TOTAL } from "@/lib/services-catalog";
 import { CASE_STUDIES } from "@/lib/portfolio-data";
 import { LOGO_IMAGE, OG_IMAGE, SITE_URL, siteUrl } from "@/lib/site";
 
-/** Field service and lead tools named on /industries; shown in the hero. */
-const TRADE_TOOLS = ["ServiceTitan", "Jobber", "Housecall Pro", "Google Local Services Ads"];
-
 const GlobalNetwork = lazy(() =>
   import("@/components/home/GlobalNetwork").then((m) => ({ default: m.GlobalNetwork })),
 );
@@ -314,22 +311,7 @@ function Hero() {
               </Link>
             </div>
           </Reveal>
-          {/* The tools a contractor already runs on. Recognising them is the
-              fastest "these people know my business" signal on the page. */}
           <Reveal delay={0.3}>
-            <div className="mt-9 flex flex-wrap items-center gap-x-2 gap-y-2.5 text-xs">
-              <span className="mr-1 font-bold uppercase tracking-[0.18em] text-muted-foreground">
-                Works with
-              </span>
-              {TRADE_TOOLS.map((tool) => (
-                <span
-                  key={tool}
-                  className="rounded-full border border-border bg-foreground/[0.03] px-3 py-1 font-semibold text-foreground/80"
-                >
-                  {tool}
-                </span>
-              ))}
-            </div>
             <Link
               to="/hvac-plumbing-marketing"
               className="group mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-primary-text hover:underline"
