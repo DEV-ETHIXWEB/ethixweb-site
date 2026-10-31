@@ -107,7 +107,11 @@ function InteractiveDemoCard({ config }: { config: CampaignConfig }) {
         <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
           Sample questions and answers
         </p>
-        <div className="space-y-4 max-h-72 overflow-y-auto themed-scroll pr-1" aria-live="polite">
+        <div
+          data-lenis-prevent=""
+          className="space-y-4 max-h-72 overflow-y-auto themed-scroll pr-1"
+          aria-live="polite"
+        >
           {history.map((turn, i) => (
             <div key={`${turn.question}-${i}`}>
               <p className="text-xs font-semibold text-foreground">{turn.question}</p>

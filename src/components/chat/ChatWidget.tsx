@@ -42,6 +42,9 @@ export function ChatWidget() {
           ref={panelRef}
           role="dialog"
           aria-label="Ethixweb assistant"
+          // The wheel scrolls the transcript, settings and text box inside
+          // the panel, never the page behind it (see useSmoothScroll).
+          data-lenis-prevent=""
           aria-hidden={!open}
           className={cn(
             // Phone: a sheet with a comfortable margin. Desktop: a panel

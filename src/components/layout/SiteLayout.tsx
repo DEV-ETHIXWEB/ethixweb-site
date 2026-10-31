@@ -6,9 +6,11 @@ import { ScrollProgress } from "@/components/layout/ScrollProgress";
 import { ConsentBanner } from "@/components/layout/ConsentBanner";
 import { ChatWidget } from "@/components/chat/ChatWidget";
 import { useClickSound } from "@/hooks/useClickSound";
+import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 
 function Inner({ children }: { children: ReactNode }) {
   useClickSound();
+  useSmoothScroll();
   return (
     <div className="site-vignette relative min-h-screen bg-background text-foreground">
       <a

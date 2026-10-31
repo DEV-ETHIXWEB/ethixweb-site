@@ -1,6 +1,11 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
+/* Lenis's required rules (see hooks/useSmoothScroll.ts). Of note: it disables
+   iframe pointer events only while a glide is in progress (.lenis-smooth),
+   so a wheel gesture cannot be swallowed by an iframe mid-glide; Turnstile
+   and other embeds stay clickable the rest of the time. */
+@import "lenis/dist/lenis.css";
 
 @font-face {
   font-family: "Kumbh Sans";
@@ -315,10 +320,15 @@ html.dark {
     -webkit-mask-image: -webkit-radial-gradient(white, black);
   }
 
+  /* No live blur on .glass. Its 27 uses are cards in the page flow, where what
+     sits behind them is the page's own dark background and already-blurred
+     glow blobs, so a backdrop-filter changed almost nothing visually while
+     the browser re-sampled and re-blurred every card on every scroll frame.
+     Under smooth (Lenis) scrolling, which runs on the main thread, that was
+     measured as 13% dropped frames on the privacy page and 0% without it.
+     The tint is a little denser to keep the same frosted read. */
   .glass {
-    background: linear-gradient(135deg, rgba(58, 18, 22, 0.62), rgba(22, 12, 13, 0.48));
-    -webkit-backdrop-filter: blur(12px) saturate(130%);
-    backdrop-filter: blur(12px) saturate(130%);
+    background: linear-gradient(135deg, rgba(58, 18, 22, 0.8), rgba(22, 12, 13, 0.7));
     border: 1px solid rgba(255, 255, 255, 0.06);
     box-shadow: var(--shadow-sm);
     transition:
@@ -330,11 +340,19 @@ html.dark {
   }
 
   .glass-strong {
+    background: linear-gradient(135deg, rgba(58, 18, 22, 0.92), rgba(18, 10, 11, 0.88));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: var(--shadow-lg);
+  }
+  /* The live blur is kept only where it earns its cost: floating chrome that
+     sits over content moving underneath it (the fixed navbar, the cookie
+     banner, the chat panel). In-flow glass-strong cards get the solid tint
+     above, for the same reason as .glass. */
+  .fixed.glass-strong,
+  .fixed .glass-strong {
     background: linear-gradient(135deg, rgba(58, 18, 22, 0.88), rgba(18, 10, 11, 0.82));
     -webkit-backdrop-filter: blur(16px) saturate(140%);
     backdrop-filter: blur(16px) saturate(140%);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: var(--shadow-lg);
   }
 
   /* The hover-only box-shadow this used to have is now the permanent,
@@ -1831,9 +1849,7 @@ html.dark {
 }
 
 .light .glass {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(248, 245, 242, 0.76));
-  -webkit-backdrop-filter: blur(12px) saturate(130%);
-  backdrop-filter: blur(12px) saturate(130%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(248, 245, 242, 0.88));
   border: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow: var(--shadow-sm);
 }
@@ -1841,11 +1857,15 @@ html.dark {
   box-shadow: var(--shadow-md);
 }
 .light .glass-strong {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(250, 247, 244, 0.9));
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-lg);
+}
+.light .fixed.glass-strong,
+.light .fixed .glass-strong {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(250, 247, 244, 0.62));
   -webkit-backdrop-filter: blur(18px) saturate(150%);
   backdrop-filter: blur(18px) saturate(150%);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: var(--shadow-lg);
 }
 .light header {
   --muted-foreground: #3a3030;
@@ -1988,21 +2008,35 @@ html.dark {
    mobile GPUs. Coarse-pointer (touch) devices drop the blur entirely and fall
    back to a flatter, more opaque background to keep contrast/legibility. ── */
 @media (pointer: coarse) {
+  /* Listed with the same specificity as the floating-chrome rules (.fixed
+     .glass-strong) that re-enable the blur on desktop, or those would win
+     here and put the blur back on a phone's navbar. */
   .glass,
-  .glass-strong {
-    backdrop-filter: none;
+  .glass-strong,
+  .fixed.glass-strong,
+  .fixed .glass-strong {
+    /* Prefixed first, unprefixed last. The minifier treats the pair as one
+       property and keeps only the last declaration; written the other way
+       round it dropped `backdrop-filter: none`, so phones never actually
+       lost the blur this block exists to remove (17-21 live blurs per page
+       measured on the live site). */
     -webkit-backdrop-filter: none;
+    backdrop-filter: none;
   }
   .glass {
     background: rgba(24, 13, 14, 0.92);
   }
-  .glass-strong {
+  .glass-strong,
+  .fixed.glass-strong,
+  .fixed .glass-strong {
     background: rgba(20, 11, 12, 0.96);
   }
   .light .glass {
     background: rgba(255, 255, 255, 0.94);
   }
-  .light .glass-strong {
+  .light .glass-strong,
+  .light .fixed.glass-strong,
+  .light .fixed .glass-strong {
     background: rgba(255, 255, 255, 0.97);
   }
 }
