@@ -162,7 +162,15 @@ export const RotatingText = forwardRef<RotatingTextHandle, RotatingTextProps>((p
               animate={animate}
               exit={exit}
               transition={transition}
-              className={cn("text-rotate-element inline-block", elementLevelClassName)}
+              // Its own fill. Headings that use it are gradient text, which sets
+              // -webkit-text-fill-color: transparent; that inherits, and once
+              // the word sits in its own box (the fixed-width grid above) the
+              // heading's clipped gradient no longer paints it, so it rendered
+              // invisible. currentColor shows the color the caller asked for.
+              className={cn(
+                "text-rotate-element inline-block [-webkit-text-fill-color:currentColor]",
+                elementLevelClassName,
+              )}
             >
               {texts[currentTextIndex]}
             </motion.span>
