@@ -1,4 +1,6 @@
 {
+  "installCommand": "sh scripts/npm.sh install",
+  "buildCommand": "sh scripts/npm.sh run build",
   "trailingSlash": false,
   "redirects": [
     {

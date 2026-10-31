@@ -13,8 +13,14 @@ import {
 import appCss from "../styles.css?url";
 // The same stylesheet as a string, inlined into the HTML in production (see
 // RootShell). As a separate file it was the one thing first paint waits for,
-// and on a phone it queued behind ~28 script preloads: 28KB took 1.4s.
-import appCssInline from "../styles.css?inline";
+// and on a phone it queued behind ~28 script preloads: 28KB took 1.4s. The
+// string exists in the server build only (vite.config.ts); in the browser it
+// is read back from the <style> element the server sent, so both render the
+// same and React never empties it, during hydration or any later re-render.
+import serverCss from "virtual:app-css-inline";
+const appCssInline = import.meta.env.SSR
+  ? serverCss
+  : (typeof document !== "undefined" && document.getElementById("app-css")?.textContent) || "";
 import { LOGO_IMAGE, OG_IMAGE, SITE_URL } from "@/lib/site";
 
 function NotFoundComponent() {
@@ -221,7 +227,9 @@ function RootShell({ children }: { children: ReactNode }) {
             separate render-blocking download competing for a phone's
             bandwidth. Leaving pages client-side never refetches HTML, so the
             extra bytes are paid once per visit. */}
-        {!import.meta.env.DEV && <style dangerouslySetInnerHTML={{ __html: appCssInline }} />}
+        {!import.meta.env.DEV && (
+          <style id="app-css" dangerouslySetInnerHTML={{ __html: appCssInline }} />
+        )}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: SCHEMA_ORG_ORGANIZATION }}
