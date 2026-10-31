@@ -23,7 +23,11 @@ declare global {
   }
 }
 
-const SCRIPT_SRC = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+// render=explicit: we call turnstile.render() ourselves. Without it the
+// script also scans for .cf-turnstile containers and tries to render into
+// them on its own, logging "skipped implicit render because a widget already
+// exists in this container" on every form page.
+const SCRIPT_SRC = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
 let scriptPromise: Promise<void> | null = null;
 
 function loadTurnstileScript(): Promise<void> {
