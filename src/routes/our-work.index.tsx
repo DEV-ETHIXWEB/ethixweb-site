@@ -122,8 +122,8 @@ function Portfolio() {
               </Reveal>
               <Reveal delay={0.16}>
                 <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
-                  From fast-moving local businesses to scaling brands - we ship websites and
-                  campaigns that drive real outcomes. Here is a curated selection of our recent
+                  Plumbers, HVAC companies, drain specialists and charter captains. We ship websites
+                  and campaigns that bring in real calls. Here is a curated selection of our recent
                   work.
                 </p>
               </Reveal>
@@ -233,7 +233,7 @@ function Portfolio() {
       <section className="overflow-hidden border-y border-border bg-foreground/[0.02] py-14">
         <Reveal>
           <p className="text-center text-xs font-bold uppercase tracking-[0.3em] text-primary-text">
-            Trusted by businesses worldwide
+            Trusted by local business owners
           </p>
         </Reveal>
         <div

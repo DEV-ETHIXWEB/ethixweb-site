@@ -178,8 +178,8 @@ function About() {
             </Reveal>
             <Reveal delay={0.16}>
               <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-                Ethixweb is a digital marketing &amp; web development agency built for businesses
-                that want measurable growth, not marketing noise.
+                Ethixweb is a digital marketing &amp; web development agency built for HVAC,
+                plumbing and home service businesses that want booked jobs, not marketing noise.
               </p>
             </Reveal>
             <Reveal delay={0.24}>

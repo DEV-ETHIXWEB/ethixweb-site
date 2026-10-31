@@ -24,9 +24,9 @@ export type SmallTalk = {
 export const LEAD_CHIP = "Book a free call";
 
 const STARTERS = [
-  "What does Ethixweb do?",
+  "Can you answer my missed calls?",
+  "How do I get into the Map Pack?",
   "What does a project cost?",
-  "How long does a build take?",
   LEAD_CHIP,
 ];
 

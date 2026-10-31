@@ -54,11 +54,12 @@ import {
 type Message = StoredMessage;
 type Status = "idle" | "retrieving" | "loading" | "generating";
 
+// The questions a home service owner asks first.
 const SUGGESTIONS = [
-  "What does Ethixweb do?",
+  "Can you answer my missed calls?",
+  "How do I get into the Map Pack?",
+  "Do you work with ServiceTitan?",
   "What does a project cost?",
-  "Show me your past work",
-  "How does this chat work with no API key?",
   LEAD_CHIP,
 ];
 

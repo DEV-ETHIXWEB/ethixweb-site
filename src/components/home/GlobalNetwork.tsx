@@ -1275,14 +1275,15 @@ export function GlobalNetwork() {
         <Reveal>
           <div className="mx-auto max-w-3xl text-center">
             <p className="mb-4 text-sm font-bold uppercase tracking-[0.24em] text-primary-text">
-              Global Operations Network
+              Around the clock
             </p>
             <h2 className="pb-1 text-4xl font-extrabold leading-[1.05] text-gradient lg:text-6xl">
-              Built for fast moving teams across time zones.
+              On call when you are.
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              Seattle, Utah, New York, Canada, the United Kingdom, and India stay connected through
-              one responsive digital operations layer.
+              Furnaces quit at midnight and pipes burst on Sundays. Our team works across time
+              zones, from Seattle, Utah and New York to Canada, the UK and India, so someone is
+              always on it while your trucks are out.
             </p>
           </div>
         </Reveal>

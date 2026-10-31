@@ -289,11 +289,11 @@ export function Testimonials() {
                 Client Reviews
               </p>
               <h2 className="text-5xl font-extrabold leading-tight text-gradient pb-1">
-                Trusted by businesses worldwide.
+                Trusted by local business owners.
               </h2>
               <p className="mt-5 text-base leading-7 text-muted-foreground lg:text-lg">
-                Real feedback from clients who trusted Ethixweb to design, build, and grow their
-                digital presence.
+                Real feedback from owners who trusted Ethixweb to bring in the calls, the bookings
+                and the reviews.
               </p>
             </div>
 
@@ -314,7 +314,7 @@ export function Testimonials() {
               <div className="mt-2 border-y border-border py-2">
                 <p className="text-3xl font-extrabold text-foreground">24/7</p>
                 <p className="mt-1 text-[11px] uppercase tracking-wide text-muted-foreground">
-                  Global Availability
+                  Always on, nights & weekends
                 </p>
               </div>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">

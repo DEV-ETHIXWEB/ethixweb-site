@@ -101,6 +101,20 @@ const INTENT_ROUTES: Array<{ test: (q: string) => boolean; docs: string[]; answe
       "Yes, we can help with that. Most website work we do falls into four areas: a redesign built around how your business sells, landing pages that turn ad traffic into leads, speed and security fixes, and ongoing maintenance after launch. The quickest way to know what yours needs is a free call. The team looks at your site first and calls you within one business day.",
   },
   {
+    // What we charge. Only when the question is about our work: "how much
+    // does a heat pump cost" is a general question and must not get our
+    // pricing answer.
+    test: (q) =>
+      /\b(cost|costs|price|prices|pricing|how much|charge|charges|rates?|budget|quote|fees?)\b/i.test(
+        q,
+      ) &&
+      (FIRST_PERSON.test(q) ||
+        /\b(project|website|site|ads|seo|marketing|build|package|plan|receptionist|chatbot|ethixweb)\b/i.test(
+          q,
+        )),
+    docs: ["pricing"],
+  },
+  {
     // Wanting more business, in any words.
     test: (q) =>
       /\b(more|get|grow|increase|boost|need|want|getting)\b/i.test(q) &&
@@ -168,7 +182,16 @@ export async function retrieve(
   // have been answered with our accessibility services. A curated answer
   // needs a question addressed to us, or two terms in common.
   const corroborated = FIRST_PERSON.test(query) || (local[0]?.matched ?? 0) >= 2;
-  if ((best >= LOCAL_HIT_CONFIDENT || clearWinner) && corroborated && local[0].answer) {
+  // Our prices answer questions about our work only. "How much does a heat
+  // pump cost" shares "how much" and "cost" with the pricing passage but is a
+  // general question; the pricing intent route above catches the real ones.
+  const pricingOffTopic = local[0]?.id === "pricing" && !FIRST_PERSON.test(query);
+  if (
+    (best >= LOCAL_HIT_CONFIDENT || clearWinner) &&
+    corroborated &&
+    !pricingOffTopic &&
+    local[0].answer
+  ) {
     const used = local
       .filter(
         (h, i) => h.answer && (i === 0 || h.score >= Math.max(LOCAL_HIT_CONFIDENT, best * 0.6)),

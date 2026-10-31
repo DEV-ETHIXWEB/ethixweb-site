@@ -4,15 +4,16 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowUpRight,
   Bot,
-  BrainCircuit,
   Cable,
-  Code2,
+  Flame,
   Globe2,
   Layers3,
   LifeBuoy,
   Megaphone,
   Search,
   ShieldCheck,
+  Snowflake,
+  Star,
   Workflow,
 } from "lucide-react";
 
@@ -29,7 +30,11 @@ import { SystemShift } from "@/components/home/SystemShift";
 import { WebSpotlight } from "@/components/shared/WebSpotlight";
 import { trackWebSpotlight } from "@/lib/web-spotlight";
 import { SERVICE_CATALOG, SERVICE_CATALOG_TOTAL } from "@/lib/services-catalog";
+import { CASE_STUDIES } from "@/lib/portfolio-data";
 import { LOGO_IMAGE, OG_IMAGE, SITE_URL, siteUrl } from "@/lib/site";
+
+/** Field service and lead tools named on /industries; shown in the hero. */
+const TRADE_TOOLS = ["ServiceTitan", "Jobber", "Housecall Pro", "Google Local Services Ads"];
 
 const GlobalNetwork = lazy(() =>
   import("@/components/home/GlobalNetwork").then((m) => ({ default: m.GlobalNetwork })),
@@ -42,13 +47,16 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "We manage your digital operation, from AI booking agents and CRM integrations to websites, SEO and ads.",
+          "Websites, AI receptionists, Google Ads and Map Pack SEO for HVAC, plumbing and home service companies. We answer your missed calls and keep the schedule full.",
       },
-      { property: "og:title", content: "Ethixweb - Premium Technology Partner" },
+      {
+        property: "og:title",
+        content: "Ethixweb - Marketing & AI for HVAC, Plumbing and Home Services",
+      },
       {
         property: "og:description",
         content:
-          "AI automation, websites, web applications, CRM integrations, SEO, ads, maintenance, and digital operations.",
+          "Websites, AI receptionists, Google Ads and Map Pack SEO for HVAC, plumbing and home service companies.",
       },
       { property: "og:type", content: "website" },
       { property: "og:image", content: OG_IMAGE },
@@ -88,65 +96,76 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
+// In the order a home service owner thinks about them: the phone, being
+// found, ads, the site, their software, reviews, then everything else.
 const services = [
   {
     icon: Bot,
-    title: "AI Receptionists",
-    desc: "Voice and chat agents that answer, qualify, route, and book leads while your team stays focused.",
+    title: "Never miss a call",
+    desc: "An AI receptionist that answers every call and text, books the job and texts back the ones you miss, even at 2am on a Saturday.",
     to: "/ai-automation",
   },
   {
-    icon: BrainCircuit,
-    title: "AI Automation",
-    desc: "Workflow automation, internal copilots, data syncs, and operational systems built for real teams.",
-    to: "/ai-automation",
+    icon: Search,
+    title: "Get into the Map Pack",
+    desc: "Weekly Google Business Profile updates, review requests and local pages, so you show up when someone nearby searches for AC repair.",
+    to: "/marketing",
+  },
+  {
+    icon: Megaphone,
+    title: "Google & Local Services Ads",
+    desc: "Campaigns built around booked jobs, not clicks, with every call traced back to the ad that drove it.",
+    to: "/google-ads-management",
   },
   {
     icon: Globe2,
-    title: "Websites",
-    desc: "Fast, premium websites with sharp positioning, conversion paths, analytics, and SEO foundations.",
-    to: "/web-development",
-  },
-  {
-    icon: Code2,
-    title: "Web Applications",
-    desc: "Custom portals, dashboards, booking flows, and software tools engineered for daily operations.",
+    title: "A website that books jobs",
+    desc: "Fast, mobile-first sites with service pages, trust signals and a call button front and center, built to turn a visit into a call.",
     to: "/web-development",
   },
   {
     icon: Cable,
-    title: "CRM Integrations",
-    desc: "HubSpot, GoHighLevel, Zapier, forms, calls, calendars, and pipelines connected into one system.",
-    to: "/services",
+    title: "ServiceTitan, Jobber & Housecall Pro",
+    desc: "Set up and connected, so leads, calls and bookings land in the software your office already runs on.",
+    to: "/industries",
   },
   {
-    icon: Search,
-    title: "SEO",
-    desc: "Technical SEO, local SEO, content systems, and measurement that compound into durable demand.",
-    to: "/services",
-  },
-  {
-    icon: LifeBuoy,
-    title: "Maintenance & Support",
-    desc: "Fast fixes, uptime care, site updates, reporting, and a responsive team when something needs attention.",
-    to: "/services",
+    icon: Star,
+    title: "5-star reviews on autopilot",
+    desc: "Automatic review requests after every job, so your rating keeps climbing without anyone chasing customers.",
+    to: "/industries",
   },
   {
     icon: Workflow,
-    title: "Digital Operations",
-    desc: "A senior tech team for your digital stack, from strategy through launch, support, and optimization.",
+    title: "Follow-ups that run themselves",
+    desc: "Missed-call text back, follow-ups and reminders that run on their own, so no lead goes cold.",
+    to: "/ai-automation",
+  },
+  {
+    icon: LifeBuoy,
+    title: "Support through peak season",
+    desc: "Fixes, updates and a real team that answers, so your site and systems keep working when you are busiest.",
     to: "/services",
   },
 ];
 
 const metrics = [
-  { value: "24/7", label: "global coverage", desc: "Always on call, wherever you're located." },
+  { value: "24/7", label: "always on", desc: "Calls answered nights, weekends and peak season." },
   { value: "<1h", label: "support response", desc: "Quick answers from a real support team." },
   { value: "US", label: "operations focus", desc: "United States of America, our home base." },
   { value: "AI", label: "automation ready", desc: "Set up for AI-driven tools and workflows." },
 ];
 
-const stack = ["AI agents", "CRM", "Websites", "SEO", "Ads", "Analytics", "Automations", "Support"];
+const stack = [
+  "Missed-call text back",
+  "Map Pack",
+  "Local Services Ads",
+  "ServiceTitan",
+  "Review requests",
+  "Booked jobs",
+  "AI receptionist",
+  "Websites",
+];
 
 function Home() {
   return (
@@ -163,6 +182,7 @@ function Home() {
             See lib/promo.ts. */}
         <BlackFridayPromo />
         <Services />
+        <TradeProof />
         <ServiceCatalogTeaser />
         {/* The placeholder holds the section's measured height (the smallest
             in each breakpoint's range) while its code loads. With no
@@ -223,9 +243,21 @@ function Hero() {
       <Container className="relative grid items-center gap-14 pt-4 sm:pt-12 lg:grid-cols-[0.95fr_1.05fr]">
         <div className="relative z-10">
           <Reveal>
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_18px_rgba(138,24,28,0.9)]" />
-              Premium digital operations team
+            {/* A service tag rather than the stock glowing-dot pill: a solid
+                block with the heating-and-cooling marks every HVAC company
+                uses, joined to a ruled list of the trades we build for. */}
+            <div className="inline-flex items-stretch overflow-hidden rounded-md border border-primary/35 text-[11px] font-bold uppercase tracking-[0.16em]">
+              <span className="flex items-center gap-1 bg-primary px-2.5 py-1.5 text-primary-foreground">
+                <Flame className="h-3.5 w-3.5" aria-hidden="true" />
+                <Snowflake className="h-3.5 w-3.5" aria-hidden="true" />
+              </span>
+              <span className="flex items-center gap-2.5 bg-primary/[0.07] px-3 py-1.5 text-foreground/85">
+                HVAC
+                <span aria-hidden="true" className="h-3 w-px bg-primary/45" />
+                Plumbing
+                <span aria-hidden="true" className="h-3 w-px bg-primary/45" />
+                Home services
+              </span>
             </div>
           </Reveal>
           {/* Not wrapped in <Reveal>: this h1 is the page's LCP element, and
@@ -260,8 +292,8 @@ function Hero() {
           </h1>
           <Reveal delay={0.16}>
             <p className="mt-7 max-w-2xl text-lg font-medium leading-8 text-foreground/75 sm:text-xl">
-              We manage your digital operation, from AI booking agents and CRM integrations to
-              websites, SEO and ads.
+              We answer your missed calls, get you into the Google Map Pack and keep the schedule
+              full, with websites, ads and AI built for the trades.
             </p>
           </Reveal>
           <Reveal delay={0.24}>
@@ -270,17 +302,41 @@ function Hero() {
                 to="/contact"
                 className="btn-primary group inline-flex min-w-[200px] items-center justify-center gap-2 rounded-full border border-transparent px-7 py-3.5 font-bold"
               >
-                Start a project
+                Get more booked jobs
                 <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
               <Link
                 to="/our-work"
                 className="btn-secondary group inline-flex min-w-[200px] items-center justify-center gap-2 rounded-full px-7 py-3.5 font-bold"
               >
-                See our work
+                See contractor results
                 <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
             </div>
+          </Reveal>
+          {/* The tools a contractor already runs on. Recognising them is the
+              fastest "these people know my business" signal on the page. */}
+          <Reveal delay={0.3}>
+            <div className="mt-9 flex flex-wrap items-center gap-x-2 gap-y-2.5 text-xs">
+              <span className="mr-1 font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                Works with
+              </span>
+              {TRADE_TOOLS.map((tool) => (
+                <span
+                  key={tool}
+                  className="rounded-full border border-border bg-foreground/[0.03] px-3 py-1 font-semibold text-foreground/80"
+                >
+                  {tool}
+                </span>
+              ))}
+            </div>
+            <Link
+              to="/hvac-plumbing-marketing"
+              className="group mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-primary-text hover:underline"
+            >
+              See how it works for HVAC & plumbing
+              <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:rotate-45" />
+            </Link>
           </Reveal>
         </div>
 
@@ -336,6 +392,91 @@ function SignalStrip() {
   );
 }
 
+/** The home service projects, in the order a contractor relates to them. */
+const TRADE_PROOF_SLUGS = ["all-phase-plumbing", "preventive-home-solutions", "garys-pipeline"];
+
+/** Proof from the trades, early on the homepage. Everything here comes from
+ * lib/portfolio-data.ts, which only holds real client facts: the headline,
+ * the lead metric and the shipped site's screenshot. Nothing is written for
+ * this strip, so it cannot claim more than the case studies do. */
+function TradeProof() {
+  const studies = TRADE_PROOF_SLUGS.map((slug) => CASE_STUDIES.find((c) => c.slug === slug)).filter(
+    (c): c is (typeof CASE_STUDIES)[number] => Boolean(c),
+  );
+  return (
+    <section className="relative py-16 sm:py-20">
+      <Container>
+        <Reveal>
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl">
+              <p className="mb-4 text-sm font-bold uppercase tracking-[0.24em] text-primary-text">
+                Proof from the trades
+              </p>
+              <h2 className="pb-1 text-4xl font-extrabold leading-tight text-gradient sm:text-5xl">
+                Plumbing, drain and HVAC companies we rebuilt.
+              </h2>
+            </div>
+            <Link
+              to="/our-work"
+              className="group inline-flex shrink-0 items-center gap-1.5 text-sm font-bold text-primary-text hover:underline"
+            >
+              See every case study
+              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:rotate-45" />
+            </Link>
+          </div>
+        </Reveal>
+        <div className="mt-10 grid gap-5 md:grid-cols-3">
+          {studies.map((study, i) => {
+            const lead = study.metrics[0];
+            return (
+              <Reveal key={study.slug} delay={i * 0.06} className="h-full">
+                <Link
+                  to="/our-work/$slug"
+                  params={{ slug: study.slug }}
+                  className="group flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-foreground/[0.02] transition-colors duration-300 hover:border-primary/40"
+                >
+                  {study.image && (
+                    <div className="relative aspect-[16/9] overflow-hidden border-b border-border">
+                      <img
+                        src={study.image.src}
+                        alt={study.image.alt}
+                        width={study.image.width}
+                        height={study.image.height}
+                        loading="lazy"
+                        decoding="async"
+                        className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+                      />
+                    </div>
+                  )}
+                  <div className="flex flex-1 flex-col p-6">
+                    <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary-text">
+                      {study.industry}
+                    </p>
+                    <h3 className="mt-2 font-display text-xl font-bold leading-snug">
+                      {study.client}
+                    </h3>
+                    <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
+                      {study.headline}
+                    </p>
+                    {lead && (
+                      <div className="mt-5 flex items-baseline gap-2 border-t border-border pt-4">
+                        <span className="font-display text-2xl font-extrabold text-foreground">
+                          {lead.value}
+                        </span>
+                        <span className="text-xs text-muted-foreground">{lead.label}</span>
+                      </div>
+                    )}
+                  </div>
+                </Link>
+              </Reveal>
+            );
+          })}
+        </div>
+      </Container>
+    </section>
+  );
+}
+
 function Services() {
   return (
     <section className="relative overflow-hidden py-20 sm:py-24">
@@ -344,12 +485,12 @@ function Services() {
         <Reveal>
           <div className="max-w-3xl">
             <p className="mb-4 text-sm font-bold uppercase tracking-[0.24em] text-primary-text">
-              Robust Solutions
+              Built for the trades
             </p>
             <h2 className="pb-1 text-6xl font-extrabold leading-tight text-gradient">
-              Senior operators for the systems that grow the{" "}
+              Everything that keeps your{" "}
               <RotatingText
-                texts={["business.", "growth.", "revenue.", "pipeline."]}
+                texts={["phones ringing.", "schedule full.", "trucks busy.", "reviews coming."]}
                 mainClassName="align-bottom"
                 elementLevelClassName="text-primary"
                 rotationInterval={3500}
@@ -459,17 +600,17 @@ const OS_ROWS = [
   {
     icon: ShieldCheck,
     title: "Trustworthy systems",
-    desc: "Clean architecture, secure defaults, and reliable handoff across your stack.",
+    desc: "Secure, reliable setups that keep working through your busiest season.",
   },
   {
     icon: Layers3,
     title: "Layered execution",
-    desc: "Strategy, design, development, automation, launch, and support under one roof.",
+    desc: "Website, ads, SEO, AI and support under one roof, so nothing falls between vendors.",
   },
   {
     icon: Megaphone,
     title: "Growth connected",
-    desc: "SEO, ads, analytics, forms, calls, and CRM data aligned around revenue.",
+    desc: "Ads, calls, reviews and your CRM tied together around booked jobs and revenue.",
   },
 ];
 
@@ -480,14 +621,14 @@ function OperatingSystem() {
         <Reveal>
           <div className="max-w-2xl">
             <p className="mb-4 text-sm font-bold uppercase tracking-[0.24em] text-primary-text">
-              Operating model
+              How we work
             </p>
             <h2 className="pb-1 text-6xl font-extrabold leading-tight text-gradient">
-              Built like an internal technology team.
+              Built like your own marketing team.
             </h2>
             <p className="mt-6 text-lg leading-8 text-muted-foreground">
-              Ethixweb brings software, automation, marketing operations, and support into one
-              disciplined delivery system.
+              One senior team runs your website, ads, Map Pack and AI receptionist, and reports on
+              calls and booked jobs, not clicks.
             </p>
           </div>
         </Reveal>
@@ -539,22 +680,22 @@ function CTA() {
           <div className="grid grid-cols-1 items-center gap-8 px-8 py-14 sm:px-12 sm:py-16 lg:h-full lg:grid-cols-[1.13fr_1fr] lg:items-stretch lg:gap-2 lg:px-0 lg:py-0">
             <div className="relative z-10 flex flex-col justify-center text-center lg:pl-20 lg:pr-6 lg:text-left">
               <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-primary-text sm:text-sm">
-                Robust Solutions
+                For HVAC, plumbing & home services
               </p>
               <h2 className="mt-4 font-display text-[2.75rem] font-extrabold leading-[1.05] tracking-tight text-card-foreground sm:text-6xl lg:text-[5rem]">
-                Want to work
+                Ready for a
                 <br />
-                with <span className="text-primary">us?</span>
+                fuller <span className="text-primary">schedule?</span>
               </h2>
               <p className="mx-auto mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground sm:text-xl lg:text-xl lg:mx-0">
-                Tired of being account #200 at a big agency? Work with a senior team that knows your
-                business by name.
+                Tired of being account #200 at a big agency? Work with a senior team that knows the
+                trades, and knows your business by name.
               </p>
               <Link
                 to="/contact"
                 className="btn-primary mt-9 inline-flex items-center gap-2 rounded-full px-8 py-4 font-bold"
               >
-                Get in touch <ArrowUpRight className="h-4 w-4" />
+                Book a free call <ArrowUpRight className="h-4 w-4" />
               </Link>
             </div>
 

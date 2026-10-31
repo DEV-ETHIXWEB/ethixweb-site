@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { motion } from "framer-motion";
-import { DollarSign, Layers3, Palette, PhoneCall, TrendingUp } from "lucide-react";
+import { DollarSign, MapPin, PhoneCall, PhoneMissed, Star } from "lucide-react";
 import spiderweb from "@/assets/spiderweb.svg";
 import spiderwebLight from "@/assets/spiderweb-light.svg";
 // A single frame of the real 3D model (the Three.js scene that used to spin
@@ -94,10 +94,10 @@ const NODES = SPOKES.flatMap((s, si) =>
  * right-side badges inboard below lg so they stay on-screen. */
 const BADGES = [
   { label: "More booked jobs", icon: PhoneCall, x: 470, y: 68, spoke: 1, attach: 0.85 },
-  { label: "More conversions", icon: TrendingUp, x: 932, y: 67, xSm: 888, spoke: 4, attach: 0.85 },
-  { label: "UI/UX Systems", icon: Layers3, x: 405, y: 443, spoke: 11, attach: 0.42 },
+  { label: "5-star reviews", icon: Star, x: 932, y: 67, xSm: 888, spoke: 4, attach: 0.85 },
+  { label: "Missed calls answered", icon: PhoneMissed, x: 405, y: 443, spoke: 11, attach: 0.42 },
   { label: "Revenue tracked", icon: DollarSign, x: 961, y: 447, xSm: 913, spoke: 6, attach: 0.62 },
-  { label: "Design that converts", icon: Palette, x: 504, y: 692, spoke: 9, attach: 0.85 },
+  { label: "Map Pack ranking", icon: MapPin, x: 504, y: 692, spoke: 9, attach: 0.85 },
 ] as const;
 
 const BADGE_GEO = BADGES.map((b) => {

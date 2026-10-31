@@ -31,6 +31,12 @@ function CodeBadge({ code, className = "" }: { code: string; className?: string 
 }
 
 const INDIA_TZ = "Asia/Kolkata";
+/** What the header shows. The team works across the US and India, but a US
+ * home service owner reading Indian time (often marked "after hours" during
+ * their own working day) took it as "my calls go offshore and nobody's
+ * there". The header leads with Washington, the US home base, and India
+ * stays in the team list below. */
+const HOME_TZ = "America/Los_Angeles";
 
 function formatTime(date: Date, tz: string) {
   return new Intl.DateTimeFormat("en-US", {
@@ -63,6 +69,18 @@ function isIndiaWorking(date: Date) {
   );
   const weekday = !["Sat", "Sun"].includes(day);
   return weekday && hour >= 9 && hour < 19;
+}
+
+function isPacificWorking(date: Date) {
+  const hour = Number(
+    new Intl.DateTimeFormat("en-US", { hour: "2-digit", hour12: false, timeZone: HOME_TZ }).format(
+      date,
+    ),
+  );
+  const day = new Intl.DateTimeFormat("en-US", { weekday: "short", timeZone: HOME_TZ }).format(
+    date,
+  );
+  return !["Sat", "Sun"].includes(day) && hour >= 8 && hour < 18;
 }
 
 export function TimezoneWidget() {
@@ -143,9 +161,10 @@ export function TimezoneWidget() {
   };
 
   const { theme } = useTheme();
-  const india = now ? formatTime(now, INDIA_TZ) : "--:--";
+  const home = now ? formatTime(now, HOME_TZ) : "--:--";
   const local = now ? formatTime(now, localTz) : "--:--";
-  const working = now ? isIndiaWorking(now) : false;
+  // Online when anyone on the team is in working hours, US or India.
+  const working = now ? isPacificWorking(now) || isIndiaWorking(now) : false;
 
   const panelStyle =
     theme === "dark"
@@ -171,7 +190,7 @@ export function TimezoneWidget() {
         aria-expanded={open}
         className="hidden md:inline-flex h-9 items-center gap-1.5 rounded-full px-2.5 text-xs text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
       >
-        <span className="sr-only">Global timezone: </span>
+        <span className="sr-only">Team time, Washington: </span>
         <span className="relative flex h-1.5 w-1.5 shrink-0">
           <span
             className={`absolute inline-flex h-full w-full rounded-full opacity-70 ${
@@ -182,13 +201,13 @@ export function TimezoneWidget() {
             className={`relative inline-flex h-1.5 w-1.5 rounded-full ${working ? "bg-emerald-400" : "bg-amber-400"}`}
           />
         </span>
-        <CodeBadge code="IN" />
+        <CodeBadge code="WA" />
         {/* Width reserved for the widest time ("10:48 AM", 52px at 12px). The
             server renders "--:--" (28px) and the real time arrives after
             hydration; without this the button grew on every page load and
             nudged the whole desktop nav sideways. */}
         <span className="inline-block min-w-[4.5em] font-medium tabular-nums text-foreground/90">
-          {india}
+          {home}
         </span>
         <ChevronDown
           className={`h-3 w-3 text-muted-foreground/50 transition-transform ${open ? "rotate-180" : ""}`}
@@ -224,7 +243,7 @@ export function TimezoneWidget() {
                   <div className="flex items-center gap-2">
                     <Zap className="h-4 w-4 text-primary" />
                     <span className="text-xs uppercase tracking-widest text-muted-foreground">
-                      Global Desk
+                      Team desk
                     </span>
                   </div>
                   <span
@@ -241,11 +260,11 @@ export function TimezoneWidget() {
                 <div className="grid grid-cols-2 gap-3 mb-4">
                   <div className="rounded-xl bg-foreground/5 p-3">
                     <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
-                      Ethixweb · India
+                      Ethixweb · Washington
                     </p>
-                    <p className="mt-1 text-lg font-display font-semibold tabular-nums">{india}</p>
+                    <p className="mt-1 text-lg font-display font-semibold tabular-nums">{home}</p>
                     <p className="text-[10px] text-muted-foreground">
-                      {now && formatLong(now, INDIA_TZ)}
+                      {now && formatLong(now, HOME_TZ)}
                     </p>
                   </div>
                   <div className="rounded-xl bg-primary/10 border border-primary/20 p-3">
@@ -262,7 +281,7 @@ export function TimezoneWidget() {
                   className="themed-scroll space-y-1.5 max-h-56 overflow-y-auto pr-1"
                 >
                   <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-1">
-                    Team check · worldwide
+                    World clock
                   </p>
                   {ZONES.map((z) => (
                     <div
@@ -281,7 +300,7 @@ export function TimezoneWidget() {
                 </div>
 
                 <p className="mt-3 text-[10px] text-muted-foreground text-center">
-                  Quick fixes · global availability · always on partner
+                  Quick fixes · nights & weekends · always on partner
                 </p>
               </motion.div>
             )}

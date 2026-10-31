@@ -123,6 +123,30 @@ const SITE_FACTS: KnowledgeDoc[] = [
       "industries niches sectors verticals clients types plumber plumbers hvac heating cooling contractor contractors roofer electrician home services trades restaurant restaurants retail fishing charter charters guide boat marine servicetitan jobber housecall shopify fareharbor peek bokun missed calls miss call phone answering help my business",
   },
   {
+    id: "missed-calls",
+    title: "Answering missed calls",
+    path: "/ai-automation",
+    text: "Ethixweb sets up a 24/7 AI receptionist for home service businesses. It answers calls and texts, books the job, and texts back customers whose call was missed so they do not move on to the next company. It hands the conversation to a person when one is needed, and bookings land in the field service software the business already uses.",
+    aliases:
+      "missed call calls miss answer answering phone phones voicemail after hours emergency nights weekends text back receptionist answer my calls never miss",
+  },
+  {
+    id: "map-pack",
+    title: "Getting into the Google Map Pack",
+    path: "/marketing",
+    text: "To get home service businesses into the Google Map Pack, the top local results on Google, Ethixweb updates the Google Business Profile weekly, runs automated review requests after every job, and builds local service pages so the business appears in nearby searches.",
+    aliases:
+      "map pack google maps local search near me rank ranking top three google business profile gmb gbp reviews found",
+  },
+  {
+    id: "field-software",
+    title: "ServiceTitan, Jobber and Housecall Pro",
+    path: "/industries",
+    text: "Ethixweb sets up and manages ServiceTitan, Jobber and Housecall Pro for home service businesses, and connects the website, ads and AI receptionist to them so leads, calls and bookings land in the software the office already runs on.",
+    aliases:
+      "servicetitan service titan jobber housecall pro housecallpro crm fsm field service software dispatch integrate integration connect",
+  },
+  {
     id: "locations",
     title: "Where Ethixweb works",
     path: "/locations/kent-wa",
@@ -188,6 +212,12 @@ const SITE_FACTS: KnowledgeDoc[] = [
  * from SITE_FACTS so the passages stay reference text for the model and
  * these stay conversational. Every claim here is in that passage too. */
 const ANSWERS: Record<string, string> = {
+  "missed-calls":
+    "Yes. We set up an AI receptionist that answers every call and text around the clock, books the job, and texts back anyone whose call you missed so they do not call the next company. When a conversation needs a person, it hands over to your team, and bookings land in the software your office already uses.",
+  "map-pack":
+    "The Map Pack is the top three local results on Google, and it is where most calls come from. We get you there by updating your Google Business Profile every week, sending automatic review requests after every job, and building local service pages so you show up when someone nearby searches for what you do.",
+  "field-software":
+    "Yes. We set up and manage ServiceTitan, Jobber and Housecall Pro, and connect your website, ads and AI receptionist to them, so leads, calls and bookings land in the software your office already runs on.",
   about:
     "Ethixweb is a digital marketing and web development agency. We build fast websites, set up AI tools like chatbots and AI receptionists, and run growth work such as SEO, Google and Meta ads, social media and email. We also do brand design, reporting dashboards, accessibility work and ongoing support. One senior team does all of it, so you never juggle separate vendors, and we judge every project by the leads, bookings and revenue it brings in.",
   mission:
