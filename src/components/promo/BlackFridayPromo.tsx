@@ -26,9 +26,13 @@ import { PROMO, promoPhase, promoRemaining, promoVisible } from "@/lib/promo";
  * Renders nothing outside the campaign window. See lib/promo.ts.
  */
 export function BlackFridayPromo() {
-  // The window is time-based and the server renders at a different instant
-  // than the browser, so this is decided on the client after mount: SSR and
-  // the first client render stay identical, with no hydration mismatch.
+  // Whether the band shows, and in which phase, is decided at render time,
+  // on the server too. Both only change at a couple of instants a year, so the
+  // server and the browser agree. It used to render nothing until mounted and
+  // then insert itself: on a phone that pushed the next section down after
+  // first paint, a 0.10 layout shift on the homepage. Only the ticking clock
+  // waits for the browser (its digits differ second to second between server
+  // and client), and it holds its exact size until then.
   const [now, setNow] = useState<number | null>(null);
 
   useEffect(() => {
@@ -37,10 +41,11 @@ export function BlackFridayPromo() {
     return () => clearInterval(id);
   }, []);
 
-  if (now === null || !promoVisible(now)) return null;
+  const at = now ?? Date.now();
+  if (!promoVisible(at)) return null;
 
-  const live = promoPhase(now) === "live";
-  const left = promoRemaining(now);
+  const live = promoPhase(at) === "live";
+  const left = now === null ? null : promoRemaining(now);
 
   return (
     <section
@@ -159,13 +164,14 @@ function Countdown({
   left,
 }: {
   label: string;
-  left: { days: number; hours: number; minutes: number; seconds: number };
+  /** null until mounted: placeholders of the same width keep the layout still. */
+  left: { days: number; hours: number; minutes: number; seconds: number } | null;
 }) {
   const cells = [
-    { v: left.days, l: "days" },
-    { v: left.hours, l: "hrs" },
-    { v: left.minutes, l: "min" },
-    { v: left.seconds, l: "sec" },
+    { v: left?.days, l: "days" },
+    { v: left?.hours, l: "hrs" },
+    { v: left?.minutes, l: "min" },
+    { v: left?.seconds, l: "sec" },
   ];
   return (
     <div className="mt-10">
@@ -182,7 +188,11 @@ function Countdown({
             {i > 0 && <span className="mx-7 hidden w-px self-stretch bg-white/12 sm:block" />}
             <div className="flex items-baseline gap-1.5 sm:gap-2.5">
               <span className="font-display text-[2.1rem] leading-none font-extrabold tracking-[-0.03em] text-white tabular-nums sm:text-[2.6rem]">
-                {String(c.v).padStart(2, "0")}
+                {c.v === undefined ? (
+                  <span className="invisible">00</span>
+                ) : (
+                  String(c.v).padStart(2, "0")
+                )}
               </span>
               <span className="text-[10px] font-bold tracking-[0.14em] text-white/35 uppercase">
                 {c.l}
