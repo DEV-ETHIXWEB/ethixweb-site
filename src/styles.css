@@ -15,12 +15,63 @@
   src: url("/fonts/kumbh-sans-var.woff2") format("woff2");
 }
 
+/* Stand-in while Kumbh Sans downloads: a local sans, resized per weight and
+   given Kumbh Sans's own ascent and descent (measured from the woff2 and then
+   against real headlines in Chromium), so text takes the same room before and
+   after the swap and nothing moves when the real font arrives. Bold weights
+   use the real bold face rather than a synthesized bold of the regular one. */
+@font-face {
+  font-family: "Kumbh Sans Fallback";
+  font-weight: 400;
+  src: local("Arial"), local("ArialMT"), local("Helvetica"), local("Roboto"), local("Liberation Sans");
+  size-adjust: 104.59%;
+  ascent-override: 94.31%;
+  descent-override: 24.28%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Kumbh Sans Fallback";
+  font-weight: 500;
+  src: local("Arial"), local("ArialMT"), local("Helvetica"), local("Roboto"), local("Liberation Sans");
+  size-adjust: 105.08%;
+  ascent-override: 93.86%;
+  descent-override: 24.16%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Kumbh Sans Fallback";
+  font-weight: 600;
+  src: local("Arial Bold"), local("Arial-BoldMT"), local("Helvetica Bold"), local("Roboto Bold"), local("Liberation Sans Bold");
+  size-adjust: 97.68%;
+  ascent-override: 100.97%;
+  descent-override: 25.99%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Kumbh Sans Fallback";
+  font-weight: 700;
+  src: local("Arial Bold"), local("Arial-BoldMT"), local("Helvetica Bold"), local("Roboto Bold"), local("Liberation Sans Bold");
+  size-adjust: 98.14%;
+  ascent-override: 100.50%;
+  descent-override: 25.87%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Kumbh Sans Fallback";
+  font-weight: 800;
+  src: local("Arial Bold"), local("Arial-BoldMT"), local("Helvetica Bold"), local("Roboto Bold"), local("Liberation Sans Bold");
+  size-adjust: 98.59%;
+  ascent-override: 100.04%;
+  descent-override: 25.75%;
+  line-gap-override: 0%;
+}
+
 @custom-variant dark (&:is(.dark *));
 @custom-variant light (&:is(.light *));
 
 @theme inline {
-  --font-display: "Kumbh Sans", system-ui, sans-serif;
-  --font-sans: "Kumbh Sans", system-ui, sans-serif;
+  --font-display: "Kumbh Sans", "Kumbh Sans Fallback", system-ui, sans-serif;
+  --font-sans: "Kumbh Sans", "Kumbh Sans Fallback", system-ui, sans-serif;
   /* Reserved exclusively for stats/metrics/status/step-labels - the "technical credibility"
      signal from the Signal Systems plan. No new webfont: the standard cross-platform mono
      stack gets the same visual effect at zero load cost. */
@@ -2327,4 +2378,25 @@ html {
   background-clip: text;
   color: transparent;
   filter: drop-shadow(0 4px 22px rgba(192, 39, 45, 0.4));
+}
+
+/* Our Work case-study plate (CaseStudyCard): clipped to a title bar on
+   desktop and revealed by animating the clip, never the layout. */
+@media (min-width: 1024px) {
+  .case-plate {
+    clip-path: inset(0 0 calc(100% - 8.5rem) 0 round 0 0 1.5rem 0);
+    transition: clip-path 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .case-plate.is-open {
+    clip-path: inset(0 0 0 0 round 0 0 1.5rem 0);
+  }
+}
+@media (min-width: 1024px) and (prefers-reduced-motion: reduce) {
+  .case-plate { transition: none; }
+}
+
+/* Text that no fallback font can match closely enough waits for Kumbh Sans
+   (see the data-fonts script in __root.tsx); everything else shows at once. */
+html[data-fonts="pending"] .font-wait {
+  visibility: hidden;
 }

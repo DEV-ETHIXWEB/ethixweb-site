@@ -13,7 +13,7 @@ export function MarqueeBand({ items, rotate = true }: { items: string[]; rotate?
       {items.map((item) => (
         <span
           key={`${key}-${item}`}
-          className="flex items-center gap-8 pr-8 text-sm font-bold uppercase tracking-[0.2em] text-primary-foreground"
+          className="font-wait flex items-center gap-8 pr-8 text-sm font-bold uppercase tracking-[0.2em] text-primary-foreground"
         >
           {item}
           <span aria-hidden="true" className="text-primary-foreground/50">

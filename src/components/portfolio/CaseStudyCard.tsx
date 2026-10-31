@@ -157,7 +157,7 @@ export function CaseStudyCard({ study, index }: { study: CaseStudy; index: numbe
           the full-card visual link (z-10) so the plate can catch its own
           hover; the plate then carries its own case-study link. ── */}
       <div className="pointer-events-none absolute inset-0 z-20 flex justify-between gap-3">
-        <div className="relative min-w-0 flex-1 sm:max-w-[24rem]">
+        <div className="relative min-w-0 flex-1 drop-shadow-[0_14px_18px_rgba(0,0,0,0.35)] sm:max-w-[24rem]">
           {/* Inverted corner fillets that melt the plate into the card edges -
               same radius as rounded-br-3xl, drawn with the card token so they
               track both themes */}
@@ -172,15 +172,17 @@ export function CaseStudyCard({ study, index }: { study: CaseStudy; index: numbe
             className={`pointer-events-none absolute left-0 top-[8.5rem] hidden h-6 w-6 bg-[radial-gradient(circle_at_100%_100%,transparent_23.5px,var(--card)_24px)] transition-opacity duration-200 lg:block ${open ? "lg:opacity-0" : ""}`}
           />
 
-          {/* The white heading plate - the ONLY hover target. It ships as an
-              8.5rem title bar on lg and grows to full height on hover/focus;
-              because the same element grows under the cursor there is no
-              hover flicker. onMouseEnter/Leave scope the drop-down strictly
-              to this plate. */}
+          {/* The white heading plate - the ONLY hover target. On lg it is
+              always laid out at full height and clipped to an 8.5rem title
+              bar; hover/focus animates the clip open. It used to animate
+              max-height and grid rows instead, which re-laid out the card on
+              every hover and counted as layout shift. A clip is paint only,
+              and hit-testing follows it, so only the visible bar catches the
+              pointer. onMouseEnter/Leave scope the drop-down to this plate. */}
           <div
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
-            className={`pointer-events-auto relative flex h-full max-h-full flex-col overflow-hidden rounded-br-3xl bg-card shadow-[0_24px_48px_-24px_rgba(0,0,0,0.55)] transition-[max-height] duration-500 ease-out ${open ? "lg:max-h-full" : "lg:max-h-[8.5rem]"}`}
+            className={`case-plate pointer-events-auto relative flex h-full flex-col overflow-hidden rounded-br-3xl bg-card ${open ? "is-open" : ""}`}
           >
             {/* Whole-plate case-study link (mouse only - keyboard uses the
                 visual link below, so this stays aria-hidden to avoid a
@@ -194,28 +196,29 @@ export function CaseStudyCard({ study, index }: { study: CaseStudy; index: numbe
                 className="absolute inset-0 z-10"
               />
             )}
-            <div className="px-5 pt-5 sm:px-6 sm:pt-6">
+            <div className="relative px-5 pt-5 sm:px-6 sm:pt-6">
               <h3
-                className={`font-display text-xl font-bold leading-snug text-foreground transition-colors duration-300 sm:text-2xl ${open ? "lg:text-primary" : ""}`}
+                className={`font-display lg:pr-12 text-xl font-bold leading-snug text-foreground transition-colors duration-300 sm:text-2xl ${open ? "lg:text-primary" : ""}`}
               >
                 {study.client}
               </h3>
 
-              {/* Collapsed-state arrow - desktop only, swapped out once the
-                  plate expands on hover/focus */}
+              {/* Collapsed-state arrow - desktop only, beside the title so it
+                  takes no room in the layout; fades once the plate opens */}
               <span
                 aria-hidden="true"
-                className={`mt-4 hidden h-9 w-9 items-center justify-center rounded-full border border-border text-foreground ${open ? "lg:hidden" : "lg:inline-flex"}`}
+                className={`absolute right-5 top-5 hidden h-9 w-9 items-center justify-center rounded-full border border-border text-foreground transition-opacity duration-200 sm:right-6 sm:top-6 lg:inline-flex ${open ? "lg:opacity-0" : ""}`}
               >
                 <ArrowRight className="h-4 w-4" />
               </span>
             </div>
 
-            {/* Expandable detail - always open below lg, hover/focus-open on lg+ */}
+            {/* Detail - always shown below lg. On lg it is always laid out and
+                fades in as the clip opens, so the bar shows only the title. */}
             <div
-              className={`grid flex-1 [grid-template-rows:1fr] transition-[grid-template-rows] duration-500 ease-out ${open ? "lg:[grid-template-rows:1fr]" : "lg:[grid-template-rows:0fr]"}`}
+              className={`flex flex-1 flex-col transition-opacity duration-300 ${open ? "lg:opacity-100 lg:delay-100" : "lg:opacity-0"}`}
             >
-              <div className="flex min-h-0 flex-col overflow-hidden px-5 pb-5 sm:px-6 sm:pb-6">
+              <div className="flex min-h-0 flex-1 flex-col overflow-hidden px-5 pb-5 sm:px-6 sm:pb-6">
                 <p className="mt-2.5 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
                   {study.impact}
                 </p>

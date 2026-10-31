@@ -255,6 +255,22 @@ function RootShell({ children }: { children: ReactNode }) {
               "r.classList.remove('dark','light');r.classList.add(t);}}catch(e){}})()",
           }}
         />
+        {/* Marks the page while Kumbh Sans is still downloading, so the few
+            elements no fallback font can match (the bold, letter-spaced
+            ticker) wait for it instead of jumping sideways when it swaps in.
+            Cleared when the font is ready, or after 3s at the latest; on a
+            later page the font is already cached and it clears at once.
+            Without JavaScript the attribute is never set and nothing waits. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){var r=document.documentElement,f=document.fonts;" +
+              "if(!f||!f.load||f.check('700 1em \"Kumbh Sans\"'))return;" +
+              "r.setAttribute('data-fonts','pending');" +
+              "var done=function(){r.removeAttribute('data-fonts')};" +
+              "f.load('700 1em \"Kumbh Sans\"').then(done,done);setTimeout(done,3000)})()",
+          }}
+        />
       </head>
       <body>
         {children}

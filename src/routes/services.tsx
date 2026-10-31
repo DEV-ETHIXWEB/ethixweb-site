@@ -194,7 +194,7 @@ function Services() {
               <PageTag items={["Services"]} icon={Wrench} />
             </Reveal>
             <Reveal delay={0.08}>
-              <h1 className="mt-7 max-w-3xl pb-1 text-[clamp(2.5rem,5.2vw,4.5rem)] font-extrabold leading-[1.06] text-gradient">
+              <h1 className="mt-7 max-w-3xl text-balance pb-1 text-[clamp(2.5rem,5.2vw,4.5rem)] font-extrabold leading-[1.06] text-gradient">
                 Everything a home service business needs to{" "}
                 <span className="text-primary">grow.</span>
               </h1>
