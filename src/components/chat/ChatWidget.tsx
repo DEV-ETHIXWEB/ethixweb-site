@@ -103,11 +103,10 @@ export function ChatWidget() {
             <img
               src={emblem}
               alt=""
-              // Lazy + low priority keeps React from preloading it in the page
-              // head, where it competed with the stylesheet for a phone's
-              // bandwidth during first paint. It still loads straight after.
-              loading="lazy"
-              fetchPriority="low"
+              // Loaded normally (React preloads it in the head). It used to be
+              // lazy and low priority to keep it from competing with the
+              // stylesheet on a phone; the stylesheet is now inlined in the
+              // HTML, so nothing is waiting on it and the ring is never empty.
               width={32}
               height={33}
               className="h-8 w-8 object-contain transition-transform duration-300 group-hover:scale-110"

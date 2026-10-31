@@ -11,6 +11,10 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+// The same stylesheet as a string, inlined into the HTML in production (see
+// RootShell). As a separate file it was the one thing first paint waits for,
+// and on a phone it queued behind ~28 script preloads: 28KB took 1.4s.
+import appCssInline from "../styles.css?inline";
 import { LOGO_IMAGE, OG_IMAGE, SITE_URL } from "@/lib/site";
 
 function NotFoundComponent() {
@@ -157,7 +161,9 @@ export const Route = createRootRoute({
       { name: "twitter:image", content: OG_IMAGE },
     ],
     links: [
-      { rel: "stylesheet", href: appCss },
+      // Development keeps a real stylesheet so edits hot-reload; production
+      // inlines it (RootShell) and needs no request at all.
+      ...(import.meta.env.DEV ? [{ rel: "stylesheet", href: appCss }] : []),
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
       {
@@ -210,6 +216,12 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en" className="dark" suppressHydrationWarning>
       <head>
         <HeadContent />
+        {/* Inlined stylesheet: it arrives with the HTML's first bytes, so the
+            page can paint as soon as the HTML is read instead of after a
+            separate render-blocking download competing for a phone's
+            bandwidth. Leaving pages client-side never refetches HTML, so the
+            extra bytes are paid once per visit. */}
+        {!import.meta.env.DEV && <style dangerouslySetInnerHTML={{ __html: appCssInline }} />}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: SCHEMA_ORG_ORGANIZATION }}

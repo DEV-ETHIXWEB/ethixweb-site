@@ -20,6 +20,20 @@ import { useEffect, useRef, type ReactNode } from "react";
  * is a CSS transition the compositor runs; see [data-reveal] in styles.css. */
 let sharedObserver: IntersectionObserver | null = null;
 
+/** Phones and tablets get no scroll-in fade at all: content is simply there.
+ * A thumb flick carries content onto the screen faster than a 0.45s fade can
+ * finish, and on this dark site a block that has not finished fading is a
+ * black gap, so the reveal read as the page still loading (compared against
+ * allphaseplumbing.com on the same phone, which felt instant). Mouse and
+ * trackpad users, scrolling with the slower eased glide, keep the reveal. */
+let touchOnly: boolean | null = null;
+function isTouchOnly() {
+  if (touchOnly === null) {
+    touchOnly = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+  }
+  return touchOnly;
+}
+
 /** Blocks the observer has already sorted into "on screen at mount" or
  * "below, hidden until it approaches". The first callback for an element
  * decides which; only the second kind needs a later callback. */
@@ -72,7 +86,7 @@ export function Reveal({
 
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
+    if (!el || isTouchOnly()) return;
     const obs = getObserver();
     obs.observe(el);
     return () => {
