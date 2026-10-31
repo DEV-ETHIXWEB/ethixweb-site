@@ -148,5 +148,10 @@ export function Turnstile({
 
   if (!siteKey) return null;
 
-  return <div id={containerId} className="cf-turnstile" />;
+  // Reserves the height the widget takes once rendered (71px measured live:
+  // the 65px frame plus its inline gap) from the first paint. The
+  // script arrives late, and without this the form grew by the widget's
+  // height on load, pushing the submit button down (and, on the campaign
+  // pages, re-centring the hero text beside the form).
+  return <div id={containerId} className="cf-turnstile min-h-[71px]" />;
 }
