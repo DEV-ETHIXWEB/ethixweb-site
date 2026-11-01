@@ -8,6 +8,9 @@ import seo from "@/data/posts/seo-for-plumbers-and-hvac";
 import budget from "@/data/posts/hvac-plumbing-marketing-budget";
 import callTracking from "@/data/posts/call-tracking-for-contractors";
 import heatPumps from "@/data/posts/heat-pump-marketing-pacific-northwest";
+import guaranteed from "@/data/posts/google-guaranteed-for-contractors";
+import seasonal from "@/data/posts/hvac-seasonal-marketing-calendar";
+import waterHeaters from "@/data/posts/water-heater-marketing";
 
 export type { Post, PostBlock } from "@/data/posts/types";
 
@@ -24,6 +27,9 @@ export const POSTS: Post[] = [
   reviews,
   website,
   callTracking,
+  guaranteed,
+  seasonal,
+  waterHeaters,
 ];
 
 export function getPost(slug: string): Post | undefined {

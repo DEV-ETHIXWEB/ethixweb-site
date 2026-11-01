@@ -167,9 +167,9 @@ Each article is one data file in `src/data/posts`. Good next topics:
 
 - ServiceTitan marketing tracking: what to set up
 - Plumbing website design: 10 examples and what they get right
-- How to get Google Guaranteed (Local Services Ads screening, step by step)
-- Seasonal marketing calendar for HVAC companies in the Pacific Northwest
-- Water heater replacement marketing
+- Ductless mini splits for older Seattle homes
+- Sewer line replacement marketing for Seattle's side sewers
+- Maintenance plans: how to sell and keep them
 - How to rank in Bellevue and the Eastside
 
 ---
