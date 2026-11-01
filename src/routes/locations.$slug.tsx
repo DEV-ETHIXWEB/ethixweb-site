@@ -168,7 +168,7 @@ function LocationPage() {
 
   return (
     <SiteLayout>
-      <PageHero icon={MapPin} eyebrow={cityName} title={loc.h1}>
+      <PageHero icon={MapPin} eyebrow={cityName} title={<HeroTitle text={loc.h1} />} titleSize="text-7xl sm:text-6xl">
         <p>{loc.intro}</p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <Link
@@ -398,6 +398,23 @@ function LocationPage() {
         ctaTo="/contact"
       />
     </SiteLayout>
+  );
+}
+
+/** Breaks the headline before "in {City}" from sm up. Left to wrap on its
+ * own, a headline that nearly fills two lines could take two lines in the
+ * fallback font and three in Kumbh Sans, so the page below jumped when the
+ * web font arrived. Two short lines fit in either font. */
+function HeroTitle({ text }: { text: string }) {
+  const i = text.lastIndexOf(" in ");
+  if (i < 0) return <>{text}</>;
+  return (
+    <>
+      {text.slice(0, i)}
+      <br className="hidden sm:block" />
+      <span className="sm:hidden"> </span>
+      {text.slice(i + 1)}
+    </>
   );
 }
 

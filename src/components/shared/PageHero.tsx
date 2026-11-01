@@ -9,12 +9,16 @@ export function PageHero({
   eyebrow,
   icon,
   title,
+  titleSize = "text-7xl",
   children,
 }: {
   eyebrow: ReactNode;
   /** The mark in the page tag; omitted, the brand's flame and snowflake. */
   icon?: LucideIcon;
   title: ReactNode;
+  /** Long, keyword-style headlines use the smaller size so they hold two
+   * clean lines in either the web font or its fallback. */
+  titleSize?: "text-7xl" | "text-7xl sm:text-6xl";
   children?: ReactNode;
 }) {
   return (
@@ -24,7 +28,9 @@ export function PageHero({
       <Container size="medium" className="relative text-center">
         <Reveal>
           <PageTag items={[eyebrow]} icon={icon} />
-          <h1 className="mt-5 font-display text-7xl font-bold leading-[1.15] text-gradient pb-1">
+          <h1
+            className={`mt-5 text-balance font-display ${titleSize} font-bold leading-[1.15] text-gradient pb-1`}
+          >
             {title}
           </h1>
           {children && (
