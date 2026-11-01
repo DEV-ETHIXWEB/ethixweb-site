@@ -162,7 +162,6 @@ function About() {
         <GlowBlob
           size="md"
           color="primary"
-          blur={130}
           className="left-1/2 top-0 -translate-x-1/2 opacity-60"
         />
         <Container className="relative">
@@ -219,7 +218,6 @@ function About() {
         <GlowBlob
           size="lg"
           color="primary"
-          blur={120}
           className="right-0 top-1/2 -translate-y-1/2 opacity-50"
         />
         <Container className="relative grid items-center gap-16 sm:grid-cols-2">
@@ -514,7 +512,7 @@ function About() {
 
           <Reveal delay={0.1}>
             <div className="glow-border glass-strong rounded-[2rem] relative overflow-hidden p-8 sm:p-10 lg:p-12">
-              <GlowBlob size="sm" color="primary" blur={100} className="-right-20 -top-20" />
+              <GlowBlob size="sm" color="primary" className="-right-20 -top-20" />
               <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr] lg:items-center">
                 <div className="grid gap-4 sm:grid-cols-2">
                   {REASONS.map((r) => (
@@ -625,7 +623,6 @@ function About() {
               <GlowBlob
                 size="sm"
                 color="primary"
-                blur={90}
                 className="left-1/2 top-0 -translate-x-1/2 opacity-70"
               />
               <div className="relative z-10 flex flex-col items-center">

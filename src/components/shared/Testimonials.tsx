@@ -277,7 +277,6 @@ export function Testimonials() {
       <GlowBlob
         size="lg"
         color="primary"
-        blur={120}
         className="right-1/4 top-1/2 -translate-y-1/2 opacity-25"
       />
 

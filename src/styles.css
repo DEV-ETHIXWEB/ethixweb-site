@@ -2092,6 +2092,26 @@ html.dark {
   }
 }
 
+/* ── Ambient glows without filter: blur ──
+   The site's soft red glows were plain circles under filter: blur(40-180px).
+   A large blur radius makes the browser re-rasterise an area several times
+   the element's size, and Safari (every browser on iPhone) does it on the
+   main thread while scrolling: measured in WebKit on the live homepage,
+   39 frames over 50ms in one scroll, against 1 with this rule and 0 with
+   no filters at all. A radial mask fades the same circle to nothing at its
+   edge, and the scale makes up for the spread the blur used to add.
+   Covers GlowBlob (.glow-soft) and the hand-written Tailwind blur glows,
+   so a new `blur-[90px]` glow is handled without anyone remembering this. */
+.glow-soft,
+[class*="blur-["]:not([class*="backdrop-blur"]),
+.blur-2xl,
+.blur-3xl {
+  filter: none !important;
+  -webkit-mask-image: radial-gradient(closest-side, #000, rgba(0, 0, 0, 0.45) 45%, transparent);
+  mask-image: radial-gradient(closest-side, #000, rgba(0, 0, 0, 0.45) 45%, transparent);
+  scale: 1.6;
+}
+
 /* ── Safe area insets for notched devices (iPhone X+, Android cutouts) ─────── */
 body {
   padding-left: env(safe-area-inset-left);

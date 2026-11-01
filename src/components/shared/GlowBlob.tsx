@@ -11,30 +11,28 @@ const COLORS = {
   brand: "bg-primary/20",
 } as const;
 
-// Ambient background blur accent. Sized with clamp() (not fixed px) so it
+// Ambient background glow. Soft-edged with a radial mask, not filter: blur
+// (see .glow-soft in styles.css for why). Sized with clamp() (not fixed px) so it
 // scales with the viewport instead of looking either cramped on narrow
 // phones or comically small against a 1920px+ container.
 export function GlowBlob({
   size = "md",
   color = "primary",
-  blur = 120,
   className,
 }: {
   size?: keyof typeof SIZES;
   color?: keyof typeof COLORS;
-  blur?: number;
   className?: string;
 }) {
   return (
     <div
       aria-hidden="true"
       className={cn(
-        "pointer-events-none absolute rounded-full",
+        "glow-soft pointer-events-none absolute rounded-full",
         SIZES[size],
         COLORS[color],
         className,
       )}
-      style={{ filter: `blur(${blur}px)` }}
     />
   );
 }

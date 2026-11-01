@@ -144,7 +144,7 @@ function Article() {
     <SiteLayout>
       <section className="relative -mt-24 overflow-hidden bg-gradient-hero pb-14 pt-36 sm:pb-16 sm:pt-40">
         <div className="absolute inset-0 grid-bg opacity-30" />
-        <GlowBlob size="md" color="primary" blur={130} className="left-1/2 top-0 -translate-x-1/2 opacity-60" />
+        <GlowBlob size="md" color="primary" className="left-1/2 top-0 -translate-x-1/2 opacity-60" />
         <Container className="relative">
           <div className="max-w-3xl">
             <PageTag items={[post.category, `${post.readMinutes} min read`]} icon={PenLine} />

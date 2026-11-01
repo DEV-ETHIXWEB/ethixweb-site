@@ -243,8 +243,8 @@ function Page() {
       {/* Story Block */}
       <section className="py-24">
         <Container className="glass-strong relative overflow-hidden rounded-[2.5rem] p-8 sm:p-10 lg:p-16">
-          <GlowBlob size="md" color="primary" blur={120} className="-top-32 -left-32" />
-          <GlowBlob size="md" color="brand" blur={120} className="-bottom-32 -right-32" />
+          <GlowBlob size="md" color="primary" className="-top-32 -left-32" />
+          <GlowBlob size="md" color="brand" className="-bottom-32 -right-32" />
           <Reveal className="grid items-center gap-x-16 lg:grid-cols-2">
             <div>
               <p className="text-sm uppercase tracking-widest text-primary-text mb-4 relative">

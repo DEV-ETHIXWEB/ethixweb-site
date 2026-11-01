@@ -116,7 +116,6 @@ function JobDetail() {
         <GlowBlob
           size="lg"
           color="primary"
-          blur={120}
           className="top-0 left-1/2 -translate-x-1/2"
         />
         <Container className="relative">

@@ -150,7 +150,6 @@ function Services() {
         <GlowBlob
           size="md"
           color="primary"
-          blur={130}
           className="left-1/2 top-0 -translate-x-1/2 opacity-60"
         />
         <div className="pointer-events-none absolute inset-x-0 top-24 mx-auto w-full max-w-5xl scale-110 opacity-10">

@@ -249,7 +249,6 @@ function Hero() {
       <GlowBlob
         size="md"
         color="primary"
-        blur={140}
         className="left-1/2 top-0 -translate-x-1/2 opacity-60"
       />
 
@@ -474,7 +473,7 @@ function TradeProof() {
 function Services() {
   return (
     <section className="relative overflow-hidden py-20 sm:py-24">
-      <GlowBlob size="lg" color="brand" blur={160} className="left-0 top-1/4 opacity-70" />
+      <GlowBlob size="lg" color="brand" className="left-0 top-1/4 opacity-70" />
       <Container className="relative">
         <Reveal>
           <div className="max-w-3xl">
@@ -519,7 +518,7 @@ function Services() {
 function ServiceCatalogTeaser() {
   return (
     <section className="relative overflow-hidden py-20 sm:py-24">
-      <GlowBlob size="lg" color="brand" blur={160} className="right-0 bottom-0 opacity-60" />
+      <GlowBlob size="lg" color="brand" className="right-0 bottom-0 opacity-60" />
       <Container className="relative">
         <Reveal>
           <div className="flex flex-wrap items-end justify-between gap-6">

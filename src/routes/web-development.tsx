@@ -238,7 +238,7 @@ function Page() {
       {/* All of Our Websites Are */}
       <section className="py-24">
         <Container className="glass-strong relative overflow-hidden rounded-[2.5rem] p-8 sm:p-10 lg:p-16">
-          <GlowBlob size="md" color="primary" blur={120} className="-top-32 -right-32" />
+          <GlowBlob size="md" color="primary" className="-top-32 -right-32" />
           <Reveal>
             <div className="flex items-center gap-3 mb-6">
               <Zap className="h-5 w-5 text-primary" />

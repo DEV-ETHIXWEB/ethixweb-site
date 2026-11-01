@@ -278,7 +278,6 @@ function Blog() {
         <GlowBlob
           size="md"
           color="primary"
-          blur={130}
           className="left-1/2 top-0 -translate-x-1/2 opacity-60"
         />
         <Container className="relative">

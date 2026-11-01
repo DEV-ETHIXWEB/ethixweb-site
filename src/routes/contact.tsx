@@ -244,8 +244,8 @@ function ContactBody() {
       </PageHero>
 
       <section className="relative overflow-hidden py-16 sm:py-20">
-        <GlowBlob size="lg" color="brand" blur={140} className="-left-20 top-0" />
-        <GlowBlob size="md" color="primary" blur={120} className="-right-10 bottom-0" />
+        <GlowBlob size="lg" color="brand" className="-left-20 top-0" />
+        <GlowBlob size="md" color="primary" className="-right-10 bottom-0" />
 
         <Container>
           <Reveal>
