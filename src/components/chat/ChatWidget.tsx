@@ -50,7 +50,7 @@ export function ChatWidget() {
             // Phone: a sheet with a comfortable margin. Desktop: a panel
             // pinned above the launcher.
             "glass-strong fixed inset-x-3 bottom-3 top-20 z-50 flex flex-col overflow-hidden rounded-3xl",
-            "sm:inset-x-auto sm:bottom-24 sm:right-5 sm:top-auto sm:h-[min(34rem,calc(100vh-9rem))] sm:w-[25.5rem]",
+            "sm:inset-x-auto sm:bottom-24 sm:right-5 sm:top-auto sm:h-[min(40rem,calc(100vh-9rem))] sm:w-[28rem]",
             "transition-[opacity,transform] duration-200 ease-out",
             open
               ? "pointer-events-auto translate-y-0 opacity-100"

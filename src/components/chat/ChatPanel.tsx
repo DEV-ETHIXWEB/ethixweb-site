@@ -297,7 +297,7 @@ export function ChatPanel({ onClose }: { onClose: () => void }) {
         <EmblemAvatar />
         <div className="ml-1.5 min-w-0 flex-1">
           <p className="truncate text-sm font-bold leading-tight">Ethixweb Assistant</p>
-          <p className="flex items-center gap-1.5 truncate text-[11px] leading-tight text-muted-foreground">
+          <p className="flex items-center gap-1.5 truncate text-[13px] leading-tight text-muted-foreground">
             <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" aria-hidden="true" />
             {statusLine}
           </p>
@@ -346,10 +346,10 @@ export function ChatPanel({ onClose }: { onClose: () => void }) {
       {/* ── Settings ─────────────────────────────────────────────────────── */}
       {showSettings && (
         <div className="border-b border-border/80 bg-foreground/[0.03] px-4 py-3">
-          <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+          <p className="flex items-center gap-1.5 text-[13px] font-bold uppercase tracking-widest text-muted-foreground">
             <Cpu className="h-3.5 w-3.5 text-primary" /> Model
           </p>
-          <p className="mt-1.5 text-[11px] leading-relaxed text-muted-foreground">
+          <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">
             Downloaded once to this browser, then cached. Bigger answers better and needs more GPU
             memory.
           </p>
@@ -375,11 +375,11 @@ export function ChatPanel({ onClose }: { onClose: () => void }) {
                 >
                   <span className="min-w-0">
                     <span className="block text-xs font-semibold">{m.label}</span>
-                    <span className="block truncate text-[11px] text-muted-foreground">
+                    <span className="block truncate text-[13px] text-muted-foreground">
                       {m.blurb}
                     </span>
                   </span>
-                  <span className="shrink-0 text-[11px] font-bold text-muted-foreground">
+                  <span className="shrink-0 text-[13px] font-bold text-muted-foreground">
                     {formatSize(m.vramMB)}
                   </span>
                 </button>
@@ -405,7 +405,7 @@ export function ChatPanel({ onClose }: { onClose: () => void }) {
               can book you a free call with the team.
             </p>
             {support === "none" && (
-              <p className="mt-3 flex gap-2 rounded-xl border border-primary/25 bg-primary/5 p-2.5 text-[11px] leading-relaxed text-muted-foreground">
+              <p className="mt-3 flex gap-2 rounded-xl border border-primary/25 bg-primary/5 p-2.5 text-[13px] leading-relaxed text-muted-foreground">
                 <MonitorOff className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
                 This browser has no WebGPU, so answers are quoted from the sources instead of
                 written by a model. Chrome, Edge or Safari 18 will run it.
@@ -418,7 +418,7 @@ export function ChatPanel({ onClose }: { onClose: () => void }) {
                   type="button"
                   onClick={() => onChip(s)}
                   className={cn(
-                    "rounded-full border px-3 py-1.5 text-left text-[11px] font-semibold transition-colors",
+                    "rounded-full border px-3 py-1.5 text-left text-[13px] font-semibold transition-colors",
                     s === LEAD_CHIP
                       ? "border-primary/40 bg-primary/10 text-foreground hover:border-primary/70"
                       : "border-border bg-background/50 text-muted-foreground hover:border-primary/40 hover:text-foreground",
@@ -468,7 +468,7 @@ export function ChatPanel({ onClose }: { onClose: () => void }) {
                       type="button"
                       onClick={() => onChip(chip)}
                       className={cn(
-                        "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-left text-[11px] font-semibold text-foreground transition-colors",
+                        "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-left text-[13px] font-semibold text-foreground transition-colors",
                         chip === LEAD_CHIP
                           ? "border-primary bg-primary text-primary-foreground hover:opacity-90"
                           : "border-primary/30 bg-primary/5 hover:border-primary/60 hover:bg-primary/10",
@@ -537,7 +537,7 @@ export function ChatPanel({ onClose }: { onClose: () => void }) {
           )}
         </div>
         {support !== "none" && !ready && (
-          <p className="mt-2 px-0.5 text-[10px] leading-relaxed text-muted-foreground">
+          <p className="mt-2 px-0.5 text-xs leading-relaxed text-muted-foreground">
             First question downloads {model.label} ({formatSize(model.vramMB)}) to this browser,
             once.
           </p>
@@ -581,7 +581,7 @@ function StatusLine({ status, progress }: { status: Status; progress: LoadProgre
             />
           </span>
         )}
-        <span className="mt-1.5 block text-[11px] leading-relaxed opacity-80">
+        <span className="mt-1.5 block text-[13px] leading-relaxed opacity-80">
           One time only, then it is cached for next visit.
         </span>
       </span>
@@ -597,7 +597,7 @@ function StatusLine({ status, progress }: { status: Status; progress: LoadProgre
 function SourcePill({ source, index }: { source: Source; index: number }) {
   const label = `[${index}] ${source.title}`;
   const className =
-    "inline-flex max-w-full items-center gap-1 truncate rounded-full border border-border bg-background/60 px-2 py-0.5 text-[10px] font-semibold text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground";
+    "inline-flex max-w-full items-center gap-1 truncate rounded-full border border-border bg-background/60 px-2 py-0.5 text-xs font-semibold text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground";
   const Icon = source.kind === "site" ? BookOpen : Globe;
 
   if (!source.href) return <span className={className}>{label}</span>;

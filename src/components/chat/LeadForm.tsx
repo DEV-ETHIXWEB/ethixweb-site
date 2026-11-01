@@ -92,7 +92,7 @@ export function LeadForm({ onSent }: { onSent: (firstName: string, websiteHost: 
       <p className="flex items-center gap-2 text-sm font-bold">
         <PhoneCall className="h-4 w-4 text-primary" /> Book a free call
       </p>
-      <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+      <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">
         The team looks at your website first, then calls within one business day.
       </p>
       <div className="mt-3 space-y-2">
@@ -142,7 +142,7 @@ export function LeadForm({ onSent }: { onSent: (firstName: string, websiteHost: 
         </div>
       )}
       {(blocked || error) && (
-        <p role="alert" className="mt-2 text-[11px] leading-relaxed text-error-text">
+        <p role="alert" className="mt-2 text-[13px] leading-relaxed text-error-text">
           {blocked || error}
         </p>
       )}
@@ -159,7 +159,7 @@ export function LeadForm({ onSent }: { onSent: (firstName: string, websiteHost: 
           "Request my call"
         )}
       </button>
-      <p className="mt-2 text-[10px] leading-relaxed text-muted-foreground">
+      <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
         Only these three details are sent to the team. Your chat questions stay on your device.
       </p>
     </form>
