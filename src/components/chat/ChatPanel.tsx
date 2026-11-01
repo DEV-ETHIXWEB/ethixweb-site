@@ -296,8 +296,8 @@ export function ChatPanel({ onClose }: { onClose: () => void }) {
       <header className="flex items-center gap-1.5 border-b border-border/80 py-3 pl-4 pr-2.5">
         <EmblemAvatar />
         <div className="ml-1.5 min-w-0 flex-1">
-          <p className="truncate text-sm font-bold leading-tight">Ethixweb Assistant</p>
-          <p className="flex items-center gap-1.5 truncate text-[13px] leading-tight text-muted-foreground">
+          <p className="truncate text-lg font-bold leading-tight">Ethixweb Assistant</p>
+          <p className="flex items-center gap-1.5 truncate text-base leading-tight text-muted-foreground">
             <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" aria-hidden="true" />
             {statusLine}
           </p>
@@ -309,7 +309,7 @@ export function ChatPanel({ onClose }: { onClose: () => void }) {
           title="Book a free call"
           className="flex h-8 w-8 items-center justify-center rounded-full text-primary transition-colors hover:bg-primary/10"
         >
-          <PhoneCall className="h-4 w-4" />
+          <PhoneCall className="h-5 w-5" />
         </button>
         <button
           type="button"
@@ -321,7 +321,7 @@ export function ChatPanel({ onClose }: { onClose: () => void }) {
             showSettings && "bg-foreground/10 text-primary",
           )}
         >
-          <Settings2 className="h-4 w-4" />
+          <Settings2 className="h-5 w-5" />
         </button>
         {messages.length > 0 && (
           <button
@@ -330,7 +330,7 @@ export function ChatPanel({ onClose }: { onClose: () => void }) {
             aria-label="Clear conversation"
             className="flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-foreground/10"
           >
-            <Trash2 className="h-4 w-4" />
+            <Trash2 className="h-5 w-5" />
           </button>
         )}
         <button
@@ -339,17 +339,17 @@ export function ChatPanel({ onClose }: { onClose: () => void }) {
           aria-label="Close chat"
           className="flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-foreground/10"
         >
-          <X className="h-4 w-4" />
+          <X className="h-5 w-5" />
         </button>
       </header>
 
       {/* ── Settings ─────────────────────────────────────────────────────── */}
       {showSettings && (
         <div className="border-b border-border/80 bg-foreground/[0.03] px-4 py-3">
-          <p className="flex items-center gap-1.5 text-[13px] font-bold uppercase tracking-widest text-muted-foreground">
-            <Cpu className="h-3.5 w-3.5 text-primary" /> Model
+          <p className="flex items-center gap-1.5 text-base font-bold uppercase tracking-widest text-muted-foreground">
+            <Cpu className="h-4 w-4 text-primary" /> Model
           </p>
-          <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">
+          <p className="mt-1.5 text-base leading-relaxed text-muted-foreground">
             Downloaded once to this browser, then cached. Bigger answers better and needs more GPU
             memory.
           </p>
@@ -374,12 +374,12 @@ export function ChatPanel({ onClose }: { onClose: () => void }) {
                   )}
                 >
                   <span className="min-w-0">
-                    <span className="block text-xs font-semibold">{m.label}</span>
-                    <span className="block truncate text-[13px] text-muted-foreground">
+                    <span className="block text-[15px] font-semibold">{m.label}</span>
+                    <span className="block truncate text-base text-muted-foreground">
                       {m.blurb}
                     </span>
                   </span>
-                  <span className="shrink-0 text-[13px] font-bold text-muted-foreground">
+                  <span className="shrink-0 text-base font-bold text-muted-foreground">
                     {formatSize(m.vramMB)}
                   </span>
                 </button>
@@ -392,21 +392,21 @@ export function ChatPanel({ onClose }: { onClose: () => void }) {
       {/* ── Transcript ───────────────────────────────────────────────────── */}
       <div
         ref={scrollRef}
-        className="flex-1 space-y-4 overflow-y-auto px-4 py-4"
+        className="flex-1 space-y-4 overflow-y-auto overscroll-contain px-4 py-4"
         aria-live="polite"
         aria-busy={busy}
       >
         {messages.length === 0 && (
           <div>
-            <p className="text-sm font-semibold">Hi there. Ask me anything.</p>
-            <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">
+            <p className="text-lg font-semibold">Hi there. Ask me anything.</p>
+            <p className="mt-1.5 text-[15px] leading-relaxed text-muted-foreground">
               Questions about Ethixweb are answered from this site. Anything else comes from live
               Wikipedia summaries. Your questions stay on your device, and if you want a person, I
               can book you a free call with the team.
             </p>
             {support === "none" && (
-              <p className="mt-3 flex gap-2 rounded-xl border border-primary/25 bg-primary/5 p-2.5 text-[13px] leading-relaxed text-muted-foreground">
-                <MonitorOff className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
+              <p className="mt-3 flex gap-2 rounded-xl border border-primary/25 bg-primary/5 p-2.5 text-base leading-relaxed text-muted-foreground">
+                <MonitorOff className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                 This browser has no WebGPU, so answers are quoted from the sources instead of
                 written by a model. Chrome, Edge or Safari 18 will run it.
               </p>
@@ -418,7 +418,7 @@ export function ChatPanel({ onClose }: { onClose: () => void }) {
                   type="button"
                   onClick={() => onChip(s)}
                   className={cn(
-                    "rounded-full border px-3 py-1.5 text-left text-[13px] font-semibold transition-colors",
+                    "rounded-full border px-3 py-1.5 text-left text-base font-semibold transition-colors",
                     s === LEAD_CHIP
                       ? "border-primary/40 bg-primary/10 text-foreground hover:border-primary/70"
                       : "border-border bg-background/50 text-muted-foreground hover:border-primary/40 hover:text-foreground",
@@ -442,7 +442,7 @@ export function ChatPanel({ onClose }: { onClose: () => void }) {
             </div>
           ) : m.role === "user" ? (
             <div key={m.id} className="flex justify-end">
-              <p className="max-w-[85%] whitespace-pre-wrap rounded-2xl rounded-br-md bg-primary px-3.5 py-2.5 text-sm leading-relaxed text-primary-foreground">
+              <p className="max-w-[85%] whitespace-pre-wrap rounded-2xl rounded-br-md bg-primary px-3.5 py-2.5 text-lg leading-relaxed text-primary-foreground">
                 {m.content}
               </p>
             </div>
@@ -450,7 +450,7 @@ export function ChatPanel({ onClose }: { onClose: () => void }) {
             <div key={m.id}>
               <div
                 className={cn(
-                  "rounded-2xl rounded-bl-md border px-3.5 py-2.5 text-sm leading-relaxed",
+                  "rounded-2xl rounded-bl-md border px-3.5 py-2.5 text-lg leading-relaxed",
                   m.failed ? "border-primary/40 bg-primary/5" : "border-border bg-background/60",
                 )}
               >
@@ -468,13 +468,13 @@ export function ChatPanel({ onClose }: { onClose: () => void }) {
                       type="button"
                       onClick={() => onChip(chip)}
                       className={cn(
-                        "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-left text-[13px] font-semibold text-foreground transition-colors",
+                        "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-left text-base font-semibold text-foreground transition-colors",
                         chip === LEAD_CHIP
                           ? "border-primary bg-primary text-primary-foreground hover:opacity-90"
                           : "border-primary/30 bg-primary/5 hover:border-primary/60 hover:bg-primary/10",
                       )}
                     >
-                      {chip === LEAD_CHIP && <PhoneCall className="h-3 w-3" />}
+                      {chip === LEAD_CHIP && <PhoneCall className="h-4 w-4" />}
                       {chip}
                     </button>
                   ))}
@@ -514,30 +514,30 @@ export function ChatPanel({ onClose }: { onClose: () => void }) {
             rows={1}
             placeholder="Ask about Ethixweb, or anything else"
             aria-label="Your question"
-            className="max-h-28 min-h-10 flex-1 resize-none rounded-xl border border-border bg-background px-3 py-2.5 text-sm outline-none transition-colors placeholder:text-muted-foreground/70 focus:border-primary/50"
+            className="max-h-36 min-h-12 flex-1 resize-none rounded-xl border border-border bg-background px-3 py-2.5 text-lg outline-none transition-colors placeholder:text-muted-foreground/70 focus:border-primary/50"
           />
           {busy ? (
             <button
               type="button"
               onClick={stop}
               aria-label="Stop"
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border transition-colors hover:border-primary/40"
+              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-border transition-colors hover:border-primary/40"
             >
-              <Square className="h-3.5 w-3.5" />
+              <Square className="h-4 w-4" />
             </button>
           ) : (
             <button
               type="submit"
               disabled={!input.trim()}
               aria-label="Send question"
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground transition-opacity disabled:opacity-40"
+              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground transition-opacity disabled:opacity-40"
             >
-              <ArrowUp className="h-4 w-4" />
+              <ArrowUp className="h-5 w-5" />
             </button>
           )}
         </div>
         {support !== "none" && !ready && (
-          <p className="mt-2 px-0.5 text-xs leading-relaxed text-muted-foreground">
+          <p className="mt-2 px-0.5 text-[15px] leading-relaxed text-muted-foreground">
             First question downloads {model.label} ({formatSize(model.vramMB)}) to this browser,
             once.
           </p>
@@ -561,7 +561,7 @@ function StatusLine({ status, progress }: { status: Status; progress: LoadProgre
   if (status === "retrieving") {
     return (
       <span className="flex items-center gap-2 text-muted-foreground">
-        <Search className="h-3.5 w-3.5 animate-pulse text-primary" /> Searching the sources
+        <Search className="h-4 w-4 animate-pulse text-primary" /> Searching the sources
       </span>
     );
   }
@@ -570,7 +570,7 @@ function StatusLine({ status, progress }: { status: Status; progress: LoadProgre
     return (
       <span className="block text-muted-foreground">
         <span className="flex items-center gap-2">
-          <Loader2 className="h-3.5 w-3.5 animate-spin text-primary" />
+          <Loader2 className="h-4 w-4 animate-spin text-primary" />
           {pct != null ? `Loading the model, ${pct}%` : "Loading the model"}
         </span>
         {pct != null && (
@@ -581,7 +581,7 @@ function StatusLine({ status, progress }: { status: Status; progress: LoadProgre
             />
           </span>
         )}
-        <span className="mt-1.5 block text-[13px] leading-relaxed opacity-80">
+        <span className="mt-1.5 block text-base leading-relaxed opacity-80">
           One time only, then it is cached for next visit.
         </span>
       </span>
@@ -589,7 +589,7 @@ function StatusLine({ status, progress }: { status: Status; progress: LoadProgre
   }
   return (
     <span className="flex items-center gap-2 text-muted-foreground">
-      <Loader2 className="h-3.5 w-3.5 animate-spin text-primary" /> Writing
+      <Loader2 className="h-4 w-4 animate-spin text-primary" /> Writing
     </span>
   );
 }
@@ -597,7 +597,7 @@ function StatusLine({ status, progress }: { status: Status; progress: LoadProgre
 function SourcePill({ source, index }: { source: Source; index: number }) {
   const label = `[${index}] ${source.title}`;
   const className =
-    "inline-flex max-w-full items-center gap-1 truncate rounded-full border border-border bg-background/60 px-2 py-0.5 text-xs font-semibold text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground";
+    "inline-flex max-w-full items-center gap-1 truncate rounded-full border border-border bg-background/60 px-2 py-0.5 text-[15px] font-semibold text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground";
   const Icon = source.kind === "site" ? BookOpen : Globe;
 
   if (!source.href) return <span className={className}>{label}</span>;

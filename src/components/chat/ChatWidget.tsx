@@ -47,10 +47,12 @@ export function ChatWidget() {
           data-lenis-prevent=""
           aria-hidden={!open}
           className={cn(
-            // Phone: a sheet with a comfortable margin. Desktop: a panel
-            // pinned above the launcher.
-            "glass-strong fixed inset-x-3 bottom-3 top-20 z-50 flex flex-col overflow-hidden rounded-3xl",
-            "sm:inset-x-auto sm:bottom-24 sm:right-5 sm:top-auto sm:h-[min(40rem,calc(100vh-9rem))] sm:w-[28rem]",
+            // Phone: the whole screen, above the navbar, with the notch and
+            // home indicator kept clear. Desktop: a panel pinned above the
+            // launcher.
+            "glass-strong fixed inset-0 z-[60] flex flex-col overflow-hidden",
+            "pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]",
+            "sm:inset-x-auto sm:bottom-24 sm:right-5 sm:top-auto sm:z-50 sm:h-[min(44rem,calc(100vh-9rem))] sm:w-[30rem] sm:rounded-3xl sm:p-0",
             "transition-[opacity,transform] duration-200 ease-out",
             open
               ? "pointer-events-auto translate-y-0 opacity-100"

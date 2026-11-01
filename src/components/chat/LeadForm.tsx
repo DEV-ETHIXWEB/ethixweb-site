@@ -81,7 +81,7 @@ export function LeadForm({ onSent }: { onSent: (firstName: string, websiteHost: 
   }
 
   const field =
-    "w-full rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none transition-colors placeholder:text-muted-foreground/70 focus:border-primary/50";
+    "w-full rounded-xl border border-border bg-background px-3 py-2 text-lg outline-none transition-colors placeholder:text-muted-foreground/70 focus:border-primary/50";
 
   return (
     <form
@@ -89,10 +89,10 @@ export function LeadForm({ onSent }: { onSent: (firstName: string, websiteHost: 
       className="rounded-2xl border border-primary/30 bg-primary/[0.06] p-3.5"
       aria-label="Request a call from the Ethixweb team"
     >
-      <p className="flex items-center gap-2 text-sm font-bold">
-        <PhoneCall className="h-4 w-4 text-primary" /> Book a free call
+      <p className="flex items-center gap-2 text-lg font-bold">
+        <PhoneCall className="h-5 w-5 text-primary" /> Book a free call
       </p>
-      <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">
+      <p className="mt-1 text-base leading-relaxed text-muted-foreground">
         The team looks at your website first, then calls within one business day.
       </p>
       <div className="mt-3 space-y-2">
@@ -142,24 +142,24 @@ export function LeadForm({ onSent }: { onSent: (firstName: string, websiteHost: 
         </div>
       )}
       {(blocked || error) && (
-        <p role="alert" className="mt-2 text-[13px] leading-relaxed text-error-text">
+        <p role="alert" className="mt-2 text-base leading-relaxed text-error-text">
           {blocked || error}
         </p>
       )}
       <button
         type="submit"
         disabled={!ready || submitting || (turnstileRequired && !token)}
-        className="btn-primary mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold disabled:opacity-50"
+        className="btn-primary mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-lg font-bold disabled:opacity-50"
       >
         {submitting ? (
           <>
-            <Loader2 className="h-4 w-4 animate-spin" /> Sending
+            <Loader2 className="h-5 w-5 animate-spin" /> Sending
           </>
         ) : (
           "Request my call"
         )}
       </button>
-      <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+      <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
         Only these three details are sent to the team. Your chat questions stay on your device.
       </p>
     </form>
@@ -170,8 +170,8 @@ export function LeadForm({ onSent }: { onSent: (firstName: string, websiteHost: 
  * survives navigation) sees it went through rather than an empty form. */
 export function LeadSent() {
   return (
-    <p className="flex items-center gap-2 rounded-2xl border border-border bg-background/60 px-3.5 py-2.5 text-xs font-semibold">
-      <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" /> Call request sent to the team.
+    <p className="flex items-center gap-2 rounded-2xl border border-border bg-background/60 px-3.5 py-2.5 text-[15px] font-semibold">
+      <CheckCircle2 className="h-5 w-5 shrink-0 text-primary" /> Call request sent to the team.
     </p>
   );
 }
