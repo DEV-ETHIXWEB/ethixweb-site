@@ -11,24 +11,24 @@ import { OG_IMAGE, siteUrl } from "@/lib/site";
 export const Route = createFileRoute("/policies/refunds")({
   head: () => ({
     meta: [
-      { title: "Cancellation & Refunds - Ethixweb" },
+      { title: "Cancellation & Refund Policy | Ethixweb" },
       {
         name: "description",
-        content: "Ethixweb cancellation and refund policy for digital services.",
+        content: "How cancellations and refunds work for Ethixweb's website, marketing and ongoing support services, including notice periods and what happens to work in progress.",
       },
-      { property: "og:title", content: "Cancellation & Refunds - Ethixweb" },
+      { property: "og:title", content: "Cancellation & Refund Policy | Ethixweb" },
       {
         property: "og:description",
-        content: "Ethixweb cancellation and refund policy for digital services.",
+        content: "How cancellations and refunds work for Ethixweb's website, marketing and ongoing support services, including notice periods and what happens to work in progress.",
       },
       { property: "og:type", content: "website" },
       { property: "og:image", content: OG_IMAGE },
       { property: "og:url", content: siteUrl("/policies/refunds") },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Cancellation & Refunds - Ethixweb" },
+      { name: "twitter:title", content: "Cancellation & Refund Policy | Ethixweb" },
       {
         name: "twitter:description",
-        content: "Ethixweb cancellation and refund policy for digital services.",
+        content: "How cancellations and refunds work for Ethixweb's website, marketing and ongoing support services, including notice periods and what happens to work in progress.",
       },
       { name: "twitter:image", content: OG_IMAGE },
       { name: "robots", content: "index, follow" },

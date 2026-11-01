@@ -11,12 +11,12 @@ import { OG_IMAGE, siteUrl } from "@/lib/site";
 export const Route = createFileRoute("/policies/terms")({
   head: () => ({
     meta: [
-      { title: "Terms & Conditions - Ethixweb" },
+      { title: "Terms & Conditions | Ethixweb Contractor Marketing" },
       {
         name: "description",
-        content: "Ethixweb terms and conditions governing use of our services.",
+        content: "The terms that govern Ethixweb's website, marketing and software services, including scope, payments, ownership of your website and content, and support.",
       },
-      { property: "og:title", content: "Terms & Conditions - Ethixweb" },
+      { property: "og:title", content: "Terms & Conditions | Ethixweb Contractor Marketing" },
       {
         property: "og:description",
         content: "Terms and conditions governing use of Ethixweb services.",
@@ -25,7 +25,7 @@ export const Route = createFileRoute("/policies/terms")({
       { property: "og:image", content: OG_IMAGE },
       { property: "og:url", content: siteUrl("/policies/terms") },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Terms & Conditions - Ethixweb" },
+      { name: "twitter:title", content: "Terms & Conditions | Ethixweb Contractor Marketing" },
       {
         name: "twitter:description",
         content: "Terms and conditions governing use of Ethixweb services.",

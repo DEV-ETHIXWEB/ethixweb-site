@@ -11,12 +11,12 @@ import { OG_IMAGE, siteUrl } from "@/lib/site";
 export const Route = createFileRoute("/policies/privacy")({
   head: () => ({
     meta: [
-      { title: "Privacy Policy - Ethixweb" },
+      { title: "Privacy Policy | Ethixweb Contractor Marketing" },
       {
         name: "description",
-        content: "Ethixweb privacy policy: how we collect, use, and protect your data.",
+        content: "How Ethixweb collects, uses and protects your information, which cookies the site sets and only with your consent, and how to ask us to delete your data.",
       },
-      { property: "og:title", content: "Privacy Policy - Ethixweb" },
+      { property: "og:title", content: "Privacy Policy | Ethixweb Contractor Marketing" },
       {
         property: "og:description",
         content: "How Ethixweb collects, uses, and protects your data.",
@@ -25,7 +25,7 @@ export const Route = createFileRoute("/policies/privacy")({
       { property: "og:image", content: OG_IMAGE },
       { property: "og:url", content: siteUrl("/policies/privacy") },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Privacy Policy - Ethixweb" },
+      { name: "twitter:title", content: "Privacy Policy | Ethixweb Contractor Marketing" },
       {
         name: "twitter:description",
         content: "How Ethixweb collects, uses, and protects your data.",

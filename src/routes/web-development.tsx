@@ -8,6 +8,7 @@ import { GlowBlob } from "@/components/shared/GlowBlob";
 import { WebSpotlight } from "@/components/shared/WebSpotlight";
 import { trackWebSpotlight } from "@/lib/web-spotlight";
 import { OG_IMAGE, SITE_URL, siteUrl } from "@/lib/site";
+import { FaqList, faqSchema, type Faq } from "@/components/shared/FaqList";
 import {
   ArrowUpRight,
   CheckCircle2,
@@ -49,6 +50,7 @@ export const Route = createFileRoute("/web-development")({
       { name: "robots", content: "index, follow" },
     ],
     links: [{ rel: "canonical", href: siteUrl("/web-development") }],
+    scripts: [faqSchema(FAQS)],
   }),
   component: Page,
 });
@@ -137,7 +139,7 @@ function Page() {
       <PageHero
         icon={Globe2}
         eyebrow="Website Design"
-        title="Transform Your Online Presence with Expert Website Design"
+        title="Website design for HVAC, plumbing & home service companies"
       >
         Modern and visually stunning websites, built for home service businesses that want to
         dominate their local market.
@@ -274,6 +276,57 @@ function Page() {
           </div>
         </Container>
       </section>
+
+      {/* FAQ */}
+      <section className="py-24">
+        <Container>
+          <Reveal>
+            <p className="text-sm uppercase tracking-widest text-primary-text">FAQ</p>
+            <h2 className="mt-3 font-display text-4xl font-bold text-gradient pb-1">
+              Questions about contractor websites.
+            </h2>
+          </Reveal>
+          <FaqList faqs={FAQS} className="mt-10" />
+          <p className="mt-8 text-sm text-muted-foreground">
+            Want the full checklist? Read{" "}
+            <Link
+              to="/blog/$slug"
+              params={{ slug: "contractor-website-that-books-jobs" }}
+              className="font-semibold text-foreground underline decoration-primary/50 underline-offset-4 hover:text-primary"
+            >
+              what an HVAC or plumbing website needs to book more jobs
+            </Link>
+            .
+          </p>
+        </Container>
+      </section>
     </SiteLayout>
   );
 }
+
+const FAQS: Faq[] = [
+  {
+    q: "How long does a contractor website take to build?",
+    a: "Most home service websites launch in two to four weeks. Larger sites with many service and city pages, or custom integrations, take longer, and the date is agreed in writing before work starts.",
+  },
+  {
+    q: "How much does a website for an HVAC or plumbing company cost?",
+    a: "It depends mainly on how many services and service areas need their own pages and what it connects to. We give a fixed price after a free call, covering design, copy, tracking and launch, with no surprise add-ons.",
+  },
+  {
+    q: "Will my new website rank on Google?",
+    a: "Every site is built for search from the start: fast loading, a page for each main service and area, proper titles and structured data, and a link to your Google Business Profile. Rankings also depend on reviews and your profile, which we help with too.",
+  },
+  {
+    q: "Can you keep my domain and move my existing site?",
+    a: "Yes. You keep your domain, we move the content worth keeping, and we redirect old page addresses to the new ones so you don't lose the search traffic you already have.",
+  },
+  {
+    q: "Do you write the content?",
+    a: "Yes. We write service and area pages in plain language from a short interview with you, then you review everything before launch.",
+  },
+  {
+    q: "Will it work with ServiceTitan, Jobber or Housecall Pro?",
+    a: "Yes. Booking buttons and forms can send leads straight into your field software, and call tracking shows which pages produce booked jobs.",
+  },
+];

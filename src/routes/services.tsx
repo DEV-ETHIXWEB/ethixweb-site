@@ -1,7 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { jsonLdStringify } from "@/lib/json-ld";
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { Container } from "@/components/shared/Container";
 import { Reveal } from "@/components/shared/Reveal";
@@ -13,7 +11,6 @@ import { EngagementRhythm } from "@/components/shared/EngagementRhythm";
 import { SERVICE_CATALOG, SERVICE_CATALOG_TOTAL } from "@/lib/services-catalog";
 import {
   ArrowUpRight,
-  ChevronDown,
   Hammer,
   Map,
   Telescope,
@@ -22,6 +19,8 @@ import {
 } from "lucide-react";
 import { OG_IMAGE, siteUrl } from "@/lib/site";
 import { PageTag } from "@/components/shared/PageTag";
+import { FaqList, faqSchema } from "@/components/shared/FaqList";
+import { POSTS } from "@/data/posts";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -52,6 +51,7 @@ export const Route = createFileRoute("/services")({
     ],
     links: [{ rel: "canonical", href: siteUrl("/services") }],
     scripts: [
+      faqSchema(FAQS),
       {
         type: "application/ld+json",
         children: jsonLdStringify({
@@ -139,38 +139,6 @@ const FAQS = [
     a: "The senior team you talk to. No account managers relaying messages, no outsourced production line - the people on your kickoff call are the people building your system.",
   },
 ];
-
-function ServiceFaq({ q, a }: { q: string; a: string }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="glass overflow-hidden rounded-2xl">
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
-        className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors hover:bg-foreground/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
-      >
-        <span className="text-sm font-medium sm:text-base">{q}</span>
-        <ChevronDown
-          className={`h-4 w-4 shrink-0 text-primary transition-transform duration-300 ${open ? "rotate-180" : ""}`}
-        />
-      </button>
-      <AnimatePresence initial={false}>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-            className="overflow-hidden"
-          >
-            <p className="px-5 pb-4 text-sm leading-relaxed text-muted-foreground">{a}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
 
 function Services() {
   return (
@@ -346,6 +314,39 @@ function Services() {
         </Container>
       </section>
 
+      {/* ── Guides: links the strongest service page to the articles ─────── */}
+      <section className="py-20">
+        <Container>
+          <EditorialHeader
+            className="mb-10"
+            index="05"
+            eyebrow="Free guides"
+            title="Learn how the system works before you buy it."
+          />
+          <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {POSTS.slice(0, 6).map((p) => (
+              <li key={p.slug}>
+                <Link
+                  to="/blog/$slug"
+                  params={{ slug: p.slug }}
+                  className="glass group flex h-full flex-col rounded-2xl p-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+                >
+                  <span className="text-xs font-bold uppercase tracking-widest text-primary-text">
+                    {p.category}
+                  </span>
+                  <span className="mt-2 font-display text-lg font-semibold leading-snug group-hover:text-primary">
+                    {p.title}
+                  </span>
+                  <span className="mt-auto pt-4 text-sm font-semibold text-muted-foreground group-hover:text-foreground">
+                    Read the guide →
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </Container>
+      </section>
+
       {/* ── FAQs ─────────────────────────────────────────────────────────── */}
       <section className="py-20">
         <Container>
@@ -355,11 +356,7 @@ function Services() {
             eyebrow="Before you ask"
             title="The questions every new client asks."
           />
-          <div className="grid items-start gap-3 lg:grid-cols-2">
-            {FAQS.map((faq) => (
-              <ServiceFaq key={faq.q} q={faq.q} a={faq.a} />
-            ))}
-          </div>
+          <FaqList faqs={FAQS} />
         </Container>
       </section>
 

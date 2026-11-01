@@ -31,13 +31,17 @@ export const Route = createFileRoute("/our-work/$slug")({
         ],
       };
     }
-    const title = `${study.client.name} - Ethixweb Case Study`;
+    const title = `${study.client.name}: Website Case Study | Ethixweb`;
+    // Some summaries are one short line; search results show ~155
+    // characters, so short ones get a sentence about what the page covers.
+    const extended = `${study.summary} See the project, the approach and the results.`;
+    const description = extended.length <= 160 ? extended : study.summary;
     return {
       meta: [
         { title },
-        { name: "description", content: study.summary },
+        { name: "description", content: description },
         { property: "og:title", content: title },
-        { property: "og:description", content: study.summary },
+        { property: "og:description", content: description },
         { property: "og:type", content: "article" },
         { property: "og:image", content: siteUrl(study.heroImage.src) },
         // These override the site-wide 1200x630 declared in __root.tsx, which
@@ -51,7 +55,7 @@ export const Route = createFileRoute("/our-work/$slug")({
         { property: "og:url", content: siteUrl(`/our-work/${study.slug}`) },
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:title", content: title },
-        { name: "twitter:description", content: study.summary },
+        { name: "twitter:description", content: description },
         { name: "twitter:image", content: siteUrl(study.heroImage.src) },
         { name: "robots", content: "index, follow" },
       ],
