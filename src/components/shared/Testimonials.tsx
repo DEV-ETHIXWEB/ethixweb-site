@@ -235,7 +235,12 @@ function InfiniteCarousel({ brand }: { brand: string }) {
   const duplicated = [...REVIEWS, ...REVIEWS, ...REVIEWS, ...REVIEWS];
 
   return (
-    <div ref={wrapRef} className="overflow-x-hidden overflow-y-visible py-4">
+    // Fades the cards out over the last few percent at each screen edge, so
+    // they slide in and out rather than meeting a hard line.
+    <div
+      ref={wrapRef}
+      className="overflow-x-hidden overflow-y-visible py-4 [mask-image:linear-gradient(to_right,transparent,#000_6%,#000_94%,transparent)]"
+    >
       <motion.div
         ref={trackRef}
         className="flex w-max cursor-grab items-start gap-5 active:cursor-grabbing"
@@ -332,11 +337,15 @@ export function Testimonials() {
             </div>
           </div>
         </Reveal>
+      </Container>
 
-        <div className="mt-12">
-          <InfiniteCarousel brand={brand} />
-        </div>
+      {/* Full bleed: the cards run off the screen edges rather than being cut
+          square at the content column, which read as clipped. */}
+      <div className="relative mt-12">
+        <InfiniteCarousel brand={brand} />
+      </div>
 
+      <Container className="relative">
         <Reveal delay={0.12}>
           <div className="mt-10 text-center">
             <a
