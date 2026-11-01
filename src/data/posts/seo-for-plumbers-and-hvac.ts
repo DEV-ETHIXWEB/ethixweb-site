@@ -75,7 +75,7 @@ const post: Post = {
       p: "SEO is slower than ads. Profile and review improvements often show up in the Map Pack within two or three months. New pages usually start ranking for less competitive searches within a few months and build from there. That's why most companies run ads for steady calls now while SEO builds the calls they won't have to pay for later.",
     },
     {
-      p: "If you would rather have it done for you, this is the core of our [HVAC and plumbing marketing](/hvac-plumbing-marketing) work.",
+      p: "If you would rather have it done for you, see our [SEO for plumbers](/plumber-seo) and [HVAC SEO](/hvac-seo) services.",
     },
   ],
   related: [

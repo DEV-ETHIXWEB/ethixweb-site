@@ -23,6 +23,7 @@ const ROUTES_DIR = "src/routes";
 const CASE_STUDIES_DIR = "src/data/case-studies";
 const LOCATIONS_DIR = "src/data/locations";
 const POSTS_DIR = "src/data/posts";
+const SOLUTIONS_DIR = "src/data/solutions";
 
 /** Indexable pages. `files` = what counts as "this page changed" for <lastmod>. */
 const PAGES = [
@@ -30,6 +31,11 @@ const PAGES = [
   { path: "/services", files: ["src/routes/services.tsx"], priority: "0.9" },
   { path: "/contact", files: ["src/routes/contact.tsx"], priority: "0.9" },
   { path: "/blog", files: ["src/routes/blog.index.tsx", POSTS_DIR], priority: "0.7" },
+  {
+    path: "/tools/missed-call-calculator",
+    files: ["src/routes/tools.missed-call-calculator.tsx"],
+    priority: "0.7",
+  },
   {
     path: "/locations",
     files: ["src/routes/locations.index.tsx", LOCATIONS_DIR],
@@ -148,6 +154,19 @@ for (const slug of posts) {
     path: `/blog/${slug}`,
     files: [`${POSTS_DIR}/${slug}.ts`, "src/routes/blog.$slug.tsx"],
     priority: "0.7",
+  });
+}
+
+// ── Keyword landing pages: one root-level URL per solution data file ──────
+const solutions = readdirSync(SOLUTIONS_DIR)
+  .filter((f) => f.endsWith(".ts") && f !== "index.ts" && f !== "types.ts")
+  .map((f) => f.replace(/\.ts$/, ""))
+  .sort();
+for (const slug of solutions) {
+  PAGES.push({
+    path: `/${slug}`,
+    files: [`${SOLUTIONS_DIR}/${slug}.ts`, `src/routes/${slug}.tsx`, "src/components/solutions"],
+    priority: "0.9",
   });
 }
 

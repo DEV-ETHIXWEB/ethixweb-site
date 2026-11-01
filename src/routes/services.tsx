@@ -21,6 +21,7 @@ import { OG_IMAGE, siteUrl } from "@/lib/site";
 import { PageTag } from "@/components/shared/PageTag";
 import { FaqList, faqSchema } from "@/components/shared/FaqList";
 import { POSTS } from "@/data/posts";
+import { SOLUTIONS } from "@/data/solutions";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -314,12 +315,45 @@ function Services() {
         </Container>
       </section>
 
+      {/* ── Specialist pages, one per trade and search ─────────────────── */}
+      <section className="py-12">
+        <Container>
+          <EditorialHeader
+            className="mb-8"
+            index="05"
+            eyebrow="By trade"
+            title="Built for HVAC and plumbing specifically."
+          />
+          <ul className="flex flex-wrap gap-3">
+            {SOLUTIONS.map((sol) => (
+              <li key={sol.slug}>
+                <Link
+                  to={"/" + sol.slug}
+                  className="glass inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+                >
+                  {sol.label}
+                  <span aria-hidden="true">→</span>
+                </Link>
+              </li>
+            ))}
+            <li>
+              <Link
+                to="/tools/missed-call-calculator"
+                className="glass inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+              >
+                Missed call calculator <span aria-hidden="true">→</span>
+              </Link>
+            </li>
+          </ul>
+        </Container>
+      </section>
+
       {/* ── Guides: links the strongest service page to the articles ─────── */}
       <section className="py-20">
         <Container>
           <EditorialHeader
             className="mb-10"
-            index="05"
+            index="06"
             eyebrow="Free guides"
             title="Learn how the system works before you buy it."
           />

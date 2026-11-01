@@ -81,7 +81,7 @@ const post: Post = {
       p: "A good contractor website is not judged by how it looks. It is judged by how many calls and booked jobs it produces. Set up call tracking and form tracking so you know how many leads the site creates each month, which pages they come from, and how many turn into jobs. Then improve the pages that matter most.",
     },
     {
-      p: "If your site is missing several of these, it is probably costing you jobs every week. We build [websites for home service businesses](/web-development) around exactly this list, and you can see the results in our [contractor case studies](/our-work).",
+      p: "If your site is missing several of these, it is probably costing you jobs every week. We build [HVAC websites](/hvac-website-design) and [plumbing websites](/plumbing-website-design) around exactly this list, and you can see the results in our [contractor case studies](/our-work).",
     },
   ],
   related: [

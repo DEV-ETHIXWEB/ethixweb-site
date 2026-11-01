@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AiAutomationRouteImport } from './routes/ai-automation'
+import { Route as AnsweringServiceForContractorsRouteImport } from './routes/answering-service-for-contractors'
 import { Route as CareersRouteImport } from './routes/careers'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as FishingMarineMarketingRouteImport } from './routes/fishing-marine-marketing'
@@ -19,10 +20,14 @@ import { Route as GoogleAdsManagementRouteImport } from './routes/google-ads-man
 import { Route as GraphicDesignRouteImport } from './routes/graphic-design'
 import { Route as HackathonRouteImport } from './routes/hackathon'
 import { Route as HvacPlumbingMarketingRouteImport } from './routes/hvac-plumbing-marketing'
+import { Route as HvacSeoRouteImport } from './routes/hvac-seo'
+import { Route as HvacWebsiteDesignRouteImport } from './routes/hvac-website-design'
 import { Route as IndustriesRouteImport } from './routes/industries'
 import { Route as MarketingRouteImport } from './routes/marketing'
 import { Route as NotHiringRouteImport } from './routes/not-hiring'
 import { Route as OurWorkRouteImport } from './routes/our-work'
+import { Route as PlumberSeoRouteImport } from './routes/plumber-seo'
+import { Route as PlumbingWebsiteDesignRouteImport } from './routes/plumbing-website-design'
 import { Route as QuestionnaireRouteImport } from './routes/questionnaire'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as WebDevelopmentRouteImport } from './routes/web-development'
@@ -45,6 +50,7 @@ import { Route as PoliciesPrivacyRouteImport } from './routes/policies.privacy'
 import { Route as PoliciesRefundsRouteImport } from './routes/policies.refunds'
 import { Route as PoliciesTermsRouteImport } from './routes/policies.terms'
 import { Route as QrSlugRouteImport } from './routes/qr.$slug'
+import { Route as ToolsMissedCallCalculatorRouteImport } from './routes/tools.missed-call-calculator'
 import { Route as ApiAdminAssessmentsRouteImport } from './routes/api.admin.assessments'
 import { Route as ApiAdminQuestionnaireRouteImport } from './routes/api.admin.questionnaire'
 import { Route as ApiAssessmentRecordingUploadRouteImport } from './routes/api.assessment.recording-upload'
@@ -96,6 +102,12 @@ const AiAutomationRoute = AiAutomationRouteImport.update({
   path: '/ai-automation',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AnsweringServiceForContractorsRoute =
+  AnsweringServiceForContractorsRouteImport.update({
+    id: '/answering-service-for-contractors',
+    path: '/answering-service-for-contractors',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const CareersRoute = CareersRouteImport.update({
   id: '/careers',
   path: '/careers',
@@ -131,6 +143,16 @@ const HvacPlumbingMarketingRoute = HvacPlumbingMarketingRouteImport.update({
   path: '/hvac-plumbing-marketing',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HvacSeoRoute = HvacSeoRouteImport.update({
+  id: '/hvac-seo',
+  path: '/hvac-seo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HvacWebsiteDesignRoute = HvacWebsiteDesignRouteImport.update({
+  id: '/hvac-website-design',
+  path: '/hvac-website-design',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndustriesRoute = IndustriesRouteImport.update({
   id: '/industries',
   path: '/industries',
@@ -149,6 +171,16 @@ const NotHiringRoute = NotHiringRouteImport.update({
 const OurWorkRoute = OurWorkRouteImport.update({
   id: '/our-work',
   path: '/our-work',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlumberSeoRoute = PlumberSeoRouteImport.update({
+  id: '/plumber-seo',
+  path: '/plumber-seo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlumbingWebsiteDesignRoute = PlumbingWebsiteDesignRouteImport.update({
+  id: '/plumbing-website-design',
+  path: '/plumbing-website-design',
   getParentRoute: () => rootRouteImport,
 } as any)
 const QuestionnaireRoute = QuestionnaireRouteImport.update({
@@ -261,6 +293,12 @@ const QrSlugRoute = QrSlugRouteImport.update({
   path: '/qr/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ToolsMissedCallCalculatorRoute =
+  ToolsMissedCallCalculatorRouteImport.update({
+    id: '/tools/missed-call-calculator',
+    path: '/tools/missed-call-calculator',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiAdminAssessmentsRoute = ApiAdminAssessmentsRouteImport.update({
   id: '/api/admin/assessments',
   path: '/api/admin/assessments',
@@ -447,6 +485,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/ai-automation': typeof AiAutomationRoute
+  '/answering-service-for-contractors': typeof AnsweringServiceForContractorsRoute
   '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
   '/fishing-marine-marketing': typeof FishingMarineMarketingRoute
@@ -454,10 +493,14 @@ export interface FileRoutesByFullPath {
   '/graphic-design': typeof GraphicDesignRoute
   '/hackathon': typeof HackathonRoute
   '/hvac-plumbing-marketing': typeof HvacPlumbingMarketingRoute
+  '/hvac-seo': typeof HvacSeoRoute
+  '/hvac-website-design': typeof HvacWebsiteDesignRoute
   '/industries': typeof IndustriesRoute
   '/marketing': typeof MarketingRoute
   '/not-hiring': typeof NotHiringRoute
   '/our-work': typeof OurWorkRouteWithChildren
+  '/plumber-seo': typeof PlumberSeoRoute
+  '/plumbing-website-design': typeof PlumbingWebsiteDesignRoute
   '/questionnaire': typeof QuestionnaireRoute
   '/services': typeof ServicesRoute
   '/web-development': typeof WebDevelopmentRoute
@@ -476,6 +519,7 @@ export interface FileRoutesByFullPath {
   '/policies/refunds': typeof PoliciesRefundsRoute
   '/policies/terms': typeof PoliciesTermsRoute
   '/qr/$slug': typeof QrSlugRoute
+  '/tools/missed-call-calculator': typeof ToolsMissedCallCalculatorRoute
   '/blog/': typeof BlogIndexRoute
   '/careers/': typeof CareersIndexRoute
   '/locations/': typeof LocationsIndexRoute
@@ -520,15 +564,20 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/ai-automation': typeof AiAutomationRoute
+  '/answering-service-for-contractors': typeof AnsweringServiceForContractorsRoute
   '/contact': typeof ContactRoute
   '/fishing-marine-marketing': typeof FishingMarineMarketingRoute
   '/google-ads-management': typeof GoogleAdsManagementRoute
   '/graphic-design': typeof GraphicDesignRoute
   '/hackathon': typeof HackathonRoute
   '/hvac-plumbing-marketing': typeof HvacPlumbingMarketingRoute
+  '/hvac-seo': typeof HvacSeoRoute
+  '/hvac-website-design': typeof HvacWebsiteDesignRoute
   '/industries': typeof IndustriesRoute
   '/marketing': typeof MarketingRoute
   '/not-hiring': typeof NotHiringRoute
+  '/plumber-seo': typeof PlumberSeoRoute
+  '/plumbing-website-design': typeof PlumbingWebsiteDesignRoute
   '/questionnaire': typeof QuestionnaireRoute
   '/services': typeof ServicesRoute
   '/web-development': typeof WebDevelopmentRoute
@@ -547,6 +596,7 @@ export interface FileRoutesByTo {
   '/policies/refunds': typeof PoliciesRefundsRoute
   '/policies/terms': typeof PoliciesTermsRoute
   '/qr/$slug': typeof QrSlugRoute
+  '/tools/missed-call-calculator': typeof ToolsMissedCallCalculatorRoute
   '/blog': typeof BlogIndexRoute
   '/careers': typeof CareersIndexRoute
   '/locations': typeof LocationsIndexRoute
@@ -592,6 +642,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/ai-automation': typeof AiAutomationRoute
+  '/answering-service-for-contractors': typeof AnsweringServiceForContractorsRoute
   '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
   '/fishing-marine-marketing': typeof FishingMarineMarketingRoute
@@ -599,10 +650,14 @@ export interface FileRoutesById {
   '/graphic-design': typeof GraphicDesignRoute
   '/hackathon': typeof HackathonRoute
   '/hvac-plumbing-marketing': typeof HvacPlumbingMarketingRoute
+  '/hvac-seo': typeof HvacSeoRoute
+  '/hvac-website-design': typeof HvacWebsiteDesignRoute
   '/industries': typeof IndustriesRoute
   '/marketing': typeof MarketingRoute
   '/not-hiring': typeof NotHiringRoute
   '/our-work': typeof OurWorkRouteWithChildren
+  '/plumber-seo': typeof PlumberSeoRoute
+  '/plumbing-website-design': typeof PlumbingWebsiteDesignRoute
   '/questionnaire': typeof QuestionnaireRoute
   '/services': typeof ServicesRoute
   '/web-development': typeof WebDevelopmentRoute
@@ -621,6 +676,7 @@ export interface FileRoutesById {
   '/policies/refunds': typeof PoliciesRefundsRoute
   '/policies/terms': typeof PoliciesTermsRoute
   '/qr/$slug': typeof QrSlugRoute
+  '/tools/missed-call-calculator': typeof ToolsMissedCallCalculatorRoute
   '/blog/': typeof BlogIndexRoute
   '/careers/': typeof CareersIndexRoute
   '/locations/': typeof LocationsIndexRoute
@@ -667,6 +723,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/ai-automation'
+    | '/answering-service-for-contractors'
     | '/careers'
     | '/contact'
     | '/fishing-marine-marketing'
@@ -674,10 +731,14 @@ export interface FileRouteTypes {
     | '/graphic-design'
     | '/hackathon'
     | '/hvac-plumbing-marketing'
+    | '/hvac-seo'
+    | '/hvac-website-design'
     | '/industries'
     | '/marketing'
     | '/not-hiring'
     | '/our-work'
+    | '/plumber-seo'
+    | '/plumbing-website-design'
     | '/questionnaire'
     | '/services'
     | '/web-development'
@@ -696,6 +757,7 @@ export interface FileRouteTypes {
     | '/policies/refunds'
     | '/policies/terms'
     | '/qr/$slug'
+    | '/tools/missed-call-calculator'
     | '/blog/'
     | '/careers/'
     | '/locations/'
@@ -740,15 +802,20 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/ai-automation'
+    | '/answering-service-for-contractors'
     | '/contact'
     | '/fishing-marine-marketing'
     | '/google-ads-management'
     | '/graphic-design'
     | '/hackathon'
     | '/hvac-plumbing-marketing'
+    | '/hvac-seo'
+    | '/hvac-website-design'
     | '/industries'
     | '/marketing'
     | '/not-hiring'
+    | '/plumber-seo'
+    | '/plumbing-website-design'
     | '/questionnaire'
     | '/services'
     | '/web-development'
@@ -767,6 +834,7 @@ export interface FileRouteTypes {
     | '/policies/refunds'
     | '/policies/terms'
     | '/qr/$slug'
+    | '/tools/missed-call-calculator'
     | '/blog'
     | '/careers'
     | '/locations'
@@ -811,6 +879,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/ai-automation'
+    | '/answering-service-for-contractors'
     | '/careers'
     | '/contact'
     | '/fishing-marine-marketing'
@@ -818,10 +887,14 @@ export interface FileRouteTypes {
     | '/graphic-design'
     | '/hackathon'
     | '/hvac-plumbing-marketing'
+    | '/hvac-seo'
+    | '/hvac-website-design'
     | '/industries'
     | '/marketing'
     | '/not-hiring'
     | '/our-work'
+    | '/plumber-seo'
+    | '/plumbing-website-design'
     | '/questionnaire'
     | '/services'
     | '/web-development'
@@ -840,6 +913,7 @@ export interface FileRouteTypes {
     | '/policies/refunds'
     | '/policies/terms'
     | '/qr/$slug'
+    | '/tools/missed-call-calculator'
     | '/blog/'
     | '/careers/'
     | '/locations/'
@@ -885,6 +959,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AiAutomationRoute: typeof AiAutomationRoute
+  AnsweringServiceForContractorsRoute: typeof AnsweringServiceForContractorsRoute
   CareersRoute: typeof CareersRouteWithChildren
   ContactRoute: typeof ContactRoute
   FishingMarineMarketingRoute: typeof FishingMarineMarketingRoute
@@ -892,10 +967,14 @@ export interface RootRouteChildren {
   GraphicDesignRoute: typeof GraphicDesignRoute
   HackathonRoute: typeof HackathonRoute
   HvacPlumbingMarketingRoute: typeof HvacPlumbingMarketingRoute
+  HvacSeoRoute: typeof HvacSeoRoute
+  HvacWebsiteDesignRoute: typeof HvacWebsiteDesignRoute
   IndustriesRoute: typeof IndustriesRoute
   MarketingRoute: typeof MarketingRoute
   NotHiringRoute: typeof NotHiringRoute
   OurWorkRoute: typeof OurWorkRouteWithChildren
+  PlumberSeoRoute: typeof PlumberSeoRoute
+  PlumbingWebsiteDesignRoute: typeof PlumbingWebsiteDesignRoute
   QuestionnaireRoute: typeof QuestionnaireRoute
   ServicesRoute: typeof ServicesRoute
   WebDevelopmentRoute: typeof WebDevelopmentRoute
@@ -909,6 +988,7 @@ export interface RootRouteChildren {
   PoliciesRefundsRoute: typeof PoliciesRefundsRoute
   PoliciesTermsRoute: typeof PoliciesTermsRoute
   QrSlugRoute: typeof QrSlugRoute
+  ToolsMissedCallCalculatorRoute: typeof ToolsMissedCallCalculatorRoute
   BlogIndexRoute: typeof BlogIndexRoute
   LocationsIndexRoute: typeof LocationsIndexRoute
   ApiAdminAssessmentsRoute: typeof ApiAdminAssessmentsRoute
@@ -971,6 +1051,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AiAutomationRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/answering-service-for-contractors': {
+      id: '/answering-service-for-contractors'
+      path: '/answering-service-for-contractors'
+      fullPath: '/answering-service-for-contractors'
+      preLoaderRoute: typeof AnsweringServiceForContractorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/careers': {
       id: '/careers'
       path: '/careers'
@@ -1020,6 +1107,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HvacPlumbingMarketingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/hvac-seo': {
+      id: '/hvac-seo'
+      path: '/hvac-seo'
+      fullPath: '/hvac-seo'
+      preLoaderRoute: typeof HvacSeoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hvac-website-design': {
+      id: '/hvac-website-design'
+      path: '/hvac-website-design'
+      fullPath: '/hvac-website-design'
+      preLoaderRoute: typeof HvacWebsiteDesignRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/industries': {
       id: '/industries'
       path: '/industries'
@@ -1046,6 +1147,20 @@ declare module '@tanstack/react-router' {
       path: '/our-work'
       fullPath: '/our-work'
       preLoaderRoute: typeof OurWorkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/plumber-seo': {
+      id: '/plumber-seo'
+      path: '/plumber-seo'
+      fullPath: '/plumber-seo'
+      preLoaderRoute: typeof PlumberSeoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/plumbing-website-design': {
+      id: '/plumbing-website-design'
+      path: '/plumbing-website-design'
+      fullPath: '/plumbing-website-design'
+      preLoaderRoute: typeof PlumbingWebsiteDesignRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/questionnaire': {
@@ -1200,6 +1315,13 @@ declare module '@tanstack/react-router' {
       path: '/qr/$slug'
       fullPath: '/qr/$slug'
       preLoaderRoute: typeof QrSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools/missed-call-calculator': {
+      id: '/tools/missed-call-calculator'
+      path: '/tools/missed-call-calculator'
+      fullPath: '/tools/missed-call-calculator'
+      preLoaderRoute: typeof ToolsMissedCallCalculatorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/admin/assessments': {
@@ -1486,6 +1608,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AiAutomationRoute: AiAutomationRoute,
+  AnsweringServiceForContractorsRoute: AnsweringServiceForContractorsRoute,
   CareersRoute: CareersRouteWithChildren,
   ContactRoute: ContactRoute,
   FishingMarineMarketingRoute: FishingMarineMarketingRoute,
@@ -1493,10 +1616,14 @@ const rootRouteChildren: RootRouteChildren = {
   GraphicDesignRoute: GraphicDesignRoute,
   HackathonRoute: HackathonRoute,
   HvacPlumbingMarketingRoute: HvacPlumbingMarketingRoute,
+  HvacSeoRoute: HvacSeoRoute,
+  HvacWebsiteDesignRoute: HvacWebsiteDesignRoute,
   IndustriesRoute: IndustriesRoute,
   MarketingRoute: MarketingRoute,
   NotHiringRoute: NotHiringRoute,
   OurWorkRoute: OurWorkRouteWithChildren,
+  PlumberSeoRoute: PlumberSeoRoute,
+  PlumbingWebsiteDesignRoute: PlumbingWebsiteDesignRoute,
   QuestionnaireRoute: QuestionnaireRoute,
   ServicesRoute: ServicesRoute,
   WebDevelopmentRoute: WebDevelopmentRoute,
@@ -1510,6 +1637,7 @@ const rootRouteChildren: RootRouteChildren = {
   PoliciesRefundsRoute: PoliciesRefundsRoute,
   PoliciesTermsRoute: PoliciesTermsRoute,
   QrSlugRoute: QrSlugRoute,
+  ToolsMissedCallCalculatorRoute: ToolsMissedCallCalculatorRoute,
   BlogIndexRoute: BlogIndexRoute,
   LocationsIndexRoute: LocationsIndexRoute,
   ApiAdminAssessmentsRoute: ApiAdminAssessmentsRoute,

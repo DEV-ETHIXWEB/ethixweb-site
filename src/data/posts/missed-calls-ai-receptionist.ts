@@ -65,7 +65,7 @@ const post: Post = {
     },
     { h2: "Where to start" },
     {
-      p: "Start by measuring the problem. Check your phone records for missed calls over a normal week, and how many of those numbers never called back. Most owners are surprised by the number. If it is more than a handful, catching those calls is usually the fastest, cheapest growth available, faster than any new ad campaign.",
+      p: "Start by measuring the problem. Our free [missed call calculator](/tools/missed-call-calculator) turns your numbers into a yearly cost. Check your phone records for missed calls over a normal week, and how many of those numbers never called back. Most owners are surprised by the number. If it is more than a handful, catching those calls is usually the fastest, cheapest growth available, faster than any new ad campaign.",
     },
     {
       p: "We set up [AI receptionists for home service companies](/ai-automation) as part of a full system that includes the website, the Map Pack and your ads, so every call your marketing creates is actually answered.",
