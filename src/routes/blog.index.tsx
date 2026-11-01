@@ -116,12 +116,6 @@ const QUEUE: BlogCard[] = [
     d: "Taking a contractor site from a 40 to a 95+ without a replatform.",
   },
   {
-    t: "Trust signals that make a $10k job feel safe to book",
-    c: "Design",
-    r: "5 min read",
-    d: "Reviews, licenses, photos - and the order they should appear on the page.",
-  },
-  {
     t: "What AI Overviews mean for local service search",
     c: "SEO",
     r: "8 min read",
@@ -132,12 +126,6 @@ const QUEUE: BlogCard[] = [
     c: "Engineering",
     r: "9 min read",
     d: "The stack we pick for each kind of client, and why it's rarely the trendy one.",
-  },
-  {
-    t: "Review harvesting without begging",
-    c: "Local SEO",
-    r: "4 min read",
-    d: "Automations that turn happy customers into a steady stream of five-star reviews.",
   },
 ];
 

@@ -30,6 +30,7 @@ import { trackWebSpotlight } from "@/lib/web-spotlight";
 import { SERVICE_CATALOG, SERVICE_CATALOG_TOTAL } from "@/lib/services-catalog";
 import { CASE_STUDIES } from "@/lib/portfolio-data";
 import { LOGO_IMAGE, OG_IMAGE, SITE_URL, siteUrl } from "@/lib/site";
+import { LOCATIONS } from "@/data/locations";
 import { PageTag } from "@/components/shared/PageTag";
 
 const GlobalNetwork = lazy(() =>
@@ -80,14 +81,23 @@ export const Route = createFileRoute("/")({
         children: jsonLdStringify({
           "@context": "https://schema.org",
           "@type": "ProfessionalService",
+          "@id": `${SITE_URL}/#service`,
           name: "Ethixweb",
           url: SITE_URL,
           logo: LOGO_IMAGE,
-          description: "AI automation, websites, CRM integrations, SEO, and digital operations.",
+          image: OG_IMAGE,
+          description:
+            "Websites, Google Ads, Local Services Ads, Map Pack SEO and AI receptionists for HVAC, plumbing and home service companies.",
           email: "info@ethixweb.com",
+          priceRange: "$$",
           openingHours: "Mo-Fr 09:00-17:00",
-          areaServed: "US",
+          parentOrganization: { "@id": `${SITE_URL}/#organization` },
+          areaServed: [
+            ...LOCATIONS.map((l) => ({ "@type": "City", name: l.city, sameAs: l.wiki })),
+            { "@type": "Country", name: "United States" },
+          ],
           sameAs: [
+            "https://www.facebook.com/ethixweb",
             "https://www.linkedin.com/company/ethixweb/",
             "https://www.instagram.com/ethix.web/",
           ],

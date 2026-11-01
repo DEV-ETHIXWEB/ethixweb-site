@@ -23,6 +23,7 @@ import { CTASection } from "@/components/shared/CTASection";
 import { getLocation, type Location } from "@/data/locations";
 import type { LocationFaq } from "@/data/locations/types";
 import { CASE_STUDIES } from "@/lib/portfolio-data";
+import { POSTS } from "@/data/posts";
 
 /** One service-area page per city. Everything local (market, areas, FAQs,
  * nearby cities, which case studies to show) comes from the city's data
@@ -335,6 +336,27 @@ function LocationPage() {
               </Reveal>
             ))}
           </div>
+        </Container>
+      </section>
+
+      {/* Guides: links the articles from every city page */}
+      <section className="py-12">
+        <Container>
+          <h2 className="font-display text-xl font-semibold">Free guides for {loc.city} contractors</h2>
+          <ul className="mt-5 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+            {POSTS.slice(0, 3).map((p) => (
+              <li key={p.slug}>
+                <Link
+                  to="/blog/$slug"
+                  params={{ slug: p.slug }}
+                  className="glass group flex h-full items-start justify-between gap-3 rounded-2xl px-5 py-4 text-sm font-semibold transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+                >
+                  {p.metaTitle}
+                  <ArrowRight className="mt-0.5 h-4 w-4 shrink-0 transition-transform group-hover:translate-x-0.5" />
+                </Link>
+              </li>
+            ))}
+          </ul>
         </Container>
       </section>
 

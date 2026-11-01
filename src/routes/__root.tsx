@@ -195,12 +195,30 @@ export const Route = createRootRoute({
 const SCHEMA_ORG_ORGANIZATION = jsonLdStringify({
   "@context": "https://schema.org",
   "@type": "Organization",
+  // One @id for the brand, so every page's schema points at the same entity.
+  "@id": `${SITE_URL}/#organization`,
   name: "Ethixweb",
+  legalName: "Ethixweb USA LLC",
   url: SITE_URL,
   logo: LOGO_IMAGE,
   description:
-    "Digital operations, AI automation, websites, software, CRM integrations, SEO, ads, and fast support for US focused teams.",
+    "Marketing agency for HVAC, plumbing and home service contractors: websites, Google Ads and Local Services Ads, Map Pack SEO and AI receptionists. Based in Washington, serving Seattle, Puget Sound and the US.",
   email: "info@ethixweb.com",
+  sameAs: [
+    "https://www.facebook.com/ethixweb",
+    "https://www.linkedin.com/company/ethixweb/",
+    "https://www.instagram.com/ethix.web/",
+  ],
+  knowsAbout: [
+    "HVAC marketing",
+    "Plumbing marketing",
+    "Local SEO",
+    "Google Business Profile",
+    "Google Ads",
+    "Google Local Services Ads",
+    "Website design",
+    "AI receptionist",
+  ],
   address: {
     "@type": "PostalAddress",
     addressLocality: "Kent",
