@@ -12,10 +12,10 @@ import { OG_IMAGE, SITE_URL, siteUrl } from "@/lib/site";
 export const Route = createFileRoute("/ai-automation")({
   head: () => ({
     meta: [
-      { title: "AI & Automation - Ethixweb" },
+      { title: "AI Agents & Automation for Local Businesses | Ethixweb" },
       {
         name: "description",
-        content: "Custom AI agents, internal copilots and end to end workflow automation.",
+        content: "Custom AI agents, AI receptionists, internal copilots and workflow automation that answer calls, qualify leads and take repetitive work off your team.",
       },
       { property: "og:title", content: "AI & Automation Solutions" },
       { property: "og:description", content: "Production-ready AI systems for modern businesses." },
@@ -23,10 +23,10 @@ export const Route = createFileRoute("/ai-automation")({
       { property: "og:image", content: OG_IMAGE },
       { property: "og:url", content: siteUrl("/ai-automation") },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "AI & Automation - Ethixweb" },
+      { name: "twitter:title", content: "AI Agents & Automation for Local Businesses | Ethixweb" },
       {
         name: "twitter:description",
-        content: "Custom AI agents, internal copilots and end to end workflow automation.",
+        content: "Custom AI agents, AI receptionists, internal copilots and workflow automation that answer calls, qualify leads and take repetitive work off your team.",
       },
       { name: "twitter:image", content: OG_IMAGE },
       { name: "robots", content: "index, follow" },

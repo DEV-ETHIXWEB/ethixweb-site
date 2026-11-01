@@ -14,6 +14,18 @@ const COMPANY_LINKS: [string, string][] = [
   ["Contact", "/contact"],
 ];
 
+// Links every page to the service-area pages, which is how search engines
+// find and weigh them. The full list lives on /locations.
+const AREA_LINKS: [string, string][] = [
+  ["Seattle, WA", "/locations/seattle-wa"],
+  ["SeaTac, WA", "/locations/seatac-wa"],
+  ["Tukwila, WA", "/locations/tukwila-wa"],
+  ["Bellevue, WA", "/locations/bellevue-wa"],
+  ["Tacoma, WA", "/locations/tacoma-wa"],
+  ["Kent, WA", "/locations/kent-wa"],
+  ["All service areas", "/locations"],
+];
+
 const USEFUL_LINKS: [string, string][] = [
   ["Cancellation & Refunds", "/policies/refunds"],
   ["Terms & Conditions", "/policies/terms"],
@@ -92,7 +104,7 @@ export function Footer() {
         }}
       />
       <Container className="pt-7 pb-11 sm:py-14">
-        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
+        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-[1.2fr_1.35fr_0.8fr_0.9fr_1fr]">
           <div>
             <Logo />
             <p className="mt-6 max-w-sm text-sm text-muted-foreground leading-relaxed">
@@ -131,10 +143,10 @@ export function Footer() {
                   </span>
                   <br />
                   <Link
-                    to="/locations/kent-wa"
+                    to="/locations"
                     className="text-xs text-muted-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded"
                   >
-                    Serving Kent, WA
+                    Serving Seattle, Puget Sound & the US
                   </Link>
                 </span>
               </li>
@@ -155,6 +167,7 @@ export function Footer() {
           </div>
 
           <FooterCol title="Company" links={COMPANY_LINKS} />
+          <FooterCol title="Service Areas" links={AREA_LINKS} />
           <FooterCol title="Useful Links" links={USEFUL_LINKS} />
         </div>
         <div className="footer-divider relative mt-16 flex flex-col gap-4 sm:flex-row items-center justify-between border-t border-border pt-8">

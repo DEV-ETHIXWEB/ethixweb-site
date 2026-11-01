@@ -27,11 +27,11 @@ import { PageTag } from "@/components/shared/PageTag";
 export const Route = createFileRoute("/industries")({
   head: () => ({
     meta: [
-      { title: "Industries - Ethixweb" },
+      { title: "Industries: HVAC, Plumbing & Home Services | Ethixweb" },
       {
         name: "description",
         content:
-          "Specialized tech and marketing systems for HVAC, plumbing and fishing charter operators.",
+          "Websites, Google Ads, Map Pack SEO and AI call answering built for HVAC, plumbing and home service companies, plus fishing and marine charter operators.",
       },
       { property: "og:title", content: "Industries - HVAC, Plumbing & Fishing" },
       {
@@ -46,7 +46,7 @@ export const Route = createFileRoute("/industries")({
       {
         name: "twitter:description",
         content:
-          "Specialized tech and marketing systems for HVAC, plumbing and fishing charter operators.",
+          "Websites, Google Ads, Map Pack SEO and AI call answering built for HVAC, plumbing and home service companies, plus fishing and marine charter operators.",
       },
       { name: "twitter:image", content: OG_IMAGE },
       { name: "robots", content: "index, follow" },
@@ -118,7 +118,7 @@ const INDUSTRIES_SCHEMA = jsonLdStringify({
   name: "Industry-Specific Technology Systems",
   provider: { "@type": "Organization", name: "Ethixweb", url: SITE_URL },
   description:
-    "Specialized tech and marketing systems for HVAC, plumbing and fishing charter operators.",
+    "Websites, Google Ads, Map Pack SEO and AI call answering built for HVAC, plumbing and home service companies, plus fishing and marine charter operators.",
   url: siteUrl("/industries"),
   areaServed: { "@type": "Country", name: "United States" },
   serviceType: "Industry-Specific Digital Operations",

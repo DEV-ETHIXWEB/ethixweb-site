@@ -21,13 +21,18 @@ const OUT = "public/sitemap.xml";
 const INDEX_OUT = "public/sitemap_index.xml";
 const ROUTES_DIR = "src/routes";
 const CASE_STUDIES_DIR = "src/data/case-studies";
+const LOCATIONS_DIR = "src/data/locations";
 
 /** Indexable pages. `files` = what counts as "this page changed" for <lastmod>. */
 const PAGES = [
   { path: "/", files: ["src/routes/index.tsx", "src/components/home"], priority: "1.0" },
   { path: "/services", files: ["src/routes/services.tsx"], priority: "0.9" },
   { path: "/contact", files: ["src/routes/contact.tsx"], priority: "0.9" },
-  { path: "/locations/kent-wa", files: ["src/routes/locations.kent-wa.tsx"], priority: "0.9" },
+  {
+    path: "/locations",
+    files: ["src/routes/locations.index.tsx", LOCATIONS_DIR],
+    priority: "0.8",
+  },
   { path: "/web-development", files: ["src/routes/web-development.tsx"], priority: "0.8" },
   { path: "/ai-automation", files: ["src/routes/ai-automation.tsx"], priority: "0.8" },
   { path: "/marketing", files: ["src/routes/marketing.tsx"], priority: "0.8" },
@@ -116,6 +121,19 @@ for (const slug of caseStudies) {
     path: `/our-work/${slug}`,
     files: [`${CASE_STUDIES_DIR}/${slug}.ts`, "src/routes/our-work.$slug.tsx"],
     priority: "0.7",
+  });
+}
+
+// ── Service-area pages: one URL per city data file ─────────────────────────
+const locations = readdirSync(LOCATIONS_DIR)
+  .filter((f) => f.endsWith(".ts") && f !== "index.ts" && f !== "types.ts")
+  .map((f) => f.replace(/\.ts$/, ""))
+  .sort();
+for (const slug of locations) {
+  PAGES.push({
+    path: `/locations/${slug}`,
+    files: [`${LOCATIONS_DIR}/${slug}.ts`, "src/routes/locations.$slug.tsx"],
+    priority: "0.9",
   });
 }
 

@@ -39,7 +39,7 @@ const GlobalNetwork = lazy(() =>
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Ethixweb - We run the tech. You run the business." },
+      { title: "HVAC & Plumbing Marketing Agency, Seattle & US | Ethixweb" },
       {
         name: "description",
         content:
@@ -58,7 +58,7 @@ export const Route = createFileRoute("/")({
       { property: "og:image", content: OG_IMAGE },
       { property: "og:url", content: siteUrl("/") },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Ethixweb - We run the tech. You run the business." },
+      { name: "twitter:title", content: "HVAC & Plumbing Marketing Agency, Seattle & US | Ethixweb" },
       {
         name: "twitter:description",
         content:

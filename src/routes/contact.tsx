@@ -48,11 +48,11 @@ const FLOAT_DOTS = [
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact - Ethixweb" },
+      { title: "Contact Ethixweb | Book a Free Contractor Marketing Call" },
       {
         name: "description",
         content:
-          "Share your name, phone number and website, and we'll call you within one business day.",
+          "Book a free call with Ethixweb. Share your name, phone and website, we review your site, Google profile and ads, and call you within one business day.",
       },
       { property: "og:title", content: "Contact Ethixweb" },
       { property: "og:description", content: "Start a project with our team." },
@@ -64,7 +64,7 @@ export const Route = createFileRoute("/contact")({
       {
         name: "twitter:description",
         content:
-          "Share your name, phone number and website, and we'll call you within one business day.",
+          "Book a free call with Ethixweb. Share your name, phone and website, we review your site, Google profile and ads, and call you within one business day.",
       },
       { name: "twitter:image", content: OG_IMAGE },
       { name: "robots", content: "index, follow" },
@@ -79,7 +79,7 @@ export const Route = createFileRoute("/contact")({
           name: "Contact Ethixweb",
           url: siteUrl("/contact"),
           description:
-            "Share your name, phone number and website, and we'll call you within one business day.",
+            "Book a free call with Ethixweb. Share your name, phone and website, we review your site, Google profile and ads, and call you within one business day.",
           mainEntity: {
             "@type": "Organization",
             name: "Ethixweb",

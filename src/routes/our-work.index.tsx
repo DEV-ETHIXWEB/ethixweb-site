@@ -36,7 +36,7 @@ const CAROUSEL_SLIDES: HeroCarouselSlide[] = CAROUSEL_SLUGS.map((slug) => {
 export const Route = createFileRoute("/our-work/")({
   head: () => ({
     meta: [
-      { title: "Our Work - Ethixweb" },
+      { title: "Contractor Marketing Case Studies & Results | Ethixweb" },
       {
         name: "description",
         content:

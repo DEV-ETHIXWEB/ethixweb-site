@@ -27,7 +27,7 @@ import { PageTag } from "@/components/shared/PageTag";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About - Ethixweb" },
+      { title: "About Ethixweb | Marketing Team for Home Service Contractors" },
       {
         name: "description",
         content:

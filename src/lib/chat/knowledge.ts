@@ -149,10 +149,10 @@ const SITE_FACTS: KnowledgeDoc[] = [
   {
     id: "locations",
     title: "Where Ethixweb works",
-    path: "/locations/kent-wa",
-    text: "Ethixweb is remote first and works with clients across the United States, with a local page for Kent, Washington, covering home service businesses, restaurants, contractors and local companies in that area. Communication and operations are United States focused and the team is available around the clock.",
+    path: "/locations",
+    text: "Ethixweb is based in Washington and works with clients across the United States. It has local service-area pages for Seattle, SeaTac, Tukwila, Kent, Renton, Bellevue, Tacoma, Federal Way and Auburn in the Puget Sound area, and two of its clients are based in Tukwila, serving greater Seattle. Communication and operations are United States focused.",
     aliases:
-      "where based located location office city country usa united states america remote timezone kent washington seattle wa near me local",
+      "where based located location office city country usa united states america remote timezone kent washington seattle seatac tukwila renton bellevue tacoma federal way auburn puget sound king county pierce county eastside wa near me local area service areas nationwide anywhere other state states texas california florida arizona oregon utah colorado",
   },
   {
     id: "work",
@@ -237,7 +237,7 @@ const ANSWERS: Record<string, string> = {
   industries:
     "We mainly work with home service businesses like plumbers, HVAC companies and contractors, plus fishing and marine charters, restaurants and other local businesses.\n\nFor home services, that includes an AI receptionist that texts back and books customers when you miss a call, managing tools like ServiceTitan, Jobber and Housecall Pro, and getting you into the Google Map Pack with weekly profile updates and automatic review requests. For charters, we manage booking systems like FareHarbor, Peek Pro and Bokun, plus Shopify merch stores and local SEO.",
   locations:
-    "We are a remote first team working with clients across the United States, with a local focus on Kent, Washington. Communication and operations are US focused, and the team is available around the clock.",
+    "We are based in Washington and work with home service contractors across the United States. Around Puget Sound we have local pages for Seattle, SeaTac, Tukwila, Kent, Renton, Bellevue, Tacoma, Federal Way and Auburn, all listed at /locations, and two of our clients are plumbing and sewer companies in Tukwila. Outside Washington, everything works the same way, so location is never a blocker.",
   tech: "We build for speed and reliability: fast static sites where a content system is not needed, headless setups when you need flexibility, accessibility built in from the start, and strong Core Web Vitals scores. Your site is not locked to one host, and after launch we handle updates, monitoring and security patches.",
   reviews:
     "Ethixweb has a 4.0 rating on Trustpilot. Trustpilot weights that score itself, based on how recent the reviews are and how many there are, so it is not a simple average of the reviews shown on our site.",

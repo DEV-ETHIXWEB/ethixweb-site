@@ -1,6 +1,6 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { jsonLdStringify } from "@/lib/json-ld";
-import { SITE_URL, siteUrl } from "@/lib/site";
+import { LOGO_IMAGE, SITE_URL, siteUrl } from "@/lib/site";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { CaseStudyHero } from "@/components/case-study/CaseStudyHero";
 import { IntroCardsSection } from "@/components/case-study/IntroCardsSection";
@@ -61,16 +61,21 @@ export const Route = createFileRoute("/our-work/$slug")({
           type: "application/ld+json",
           children: jsonLdStringify({
             "@context": "https://schema.org",
-            "@type": "CaseStudy",
-            name: title,
+            // schema.org has no CaseStudy type, so Google ignored the old
+            // block entirely. Article is the closest type it understands.
+            "@type": "Article",
+            headline: title,
             description: study.summary,
-            about: study.client.name,
+            about: { "@type": "Organization", name: study.client.name },
             image: siteUrl(study.heroImage.src),
             url: siteUrl(`/our-work/${study.slug}`),
-            author: {
+            mainEntityOfPage: siteUrl(`/our-work/${study.slug}`),
+            author: { "@type": "Organization", name: "Ethixweb", url: SITE_URL },
+            publisher: {
               "@type": "Organization",
               name: "Ethixweb",
-              sameAs: SITE_URL,
+              url: SITE_URL,
+              logo: { "@type": "ImageObject", url: LOGO_IMAGE },
             },
           }),
         },

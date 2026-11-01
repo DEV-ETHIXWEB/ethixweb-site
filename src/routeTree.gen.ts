@@ -36,7 +36,8 @@ import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
 import { Route as CareersApplyRouteImport } from './routes/careers.apply'
 import { Route as CareersAssessmentRouteImport } from './routes/careers.assessment'
 import { Route as CareersScreeningRouteImport } from './routes/careers.screening'
-import { Route as LocationsKentWaRouteImport } from './routes/locations.kent-wa'
+import { Route as LocationsIndexRouteImport } from './routes/locations.index'
+import { Route as LocationsSlugRouteImport } from './routes/locations.$slug'
 import { Route as OurWorkIndexRouteImport } from './routes/our-work.index'
 import { Route as OurWorkSlugRouteImport } from './routes/our-work.$slug'
 import { Route as PoliciesPrivacyRouteImport } from './routes/policies.privacy'
@@ -214,9 +215,14 @@ const CareersScreeningRoute = CareersScreeningRouteImport.update({
   path: '/screening',
   getParentRoute: () => CareersRoute,
 } as any)
-const LocationsKentWaRoute = LocationsKentWaRouteImport.update({
-  id: '/locations/kent-wa',
-  path: '/locations/kent-wa',
+const LocationsIndexRoute = LocationsIndexRouteImport.update({
+  id: '/locations/',
+  path: '/locations/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LocationsSlugRoute = LocationsSlugRouteImport.update({
+  id: '/locations/$slug',
+  path: '/locations/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OurWorkIndexRoute = OurWorkIndexRouteImport.update({
@@ -458,13 +464,14 @@ export interface FileRoutesByFullPath {
   '/careers/apply': typeof CareersApplyRoute
   '/careers/assessment': typeof CareersAssessmentRoute
   '/careers/screening': typeof CareersScreeningRoute
-  '/locations/kent-wa': typeof LocationsKentWaRoute
+  '/locations/$slug': typeof LocationsSlugRoute
   '/our-work/$slug': typeof OurWorkSlugRoute
   '/policies/privacy': typeof PoliciesPrivacyRoute
   '/policies/refunds': typeof PoliciesRefundsRoute
   '/policies/terms': typeof PoliciesTermsRoute
   '/qr/$slug': typeof QrSlugRoute
   '/careers/': typeof CareersIndexRoute
+  '/locations/': typeof LocationsIndexRoute
   '/our-work/': typeof OurWorkIndexRoute
   '/api/admin/assessments': typeof ApiAdminAssessmentsRoute
   '/api/admin/questionnaire': typeof ApiAdminQuestionnaireRoute
@@ -527,13 +534,14 @@ export interface FileRoutesByTo {
   '/careers/apply': typeof CareersApplyRoute
   '/careers/assessment': typeof CareersAssessmentRoute
   '/careers/screening': typeof CareersScreeningRoute
-  '/locations/kent-wa': typeof LocationsKentWaRoute
+  '/locations/$slug': typeof LocationsSlugRoute
   '/our-work/$slug': typeof OurWorkSlugRoute
   '/policies/privacy': typeof PoliciesPrivacyRoute
   '/policies/refunds': typeof PoliciesRefundsRoute
   '/policies/terms': typeof PoliciesTermsRoute
   '/qr/$slug': typeof QrSlugRoute
   '/careers': typeof CareersIndexRoute
+  '/locations': typeof LocationsIndexRoute
   '/our-work': typeof OurWorkIndexRoute
   '/api/admin/assessments': typeof ApiAdminAssessmentsRoute
   '/api/admin/questionnaire': typeof ApiAdminQuestionnaireRoute
@@ -599,13 +607,14 @@ export interface FileRoutesById {
   '/careers/apply': typeof CareersApplyRoute
   '/careers/assessment': typeof CareersAssessmentRoute
   '/careers/screening': typeof CareersScreeningRoute
-  '/locations/kent-wa': typeof LocationsKentWaRoute
+  '/locations/$slug': typeof LocationsSlugRoute
   '/our-work/$slug': typeof OurWorkSlugRoute
   '/policies/privacy': typeof PoliciesPrivacyRoute
   '/policies/refunds': typeof PoliciesRefundsRoute
   '/policies/terms': typeof PoliciesTermsRoute
   '/qr/$slug': typeof QrSlugRoute
   '/careers/': typeof CareersIndexRoute
+  '/locations/': typeof LocationsIndexRoute
   '/our-work/': typeof OurWorkIndexRoute
   '/api/admin/assessments': typeof ApiAdminAssessmentsRoute
   '/api/admin/questionnaire': typeof ApiAdminQuestionnaireRoute
@@ -672,13 +681,14 @@ export interface FileRouteTypes {
     | '/careers/apply'
     | '/careers/assessment'
     | '/careers/screening'
-    | '/locations/kent-wa'
+    | '/locations/$slug'
     | '/our-work/$slug'
     | '/policies/privacy'
     | '/policies/refunds'
     | '/policies/terms'
     | '/qr/$slug'
     | '/careers/'
+    | '/locations/'
     | '/our-work/'
     | '/api/admin/assessments'
     | '/api/admin/questionnaire'
@@ -741,13 +751,14 @@ export interface FileRouteTypes {
     | '/careers/apply'
     | '/careers/assessment'
     | '/careers/screening'
-    | '/locations/kent-wa'
+    | '/locations/$slug'
     | '/our-work/$slug'
     | '/policies/privacy'
     | '/policies/refunds'
     | '/policies/terms'
     | '/qr/$slug'
     | '/careers'
+    | '/locations'
     | '/our-work'
     | '/api/admin/assessments'
     | '/api/admin/questionnaire'
@@ -812,13 +823,14 @@ export interface FileRouteTypes {
     | '/careers/apply'
     | '/careers/assessment'
     | '/careers/screening'
-    | '/locations/kent-wa'
+    | '/locations/$slug'
     | '/our-work/$slug'
     | '/policies/privacy'
     | '/policies/refunds'
     | '/policies/terms'
     | '/qr/$slug'
     | '/careers/'
+    | '/locations/'
     | '/our-work/'
     | '/api/admin/assessments'
     | '/api/admin/questionnaire'
@@ -880,11 +892,12 @@ export interface RootRouteChildren {
   AdminQuestionnaireRoute: typeof AdminQuestionnaireRoute
   ApiContactRoute: typeof ApiContactRoute
   AssessmentMindsetRoute: typeof AssessmentMindsetRoute
-  LocationsKentWaRoute: typeof LocationsKentWaRoute
+  LocationsSlugRoute: typeof LocationsSlugRoute
   PoliciesPrivacyRoute: typeof PoliciesPrivacyRoute
   PoliciesRefundsRoute: typeof PoliciesRefundsRoute
   PoliciesTermsRoute: typeof PoliciesTermsRoute
   QrSlugRoute: typeof QrSlugRoute
+  LocationsIndexRoute: typeof LocationsIndexRoute
   ApiAdminAssessmentsRoute: typeof ApiAdminAssessmentsRoute
   ApiAdminQuestionnaireRoute: typeof ApiAdminQuestionnaireRoute
   ApiAssessmentRecordingUploadRoute: typeof ApiAssessmentRecordingUploadRoute
@@ -1113,11 +1126,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CareersScreeningRouteImport
       parentRoute: typeof CareersRoute
     }
-    '/locations/kent-wa': {
-      id: '/locations/kent-wa'
-      path: '/locations/kent-wa'
-      fullPath: '/locations/kent-wa'
-      preLoaderRoute: typeof LocationsKentWaRouteImport
+    '/locations/': {
+      id: '/locations/'
+      path: '/locations'
+      fullPath: '/locations/'
+      preLoaderRoute: typeof LocationsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/locations/$slug': {
+      id: '/locations/$slug'
+      path: '/locations/$slug'
+      fullPath: '/locations/$slug'
+      preLoaderRoute: typeof LocationsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/our-work/': {
@@ -1465,11 +1485,12 @@ const rootRouteChildren: RootRouteChildren = {
   AdminQuestionnaireRoute: AdminQuestionnaireRoute,
   ApiContactRoute: ApiContactRoute,
   AssessmentMindsetRoute: AssessmentMindsetRoute,
-  LocationsKentWaRoute: LocationsKentWaRoute,
+  LocationsSlugRoute: LocationsSlugRoute,
   PoliciesPrivacyRoute: PoliciesPrivacyRoute,
   PoliciesRefundsRoute: PoliciesRefundsRoute,
   PoliciesTermsRoute: PoliciesTermsRoute,
   QrSlugRoute: QrSlugRoute,
+  LocationsIndexRoute: LocationsIndexRoute,
   ApiAdminAssessmentsRoute: ApiAdminAssessmentsRoute,
   ApiAdminQuestionnaireRoute: ApiAdminQuestionnaireRoute,
   ApiAssessmentRecordingUploadRoute: ApiAssessmentRecordingUploadRoute,
