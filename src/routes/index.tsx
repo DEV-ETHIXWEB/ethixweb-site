@@ -388,6 +388,17 @@ function TradeProof() {
               <h2 className="pb-1 text-4xl font-extrabold leading-tight text-gradient sm:text-5xl">
                 Plumbing, drain and HVAC companies we rebuilt.
               </h2>
+              {/* The one place the homepage body says where the work is, so
+                  search engines tie the brand to Seattle as well as to the
+                  trades, and visitors can reach the service-area pages. */}
+              <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+                From Tukwila and greater Seattle to Northern Utah. We are based in Washington and
+                work with contractors across the US.{" "}
+                <Link to="/locations" className="font-semibold text-foreground hover:text-primary">
+                  See our service areas
+                </Link>
+                .
+              </p>
             </div>
             <Link
               to="/our-work"

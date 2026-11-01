@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AiAutomationRouteImport } from './routes/ai-automation'
-import { Route as BlogRouteImport } from './routes/blog'
 import { Route as CareersRouteImport } from './routes/careers'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as FishingMarineMarketingRouteImport } from './routes/fishing-marine-marketing'
@@ -31,6 +30,8 @@ import { Route as AdminAssessmentsRouteImport } from './routes/admin.assessments
 import { Route as AdminQuestionnaireRouteImport } from './routes/admin.questionnaire'
 import { Route as ApiContactRouteImport } from './routes/api.contact'
 import { Route as AssessmentMindsetRouteImport } from './routes/assessment.mindset'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as CareersIndexRouteImport } from './routes/careers.index'
 import { Route as CareersSlugRouteImport } from './routes/careers.$slug'
 import { Route as CareersApplyRouteImport } from './routes/careers.apply'
@@ -93,11 +94,6 @@ const AboutRoute = AboutRouteImport.update({
 const AiAutomationRoute = AiAutomationRouteImport.update({
   id: '/ai-automation',
   path: '/ai-automation',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BlogRoute = BlogRouteImport.update({
-  id: '/blog',
-  path: '/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CareersRoute = CareersRouteImport.update({
@@ -188,6 +184,16 @@ const ApiContactRoute = ApiContactRouteImport.update({
 const AssessmentMindsetRoute = AssessmentMindsetRouteImport.update({
   id: '/assessment/mindset',
   path: '/assessment/mindset',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CareersIndexRoute = CareersIndexRouteImport.update({
@@ -441,7 +447,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/ai-automation': typeof AiAutomationRoute
-  '/blog': typeof BlogRoute
   '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
   '/fishing-marine-marketing': typeof FishingMarineMarketingRoute
@@ -460,6 +465,7 @@ export interface FileRoutesByFullPath {
   '/admin/questionnaire': typeof AdminQuestionnaireRoute
   '/api/contact': typeof ApiContactRoute
   '/assessment/mindset': typeof AssessmentMindsetRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/careers/apply': typeof CareersApplyRoute
   '/careers/assessment': typeof CareersAssessmentRoute
@@ -470,6 +476,7 @@ export interface FileRoutesByFullPath {
   '/policies/refunds': typeof PoliciesRefundsRoute
   '/policies/terms': typeof PoliciesTermsRoute
   '/qr/$slug': typeof QrSlugRoute
+  '/blog/': typeof BlogIndexRoute
   '/careers/': typeof CareersIndexRoute
   '/locations/': typeof LocationsIndexRoute
   '/our-work/': typeof OurWorkIndexRoute
@@ -513,7 +520,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/ai-automation': typeof AiAutomationRoute
-  '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
   '/fishing-marine-marketing': typeof FishingMarineMarketingRoute
   '/google-ads-management': typeof GoogleAdsManagementRoute
@@ -530,6 +536,7 @@ export interface FileRoutesByTo {
   '/admin/questionnaire': typeof AdminQuestionnaireRoute
   '/api/contact': typeof ApiContactRoute
   '/assessment/mindset': typeof AssessmentMindsetRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/careers/apply': typeof CareersApplyRoute
   '/careers/assessment': typeof CareersAssessmentRoute
@@ -540,6 +547,7 @@ export interface FileRoutesByTo {
   '/policies/refunds': typeof PoliciesRefundsRoute
   '/policies/terms': typeof PoliciesTermsRoute
   '/qr/$slug': typeof QrSlugRoute
+  '/blog': typeof BlogIndexRoute
   '/careers': typeof CareersIndexRoute
   '/locations': typeof LocationsIndexRoute
   '/our-work': typeof OurWorkIndexRoute
@@ -584,7 +592,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/ai-automation': typeof AiAutomationRoute
-  '/blog': typeof BlogRoute
   '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
   '/fishing-marine-marketing': typeof FishingMarineMarketingRoute
@@ -603,6 +610,7 @@ export interface FileRoutesById {
   '/admin/questionnaire': typeof AdminQuestionnaireRoute
   '/api/contact': typeof ApiContactRoute
   '/assessment/mindset': typeof AssessmentMindsetRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/careers/apply': typeof CareersApplyRoute
   '/careers/assessment': typeof CareersAssessmentRoute
@@ -613,6 +621,7 @@ export interface FileRoutesById {
   '/policies/refunds': typeof PoliciesRefundsRoute
   '/policies/terms': typeof PoliciesTermsRoute
   '/qr/$slug': typeof QrSlugRoute
+  '/blog/': typeof BlogIndexRoute
   '/careers/': typeof CareersIndexRoute
   '/locations/': typeof LocationsIndexRoute
   '/our-work/': typeof OurWorkIndexRoute
@@ -658,7 +667,6 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/ai-automation'
-    | '/blog'
     | '/careers'
     | '/contact'
     | '/fishing-marine-marketing'
@@ -677,6 +685,7 @@ export interface FileRouteTypes {
     | '/admin/questionnaire'
     | '/api/contact'
     | '/assessment/mindset'
+    | '/blog/$slug'
     | '/careers/$slug'
     | '/careers/apply'
     | '/careers/assessment'
@@ -687,6 +696,7 @@ export interface FileRouteTypes {
     | '/policies/refunds'
     | '/policies/terms'
     | '/qr/$slug'
+    | '/blog/'
     | '/careers/'
     | '/locations/'
     | '/our-work/'
@@ -730,7 +740,6 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/ai-automation'
-    | '/blog'
     | '/contact'
     | '/fishing-marine-marketing'
     | '/google-ads-management'
@@ -747,6 +756,7 @@ export interface FileRouteTypes {
     | '/admin/questionnaire'
     | '/api/contact'
     | '/assessment/mindset'
+    | '/blog/$slug'
     | '/careers/$slug'
     | '/careers/apply'
     | '/careers/assessment'
@@ -757,6 +767,7 @@ export interface FileRouteTypes {
     | '/policies/refunds'
     | '/policies/terms'
     | '/qr/$slug'
+    | '/blog'
     | '/careers'
     | '/locations'
     | '/our-work'
@@ -800,7 +811,6 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/ai-automation'
-    | '/blog'
     | '/careers'
     | '/contact'
     | '/fishing-marine-marketing'
@@ -819,6 +829,7 @@ export interface FileRouteTypes {
     | '/admin/questionnaire'
     | '/api/contact'
     | '/assessment/mindset'
+    | '/blog/$slug'
     | '/careers/$slug'
     | '/careers/apply'
     | '/careers/assessment'
@@ -829,6 +840,7 @@ export interface FileRouteTypes {
     | '/policies/refunds'
     | '/policies/terms'
     | '/qr/$slug'
+    | '/blog/'
     | '/careers/'
     | '/locations/'
     | '/our-work/'
@@ -873,7 +885,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AiAutomationRoute: typeof AiAutomationRoute
-  BlogRoute: typeof BlogRoute
   CareersRoute: typeof CareersRouteWithChildren
   ContactRoute: typeof ContactRoute
   FishingMarineMarketingRoute: typeof FishingMarineMarketingRoute
@@ -892,11 +903,13 @@ export interface RootRouteChildren {
   AdminQuestionnaireRoute: typeof AdminQuestionnaireRoute
   ApiContactRoute: typeof ApiContactRoute
   AssessmentMindsetRoute: typeof AssessmentMindsetRoute
+  BlogSlugRoute: typeof BlogSlugRoute
   LocationsSlugRoute: typeof LocationsSlugRoute
   PoliciesPrivacyRoute: typeof PoliciesPrivacyRoute
   PoliciesRefundsRoute: typeof PoliciesRefundsRoute
   PoliciesTermsRoute: typeof PoliciesTermsRoute
   QrSlugRoute: typeof QrSlugRoute
+  BlogIndexRoute: typeof BlogIndexRoute
   LocationsIndexRoute: typeof LocationsIndexRoute
   ApiAdminAssessmentsRoute: typeof ApiAdminAssessmentsRoute
   ApiAdminQuestionnaireRoute: typeof ApiAdminQuestionnaireRoute
@@ -956,13 +969,6 @@ declare module '@tanstack/react-router' {
       path: '/ai-automation'
       fullPath: '/ai-automation'
       preLoaderRoute: typeof AiAutomationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/blog': {
-      id: '/blog'
-      path: '/blog'
-      fullPath: '/blog'
-      preLoaderRoute: typeof BlogRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/careers': {
@@ -1089,6 +1095,20 @@ declare module '@tanstack/react-router' {
       path: '/assessment/mindset'
       fullPath: '/assessment/mindset'
       preLoaderRoute: typeof AssessmentMindsetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/careers/': {
@@ -1466,7 +1486,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AiAutomationRoute: AiAutomationRoute,
-  BlogRoute: BlogRoute,
   CareersRoute: CareersRouteWithChildren,
   ContactRoute: ContactRoute,
   FishingMarineMarketingRoute: FishingMarineMarketingRoute,
@@ -1485,11 +1504,13 @@ const rootRouteChildren: RootRouteChildren = {
   AdminQuestionnaireRoute: AdminQuestionnaireRoute,
   ApiContactRoute: ApiContactRoute,
   AssessmentMindsetRoute: AssessmentMindsetRoute,
+  BlogSlugRoute: BlogSlugRoute,
   LocationsSlugRoute: LocationsSlugRoute,
   PoliciesPrivacyRoute: PoliciesPrivacyRoute,
   PoliciesRefundsRoute: PoliciesRefundsRoute,
   PoliciesTermsRoute: PoliciesTermsRoute,
   QrSlugRoute: QrSlugRoute,
+  BlogIndexRoute: BlogIndexRoute,
   LocationsIndexRoute: LocationsIndexRoute,
   ApiAdminAssessmentsRoute: ApiAdminAssessmentsRoute,
   ApiAdminQuestionnaireRoute: ApiAdminQuestionnaireRoute,

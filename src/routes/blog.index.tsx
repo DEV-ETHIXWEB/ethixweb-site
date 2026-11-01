@@ -17,17 +17,18 @@ import { MarqueeBand } from "@/components/shared/MarqueeBand";
 import { RotatingText } from "@/components/shared/RotatingText";
 import { WebSpotlight } from "@/components/shared/WebSpotlight";
 import { trackWebSpotlight } from "@/lib/web-spotlight";
-import { ArrowUpRight, Check, Clock, PenLine } from "lucide-react";
+import { ArrowUpRight, BookOpen, Check, Clock, PenLine } from "lucide-react";
 import { LOGO_IMAGE, OG_IMAGE, SITE_URL, siteUrl } from "@/lib/site";
 import { PageTag } from "@/components/shared/PageTag";
+import { POSTS as PUBLISHED } from "@/data/posts";
 
-export const Route = createFileRoute("/blog")({
+export const Route = createFileRoute("/blog/")({
   head: () => ({
     meta: [
-      { title: "Blog - Ethixweb" },
-      { name: "description", content: "Essays on design, AI and growth from the Ethixweb team." },
+      { title: "Contractor Marketing Blog: Local SEO, Ads & AI | Ethixweb" },
+      { name: "description", content: "Practical guides on local SEO, Google Ads and AI call answering for HVAC, plumbing and home service companies, from the Ethixweb team." },
       { property: "og:title", content: "Ethixweb Blog" },
-      { property: "og:description", content: "Insights on design, AI and growth." },
+      { property: "og:description", content: "Practical guides on local SEO, Google Ads and AI call answering for HVAC, plumbing and home service companies, from the Ethixweb team." },
       { property: "og:type", content: "website" },
       { property: "og:image", content: OG_IMAGE },
       { property: "og:url", content: siteUrl("/blog") },
@@ -35,16 +36,12 @@ export const Route = createFileRoute("/blog")({
       { name: "twitter:title", content: "Ethixweb Blog" },
       {
         name: "twitter:description",
-        content: "Essays on design, AI and growth from the Ethixweb team.",
+        content: "Practical guides on local SEO, Google Ads and AI call answering for HVAC, plumbing and home service companies, from the Ethixweb team.",
       },
       { name: "twitter:image", content: OG_IMAGE },
-      // noindex until real posts exist. Every card on this page is an
-      // "in the works" preview with no article behind it, so to a crawler
-      // this is a blog index listing six articles that 404 conceptually -
-      // thin content, and it drags on the rest of the site. Flip back to
-      // "index, follow" (and re-add the page to PAGES in
-      // scripts/generate-sitemap.mjs) the day the first post ships.
-      { name: "robots", content: "noindex, follow" },
+      // Indexable now that real articles ship (see src/data/posts). The
+      // "in the works" cards stay as a short queue below the real posts.
+      { name: "robots", content: "index, follow" },
     ],
     links: [{ rel: "canonical", href: siteUrl("/blog") }],
     scripts: [
@@ -55,7 +52,7 @@ export const Route = createFileRoute("/blog")({
           "@type": "Blog",
           name: "Ethixweb Blog",
           url: siteUrl("/blog"),
-          description: "Essays on design, AI and growth from the Ethixweb team.",
+          description: "Practical guides on local SEO, Google Ads and AI call answering for HVAC, plumbing and home service companies, from the Ethixweb team.",
           publisher: {
             "@type": "Organization",
             name: "Ethixweb",
@@ -63,6 +60,12 @@ export const Route = createFileRoute("/blog")({
             logo: LOGO_IMAGE,
           },
           inLanguage: "en-US",
+          blogPost: PUBLISHED.map((p) => ({
+            "@type": "BlogPosting",
+            headline: p.title,
+            url: siteUrl(`/blog/${p.slug}`),
+            datePublished: p.published,
+          })),
         }),
       },
     ],
@@ -75,7 +78,7 @@ export const Route = createFileRoute("/blog")({
 // be one. When real posts ship, give each a slug + route and swap the cards
 // to links. Topics deliberately mirror the services/industries we actually
 // sell, so nothing here drifts into content-mill filler.
-const POSTS = [
+const QUEUE: BlogCard[] = [
   {
     t: "Why your landing page isn't converting",
     c: "Growth",
@@ -95,22 +98,10 @@ const POSTS = [
     d: "Five leaks in the average lead funnel, and what plugging each one is worth.",
   },
   {
-    t: "The Google Map Pack is your real homepage",
-    c: "Local SEO",
-    r: "6 min read",
-    d: "The top three local results get the calls. Here's the weekly routine that gets you there.",
-  },
-  {
     t: "Brand systems that scale with you",
     c: "Design",
     r: "5 min read",
     d: "Designing identities that survive ten product pivots.",
-  },
-  {
-    t: "An AI receptionist answered while you were on a ladder",
-    c: "AI",
-    r: "5 min read",
-    d: "What 24/7 missed-call capture actually looks like for a two-truck HVAC shop.",
   },
   {
     t: "SEO is dead. Long live SEO.",
@@ -150,6 +141,20 @@ const POSTS = [
   },
 ];
 
+type BlogCard = { t: string; c: string; r: string; d: string; slug?: string };
+
+// Published articles first (they link to /blog/$slug), then the queue.
+const POSTS: BlogCard[] = [
+  ...PUBLISHED.map((p) => ({
+    t: p.title,
+    c: p.category,
+    r: `${p.readMinutes} min read`,
+    d: p.excerpt,
+    slug: p.slug,
+  })),
+  ...QUEUE,
+];
+
 const CATEGORIES = ["All", "Growth", "AI", "Design", "SEO", "Local SEO", "Engineering"];
 
 const TOPICS = [
@@ -170,7 +175,7 @@ const MAX_TILT_DEG = 5;
 /** Blog card with a cursor-following 3D tilt + spiderweb spotlight - the
  * hover treatment, rather than a plain lift. Needs to be its own component
  * because the tilt uses per-card motion-value hooks. */
-function PostCard({ post, displayIndex }: { post: (typeof POSTS)[number]; displayIndex: number }) {
+function PostCard({ post, displayIndex }: { post: BlogCard; displayIndex: number }) {
   const reduceMotion = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
 
@@ -228,15 +233,33 @@ function PostCard({ post, displayIndex }: { post: (typeof POSTS)[number]; displa
           </span>
         </div>
         <h3 className="relative mt-4 font-display text-xl font-semibold leading-snug transition-colors duration-300 group-hover:text-primary">
-          {post.t}
+          {post.slug ? (
+            // Stretched link: the whole card is clickable, the heading is
+            // the accessible name.
+            <Link
+              to="/blog/$slug"
+              params={{ slug: post.slug }}
+              className="after:absolute after:inset-0 after:z-10 after:content-[''] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded"
+            >
+              {post.t}
+            </Link>
+          ) : (
+            post.t
+          )}
         </h3>
         <p className="relative mt-2.5 flex-1 text-sm leading-relaxed text-muted-foreground">
           {post.d}
         </p>
         <div className="relative mt-5 flex items-center justify-between border-t border-border pt-4">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-[11px] font-semibold text-muted-foreground">
-            <PenLine className="h-3 w-3 text-primary" /> In the works
-          </span>
+          {post.slug ? (
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary-text">
+              <BookOpen className="h-3 w-3" /> Read article
+            </span>
+          ) : (
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-[11px] font-semibold text-muted-foreground">
+              <PenLine className="h-3 w-3 text-primary" /> In the works
+            </span>
+          )}
           <span
             aria-hidden="true"
             className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-foreground/60 transition-all duration-300 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground"
@@ -273,7 +296,7 @@ function Blog() {
         <Container className="relative">
           <div className="max-w-3xl">
             <Reveal>
-              <PageTag items={["Journal", `${POSTS.length} essays in the queue`]} icon={PenLine} />
+              <PageTag items={["Journal", `${PUBLISHED.length} articles`, `${QUEUE.length} in the works`]} icon={PenLine} />
             </Reveal>
             <Reveal delay={0.08}>
               <h1 className="mt-7 max-w-3xl pb-1 text-[clamp(2.5rem,5.2vw,4.5rem)] font-extrabold leading-[1.06] text-gradient">
@@ -325,7 +348,9 @@ function Blog() {
               </div>
             </Reveal>
             <Reveal delay={0.08}>
-              <p className="mt-6 text-sm uppercase tracking-widest text-primary-text">Up next</p>
+              <p className="mt-6 text-sm uppercase tracking-widest text-primary-text">
+                {featured.slug ? "Latest article" : "Up next"}
+              </p>
             </Reveal>
 
             {/* Featured panel - forced-dark, colors hardcoded */}
@@ -353,9 +378,11 @@ function Blog() {
                     <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-white/55">
                       <Clock className="h-3.5 w-3.5" /> {featured.r}
                     </span>
-                    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 px-3 py-1 text-[11px] font-semibold text-white/60">
-                      <PenLine className="h-3 w-3" /> In the works
-                    </span>
+                    {!featured.slug && (
+                      <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 px-3 py-1 text-[11px] font-semibold text-white/60">
+                        <PenLine className="h-3 w-3" /> In the works
+                      </span>
+                    )}
                   </div>
                   <h2 className="mt-6 font-display text-3xl font-bold leading-tight text-white sm:text-5xl">
                     {featured.t}
@@ -363,6 +390,16 @@ function Blog() {
                   <p className="mt-4 max-w-xl text-base leading-7 text-white/70 sm:text-lg">
                     {featured.d}
                   </p>
+                  {featured.slug && (
+                    <Link
+                      to="/blog/$slug"
+                      params={{ slug: featured.slug }}
+                      className="group mt-8 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-[#7a1418] after:absolute after:inset-0 after:content-['']"
+                    >
+                      Read the article
+                      <ArrowUpRight className="h-4 w-4 transition-transform group-hover:rotate-45" />
+                    </Link>
+                  )}
                 </div>
               </motion.article>
             </Reveal>
