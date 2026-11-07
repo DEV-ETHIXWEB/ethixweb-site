@@ -41,6 +41,7 @@ Legal entity: Ethixweb USA LLC (registered in Wyoming, United States). Contact: 
 
 ## Guides
 
+- [ServiceTitan vs Jobber vs Housecall Pro: which one talks to your website](https://www.ethixweb.com/blog/servicetitan-vs-jobber-vs-housecall-pro)
 - [How HVAC & plumbing companies get into the Google Map Pack](https://www.ethixweb.com/blog/google-map-pack-for-contractors)
 - [Local Services Ads vs Google Ads for HVAC & plumbers](https://www.ethixweb.com/blog/local-services-ads-vs-google-ads)
 - [Missed calls and AI receptionists for contractors](https://www.ethixweb.com/blog/missed-calls-ai-receptionist)
