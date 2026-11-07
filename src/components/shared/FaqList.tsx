@@ -24,10 +24,25 @@ export function faqSchema(faqs: Faq[]) {
 
 /** Accordion of questions. Answers are always in the HTML (collapsed with the
  * `hidden` attribute), so search engines read them on the first crawl; an
- * accordion that only mounts the answer on click hides it from them. */
-export function FaqList({ faqs, className = "" }: { faqs: Faq[]; className?: string }) {
+ * accordion that only mounts the answer on click hides it from them.
+ *
+ * `columns` is a prop rather than something a caller overrides through
+ * `className`: both would be `lg:grid-cols-*` utilities, and which one wins
+ * is decided by their order in the generated stylesheet, not by the order
+ * they are written in. A one-column list also drops `items-start`, which
+ * only matters when two cards share a row. */
+export function FaqList({
+  faqs,
+  className = "",
+  columns = 2,
+}: {
+  faqs: Faq[];
+  className?: string;
+  /** 2 (default) pairs them up; 1 stacks them at the full width given. */
+  columns?: 1 | 2;
+}) {
   return (
-    <div className={`grid items-start gap-3 lg:grid-cols-2 ${className}`}>
+    <div className={`grid gap-3 ${columns === 2 ? "items-start lg:grid-cols-2" : ""} ${className}`}>
       {faqs.map((f) => (
         <FaqItem key={f.q} faq={f} />
       ))}

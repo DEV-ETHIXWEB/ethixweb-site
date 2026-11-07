@@ -81,7 +81,7 @@ export const Route = createFileRoute("/blog/$slug")({
                 as: "image",
                 href: post.heroImage.src,
                 imageSrcSet: post.heroImage.srcSet,
-                imageSizes: HERO_IMAGE_SIZES,
+                imageSizes: IMAGE_SIZES,
               },
             ]
           : []),
@@ -125,12 +125,11 @@ export const Route = createFileRoute("/blog/$slug")({
   component: Article,
 });
 
-/** The lead image fills the 7xl container; body figures fill the 44rem text
- * column. Both drop to the full viewport width on a phone. */
-const HERO_IMAGE_SIZES =
+/** The lead image and every body figure fill the same 7xl container, so they
+ * share one left and one right edge with each other and with every section
+ * on the page. Both drop to the full viewport width on a phone. */
+const IMAGE_SIZES =
   "(min-width: 1280px) 1216px, (min-width: 640px) calc(100vw - 3rem), calc(100vw - 2rem)";
-const FIGURE_SIZES =
-  "(min-width: 1280px) 868px, (min-width: 1024px) calc(100vw - 23rem), (min-width: 640px) calc(100vw - 3rem), calc(100vw - 2rem)";
 
 function blockText(b: PostBlock): string {
   if ("p" in b) return b.p;
@@ -143,7 +142,10 @@ function blockText(b: PostBlock): string {
 }
 
 function wordCount(post: Post) {
-  return post.body.map((b) => plainText(blockText(b))).join(" ").split(/\s+/).length;
+  return post.body
+    .map((b) => plainText(blockText(b)))
+    .join(" ")
+    .split(/\s+/).length;
 }
 
 /** Comfortable measure for running text, roughly 75 characters. It sits on
@@ -212,7 +214,7 @@ function Figure({ image }: { image: PostImage & { caption?: string } }) {
           <img
             src={image.src}
             srcSet={image.srcSet}
-            sizes={FIGURE_SIZES}
+            sizes={IMAGE_SIZES}
             width={image.width}
             height={image.height}
             alt={image.alt}
@@ -222,7 +224,9 @@ function Figure({ image }: { image: PostImage & { caption?: string } }) {
           />
         </div>
         {image.caption && (
-          <figcaption className="mt-3.5 flex items-start gap-3 text-sm leading-relaxed text-muted-foreground/80">
+          <figcaption
+            className={`mt-3.5 flex items-start gap-3 text-sm leading-relaxed text-muted-foreground/80 ${PROSE}`}
+          >
             <span aria-hidden="true" className="mt-2.5 h-px w-6 shrink-0 bg-primary/60" />
             <span>{image.caption}</span>
           </figcaption>
@@ -240,7 +244,11 @@ function Article() {
     <SiteLayout>
       <section className="relative -mt-24 overflow-hidden bg-gradient-hero pb-14 pt-36 sm:pb-16 sm:pt-40">
         <div className="absolute inset-0 grid-bg opacity-30" />
-        <GlowBlob size="md" color="primary" className="left-1/2 top-0 -translate-x-1/2 opacity-60" />
+        <GlowBlob
+          size="md"
+          color="primary"
+          className="left-1/2 top-0 -translate-x-1/2 opacity-60"
+        />
         <Container className="relative">
           <div className="max-w-3xl">
             <PageTag items={[post.category, `${post.readMinutes} min read`]} icon={PenLine} />
@@ -279,7 +287,7 @@ function Article() {
               <img
                 src={post.heroImage.src}
                 srcSet={post.heroImage.srcSet}
-                sizes={HERO_IMAGE_SIZES}
+                sizes={IMAGE_SIZES}
                 width={post.heroImage.width}
                 height={post.heroImage.height}
                 alt={post.heroImage.alt}
@@ -292,20 +300,34 @@ function Article() {
         </section>
       )}
 
+      {/* One column, not a body + rail split. The rail used to sit beside the
+          text as a `lg:sticky` card, but html/body carry `overflow-x: hidden`,
+          which makes them scroll containers and stops sticky from ever
+          pinning - so the card scrolled away after the first screen and left
+          the whole right-hand side of the article empty. Dropping it also
+          frees a diagram to run the full container width, which is the only
+          size at which the text inside these three-card diagrams is legible;
+          squeezed into a 868px column it was not. Two edges on the page now:
+          the text measure, and the full container every figure and section
+          shares with the lead image. */}
       <article className="py-10 sm:py-14">
-        <Container className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_300px]">
+        <Container>
           <div className="text-[1.0625rem] leading-[1.8] text-muted-foreground">
             {post.body.map((b, i) => (
               <Block key={i} block={b} />
             ))}
           </div>
+        </Container>
+      </article>
 
-          <aside className="lg:sticky lg:top-28 lg:self-start">
-            <div className="glass-strong rounded-3xl p-6">
+      <section className="pb-12 sm:pb-16">
+        <Container>
+          <div className="glass-strong grid gap-6 rounded-3xl p-6 sm:p-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-10">
+            <div>
               <p className="text-xs font-bold uppercase tracking-widest text-primary-text">
                 Keep reading
               </p>
-              <ul className="mt-4 space-y-3">
+              <ul className="mt-4 flex flex-wrap gap-x-8 gap-y-3">
                 {post.related.map((r) => (
                   <li key={r.to}>
                     <Link
@@ -318,39 +340,41 @@ function Article() {
                   </li>
                 ))}
               </ul>
-              <Link
-                to="/contact"
-                className="btn-primary group mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold"
-              >
-                Book a free call
-                <ArrowUpRight className="h-4 w-4" />
-              </Link>
             </div>
-          </aside>
+            <Link
+              to="/contact"
+              className="btn-primary group inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold lg:shrink-0"
+            >
+              Book a free call
+              <ArrowUpRight className="h-4 w-4" />
+            </Link>
+          </div>
         </Container>
-      </article>
+      </section>
 
       {post.faqs && post.faqs.length > 0 && (
         <section className="border-t border-border/60 py-14 sm:py-16">
           <Container>
+            {/* Heading column left, one even stack of cards right. Two
+                columns of cards left a ragged grid: a one-line question and
+                a two-line one sat side by side at different heights, and an
+                odd number of questions left a hole. */}
             <Reveal>
-              <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-4">
-                <div className="max-w-xl">
+              <div className="grid gap-8 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:gap-16">
+                <div>
                   <p className="text-xs font-bold uppercase tracking-widest text-primary-text">
                     Questions
                   </p>
                   <h2 className="mt-4 font-display text-3xl font-bold leading-tight sm:text-4xl">
                     Still deciding?
                   </h2>
+                  <p className="mt-4 text-muted-foreground">
+                    The questions owners ask us most when they are picking field service software,
+                    or trying to make the one they already have work with their website.
+                  </p>
                 </div>
-                <p className="max-w-md text-muted-foreground">
-                  The questions owners ask us most when they are picking field service software, or
-                  trying to make the one they already have work with their website.
-                </p>
+                <FaqList faqs={post.faqs} columns={1} />
               </div>
-            </Reveal>
-            <Reveal delay={0.08}>
-              <FaqList faqs={post.faqs} className="mt-10" />
             </Reveal>
           </Container>
         </section>
