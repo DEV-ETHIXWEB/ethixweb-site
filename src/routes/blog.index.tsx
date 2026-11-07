@@ -20,15 +20,23 @@ import { trackWebSpotlight } from "@/lib/web-spotlight";
 import { ArrowUpRight, BookOpen, Check, Clock, PenLine } from "lucide-react";
 import { LOGO_IMAGE, OG_IMAGE, SITE_URL, siteUrl } from "@/lib/site";
 import { PageTag } from "@/components/shared/PageTag";
-import { POSTS as PUBLISHED } from "@/data/posts";
+import { POSTS as PUBLISHED, type PostImage } from "@/data/posts";
 
 export const Route = createFileRoute("/blog/")({
   head: () => ({
     meta: [
       { title: "Contractor Marketing Blog: Local SEO, Ads & AI | Ethixweb" },
-      { name: "description", content: "Practical guides on local SEO, Google Ads and AI call answering for HVAC, plumbing and home service companies, from the Ethixweb team." },
+      {
+        name: "description",
+        content:
+          "Practical guides on local SEO, Google Ads and AI call answering for HVAC, plumbing and home service companies, from the Ethixweb team.",
+      },
       { property: "og:title", content: "Ethixweb Blog" },
-      { property: "og:description", content: "Practical guides on local SEO, Google Ads and AI call answering for HVAC, plumbing and home service companies, from the Ethixweb team." },
+      {
+        property: "og:description",
+        content:
+          "Practical guides on local SEO, Google Ads and AI call answering for HVAC, plumbing and home service companies, from the Ethixweb team.",
+      },
       { property: "og:type", content: "website" },
       { property: "og:image", content: OG_IMAGE },
       { property: "og:url", content: siteUrl("/blog") },
@@ -36,7 +44,8 @@ export const Route = createFileRoute("/blog/")({
       { name: "twitter:title", content: "Ethixweb Blog" },
       {
         name: "twitter:description",
-        content: "Practical guides on local SEO, Google Ads and AI call answering for HVAC, plumbing and home service companies, from the Ethixweb team.",
+        content:
+          "Practical guides on local SEO, Google Ads and AI call answering for HVAC, plumbing and home service companies, from the Ethixweb team.",
       },
       { name: "twitter:image", content: OG_IMAGE },
       // Indexable now that real articles ship (see src/data/posts). The
@@ -52,7 +61,8 @@ export const Route = createFileRoute("/blog/")({
           "@type": "Blog",
           name: "Ethixweb Blog",
           url: siteUrl("/blog"),
-          description: "Practical guides on local SEO, Google Ads and AI call answering for HVAC, plumbing and home service companies, from the Ethixweb team.",
+          description:
+            "Practical guides on local SEO, Google Ads and AI call answering for HVAC, plumbing and home service companies, from the Ethixweb team.",
           publisher: {
             "@type": "Organization",
             name: "Ethixweb",
@@ -129,7 +139,15 @@ const QUEUE: BlogCard[] = [
   },
 ];
 
-type BlogCard = { t: string; c: string; r: string; d: string; slug?: string };
+type BlogCard = {
+  t: string;
+  c: string;
+  r: string;
+  d: string;
+  slug?: string;
+  /** Only used by the featured panel, and only when the post has one. */
+  img?: PostImage;
+};
 
 // Published articles first (they link to /blog/$slug), then the queue.
 const POSTS: BlogCard[] = [
@@ -139,6 +157,7 @@ const POSTS: BlogCard[] = [
     r: `${p.readMinutes} min read`,
     d: p.excerpt,
     slug: p.slug,
+    img: p.heroImage,
   })),
   ...QUEUE,
 ];
@@ -283,7 +302,10 @@ function Blog() {
         <Container className="relative">
           <div className="max-w-3xl">
             <Reveal>
-              <PageTag items={["Journal", `${PUBLISHED.length} articles`, `${QUEUE.length} in the works`]} icon={PenLine} />
+              <PageTag
+                items={["Journal", `${PUBLISHED.length} articles`, `${QUEUE.length} in the works`]}
+                icon={PenLine}
+              />
             </Reveal>
             <Reveal delay={0.08}>
               <h1 className="mt-7 max-w-3xl pb-1 text-[clamp(2.5rem,5.2vw,4.5rem)] font-extrabold leading-[1.06] text-gradient">
@@ -351,41 +373,70 @@ function Blog() {
                   aria-hidden="true"
                   className="absolute inset-0 bg-[radial-gradient(70%_60%_at_15%_0%,rgba(157,27,32,0.35),transparent_70%)]"
                 />
+                {/* The ghost category word fills the empty right side. A
+                    featured post with a lead image uses that space instead,
+                    so the two never sit on top of each other. */}
                 <span
                   aria-hidden="true"
-                  className="pointer-events-none absolute -right-4 bottom-0 select-none font-display text-[9rem] font-extrabold uppercase leading-none text-transparent [-webkit-text-stroke:1.5px_rgba(255,255,255,0.07)] sm:text-[12rem]"
+                  className={`pointer-events-none absolute -right-4 bottom-0 select-none font-display text-[9rem] font-extrabold uppercase leading-none text-transparent [-webkit-text-stroke:1.5px_rgba(255,255,255,0.07)] sm:text-[12rem] ${featured.img ? "lg:hidden" : ""}`}
                 >
                   {featured.c}
                 </span>
-                <div className="relative max-w-2xl">
-                  <div className="flex flex-wrap items-center gap-3">
-                    <span className="inline-flex items-center rounded-full border border-[#f2545b]/40 bg-[#f2545b]/10 px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-[#f2545b]">
-                      {featured.c}
-                    </span>
-                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-white/55">
-                      <Clock className="h-3.5 w-3.5" /> {featured.r}
-                    </span>
-                    {!featured.slug && (
-                      <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 px-3 py-1 text-[11px] font-semibold text-white/60">
-                        <PenLine className="h-3 w-3" /> In the works
+                <div
+                  className={
+                    featured.img
+                      ? "relative grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)] lg:gap-14"
+                      : "relative"
+                  }
+                >
+                  <div className={featured.img ? "" : "max-w-2xl"}>
+                    <div className="flex flex-wrap items-center gap-3">
+                      <span className="inline-flex items-center rounded-full border border-[#f2545b]/40 bg-[#f2545b]/10 px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-[#f2545b]">
+                        {featured.c}
                       </span>
+                      <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-white/55">
+                        <Clock className="h-3.5 w-3.5" /> {featured.r}
+                      </span>
+                      {!featured.slug && (
+                        <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 px-3 py-1 text-[11px] font-semibold text-white/60">
+                          <PenLine className="h-3 w-3" /> In the works
+                        </span>
+                      )}
+                    </div>
+                    <h2 className="mt-6 font-display text-3xl font-bold leading-tight text-white sm:text-5xl">
+                      {featured.t}
+                    </h2>
+                    <p className="mt-4 max-w-xl text-base leading-7 text-white/70 sm:text-lg">
+                      {featured.d}
+                    </p>
+                    {featured.slug && (
+                      <Link
+                        to="/blog/$slug"
+                        params={{ slug: featured.slug }}
+                        className="group mt-8 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-[#7a1418] after:absolute after:inset-0 after:content-['']"
+                      >
+                        Read the article
+                        <ArrowUpRight className="h-4 w-4 transition-transform group-hover:rotate-45" />
+                      </Link>
                     )}
                   </div>
-                  <h2 className="mt-6 font-display text-3xl font-bold leading-tight text-white sm:text-5xl">
-                    {featured.t}
-                  </h2>
-                  <p className="mt-4 max-w-xl text-base leading-7 text-white/70 sm:text-lg">
-                    {featured.d}
-                  </p>
-                  {featured.slug && (
-                    <Link
-                      to="/blog/$slug"
-                      params={{ slug: featured.slug }}
-                      className="group mt-8 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-[#7a1418] after:absolute after:inset-0 after:content-['']"
+                  {featured.img && (
+                    <div
+                      className="hidden overflow-hidden rounded-3xl bg-[#120405] shadow-[0_30px_80px_-30px_rgba(0,0,0,0.9)] ring-1 ring-white/10 lg:block"
+                      style={{ aspectRatio: `${featured.img.width} / ${featured.img.height}` }}
                     >
-                      Read the article
-                      <ArrowUpRight className="h-4 w-4 transition-transform group-hover:rotate-45" />
-                    </Link>
+                      <img
+                        src={featured.img.src}
+                        srcSet={featured.img.srcSet}
+                        sizes="(min-width: 1280px) 540px, 45vw"
+                        width={featured.img.width}
+                        height={featured.img.height}
+                        alt={featured.img.alt}
+                        loading="lazy"
+                        decoding="async"
+                        className="block h-full w-full object-cover"
+                      />
+                    </div>
                   )}
                 </div>
               </motion.article>
