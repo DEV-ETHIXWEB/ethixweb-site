@@ -148,10 +148,12 @@ function wordCount(post: Post) {
     .split(/\s+/).length;
 }
 
-/** Comfortable measure for running text, roughly 75 characters. It sits on
- * each text block rather than on the article column, so a diagram can use
- * the full width of the column while the prose beside it stays readable. */
-const PROSE = "max-w-[44rem]";
+/** Every block in the article body runs the full width of the container, so
+ * the text shares its left AND right edge with the figures, the lead image
+ * and every section on the page. The type is a step larger with a looser
+ * line than the site default, which is what keeps a line this wide
+ * trackable from one row to the next. */
+const PROSE = "w-full";
 
 function Block({ block }: { block: PostBlock }) {
   if ("h2" in block)
@@ -312,7 +314,7 @@ function Article() {
           shares with the lead image. */}
       <article className="py-10 sm:py-14">
         <Container>
-          <div className="text-[1.0625rem] leading-[1.8] text-muted-foreground">
+          <div className="text-[1.125rem] leading-[1.85] text-muted-foreground">
             {post.body.map((b, i) => (
               <Block key={i} block={b} />
             ))}
