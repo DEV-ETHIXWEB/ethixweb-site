@@ -20,6 +20,8 @@ export interface ClickUpLeadInput {
   timeline?: string | null;
   hearAbout?: string | null;
   message?: string;
+  /** Optional SMS opt-in from the contact form (A2P 10DLC consent record). */
+  smsConsent?: boolean;
 }
 
 function assigneesFromEnv(): number[] {
@@ -64,6 +66,8 @@ export async function createClickUpLeadTask(input: ClickUpLeadInput): Promise<st
     timelineLabel && `**Timeline:** ${timelineLabel}`,
     hearAboutLabel && `**How they heard about us:** ${hearAboutLabel}`,
     input.message && `**Message:**\n${input.message}`,
+    input.smsConsent !== undefined &&
+      `**SMS opt-in:** ${input.smsConsent ? `Yes (consented ${new Date().toISOString()})` : "No"}`,
     "",
     "---",
     "**Follow-up checklist**",

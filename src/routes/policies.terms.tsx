@@ -14,7 +14,8 @@ export const Route = createFileRoute("/policies/terms")({
       { title: "Terms & Conditions | Ethixweb Contractor Marketing" },
       {
         name: "description",
-        content: "The terms that govern Ethixweb's website, marketing and software services, including scope, payments, ownership of your website and content, and support.",
+        content:
+          "The terms that govern Ethixweb's website, marketing and software services, including scope, payments, ownership of your website and content, and support.",
       },
       { property: "og:title", content: "Terms & Conditions | Ethixweb Contractor Marketing" },
       {
@@ -42,7 +43,7 @@ function TermsPolicy() {
   return (
     <SiteLayout>
       <PageHero icon={FileText} eyebrow="Policies" title="Terms & Conditions">
-        Last updated: January 2025
+        Last updated: November 2026
       </PageHero>
       <Container>
         <Breadcrumbs items={[{ label: "Terms & Conditions" }]} />
@@ -138,6 +139,41 @@ function TermsPolicy() {
                 We reserve the right to update these terms at any time. Material changes will be
                 communicated via email to active clients. Continued use of our services constitutes
                 acceptance of updated terms.
+              </p>
+            </Section>
+          </Reveal>
+          <Reveal delay={0.22} className="lg:col-span-2">
+            <Section title="10. SMS / Text Messaging Terms">
+              <p>
+                <strong className="text-foreground">Program:</strong> ETHIXWEB USA LLC customer
+                notifications. When you opt in by ticking the optional SMS box on our contact form
+                at ethixweb.com/contact, you agree to receive text messages from ETHIXWEB USA LLC
+                about your enquiry, project updates and customer support replies.
+              </p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>Message frequency varies.</li>
+                <li>Message and data rates may apply.</li>
+                <li>
+                  Reply <strong className="text-foreground">STOP</strong> to cancel at any time. You
+                  will receive one final message confirming you have been unsubscribed.
+                </li>
+                <li>
+                  Reply <strong className="text-foreground">HELP</strong> for help, or email{" "}
+                  <a href="mailto:info@ethixweb.com" className="text-primary hover:underline">
+                    info@ethixweb.com
+                  </a>
+                  .
+                </li>
+                <li>Consent to receive text messages is not a condition of any purchase.</li>
+                <li>Carriers are not liable for delayed or undelivered messages.</li>
+              </ul>
+              <p>
+                Your mobile information is handled as described in our{" "}
+                <Link to="/policies/privacy" className="text-primary hover:underline">
+                  Privacy Policy
+                </Link>
+                . No mobile information will be shared with third parties or affiliates for
+                marketing or promotional purposes.
               </p>
             </Section>
           </Reveal>

@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { jsonLdStringify } from "@/lib/json-ld";
 import { useState, useEffect, useRef, type FormEvent } from "react";
 import { motion, useReducedMotion } from "framer-motion";
@@ -170,6 +170,9 @@ function ContactBody() {
   // The three details that qualify a lead. Everything else about the project
   // is worked out on the call, so nothing else belongs in this form.
   const [form, setForm] = useState({ name: "", phone: "", website: "" });
+  // SMS opt-in for A2P 10DLC: unchecked by default and never required to
+  // submit. Only sent to the server as a literal true/false.
+  const [smsConsent, setSmsConsent] = useState(false);
   const setField = (key: keyof typeof form, value: string) =>
     setForm((f) => ({ ...f, [key]: value }));
   const ready = Boolean(form.name.trim() && form.phone.trim() && form.website.trim());
@@ -208,7 +211,7 @@ function ContactBody() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, phone, website, turnstileToken }),
+        body: JSON.stringify({ name, phone, website, smsConsent, turnstileToken }),
       });
       if (!res.ok) {
         const data = await res.json().catch(() => null);
@@ -444,6 +447,34 @@ function ContactBody() {
                           We go through your website before the call, so the first conversation
                           starts with what's actually costing you jobs.
                         </p>
+                        <div className="flex items-start gap-3">
+                          <input
+                            id="contact-sms-consent"
+                            name="smsConsent"
+                            type="checkbox"
+                            checked={smsConsent}
+                            onChange={(e) => setSmsConsent(e.target.checked)}
+                            className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded border-border accent-primary"
+                          />
+                          <label
+                            htmlFor="contact-sms-consent"
+                            className="cursor-pointer text-xs leading-relaxed text-muted-foreground"
+                          >
+                            (Optional) I agree to receive text messages from ETHIXWEB USA LLC about
+                            my enquiry, project updates and customer support at the phone number
+                            provided. Message frequency varies. Message and data rates may apply.
+                            Reply STOP to opt out, HELP for help. Consent is not a condition of
+                            purchase. See our{" "}
+                            <Link to="/policies/privacy" className="text-primary hover:underline">
+                              Privacy Policy
+                            </Link>{" "}
+                            and{" "}
+                            <Link to="/policies/terms" className="text-primary hover:underline">
+                              Terms &amp; Conditions
+                            </Link>
+                            .
+                          </label>
+                        </div>
                         {turnstileRequired && (
                           <Turnstile
                             handleRef={turnstile}

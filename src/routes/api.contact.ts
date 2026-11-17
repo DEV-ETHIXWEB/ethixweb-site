@@ -32,7 +32,14 @@ export const Route = createFileRoute("/api/contact")({
           return Response.json({ ok: false, error: "Invalid request body" }, { status: 400 });
         }
 
-        const { name, phone, website, turnstileToken } = body as Record<string, unknown>;
+        const { name, phone, website, turnstileToken, smsConsent } = body as Record<
+          string,
+          unknown
+        >;
+        // Optional, unchecked by default on the form. Only a literal true counts
+        // as consent, so a missing or malformed value is always treated as no.
+        const smsOptIn = smsConsent === true;
+        const consentAt = new Date().toISOString();
 
         const turnstile = await verifyTurnstile(turnstileToken, request);
         if (!turnstile.ok) {
@@ -97,6 +104,7 @@ export const Route = createFileRoute("/api/contact")({
           name: cleanName,
           phone: cleanPhone,
           website: cleanWebsite,
+          smsConsent: smsOptIn,
         });
         await markClickUpTaskLinked(leadId, clickUpTaskId);
 
@@ -121,6 +129,12 @@ export const Route = createFileRoute("/api/contact")({
           emailRow(
             "Website",
             `<a href="${escapeHtml(cleanWebsite)}">${escapeHtml(websiteHost)}</a>`,
+          ),
+          emailRow(
+            "SMS opt-in",
+            smsOptIn
+              ? `Yes, consented ${escapeHtml(consentAt)} (UTC) from ethixweb.com/contact`
+              : "No, do not text this number",
           ),
         ].join("");
 

@@ -14,7 +14,8 @@ export const Route = createFileRoute("/policies/privacy")({
       { title: "Privacy Policy | Ethixweb Contractor Marketing" },
       {
         name: "description",
-        content: "How Ethixweb collects, uses and protects your information, which cookies the site sets and only with your consent, and how to ask us to delete your data.",
+        content:
+          "How Ethixweb collects, uses and protects your information, which cookies the site sets and only with your consent, and how to ask us to delete your data.",
       },
       { property: "og:title", content: "Privacy Policy | Ethixweb Contractor Marketing" },
       {
@@ -42,7 +43,7 @@ function PrivacyPolicy() {
   return (
     <SiteLayout>
       <PageHero icon={ShieldCheck} eyebrow="Policies" title="Privacy Policy">
-        Last updated: October 2026
+        Last updated: November 2026
       </PageHero>
       <Container>
         <Breadcrumbs items={[{ label: "Privacy Policy" }]} />
@@ -238,8 +239,36 @@ function PrivacyPolicy() {
               </p>
             </Section>
           </Reveal>
+          <Reveal delay={0.19} className="lg:col-span-2">
+            <Section title="11. SMS / Text Messaging">
+              <p>
+                If you tick the optional SMS box on our contact form, ETHIXWEB USA LLC may send you
+                text messages about your enquiry, project updates and customer support. We use your
+                mobile number only to send you those messages and to respond to you.
+              </p>
+              <p>
+                No mobile information will be shared with third parties or affiliates for marketing
+                or promotional purposes. Text messaging originator opt-in data and consent will not
+                be shared with any third parties. All other categories exclude text messaging
+                originator opt-in data and consent; this information will not be shared with any
+                third parties.
+              </p>
+              <p>
+                Message frequency varies. Message and data rates may apply. Reply STOP at any time
+                to stop receiving messages, or HELP for help. You can also email{" "}
+                <a href="mailto:info@ethixweb.com" className="text-primary hover:underline">
+                  info@ethixweb.com
+                </a>
+                . See section 10 of our{" "}
+                <Link to="/policies/terms" className="text-primary hover:underline">
+                  Terms &amp; Conditions
+                </Link>{" "}
+                for the full SMS terms.
+              </p>
+            </Section>
+          </Reveal>
           <Reveal delay={0.2} className="lg:col-span-2">
-            <Section title="11. Changes to This Policy">
+            <Section title="12. Changes to This Policy">
               <p>
                 We may update this policy periodically. The "Last updated" date at the top reflects
                 the most recent revision. Continued use of our site after changes constitutes
