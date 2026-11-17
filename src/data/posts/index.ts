@@ -1,4 +1,5 @@
 import type { Post } from "@/data/posts/types";
+import gbp from "@/data/posts/google-business-profile-optimization-hvac-plumbing";
 import hvacLeads from "@/data/posts/hvac-leads-not-converting";
 import fieldServiceSoftware from "@/data/posts/servicetitan-vs-jobber-vs-housecall-pro";
 import mapPack from "@/data/posts/google-map-pack-for-contractors";
@@ -20,6 +21,7 @@ export type { Post, PostBlock, PostImage } from "@/data/posts/types";
 // here; /blog, /blog/$slug and the sitemap (scripts/generate-sitemap.mjs
 // reads this folder) pick it up.
 export const POSTS: Post[] = [
+  gbp,
   hvacLeads,
   fieldServiceSoftware,
   mapPack,
