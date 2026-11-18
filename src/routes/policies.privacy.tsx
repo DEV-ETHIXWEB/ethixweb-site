@@ -64,8 +64,8 @@ function PrivacyPolicy() {
               </p>
             </Section>
           </Reveal>
-          <Reveal delay={0.03}>
-            <Section className="h-full" title="2. Information We Collect">
+          <Reveal delay={0.03} className="lg:col-span-2">
+            <Section title="2. Information We Collect">
               <p>We collect information you provide directly, including:</p>
               <ul className="list-disc pl-5 space-y-1">
                 <li>
@@ -203,8 +203,8 @@ function PrivacyPolicy() {
               </p>
             </Section>
           </Reveal>
-          <Reveal delay={0.14}>
-            <Section className="h-full" title="8. Your Rights">
+          <Reveal delay={0.14} className="lg:col-span-2">
+            <Section title="8. Your Rights">
               <p>You have the right to:</p>
               <ul className="list-disc pl-5 space-y-1">
                 <li>Access the personal data we hold about you</li>
