@@ -15,6 +15,7 @@ import { Route as AiAutomationRouteImport } from './routes/ai-automation'
 import { Route as AnsweringServiceForContractorsRouteImport } from './routes/answering-service-for-contractors'
 import { Route as CareersRouteImport } from './routes/careers'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CsrComparisonRouteImport } from './routes/csr-comparison'
 import { Route as FishingMarineMarketingRouteImport } from './routes/fishing-marine-marketing'
 import { Route as GoogleAdsManagementRouteImport } from './routes/google-ads-management'
 import { Route as GraphicDesignRouteImport } from './routes/graphic-design'
@@ -116,6 +117,11 @@ const CareersRoute = CareersRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CsrComparisonRoute = CsrComparisonRouteImport.update({
+  id: '/csr-comparison',
+  path: '/csr-comparison',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FishingMarineMarketingRoute = FishingMarineMarketingRouteImport.update({
@@ -488,6 +494,7 @@ export interface FileRoutesByFullPath {
   '/answering-service-for-contractors': typeof AnsweringServiceForContractorsRoute
   '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
+  '/csr-comparison': typeof CsrComparisonRoute
   '/fishing-marine-marketing': typeof FishingMarineMarketingRoute
   '/google-ads-management': typeof GoogleAdsManagementRoute
   '/graphic-design': typeof GraphicDesignRoute
@@ -566,6 +573,7 @@ export interface FileRoutesByTo {
   '/ai-automation': typeof AiAutomationRoute
   '/answering-service-for-contractors': typeof AnsweringServiceForContractorsRoute
   '/contact': typeof ContactRoute
+  '/csr-comparison': typeof CsrComparisonRoute
   '/fishing-marine-marketing': typeof FishingMarineMarketingRoute
   '/google-ads-management': typeof GoogleAdsManagementRoute
   '/graphic-design': typeof GraphicDesignRoute
@@ -645,6 +653,7 @@ export interface FileRoutesById {
   '/answering-service-for-contractors': typeof AnsweringServiceForContractorsRoute
   '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
+  '/csr-comparison': typeof CsrComparisonRoute
   '/fishing-marine-marketing': typeof FishingMarineMarketingRoute
   '/google-ads-management': typeof GoogleAdsManagementRoute
   '/graphic-design': typeof GraphicDesignRoute
@@ -726,6 +735,7 @@ export interface FileRouteTypes {
     | '/answering-service-for-contractors'
     | '/careers'
     | '/contact'
+    | '/csr-comparison'
     | '/fishing-marine-marketing'
     | '/google-ads-management'
     | '/graphic-design'
@@ -804,6 +814,7 @@ export interface FileRouteTypes {
     | '/ai-automation'
     | '/answering-service-for-contractors'
     | '/contact'
+    | '/csr-comparison'
     | '/fishing-marine-marketing'
     | '/google-ads-management'
     | '/graphic-design'
@@ -882,6 +893,7 @@ export interface FileRouteTypes {
     | '/answering-service-for-contractors'
     | '/careers'
     | '/contact'
+    | '/csr-comparison'
     | '/fishing-marine-marketing'
     | '/google-ads-management'
     | '/graphic-design'
@@ -962,6 +974,7 @@ export interface RootRouteChildren {
   AnsweringServiceForContractorsRoute: typeof AnsweringServiceForContractorsRoute
   CareersRoute: typeof CareersRouteWithChildren
   ContactRoute: typeof ContactRoute
+  CsrComparisonRoute: typeof CsrComparisonRoute
   FishingMarineMarketingRoute: typeof FishingMarineMarketingRoute
   GoogleAdsManagementRoute: typeof GoogleAdsManagementRoute
   GraphicDesignRoute: typeof GraphicDesignRoute
@@ -1070,6 +1083,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/csr-comparison': {
+      id: '/csr-comparison'
+      path: '/csr-comparison'
+      fullPath: '/csr-comparison'
+      preLoaderRoute: typeof CsrComparisonRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/fishing-marine-marketing': {
@@ -1611,6 +1631,7 @@ const rootRouteChildren: RootRouteChildren = {
   AnsweringServiceForContractorsRoute: AnsweringServiceForContractorsRoute,
   CareersRoute: CareersRouteWithChildren,
   ContactRoute: ContactRoute,
+  CsrComparisonRoute: CsrComparisonRoute,
   FishingMarineMarketingRoute: FishingMarineMarketingRoute,
   GoogleAdsManagementRoute: GoogleAdsManagementRoute,
   GraphicDesignRoute: GraphicDesignRoute,
