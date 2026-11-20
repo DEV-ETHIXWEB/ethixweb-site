@@ -2420,3 +2420,12 @@ html {
 html[data-fonts="pending"] .font-wait {
   visibility: hidden;
 }
+
+/* Right-edge CSR pull tab: a soft brand-red halo plus a lift shadow, drawn
+   on the SVG shape so the glow follows its flared outline. */
+.csr-tab-shape {
+  filter: drop-shadow(0 0 14px rgba(192, 39, 45, 0.3)) drop-shadow(0 10px 24px rgba(0, 0, 0, 0.45));
+}
+html.light .csr-tab-shape {
+  filter: drop-shadow(0 0 10px rgba(192, 39, 45, 0.16)) drop-shadow(0 8px 18px rgba(22, 16, 15, 0.12));
+}

@@ -1,463 +1,503 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  BookOpenCheck,
+  Check,
+  Headset,
+  LineChart,
+  MessageSquareText,
+  Minus,
+  PlugZap,
+  Siren,
+  SlidersHorizontal,
+  X,
+  type LucideIcon,
+} from "lucide-react";
 import { jsonLdStringify } from "@/lib/json-ld";
+import { OG_IMAGE, SITE_URL, siteUrl } from "@/lib/site";
 import { SiteLayout } from "@/components/layout/SiteLayout";
+import { PageHero } from "@/components/shared/PageHero";
+import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
 import { Container } from "@/components/shared/Container";
 import { Reveal } from "@/components/shared/Reveal";
 import { EditorialHeader } from "@/components/shared/EditorialHeader";
-import { FaqList, faqSchema } from "@/components/shared/FaqList";
-import {
-  CheckCircle2,
-  XCircle,
-  Zap,
-  Lock,
-  Settings,
-  TrendingUp,
-  Phone,
-  Clock,
-  DollarSign,
-} from "lucide-react";
-import { OG_IMAGE, siteUrl } from "@/lib/site";
+import { CTASection } from "@/components/shared/CTASection";
+import { FaqList, faqSchema, type Faq } from "@/components/shared/FaqList";
+
+const URL = siteUrl("/csr-comparison");
+const TITLE = "CSR for HVAC & Plumbing: How We Compare | Ethixweb";
+const DESCRIPTION =
+  "Ethixweb's customer service response (CSR) answers every call, books jobs into your software and routes emergencies by your rules. See how it compares.";
 
 export const Route = createFileRoute("/csr-comparison")({
   head: () => ({
     meta: [
-      { title: "Ethixweb vs Traditional Answering Services | Customer Service Response Comparison" },
-      {
-        name: "description",
-        content:
-          "Compare Ethixweb's AI-powered customer service solution with traditional answering services and in-house support. Customizable, flexible, and built for contractors.",
-      },
-      { property: "og:title", content: "CSR Solutions: Ethixweb vs The Alternatives" },
-      {
-        property: "og:description",
-        content:
-          "Why Ethixweb's customer service response system outperforms traditional answering services and DIY support.",
-      },
+      { title: TITLE },
+      { name: "description", content: DESCRIPTION },
+      { property: "og:title", content: TITLE },
+      { property: "og:description", content: DESCRIPTION },
       { property: "og:type", content: "website" },
       { property: "og:image", content: OG_IMAGE },
-      { property: "og:url", content: siteUrl("/csr-comparison") },
+      { property: "og:url", content: URL },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "CSR Solutions Comparison" },
+      { name: "twitter:title", content: TITLE },
+      { name: "twitter:description", content: DESCRIPTION },
       { name: "twitter:image", content: OG_IMAGE },
       { name: "robots", content: "index, follow" },
     ],
-    links: [{ rel: "canonical", href: siteUrl("/csr-comparison") }],
+    links: [{ rel: "canonical", href: URL }],
     scripts: [
-      faqSchema(FAQS),
       {
         type: "application/ld+json",
         children: jsonLdStringify({
           "@context": "https://schema.org",
-          "@type": "ComparisonChart",
-          name: "Ethixweb vs Traditional Customer Service Response",
-          url: siteUrl("/csr-comparison"),
-          description: "Side-by-side comparison of customer service solutions",
+          "@type": "Service",
+          "@id": `${URL}#service`,
+          name: "Customer service response (CSR) for contractors",
+          serviceType: "Call answering and booking for home service contractors",
+          description: DESCRIPTION,
+          url: URL,
+          provider: { "@id": `${SITE_URL}/#organization`, "@type": "Organization", name: "Ethixweb", url: SITE_URL },
+          areaServed: { "@type": "Country", name: "United States" },
         }),
       },
+      faqSchema(FAQS),
     ],
   }),
-  component: CSRComparison,
+  component: CsrComparison,
 });
 
-function CSRComparison() {
+type Mark = "yes" | "partly" | "no";
+type Cell = { mark: Mark; note: string };
+type Row = { label: string; ours: Cell; service: Cell; inHouse: Cell };
+
+const COLUMNS = [
+  { key: "ours", label: "Ethixweb CSR" },
+  { key: "service", label: "Typical answering service" },
+  { key: "inHouse", label: "Doing it in-house" },
+] as const;
+
+const ROWS: Row[] = [
+  {
+    label: "Answers at 2am on a Sunday",
+    ours: { mark: "yes", note: "Every call, 24/7" },
+    service: { mark: "yes", note: "Usually, yes" },
+    inHouse: { mark: "partly", note: "Only with an on-call rota" },
+  },
+  {
+    label: "Books the job during the call",
+    ours: { mark: "yes", note: "Into ServiceTitan, Jobber or Housecall Pro" },
+    service: { mark: "no", note: "Takes a message for a callback" },
+    inHouse: { mark: "partly", note: "When someone is free to pick up" },
+  },
+  {
+    label: "Emergencies reach the on-call tech",
+    ours: { mark: "yes", note: "Straight away, by call or text" },
+    service: { mark: "partly", note: "Relayed, often after a delay" },
+    inHouse: { mark: "partly", note: "Depends on who answers" },
+  },
+  {
+    label: "Knows your services, areas and financing",
+    ours: { mark: "yes", note: "Set up from your business" },
+    service: { mark: "partly", note: "A general script" },
+    inHouse: { mark: "yes", note: "Your team knows it" },
+  },
+  {
+    label: "Texts back callers who hang up",
+    ours: { mark: "yes", note: "Automatically" },
+    service: { mark: "no", note: "Not usually included" },
+    inHouse: { mark: "partly", note: "If someone remembers" },
+  },
+  {
+    label: "Shows which calls became booked jobs",
+    ours: { mark: "yes", note: "Summaries and reporting" },
+    service: { mark: "partly", note: "A message log" },
+    inHouse: { mark: "partly", note: "Whatever gets written down" },
+  },
+  {
+    label: "Rules change when your business does",
+    ours: { mark: "yes", note: "Tuned with you, any time" },
+    service: { mark: "partly", note: "Within their standard options" },
+    inHouse: { mark: "yes", note: "Retrain the team" },
+  },
+  {
+    label: "Keeps your phone number",
+    ours: { mark: "yes", note: "Calls forward from your line" },
+    service: { mark: "yes", note: "Usually, yes" },
+    inHouse: { mark: "yes", note: "Yes" },
+  },
+];
+
+const MARK_ICON: Record<Mark, LucideIcon> = { yes: Check, partly: Minus, no: X };
+const MARK_LABEL: Record<Mark, string> = { yes: "Yes", partly: "Partly", no: "No" };
+
+const REASONS: { icon: LucideIcon; title: string; body: string }[] = [
+  {
+    icon: BookOpenCheck,
+    title: "It books, not just answers",
+    body: "Routine work is booked into your schedule on the call, using your real availability. The homeowner hangs up with a time, not a promise of a callback.",
+  },
+  {
+    icon: Siren,
+    title: "Emergencies go out in seconds",
+    body: "No heat, no cooling in a heat wave, an active leak: whatever you call an emergency goes to your on-call tech by call or text, at any hour.",
+  },
+  {
+    icon: Headset,
+    title: "It sounds like your business",
+    body: "Your services, service areas, hours, financing and policies, so callers get the answer your best office person would give.",
+  },
+  {
+    icon: PlugZap,
+    title: "Works with your software",
+    body: "Bookings and customer details land in ServiceTitan, Jobber or Housecall Pro, where your team already works. No extra inbox to check.",
+  },
+  {
+    icon: MessageSquareText,
+    title: "No caller is left hanging",
+    body: "Anyone who hangs up gets a text straight away, so the conversation carries on instead of moving to the next number in the search results.",
+  },
+  {
+    icon: LineChart,
+    title: "You see what it earns",
+    body: "A short summary of every call goes to your team, with reporting on how many calls turned into booked jobs.",
+  },
+];
+
+const CONTROLS: { title: string; body: string }[] = [
+  {
+    title: "When it answers",
+    body: "After hours only, during busy periods, or every call nobody picks up. You can change it by season.",
+  },
+  {
+    title: "What counts as an emergency",
+    body: "Your definition, not a template. A dead furnace in January and a slow drain in May get very different treatment.",
+  },
+  {
+    title: "Who gets the call, and how",
+    body: "Pick the on-call tech, the order to try people in, and whether they get a call, a text or both.",
+  },
+  {
+    title: "Where and what you serve",
+    body: "Service areas and job types you want, so the schedule fills with work you would actually take.",
+  },
+  {
+    title: "How bookings are made",
+    body: "Slot lengths, job types per slot, and how far ahead customers can book, matched to how your crews run.",
+  },
+  {
+    title: "What callers hear",
+    body: "Greetings, financing offers, policies and answers to the questions your customers ask most.",
+  },
+];
+
+const STEPS = [
+  { title: "Map your calls", body: "We look at your call volume, missed calls and what callers usually need." },
+  { title: "Set the rules", body: "Services, areas, hours, booking rules and what counts as an emergency." },
+  { title: "Connect and test", body: "Phone forwarding and your field software, with test calls you can listen to first." },
+  { title: "Go live and tune", body: "We review calls in the first weeks and refine answers and routing." },
+];
+
+const FAQS: Faq[] = [
+  {
+    q: "What does CSR mean here?",
+    a: "Customer service response: how your business answers, books and follows up every call. Ethixweb's CSR is an AI receptionist set up around your business that answers every call, books routine work and routes emergencies.",
+  },
+  {
+    q: "How is it different from a traditional answering service?",
+    a: "A traditional service usually takes a message for you to return. Our CSR books the appointment during the call, answers common questions about your business and sends emergencies straight to your on-call tech.",
+  },
+  {
+    q: "Can I decide what counts as an emergency?",
+    a: "Yes. You set the rules, and you can change them whenever your season or team changes. Matching calls go to your on-call technician immediately by call or text.",
+  },
+  {
+    q: "Does it work with ServiceTitan, Jobber and Housecall Pro?",
+    a: "Yes. Bookings and customer details go straight into the software you already use.",
+  },
+  {
+    q: "Will callers know it's AI?",
+    a: "The voice sounds natural, but we recommend being upfront. Most homeowners care most about getting help fast and a confirmed time.",
+  },
+  {
+    q: "Do I keep my phone number?",
+    a: "Yes. Calls forward from your existing line, so nothing changes on your website, ads or trucks.",
+  },
+];
+
+function MarkBadge({ cell, strong = false }: { cell: Cell; strong?: boolean }) {
+  const Icon = MARK_ICON[cell.mark];
+  const tone =
+    cell.mark === "yes"
+      ? strong
+        ? "bg-primary text-primary-foreground"
+        : "bg-foreground/10 text-foreground"
+      : cell.mark === "partly"
+        ? "bg-foreground/5 text-muted-foreground"
+        : "border border-border text-muted-foreground/70";
   return (
-    <SiteLayout>
-      <div className="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white">
-        {/* Hero Section */}
-        <Container>
-          <div className="py-20 md:py-32 space-y-8">
-            <Reveal>
-              <h1 className="text-5xl md:text-6xl font-bold leading-tight">
-                Customer Service Response:<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
-                  Stop Choosing Between Inflexible Systems
-                </span>
-              </h1>
-            </Reveal>
-
-            <Reveal delay={0.1}>
-              <p className="text-xl text-slate-300 max-w-2xl leading-relaxed">
-                Every contractor's needs are different. So why settle for a one-size-fits-all answering service? Ethixweb's customer service solution is built for flexibility, customization, and real control over your phone answering.
-              </p>
-            </Reveal>
-
-            <Reveal delay={0.2}>
-              <div className="flex flex-wrap gap-4 pt-8">
-                <Link
-                  to="/answering-service-for-contractors"
-                  className="px-8 py-3 bg-cyan-500 hover:bg-cyan-600 rounded-lg font-semibold transition"
-                >
-                  See How It Works
-                </Link>
-                <Link
-                  to="/contact"
-                  className="px-8 py-3 border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-slate-900 rounded-lg font-semibold transition"
-                >
-                  Request a Demo
-                </Link>
-              </div>
-            </Reveal>
-          </div>
-        </Container>
-
-        {/* Comparison Table */}
-        <Container>
-          <div className="py-20 space-y-12">
-            <Reveal>
-              <div className="text-center space-y-4 mb-16">
-                <h2 className="text-4xl font-bold">Head-to-Head Comparison</h2>
-                <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-                  How Ethixweb stacks up against traditional approaches to customer service response.
-                </p>
-              </div>
-            </Reveal>
-
-            <Reveal delay={0.1}>
-              <div className="overflow-x-auto rounded-xl border border-slate-700 bg-slate-800 bg-opacity-50">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-slate-700">
-                      <th className="text-left p-6 font-semibold text-slate-200">Feature</th>
-                      <th className="text-center p-6 font-semibold">Ethixweb AI</th>
-                      <th className="text-center p-6 font-semibold">Traditional Service</th>
-                      <th className="text-center p-6 font-semibold">In-House Staff</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-700">
-                    {COMPARISON_DATA.map((row, idx) => (
-                      <tr key={idx} className="hover:bg-slate-700 hover:bg-opacity-30 transition">
-                        <td className="p-6 font-medium text-slate-200">{row.feature}</td>
-                        <td className="p-6 text-center">
-                          {row.ethixweb ? (
-                            <CheckCircle2 className="w-6 h-6 text-cyan-400 mx-auto" />
-                          ) : (
-                            <XCircle className="w-6 h-6 text-slate-500 mx-auto" />
-                          )}
-                        </td>
-                        <td className="p-6 text-center">
-                          {row.traditional ? (
-                            <CheckCircle2 className="w-6 h-6 text-slate-500 mx-auto" />
-                          ) : (
-                            <XCircle className="w-6 h-6 text-slate-500 mx-auto" />
-                          )}
-                        </td>
-                        <td className="p-6 text-center">
-                          {row.inhouse ? (
-                            <CheckCircle2 className="w-6 h-6 text-slate-500 mx-auto" />
-                          ) : (
-                            <XCircle className="w-6 h-6 text-slate-500 mx-auto" />
-                          )}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </Reveal>
-          </div>
-        </Container>
-
-        {/* Benefits Section */}
-        <Container>
-          <div className="py-20 space-y-16">
-            <Reveal>
-              <div className="text-center space-y-4">
-                <h2 className="text-4xl font-bold">Why Ethixweb Wins</h2>
-                <p className="text-slate-400 text-lg">The features that make a real difference to your bottom line.</p>
-              </div>
-            </Reveal>
-
-            <div className="grid md:grid-cols-3 gap-8">
-              {BENEFITS.map((benefit, idx) => (
-                <Reveal key={idx} delay={0.05 * idx}>
-                  <div className="p-8 rounded-xl border border-slate-700 bg-slate-800 bg-opacity-50 hover:bg-opacity-100 hover:border-cyan-400 transition space-y-4">
-                    <div className="flex items-start gap-4">
-                      <div className="p-3 bg-cyan-500 bg-opacity-20 rounded-lg">
-                        {benefit.icon}
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-xl font-semibold text-cyan-400">{benefit.title}</h3>
-                      </div>
-                    </div>
-                    <p className="text-slate-300 leading-relaxed">{benefit.description}</p>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </Container>
-
-        {/* Customization Focus */}
-        <Container>
-          <div className="py-20 space-y-12">
-            <Reveal>
-              <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-2xl p-12 md:p-16 space-y-8">
-                <div className="space-y-4">
-                  <h2 className="text-4xl font-bold">Built for Your Business, Not Ours</h2>
-                  <p className="text-xl text-slate-300">
-                    Every contractor has different rules, priorities, and workflows. Ethixweb adapts to you—not the other way around.
-                  </p>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-8 pt-8">
-                  {CUSTOMIZATION_OPTIONS.map((option, idx) => (
-                    <Reveal key={idx} delay={0.05 * idx}>
-                      <div className="space-y-3">
-                        <div className="flex items-center gap-3">
-                          <Zap className="w-5 h-5 text-cyan-400 flex-shrink-0" />
-                          <h3 className="font-semibold text-lg">{option.title}</h3>
-                        </div>
-                        <p className="text-slate-300">{option.description}</p>
-                      </div>
-                    </Reveal>
-                  ))}
-                </div>
-              </div>
-            </Reveal>
-          </div>
-        </Container>
-
-        {/* Cost Analysis */}
-        <Container>
-          <div className="py-20 space-y-12">
-            <Reveal>
-              <div className="text-center space-y-4">
-                <h2 className="text-4xl font-bold">The Real Cost of Inflexibility</h2>
-                <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-                  It's not just about monthly fees. Missed calls, lost customization, and wasted time add up.
-                </p>
-              </div>
-            </Reveal>
-
-            <Reveal delay={0.1}>
-              <div className="grid md:grid-cols-3 gap-8">
-                {COST_FACTORS.map((factor, idx) => (
-                  <div key={idx} className="p-8 rounded-xl border border-slate-700 bg-slate-800 bg-opacity-50 space-y-4">
-                    <div className="text-4xl font-bold text-cyan-400">{factor.impact}</div>
-                    <h3 className="text-xl font-semibold">{factor.title}</h3>
-                    <p className="text-slate-300 text-sm">{factor.description}</p>
-                  </div>
-                ))}
-              </div>
-            </Reveal>
-          </div>
-        </Container>
-
-        {/* FAQ */}
-        <Container>
-          <div className="py-20">
-            <Reveal>
-              <div className="text-center space-y-4 mb-16">
-                <h2 className="text-4xl font-bold">Common Questions</h2>
-              </div>
-            </Reveal>
-            <FaqList items={FAQS} />
-          </div>
-        </Container>
-
-        {/* CTA Section */}
-        <Container>
-          <div className="py-20 space-y-8">
-            <Reveal>
-              <div className="bg-gradient-to-r from-cyan-900 to-blue-900 border border-cyan-400 rounded-2xl p-12 md:p-16 text-center space-y-6">
-                <h2 className="text-4xl font-bold">Ready to Control Your Customer Service?</h2>
-                <p className="text-xl text-slate-200 max-w-2xl mx-auto">
-                  Stop compromising on flexibility. See how Ethixweb's fully customizable CSR solution works for your business.
-                </p>
-                <Link
-                  to="/contact"
-                  className="inline-block px-10 py-4 bg-cyan-500 hover:bg-cyan-600 rounded-lg font-semibold text-lg transition"
-                >
-                  Start Your Free Consultation
-                </Link>
-              </div>
-            </Reveal>
-          </div>
-        </Container>
-      </div>
-    </SiteLayout>
+    <span className="flex items-start gap-2.5">
+      <span className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${tone}`}>
+        <Icon className="h-3 w-3" strokeWidth={2.5} aria-hidden="true" />
+        <span className="sr-only">{MARK_LABEL[cell.mark]}:</span>
+      </span>
+      <span className={`text-sm leading-snug ${strong ? "text-foreground" : "text-muted-foreground"}`}>
+        {cell.note}
+      </span>
+    </span>
   );
 }
 
-const COMPARISON_DATA = [
-  {
-    feature: "Real-Time Call Routing",
-    ethixweb: true,
-    traditional: false,
-    inhouse: true,
-  },
-  {
-    feature: "Custom Emergency Rules",
-    ethixweb: true,
-    traditional: false,
-    inhouse: true,
-  },
-  {
-    feature: "Direct Field Software Integration",
-    ethixweb: true,
-    traditional: false,
-    inhouse: false,
-  },
-  {
-    feature: "Instant Caller Notifications",
-    ethixweb: true,
-    traditional: false,
-    inhouse: true,
-  },
-  {
-    feature: "24/7 Availability",
-    ethixweb: true,
-    traditional: true,
-    inhouse: false,
-  },
-  {
-    feature: "Flexible Pricing Tiers",
-    ethixweb: true,
-    traditional: false,
-    inhouse: false,
-  },
-  {
-    feature: "No Long-Term Contracts",
-    ethixweb: true,
-    traditional: false,
-    inhouse: false,
-  },
-  {
-    feature: "Payroll & Benefits Overhead",
-    ethixweb: false,
-    traditional: false,
-    inhouse: true,
-  },
-  {
-    feature: "Human Receptionist",
-    ethixweb: false,
-    traditional: true,
-    inhouse: true,
-  },
-  {
-    feature: "Complete Customization",
-    ethixweb: true,
-    traditional: false,
-    inhouse: true,
-  },
-];
+function CsrComparison() {
+  return (
+    <SiteLayout>
+      <PageHero icon={Headset} eyebrow="CSR · just launched" title="Every call answered. Your rules, not ours.">
+        <p>
+          Ethixweb's customer service response answers every call your team misses, books the job into your
+          software and sends emergencies to whoever is on call, set up around how your business actually runs.
+        </p>
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <Link
+            to="/contact"
+            className="btn-primary group inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold"
+          >
+            Book a free call
+            <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+          </Link>
+          <a
+            href="#compare"
+            className="btn-secondary inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold"
+          >
+            See the comparison
+          </a>
+        </div>
+      </PageHero>
 
-const BENEFITS = [
-  {
-    icon: <Zap className="w-6 h-6 text-cyan-400" />,
-    title: "AI Speed with Human Touch",
-    description:
-      "Instant responses to emergency calls without the delays of message-taking. Automated and intelligent, never cold.",
-  },
-  {
-    icon: <Lock className="w-6 h-6 text-cyan-400" />,
-    title: "Complete Control",
-    description:
-      "Set your own rules for what's an emergency, who gets contacted, and how. No black-box decisions made for you.",
-  },
-  {
-    icon: <Settings className="w-6 h-6 text-cyan-400" />,
-    title: "Flexible Integration",
-    description:
-      "Works with ServiceTitan, Jobber, Housecall Pro, or any field software you're already using. No ripping and replacing.",
-  },
-  {
-    icon: <TrendingUp className="w-6 h-6 text-cyan-400" />,
-    title: "Scales with You",
-    description:
-      "Start small, grow fast. Add features, change rules, and adjust capacity as your business changes. No rigid tiers.",
-  },
-  {
-    icon: <DollarSign className="w-6 h-6 text-cyan-400" />,
-    title: "Pay Only for What You Use",
-    description:
-      "Transparent pricing that doesn't surprise you. No hidden fees, no minimums, no penalties for flexibility.",
-  },
-  {
-    icon: <Phone className="w-6 h-6 text-cyan-400" />,
-    title: "Real Support When You Need It",
-    description:
-      "Direct access to the team that knows your setup. Not a tier-1 call center, not a chatbot. Real expertise.",
-  },
-];
+      <Container>
+        <Breadcrumbs items={[{ label: "Services", to: "/services" }, { label: "CSR" }]} />
+      </Container>
 
-const CUSTOMIZATION_OPTIONS = [
-  {
-    title: "Emergency Definitions",
-    description:
-      "You decide what counts as an emergency—no heat, burst pipes, active leaks, or anything custom to your business.",
-  },
-  {
-    title: "Routing Rules",
-    description:
-      "Real emergencies go to your on-call tech by SMS. Routine work books directly into your software. Voicemail gets texts.",
-  },
-  {
-    title: "Service Area Limits",
-    description:
-      "Filter calls by location, ZIP code, or service type. Only handle the work you actually want.",
-  },
-  {
-    title: "Hours & Availability",
-    description:
-      "Open 24/7, or just during your preferred hours. Holidays, seasonal changes, or one-off closures—you control it.",
-  },
-  {
-    title: "Integration Depth",
-    description:
-      "Light integration for starters, or deep automation that syncs everything. Scale up as you're ready.",
-  },
-  {
-    title: "Pricing & Scaling",
-    description:
-      "Month-to-month, no contracts. Add more calls, teams, or features instantly. Remove them just as fast.",
-  },
-];
+      {/* Comparison */}
+      <section id="compare" className="scroll-mt-28 py-16">
+        <Container>
+          <EditorialHeader
+            className="mb-12"
+            index="01"
+            eyebrow="How the options compare"
+            title="Three ways to answer the phone. One books the job."
+            sub="An honest look at the usual choices. Each has its place; this is where they differ."
+          />
 
-const COST_FACTORS = [
-  {
-    impact: "$93.6K",
-    title: "Annual Cost of Missed Calls",
-    description:
-      "One contractor loses roughly 208 first-time jobs per year to unanswered calls. That's $93,600 of revenue walking to your competitor.",
-  },
-  {
-    impact: "50-70%",
-    title: "Caller Abandonment Rate",
-    description:
-      "When a homeowner calling at 11pm doesn't reach you, they don't leave a message. They call the next number. And the one after that.",
-  },
-  {
-    impact: "2-3 hrs",
-    title: "Setup & Training Time",
-    description:
-      "Generic systems waste your team's time figuring out workflows, troubleshooting integrations, and retraining staff.",
-  },
-];
+          {/* Desktop table */}
+          <Reveal>
+            <div className="glass hidden overflow-hidden rounded-3xl md:block">
+              <table className="w-full border-collapse text-left">
+                <caption className="sr-only">
+                  Ethixweb CSR compared with a typical answering service and handling calls in-house
+                </caption>
+                <thead>
+                  <tr className="border-b border-border">
+                    <th scope="col" className="w-[28%] px-6 py-5 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                      What matters
+                    </th>
+                    {COLUMNS.map((c) => (
+                      <th
+                        key={c.key}
+                        scope="col"
+                        className={`w-[24%] px-6 py-5 font-display text-base font-semibold ${
+                          c.key === "ours" ? "relative bg-primary/[0.07] text-foreground" : "text-muted-foreground"
+                        }`}
+                      >
+                        {c.key === "ours" ? (
+                          <>
+                            <span className="absolute inset-x-0 top-0 h-0.5 bg-primary" aria-hidden="true" />
+                            {c.label}
+                          </>
+                        ) : (
+                          c.label
+                        )}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {ROWS.map((r, i) => (
+                    <tr key={r.label} className={i < ROWS.length - 1 ? "border-b border-border" : ""}>
+                      <th scope="row" className="px-6 py-5 align-top text-sm font-semibold text-foreground">
+                        {r.label}
+                      </th>
+                      <td className="bg-primary/[0.07] px-6 py-5 align-top">
+                        <MarkBadge cell={r.ours} strong />
+                      </td>
+                      <td className="px-6 py-5 align-top">
+                        <MarkBadge cell={r.service} />
+                      </td>
+                      <td className="px-6 py-5 align-top">
+                        <MarkBadge cell={r.inHouse} />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Reveal>
 
-const FAQS = [
-  {
-    q: "How is Ethixweb's CSR different from traditional answering services?",
-    a: "Traditional services take messages and pass them along later. Ethixweb answers immediately, categorizes the call in real time, routes emergencies to your tech by SMS, and books routine work straight into your field software. No delays, no lost context, no games.",
-  },
-  {
-    q: "Can I customize what counts as an emergency?",
-    a: "Yes, completely. You define the rules. No heat, burst pipes, active leaks—or anything specific to your business. If it matches your emergency criteria, the on-call tech gets instant notification. Everything else routes to booking or voicemail.",
-  },
-  {
-    q: "Does it work with my existing field software?",
-    a: "If you use ServiceTitan, Jobber, Housecall Pro, or most standard platforms, yes. Integrations are built-in. Bookings land where your team already works. No separate inbox to check, no duplicate data entry.",
-  },
-  {
-    q: "What if I need to change my rules mid-month?",
-    a: "Change them anytime, instantly. No penalties, no contracts, no waiting for support to process your request. It's your system—modify it whenever your needs shift.",
-  },
-  {
-    q: "How much more expensive is Ethixweb than a traditional service?",
-    a: "Pricing is competitive and transparent. The question isn't cost—it's what you're actually paying for. A missed call during a freeze week costs far more than an extra dollar per call. Flexibility and control have real value.",
-  },
-  {
-    q: "Can I start small and add features later?",
-    a: "Yes. Start with basic routing, add SMS notifications when you're ready, integrate deeper with your software over time. Month-to-month, no contracts. Scale at your pace.",
-  },
-];
+          {/* Phone: one card per question */}
+          <ul className="grid gap-3 md:hidden">
+            {ROWS.map((r) => (
+              <li key={r.label} className="glass rounded-2xl p-5">
+                <p className="font-display text-base font-semibold">{r.label}</p>
+                <dl className="mt-4 space-y-3">
+                  {COLUMNS.map((c) => (
+                    <div key={c.key}>
+                      <dt
+                        className={`text-[11px] font-semibold uppercase tracking-widest ${
+                          c.key === "ours" ? "text-primary-text" : "text-muted-foreground"
+                        }`}
+                      >
+                        {c.label}
+                      </dt>
+                      <dd className="mt-1.5">
+                        <MarkBadge cell={r[c.key]} strong={c.key === "ours"} />
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </li>
+            ))}
+          </ul>
+
+          <p className="mt-5 text-xs leading-relaxed text-muted-foreground">
+            "Typical answering service" describes a common message-taking setup, not any particular company.
+            Services vary, so ask any provider exactly what is included.
+          </p>
+        </Container>
+      </section>
+
+      {/* Why ours */}
+      <section className="py-16">
+        <Container>
+          <EditorialHeader
+            className="mb-12"
+            index="02"
+            eyebrow="Why ours is different"
+            title="Built like your best office person, awake all night."
+          />
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {REASONS.map((r, i) => (
+              <Reveal key={r.title} delay={0.04 * i}>
+                <div className="glass h-full rounded-3xl p-7">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/30 bg-primary/10">
+                    <r.icon className="h-[18px] w-[18px] text-primary-text" aria-hidden="true" />
+                  </span>
+                  <h3 className="mt-5 font-display text-lg font-semibold">{r.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{r.body}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* Customisation */}
+      <section className="py-16">
+        <Container>
+          <EditorialHeader
+            className="mb-12"
+            index="03"
+            eyebrow="Shaped to your business"
+            title="Your rules. We build around them."
+            sub="No two shops run the same way, so nothing here is a fixed package. These are the dials we set with you, and change whenever you need."
+          />
+          <Reveal>
+            <div className="grid gap-px overflow-hidden rounded-3xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
+              {CONTROLS.map((c, i) => (
+                <div key={c.title} className="bg-card p-7">
+                  <div className="flex items-center gap-3">
+                    <span className="font-display text-sm font-bold tabular-nums text-primary-text">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <SlidersHorizontal className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                  </div>
+                  <h3 className="mt-4 font-display text-lg font-semibold">{c.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{c.body}</p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </Container>
+      </section>
+
+      {/* Cost of a missed call */}
+      <section className="py-16">
+        <Container>
+          <Reveal>
+            <div className="relative overflow-hidden rounded-3xl border border-primary/25 bg-gradient-brand p-8 sm:p-12">
+              <div className="absolute inset-0 grid-bg opacity-30" aria-hidden="true" />
+              <div className="relative grid items-center gap-8 lg:grid-cols-[1fr_1.2fr]">
+                <div>
+                  <p className="text-sm uppercase tracking-widest text-primary-foreground/70">One example from our calculator</p>
+                  <p className="mt-3 font-display text-6xl font-extrabold leading-none tracking-tight text-primary-foreground sm:text-7xl">
+                    $93,600
+                  </p>
+                  <p className="mt-3 text-base text-primary-foreground/80">a year, or 208 first-time jobs, lost to unanswered calls</p>
+                </div>
+                <div className="text-primary-foreground/85">
+                  <p className="leading-relaxed">
+                    That figure is built from typical missed-call and close rates, not a promise. Your number will
+                    be different, so put in your own missed calls, booking rate and job value and see what the
+                    phone is costing you.
+                  </p>
+                  <Link
+                    to="/tools/missed-call-calculator"
+                    className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary-foreground px-6 py-3 text-sm font-semibold text-[#16100f] transition-transform hover:-translate-y-0.5"
+                  >
+                    Work out your number
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        </Container>
+      </section>
+
+      {/* Setup */}
+      <section className="py-16">
+        <Container>
+          <EditorialHeader className="mb-12" index="04" eyebrow="Going live" title="Four steps, tested before a single real call." />
+          <ol className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {STEPS.map((step, i) => (
+              <Reveal key={step.title} as="li" delay={0.04 * i}>
+                <div className="h-full rounded-3xl border border-border p-6">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
+                    {i + 1}
+                  </span>
+                  <h3 className="mt-4 font-semibold">{step.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{step.body}</p>
+                </div>
+              </Reveal>
+            ))}
+          </ol>
+        </Container>
+      </section>
+
+      {/* FAQ */}
+      <section className="py-16">
+        <Container>
+          <EditorialHeader className="mb-10" index="05" eyebrow="Questions" title="What owners ask before switching." />
+          <FaqList faqs={FAQS} />
+        </Container>
+      </section>
+
+      <CTASection
+        icon={Headset}
+        title="Hear it answer your calls."
+        description="Book a free call and we'll map your calls, then set up test calls you can listen to before anything goes live."
+        ctaLabel="Book a free call"
+        ctaTo="/contact"
+      />
+    </SiteLayout>
+  );
+}
