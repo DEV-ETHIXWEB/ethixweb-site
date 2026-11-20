@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
 import { ConsentBanner } from "@/components/layout/ConsentBanner";
 import { ChatWidget } from "@/components/chat/ChatWidget";
+import { CSRNotificationBanner } from "@/components/shared/CSRNotificationBanner";
 import { useClickSound } from "@/hooks/useClickSound";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 
@@ -39,6 +40,7 @@ function Inner({ children }: { children: ReactNode }) {
       </div>
       <ConsentBanner />
       <ChatWidget />
+      <CSRNotificationBanner />
     </div>
   );
 }
