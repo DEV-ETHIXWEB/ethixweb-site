@@ -247,6 +247,10 @@ function PrivacyPolicy() {
                 mobile number only to send you those messages and to respond to you.
               </p>
               <p>
+                We do not sell or share your SMS opt-in data or personal information with third
+                parties for marketing purposes.
+              </p>
+              <p>
                 No mobile information will be shared with third parties or affiliates for marketing
                 or promotional purposes. Text messaging originator opt-in data and consent will not
                 be shared with any third parties. All other categories exclude text messaging
