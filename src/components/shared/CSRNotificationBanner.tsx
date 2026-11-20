@@ -42,6 +42,11 @@ export function CSRNotificationBanner() {
   const [shown, setShown] = useState(false);
   const [tucked, setTucked] = useState(true);
   const [phone, setPhone] = useState(false);
+  // Past the hero the open tab would sit over page content, so it folds to
+  // the slim handle there unless the visitor opened it themselves.
+  const [scrolled, setScrolled] = useState(false);
+  const [manual, setManual] = useState(false);
+  const [typing, setTyping] = useState(false);
 
   useEffect(() => {
     const saved = readTucked();
@@ -50,25 +55,43 @@ export function CSRNotificationBanner() {
     setPhone(isPhone);
     setTucked(saved ?? isPhone);
     const t = window.setTimeout(() => setShown(true), 900);
-    return () => window.clearTimeout(t);
+    const onScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.55);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    // Step aside while someone is filling in a form, so the tab never sits
+    // beside the field they're typing in.
+    const isField = (el: EventTarget | null) =>
+      el instanceof HTMLElement && el.matches("input:not([type=checkbox]):not([type=radio]), textarea, select");
+    const onFocusIn = (e: FocusEvent) => setTyping(isField(e.target));
+    const onFocusOut = () => setTyping(false);
+    document.addEventListener("focusin", onFocusIn);
+    document.addEventListener("focusout", onFocusOut);
+    return () => {
+      window.clearTimeout(t);
+      window.removeEventListener("scroll", onScroll);
+      document.removeEventListener("focusin", onFocusIn);
+      document.removeEventListener("focusout", onFocusOut);
+    };
   }, []);
 
   if (pathname === "/csr-comparison") return null;
 
   const handle = phone ? HANDLE_PHONE : HANDLE;
   const toggle = (next: boolean) => {
+    setManual(true);
     setTucked(next);
     saveTucked(next);
   };
+  const folded = tucked || (scrolled && !manual);
 
   return (
     <aside
       aria-label="New: CSR service"
       className={`csr-tab fixed right-0 top-1/2 z-30 -translate-y-1/2 transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
-        shown ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
+        shown && !typing ? "translate-x-0 opacity-100" : "pointer-events-none translate-x-full opacity-0"
       }`}
     >
-      {tucked ? (
+      {folded ? (
         <button
           type="button"
           onClick={() => toggle(false)}

@@ -46,6 +46,7 @@ const PAGES = [
   { path: "/marketing", files: ["src/routes/marketing.tsx"], priority: "0.8" },
   { path: "/graphic-design", files: ["src/routes/graphic-design.tsx"], priority: "0.8" },
   { path: "/about", files: ["src/routes/about.tsx"], priority: "0.8" },
+  { path: "/partners", files: ["src/routes/partners.tsx"], priority: "0.7" },
   {
     path: "/csr-comparison",
     files: ["src/routes/csr-comparison.tsx"],

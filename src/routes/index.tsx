@@ -25,6 +25,7 @@ import { Container } from "@/components/shared/Container";
 import { GlowBlob } from "@/components/shared/GlowBlob";
 import { HeroWebVisual } from "@/components/shared/HeroWebVisual";
 import { SystemShift } from "@/components/home/SystemShift";
+import { PartnerTeaser } from "@/components/home/PartnerTeaser";
 import { WebSpotlight } from "@/components/shared/WebSpotlight";
 import { trackWebSpotlight } from "@/lib/web-spotlight";
 import { SERVICE_CATALOG, SERVICE_CATALOG_TOTAL } from "@/lib/services-catalog";
@@ -215,6 +216,7 @@ function Home() {
         <Testimonials />
         <OperatingSystem />
         <Proof />
+        <PartnerTeaser />
         <CTA />
       </div>
     </SiteLayout>

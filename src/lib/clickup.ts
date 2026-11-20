@@ -22,6 +22,10 @@ export interface ClickUpLeadInput {
   message?: string;
   /** Optional SMS opt-in from the contact form (A2P 10DLC consent record). */
   smsConsent?: boolean;
+  /** Task title and heading when the lead isn't a contact-form enquiry. */
+  title?: string;
+  /** Which form it came from, shown at the foot of the task. */
+  source?: string;
 }
 
 function assigneesFromEnv(): number[] {
@@ -55,7 +59,7 @@ export async function createClickUpLeadTask(input: ClickUpLeadInput): Promise<st
     : null;
 
   const lines = [
-    "## New website lead",
+    `## ${input.title ?? "New website lead"}`,
     "",
     `**Name:** ${input.name}`,
     input.phone && `**Phone:** ${input.phone}`,
@@ -76,11 +80,15 @@ export async function createClickUpLeadTask(input: ClickUpLeadInput): Promise<st
     "- [ ] Proposal / roadmap sent",
     "- [ ] Outcome recorded (won / lost + reason)",
     "",
-    "_Captured automatically from the ethixweb.com contact form._",
+    `_Captured automatically from the ethixweb.com ${input.source ?? "contact form"}._`,
   ].filter(Boolean);
 
   const body = {
-    name: serviceLabel ? `New lead: ${input.name} - ${serviceLabel}` : `New lead: ${input.name}`,
+    name: input.title
+      ? `${input.title}: ${input.name}`
+      : serviceLabel
+        ? `New lead: ${input.name} - ${serviceLabel}`
+        : `New lead: ${input.name}`,
     markdown_description: lines.join("\n"),
     assignees: assigneesFromEnv(),
     // ClickUp priorities: 1 urgent, 2 high, 3 normal, 4 low. ASAP timelines

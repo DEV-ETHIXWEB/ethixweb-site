@@ -10,6 +10,7 @@ const COMPANY_LINKS: [string, string][] = [
   ["Services", "/services"],
   ["Industries", "/industries"],
   ["Our Work", "/our-work"],
+  ["Partner Program", "/partners"],
   ["Blog", "/blog"],
   ["Contact", "/contact"],
 ];

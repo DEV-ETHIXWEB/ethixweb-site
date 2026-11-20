@@ -27,6 +27,7 @@ import { Route as IndustriesRouteImport } from './routes/industries'
 import { Route as MarketingRouteImport } from './routes/marketing'
 import { Route as NotHiringRouteImport } from './routes/not-hiring'
 import { Route as OurWorkRouteImport } from './routes/our-work'
+import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as PlumberSeoRouteImport } from './routes/plumber-seo'
 import { Route as PlumbingWebsiteDesignRouteImport } from './routes/plumbing-website-design'
 import { Route as QuestionnaireRouteImport } from './routes/questionnaire'
@@ -35,6 +36,7 @@ import { Route as WebDevelopmentRouteImport } from './routes/web-development'
 import { Route as AdminAssessmentsRouteImport } from './routes/admin.assessments'
 import { Route as AdminQuestionnaireRouteImport } from './routes/admin.questionnaire'
 import { Route as ApiContactRouteImport } from './routes/api.contact'
+import { Route as ApiPartnersRouteImport } from './routes/api.partners'
 import { Route as AssessmentMindsetRouteImport } from './routes/assessment.mindset'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
@@ -179,6 +181,11 @@ const OurWorkRoute = OurWorkRouteImport.update({
   path: '/our-work',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PartnersRoute = PartnersRouteImport.update({
+  id: '/partners',
+  path: '/partners',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PlumberSeoRoute = PlumberSeoRouteImport.update({
   id: '/plumber-seo',
   path: '/plumber-seo',
@@ -217,6 +224,11 @@ const AdminQuestionnaireRoute = AdminQuestionnaireRouteImport.update({
 const ApiContactRoute = ApiContactRouteImport.update({
   id: '/api/contact',
   path: '/api/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPartnersRoute = ApiPartnersRouteImport.update({
+  id: '/api/partners',
+  path: '/api/partners',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AssessmentMindsetRoute = AssessmentMindsetRouteImport.update({
@@ -506,6 +518,7 @@ export interface FileRoutesByFullPath {
   '/marketing': typeof MarketingRoute
   '/not-hiring': typeof NotHiringRoute
   '/our-work': typeof OurWorkRouteWithChildren
+  '/partners': typeof PartnersRoute
   '/plumber-seo': typeof PlumberSeoRoute
   '/plumbing-website-design': typeof PlumbingWebsiteDesignRoute
   '/questionnaire': typeof QuestionnaireRoute
@@ -514,6 +527,7 @@ export interface FileRoutesByFullPath {
   '/admin/assessments': typeof AdminAssessmentsRoute
   '/admin/questionnaire': typeof AdminQuestionnaireRoute
   '/api/contact': typeof ApiContactRoute
+  '/api/partners': typeof ApiPartnersRoute
   '/assessment/mindset': typeof AssessmentMindsetRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
@@ -584,6 +598,7 @@ export interface FileRoutesByTo {
   '/industries': typeof IndustriesRoute
   '/marketing': typeof MarketingRoute
   '/not-hiring': typeof NotHiringRoute
+  '/partners': typeof PartnersRoute
   '/plumber-seo': typeof PlumberSeoRoute
   '/plumbing-website-design': typeof PlumbingWebsiteDesignRoute
   '/questionnaire': typeof QuestionnaireRoute
@@ -592,6 +607,7 @@ export interface FileRoutesByTo {
   '/admin/assessments': typeof AdminAssessmentsRoute
   '/admin/questionnaire': typeof AdminQuestionnaireRoute
   '/api/contact': typeof ApiContactRoute
+  '/api/partners': typeof ApiPartnersRoute
   '/assessment/mindset': typeof AssessmentMindsetRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
@@ -665,6 +681,7 @@ export interface FileRoutesById {
   '/marketing': typeof MarketingRoute
   '/not-hiring': typeof NotHiringRoute
   '/our-work': typeof OurWorkRouteWithChildren
+  '/partners': typeof PartnersRoute
   '/plumber-seo': typeof PlumberSeoRoute
   '/plumbing-website-design': typeof PlumbingWebsiteDesignRoute
   '/questionnaire': typeof QuestionnaireRoute
@@ -673,6 +690,7 @@ export interface FileRoutesById {
   '/admin/assessments': typeof AdminAssessmentsRoute
   '/admin/questionnaire': typeof AdminQuestionnaireRoute
   '/api/contact': typeof ApiContactRoute
+  '/api/partners': typeof ApiPartnersRoute
   '/assessment/mindset': typeof AssessmentMindsetRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/careers/$slug': typeof CareersSlugRoute
@@ -747,6 +765,7 @@ export interface FileRouteTypes {
     | '/marketing'
     | '/not-hiring'
     | '/our-work'
+    | '/partners'
     | '/plumber-seo'
     | '/plumbing-website-design'
     | '/questionnaire'
@@ -755,6 +774,7 @@ export interface FileRouteTypes {
     | '/admin/assessments'
     | '/admin/questionnaire'
     | '/api/contact'
+    | '/api/partners'
     | '/assessment/mindset'
     | '/blog/$slug'
     | '/careers/$slug'
@@ -825,6 +845,7 @@ export interface FileRouteTypes {
     | '/industries'
     | '/marketing'
     | '/not-hiring'
+    | '/partners'
     | '/plumber-seo'
     | '/plumbing-website-design'
     | '/questionnaire'
@@ -833,6 +854,7 @@ export interface FileRouteTypes {
     | '/admin/assessments'
     | '/admin/questionnaire'
     | '/api/contact'
+    | '/api/partners'
     | '/assessment/mindset'
     | '/blog/$slug'
     | '/careers/$slug'
@@ -905,6 +927,7 @@ export interface FileRouteTypes {
     | '/marketing'
     | '/not-hiring'
     | '/our-work'
+    | '/partners'
     | '/plumber-seo'
     | '/plumbing-website-design'
     | '/questionnaire'
@@ -913,6 +936,7 @@ export interface FileRouteTypes {
     | '/admin/assessments'
     | '/admin/questionnaire'
     | '/api/contact'
+    | '/api/partners'
     | '/assessment/mindset'
     | '/blog/$slug'
     | '/careers/$slug'
@@ -986,6 +1010,7 @@ export interface RootRouteChildren {
   MarketingRoute: typeof MarketingRoute
   NotHiringRoute: typeof NotHiringRoute
   OurWorkRoute: typeof OurWorkRouteWithChildren
+  PartnersRoute: typeof PartnersRoute
   PlumberSeoRoute: typeof PlumberSeoRoute
   PlumbingWebsiteDesignRoute: typeof PlumbingWebsiteDesignRoute
   QuestionnaireRoute: typeof QuestionnaireRoute
@@ -994,6 +1019,7 @@ export interface RootRouteChildren {
   AdminAssessmentsRoute: typeof AdminAssessmentsRoute
   AdminQuestionnaireRoute: typeof AdminQuestionnaireRoute
   ApiContactRoute: typeof ApiContactRoute
+  ApiPartnersRoute: typeof ApiPartnersRoute
   AssessmentMindsetRoute: typeof AssessmentMindsetRoute
   BlogSlugRoute: typeof BlogSlugRoute
   LocationsSlugRoute: typeof LocationsSlugRoute
@@ -1169,6 +1195,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OurWorkRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/partners': {
+      id: '/partners'
+      path: '/partners'
+      fullPath: '/partners'
+      preLoaderRoute: typeof PartnersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/plumber-seo': {
       id: '/plumber-seo'
       path: '/plumber-seo'
@@ -1223,6 +1256,13 @@ declare module '@tanstack/react-router' {
       path: '/api/contact'
       fullPath: '/api/contact'
       preLoaderRoute: typeof ApiContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/partners': {
+      id: '/api/partners'
+      path: '/api/partners'
+      fullPath: '/api/partners'
+      preLoaderRoute: typeof ApiPartnersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/assessment/mindset': {
@@ -1643,6 +1683,7 @@ const rootRouteChildren: RootRouteChildren = {
   MarketingRoute: MarketingRoute,
   NotHiringRoute: NotHiringRoute,
   OurWorkRoute: OurWorkRouteWithChildren,
+  PartnersRoute: PartnersRoute,
   PlumberSeoRoute: PlumberSeoRoute,
   PlumbingWebsiteDesignRoute: PlumbingWebsiteDesignRoute,
   QuestionnaireRoute: QuestionnaireRoute,
@@ -1651,6 +1692,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminAssessmentsRoute: AdminAssessmentsRoute,
   AdminQuestionnaireRoute: AdminQuestionnaireRoute,
   ApiContactRoute: ApiContactRoute,
+  ApiPartnersRoute: ApiPartnersRoute,
   AssessmentMindsetRoute: AssessmentMindsetRoute,
   BlogSlugRoute: BlogSlugRoute,
   LocationsSlugRoute: LocationsSlugRoute,
