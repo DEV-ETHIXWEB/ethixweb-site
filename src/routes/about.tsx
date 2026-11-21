@@ -3,6 +3,7 @@ import { jsonLdStringify } from "@/lib/json-ld";
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { MarqueeBand } from "@/components/shared/MarqueeBand";
 import { EditorialHeader } from "@/components/shared/EditorialHeader";
+import { TeamSection } from "@/components/about/TeamSection";
 import { Reveal } from "@/components/shared/Reveal";
 import { Container } from "@/components/shared/Container";
 import { GlowBlob } from "@/components/shared/GlowBlob";
@@ -294,11 +295,13 @@ function About() {
         </Container>
       </section>
 
+      <TeamSection />
+
       <section className="py-20">
         <Container>
           <EditorialHeader
             className="mb-12"
-            index="02"
+            index="03"
             eyebrow="What drives us"
             title={<>Mission &amp; vision</>}
           />
@@ -362,7 +365,7 @@ function About() {
                     aria-hidden="true"
                     className="select-none font-display text-5xl font-extrabold leading-none text-transparent [-webkit-text-stroke:1.5px_rgba(165,28,34,0.5)]"
                   >
-                    03
+                    04
                   </span>
                   <div className="h-px flex-1 bg-gradient-to-r from-primary/40 to-transparent" />
                 </div>
@@ -438,7 +441,7 @@ function About() {
         <Container>
           <EditorialHeader
             className="mb-12"
-            index="04"
+            index="05"
             eyebrow="What we stand for"
             title="Core values that shape everything we build."
           />
@@ -488,7 +491,7 @@ function About() {
         <Container>
           <EditorialHeader
             className="mb-12"
-            index="05"
+            index="06"
             eyebrow="Why Ethixweb"
             title="Why clients choose us and stay."
           />
@@ -563,7 +566,7 @@ function About() {
         <Container>
           <EditorialHeader
             className="mb-12"
-            index="06"
+            index="07"
             eyebrow="The difference"
             title="Ethixweb vs. the typical agency."
           />
