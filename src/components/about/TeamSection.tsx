@@ -109,7 +109,7 @@ function MemberCard({ m, i }: { m: Member; i: number }) {
 
           {/* The portrait sits on the card's back plane and rises out of its
               top edge, so the person reads as standing in front of it. */}
-          <div className="relative -mt-16 flex h-64 items-end justify-center sm:h-72">
+          <div className="team-photo-clip relative -mt-16 flex h-64 items-end justify-center sm:h-72">
             <div className="team-halo absolute bottom-6 left-1/2 h-44 w-44 -translate-x-1/2 rounded-full" aria-hidden="true" />
             <img
               src={m.photo}

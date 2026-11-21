@@ -2570,7 +2570,12 @@ html.light .csr-tab-shape {
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .team-card:hover .team-photo {
-  transform: translateZ(60px) translateY(-6px) scale(1.03);
+  transform: translateZ(40px) translateY(-6px) scale(1.02);
+}
+/* The head may rise above the card, but shoulders must never spill past its
+   sides or bottom, however wide the photo's crop is. */
+.team-photo-clip {
+  clip-path: inset(-60% 0 0 0);
 }
 html.light .team-card-face {
   box-shadow:
