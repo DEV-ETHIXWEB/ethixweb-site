@@ -151,17 +151,21 @@ function CrewCard() {
 
           <div className="relative flex h-64 items-center justify-center pt-2 sm:h-56 sm:pt-4">
             <div className="team-halo absolute left-1/2 top-1/2 h-48 w-48 -translate-x-1/2 -translate-y-1/2 rounded-full" aria-hidden="true" />
-            <ul className="relative grid grid-cols-2 gap-3" aria-label="Crafts on the team">
-              {CRAFTS.map((c, k) => (
-                <li
-                  key={c.label}
-                  className={`team-chip flex h-[88px] w-[104px] flex-col items-center justify-center gap-2 rounded-2xl ${k % 2 ? "translate-y-3" : ""}`}
-                >
-                  <c.icon className="h-5 w-5 text-primary-text" aria-hidden="true" />
-                  <span className="text-[11px] font-semibold text-foreground/90">{c.label}</span>
-                </li>
-              ))}
-            </ul>
+            <div className="keys-stage relative">
+              <div className="keys-floor absolute inset-x-2 -bottom-4 h-10 rounded-full" aria-hidden="true" />
+              <ul className="keys-board relative grid grid-cols-2 gap-x-3 gap-y-4" aria-label="Crafts on the team">
+                {CRAFTS.map((c, k) => (
+                  <li
+                    key={c.label}
+                    style={{ animationDelay: `${k * 1.4}s` }}
+                    className={`keycap ${k === 1 ? "keycap-red" : ""} flex h-[84px] w-[104px] flex-col items-center justify-center gap-1.5 rounded-[18px]`}
+                  >
+                    <c.icon className="keycap-icon h-5 w-5" strokeWidth={2} aria-hidden="true" />
+                    <span className="keycap-label text-[11px] font-bold tracking-tight">{c.label}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           <div className="relative flex flex-1 flex-col px-7 pb-8 pt-2">

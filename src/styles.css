@@ -2572,24 +2572,11 @@ html.light .csr-tab-shape {
 .team-card:hover .team-photo {
   transform: translateZ(60px) translateY(-6px) scale(1.03);
 }
-.team-chip {
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.015));
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 14px 24px -14px rgba(0, 0, 0, 0.7);
-  transform: translateZ(30px);
-}
 html.light .team-card-face {
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.8) inset,
     0 30px 50px -30px rgba(22, 16, 15, 0.25),
     0 18px 40px -24px rgba(192, 39, 45, 0.2);
-}
-html.light .team-chip {
-  background: linear-gradient(160deg, #ffffff, #f6efed);
-  border-color: rgba(22, 16, 15, 0.08);
-  box-shadow: 0 12px 22px -14px rgba(22, 16, 15, 0.25);
 }
 html.light .team-photo {
   filter: drop-shadow(0 16px 18px rgba(22, 16, 15, 0.3)) contrast(1.04);
@@ -2605,4 +2592,131 @@ html.light .team-photo {
    red, the same voice as the page's numbered section headers. */
 .role-tag-rule {
   background: linear-gradient(90deg, rgba(224, 85, 90, 0.7), transparent);
+}
+
+/* Wider-team card: four 3D keycaps. Each key has a side wall (the solid
+   offset shadow), a dished top (::before) and a soft cast shadow. They sit on
+   a board tilted back slightly, and press down one after another like
+   someone typing; hover presses a key too. */
+.keys-stage {
+  perspective: 700px;
+}
+.keys-board {
+  transform: rotateX(16deg) rotateZ(-5deg);
+  transform-style: preserve-3d;
+}
+.keys-floor {
+  background: radial-gradient(closest-side, rgba(0, 0, 0, 0.55), transparent);
+  filter: blur(6px);
+  transform: rotateZ(-5deg);
+}
+.keycap {
+  --key-top: linear-gradient(180deg, #33201f 0%, #22151a 100%);
+  --key-wall: #110a0c;
+  --key-rim: rgba(255, 255, 255, 0.14);
+  position: relative;
+  background: var(--key-top);
+  box-shadow:
+    inset 0 1px 0 var(--key-rim),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.35),
+    0 7px 0 var(--key-wall),
+    0 8px 0 rgba(224, 85, 90, 0.18),
+    0 20px 22px -6px rgba(0, 0, 0, 0.75);
+  transform: translateY(0);
+  transition:
+    transform 0.16s ease-out,
+    box-shadow 0.16s ease-out;
+  animation: key-type 6s ease-in-out infinite;
+}
+.keycap::before {
+  content: "";
+  position: absolute;
+  inset: 6px 7px 9px;
+  border-radius: 13px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0) 60%);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+.keycap-icon {
+  color: var(--primary-text);
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.6));
+}
+.keycap-label {
+  color: rgba(245, 239, 238, 0.92);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.6);
+}
+.keycap-red {
+  --key-top: linear-gradient(180deg, #ef5a5f 0%, #c62a31 55%, #a51e24 100%);
+  --key-wall: #5e0d11;
+  --key-rim: rgba(255, 220, 220, 0.55);
+}
+.keycap-red::before {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0) 55%);
+  box-shadow: inset 0 1px 2px rgba(80, 0, 6, 0.4);
+}
+.keycap-red .keycap-icon,
+.keycap-red .keycap-label {
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(90, 0, 8, 0.6);
+}
+.keycap-red .keycap-icon {
+  filter: drop-shadow(0 1px 0 rgba(90, 0, 8, 0.6));
+}
+.keycap:hover {
+  animation: none;
+  transform: translateY(5px);
+  box-shadow:
+    inset 0 1px 0 var(--key-rim),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.3),
+    0 2px 0 var(--key-wall),
+    0 3px 0 rgba(224, 85, 90, 0.18),
+    0 8px 12px -6px rgba(0, 0, 0, 0.7);
+}
+@keyframes key-type {
+  0%,
+  6%,
+  100% {
+    transform: translateY(0);
+  }
+  2.5% {
+    transform: translateY(5px);
+    box-shadow:
+      inset 0 1px 0 var(--key-rim),
+      inset 0 -2px 4px rgba(0, 0, 0, 0.3),
+      0 2px 0 var(--key-wall),
+      0 3px 0 rgba(224, 85, 90, 0.18),
+      0 8px 12px -6px rgba(0, 0, 0, 0.7);
+  }
+}
+html.light .keycap {
+  --key-top: linear-gradient(180deg, #ffffff 0%, #f3ebe9 100%);
+  --key-wall: #d6c8c5;
+  --key-rim: rgba(255, 255, 255, 1);
+  box-shadow:
+    inset 0 1px 0 var(--key-rim),
+    inset 0 -3px 6px rgba(22, 16, 15, 0.06),
+    0 7px 0 var(--key-wall),
+    0 20px 22px -8px rgba(22, 16, 15, 0.3);
+}
+html.light .keycap-red {
+  --key-top: linear-gradient(180deg, #ef5a5f 0%, #c62a31 55%, #a51e24 100%);
+  --key-wall: #7a1217;
+  --key-rim: rgba(255, 220, 220, 0.6);
+}
+html.light .keycap-label {
+  color: #2a1f1d;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+html.light .keycap-red .keycap-label {
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(90, 0, 8, 0.6);
+}
+html.light .keys-floor {
+  background: radial-gradient(closest-side, rgba(22, 16, 15, 0.22), transparent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .keycap {
+    animation: none;
+    transition: none;
+  }
 }
