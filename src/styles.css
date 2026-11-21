@@ -2600,3 +2600,9 @@ html.light .team-photo {
     transition: none;
   }
 }
+
+/* Team card index line: number plus a hairline that fades out from brand
+   red, the same voice as the page's numbered section headers. */
+.role-tag-rule {
+  background: linear-gradient(90deg, rgba(224, 85, 90, 0.7), transparent);
+}

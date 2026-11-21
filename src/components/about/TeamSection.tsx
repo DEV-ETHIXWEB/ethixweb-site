@@ -82,6 +82,19 @@ function useTilt() {
   return { ref, onPointerMove: onMove, onPointerLeave: onLeave };
 }
 
+/** Numbered role line in the same voice as the page's editorial section
+ * headers: index, a short rule, then the role in plain case. */
+function RoleTag({ n }: { n: number }) {
+  return (
+    <p className="flex items-center gap-3" aria-hidden="true">
+      <span className="font-display text-[13px] font-extrabold tabular-nums tracking-tight text-primary-text">
+        {String(n).padStart(2, "0")}
+      </span>
+      <span className="role-tag-rule h-px flex-1" />
+    </p>
+  );
+}
+
 function MemberCard({ m, i }: { m: Member; i: number }) {
   const tilt = useTilt();
   return (
@@ -113,11 +126,9 @@ function MemberCard({ m, i }: { m: Member; i: number }) {
           </div>
 
           <div className="relative flex flex-1 flex-col px-7 pb-8 pt-2">
-            <p className="inline-flex w-fit items-center gap-2 whitespace-nowrap rounded-full border border-primary/30 bg-primary/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-primary-text">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true" />
-              {m.role}
-            </p>
+            <RoleTag n={i + 1} />
             <h3 className="mt-4 font-display text-2xl font-bold tracking-tight">{m.name}</h3>
+            <p className="mt-1 text-sm font-semibold text-primary-text">{m.role}</p>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{m.note}</p>
           </div>
         </div>
@@ -154,11 +165,9 @@ function CrewCard() {
           </div>
 
           <div className="relative flex flex-1 flex-col px-7 pb-8 pt-2">
-            <p className="inline-flex w-fit items-center gap-2 whitespace-nowrap rounded-full border border-primary/30 bg-primary/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-primary-text">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true" />
-              The wider team
-            </p>
-            <h3 className="mt-4 font-display text-2xl font-bold tracking-tight">The people behind every build</h3>
+            <RoleTag n={MEMBERS.length + 1} />
+            <h3 className="mt-4 font-display text-2xl font-bold tracking-tight">The wider team</h3>
+            <p className="mt-1 text-sm font-semibold text-primary-text">The people behind every build</p>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
               Designers, developers, writers and ad specialists who design, build, write and track
               every project with us, and stay with it after launch.
