@@ -151,11 +151,14 @@ export function CSRNotificationBanner() {
             className="relative flex h-full flex-col items-center justify-center text-center"
             style={{ paddingTop: F, paddingBottom: F }}
           >
-            <span className="relative flex h-12 w-12 items-center justify-center rounded-full border border-primary/30 bg-primary/10">
-              <Headset className="h-[22px] w-[22px] text-foreground" strokeWidth={1.6} />
-              <span className="absolute -right-0.5 -top-0.5 flex h-2.5 w-2.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60 motion-reduce:animate-none" />
-                <span className="relative inline-flex h-2.5 w-2.5 rounded-full border-2 border-card bg-primary" />
+            <span className="csr-orb-wrap relative flex h-[60px] w-[60px] items-center justify-center">
+              <span className="csr-orb-ring absolute inset-0 rounded-full" aria-hidden="true" />
+              <span className="csr-orb relative flex h-[50px] w-[50px] items-center justify-center rounded-full">
+                <Headset className="csr-orb-icon relative h-[22px] w-[22px] text-white" strokeWidth={1.75} />
+              </span>
+              <span className="absolute right-[3px] top-[3px] flex h-3 w-3">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-50 motion-reduce:animate-none" />
+                <span className="csr-orb-dot relative inline-flex h-3 w-3 rounded-full" />
               </span>
             </span>
 
